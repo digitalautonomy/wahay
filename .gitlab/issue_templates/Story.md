@@ -1,3 +1,5 @@
+Title: As a WHO I want to WHAT so that WHY
+
 
 ((Description of the story))
 
@@ -17,5 +19,4 @@
 ((If there's something else that needs to be noted, resources or links, it should be put here))
 
 
-/title "As a WHO I want to WHAT so that WHY"
 /label ~"State: Backlog" ~"To be estimated" ~"Story"
