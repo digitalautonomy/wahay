@@ -2,6 +2,35 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:b6117b7d2bb5d1691023064f4e13c8c27c2f5294974a2acc714139b50b117ded"
+  name = "github.com/coyim/gotk3adapter"
+  packages = [
+    "gdka",
+    "gdki",
+    "gliba",
+    "glibi",
+    "gtka",
+    "gtki",
+  ]
+  pruneopts = "UT"
+  revision = "90facceb61f19bfef35ea0bbd82390f8c80e053a"
+
+[[projects]]
+  branch = "master"
+  digest = "1:f16018a99ee63b724ad3fd0e290c14c0de45d0db93c6f2760c4dad1b4518e591"
+  name = "github.com/gotk3/gotk3"
+  packages = [
+    "cairo",
+    "gdk",
+    "glib",
+    "gtk",
+    "pango",
+  ]
+  pruneopts = "UT"
+  revision = "9d4abcb1602160e43cba88eb9fa81beb4318ee53"
+
+[[projects]]
   digest = "1:ca955a9cd5b50b0f43d2cc3aeb35c951473eeca41b34eb67507f1dbcc0542394"
   name = "github.com/kr/pretty"
   packages = ["."]
@@ -28,6 +57,9 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = ["gopkg.in/check.v1"]
+  input-imports = [
+    "github.com/coyim/gotk3adapter/gtka",
+    "gopkg.in/check.v1",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

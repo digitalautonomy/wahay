@@ -32,3 +32,7 @@
 [[constraint]]
   branch = "v1"
   name = "gopkg.in/check.v1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/coyim/gotk3adapter"
