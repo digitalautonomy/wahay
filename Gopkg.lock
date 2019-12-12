@@ -3,7 +3,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:b6117b7d2bb5d1691023064f4e13c8c27c2f5294974a2acc714139b50b117ded"
+  digest = "1:651b95feaa47c704dfa38cb87182abdcec1a4e6e883fc5f41dca3692f4aa3119"
   name = "github.com/coyim/gotk3adapter"
   packages = [
     "gdka",
@@ -14,7 +14,7 @@
     "gtki",
   ]
   pruneopts = "UT"
-  revision = "90facceb61f19bfef35ea0bbd82390f8c80e053a"
+  revision = "7971adff3cb46275773c23243897a454b18f96cf"
 
 [[projects]]
   branch = "master"
@@ -58,7 +58,9 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/coyim/gotk3adapter/glibi",
     "github.com/coyim/gotk3adapter/gtka",
+    "github.com/coyim/gotk3adapter/gtki",
     "gopkg.in/check.v1",
   ]
   solver-name = "gps-cdcl"
