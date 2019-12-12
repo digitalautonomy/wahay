@@ -61,10 +61,10 @@ func NewGTK(gx Graphics) UI {
 }
 
 func (u *gtkUI) onActivate() {
-	u.mainWindow()
+	u.createMainWindow()
 }
 
-func (u *gtkUI) mainWindow() {
+func (u *gtkUI) createMainWindow() {
 	builder, err := u.g.gtk.BuilderNew()
 	if err != nil {
 		panic(err)
