@@ -8,9 +8,18 @@ GOPATH_SINGLE=$(shell echo $${GOPATH%%:*})
 
 BUILD_DIR=bin
 
+default: gen-ui-defs build
+
+check-deps:
+	@type esc >/dev/null 2>&1 || (echo "The program 'esc' is required but not available. Please install it by running 'make deps'." && exit 1)
+
 deps:
 	go get -u github.com/modocache/gover
+	go get -u github.com/rosatolen/esc
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin v1.21.0
+
+gen-ui-defs: check-deps
+	make -C gui
 
 optional-deps:
 	go get -u github.com/rogpeppe/godef

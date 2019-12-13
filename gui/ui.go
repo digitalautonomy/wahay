@@ -65,33 +65,9 @@ func (u *gtkUI) onActivate() {
 }
 
 func (u *gtkUI) createMainWindow() {
-	builder, err := u.g.gtk.BuilderNew()
-	if err != nil {
-		panic(err)
-	}
-
-	err = builder.AddFromString("<interface>" +
-		"  <object class=\"GtkApplicationWindow\" id=\"mainWindow\">" +
-		"    <property name=\"can_focus\">False</property>" +
-		"    <property name=\"title\">Tonio!</property>" +
-		"    <property name=\"default_width\">600</property>" +
-		"    <property name=\"default_height\">400</property>" +
-		"  </object>" +
-		"</interface>")
-
-	if err != nil {
-		panic(err)
-	}
-
-	obj, err := builder.GetObject("mainWindow")
-
-	if err != nil {
-		panic(err)
-	}
-
-	win := obj.(gtki.ApplicationWindow)
+	builder := u.g.uiBuilderFor("MainWindow")
+	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
-
 	win.ShowAll()
 }
 
