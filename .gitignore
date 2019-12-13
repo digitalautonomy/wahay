@@ -2,3 +2,5 @@
 .coverprofiles
 coverage.html
 /bin
+.idea/*
+dev/.vagrant/
