@@ -6,7 +6,6 @@ variables:
 stages:
   - build
   - test
-  - coverage
 
   # A hack to make Golang-in-Gitlab happy
 .anchors:
@@ -37,7 +36,7 @@ test:
     - make test
 
 coverage:
-  stage: coverage
+  stage: test
   before_script:
     - *install-deps
     - *inject-gopath
