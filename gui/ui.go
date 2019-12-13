@@ -18,7 +18,7 @@ type Graphics struct {
 	gtk gtki.Gtk
 }
 
-// CreateGraphics creates a Graphic represention from the given arguments
+// CreateGraphics creates a Graphic representation from the given arguments
 func CreateGraphics(gtkVal gtki.Gtk) Graphics {
 	return Graphics{
 		gtk: gtkVal,
@@ -65,29 +65,19 @@ func (u *gtkUI) onActivate() {
 }
 
 func (u *gtkUI) createMainWindow() {
-	builder, err := u.g.gtk.BuilderNew()
-	if err != nil {
-		panic(err)
-	}
-
-	err = builder.AddFromString("<interface>" +
-		"  <object class=\"GtkApplicationWindow\" id=\"mainWindow\">" +
-		"    <property name=\"can_focus\">False</property>" +
-		"    <property name=\"title\">Tonio!</property>" +
-		"    <property name=\"default_width\">600</property>" +
-		"    <property name=\"default_height\">400</property>" +
-		"  </object>" +
-		"</interface>")
-
-	obj, _ := builder.GetObject("mainWindow")
-
-	win := obj.(gtki.ApplicationWindow)
+	builder := u.g.uiBuilderFor("MainWindow")
+	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
-
 	win.ShowAll()
 }
 
 func (u *gtkUI) Loop() {
-	u.app.Connect("activate", u.onActivate)
+	// This Connect call returns a signal handle, but that's not useful
+	// for us, so we ignore it.
+	_, err := u.app.Connect("activate", u.onActivate)
+	if err != nil {
+		panic(err)
+	}
+
 	u.app.Run([]string{})
 }

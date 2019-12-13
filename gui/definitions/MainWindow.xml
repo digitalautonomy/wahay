@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<interface>
+  <object class="GtkApplicationWindow" id="mainWindow">
+    <property name="can_focus">False</property>
+    <property name="title">Tonio!</property>
+    <property name="default_width">600</property>
+    <property name="default_height">400</property>
+  </object>
+</interface>

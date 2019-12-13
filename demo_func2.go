@@ -7,14 +7,14 @@ func func2() int {
 	return 42
 }
 
-func func3() int {
-	return 42
-}
+// func func3() int {
+// 	return 42
+// }
 
-func func4() int {
-	return 42
-}
+// func func4() int {
+// 	return 42
+// }
 
-func func5() int {
-	return 42
-}
+// func func5() int {
+// 	return 42
+// }
