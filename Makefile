@@ -13,25 +13,24 @@ default: gen-ui-defs build
 check-deps:
 	@type esc >/dev/null 2>&1 || (echo "The program 'esc' is required but not available. Please install it by running 'make deps'." && exit 1)
 
+gen-ui-defs: check-deps
+	make -C gui
+
 deps:
 	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin v1.21.0
 
-gen-ui-defs: check-deps
-	make -C gui
-
 optional-deps:
 	go get -u github.com/rogpeppe/godef
 
 test:
-	go test -cover -tags $(GTK_BUILD_TAG) -v ./...
+	go test -cover -v ./config ./gui
 
 run-coverage: clean-cover
 	mkdir -p .coverprofiles
-	go test -tags $(GTK_BUILD_TAG) -coverprofile=.coverprofiles/main.coverprofile
-	go test -tags $(GTK_BUILD_TAG) -coverprofile=.coverprofiles/config.coverprofile ./config
-	go test -tags $(GTK_BUILD_TAG) -coverprofile=.coverprofiles/gui.coverprofile ./gui
+	go test -coverprofile=.coverprofiles/config.coverprofile ./config
+	go test -coverprofile=.coverprofiles/gui.coverprofile ./gui
 	gover .coverprofiles .coverprofiles/gover.coverprofile
 
 clean-cover:
