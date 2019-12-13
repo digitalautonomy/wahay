@@ -18,7 +18,7 @@ type Graphics struct {
 	gtk gtki.Gtk
 }
 
-// CreateGraphics creates a Graphic represention from the given arguments
+// CreateGraphics creates a Graphic representation from the given arguments
 func CreateGraphics(gtkVal gtki.Gtk) Graphics {
 	return Graphics{
 		gtk: gtkVal,
@@ -79,7 +79,15 @@ func (u *gtkUI) createMainWindow() {
 		"  </object>" +
 		"</interface>")
 
-	obj, _ := builder.GetObject("mainWindow")
+	if err != nil {
+		panic(err)
+	}
+
+	obj, err := builder.GetObject("mainWindow")
+
+	if err != nil {
+		panic(err)
+	}
 
 	win := obj.(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
@@ -88,6 +96,12 @@ func (u *gtkUI) createMainWindow() {
 }
 
 func (u *gtkUI) Loop() {
-	u.app.Connect("activate", u.onActivate)
+	// This Connect call returns a signal handle, but that's not useful
+	// for us, so we ignore it.
+	_, err := u.app.Connect("activate", u.onActivate)
+	if err != nil {
+		panic(err)
+	}
+
 	u.app.Run([]string{})
 }
