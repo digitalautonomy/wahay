@@ -5,7 +5,7 @@ variables:
 
 stages:
   - build
-  - test
+  - check
 
   # A hack to make Golang-in-Gitlab happy
 .anchors:
@@ -25,9 +25,12 @@ build:
   script:
     - make deps
     - make build
+  artifacts:
+    paths:
+      - bin/tonio
 
 test:
-  stage: test
+  stage: check
   before_script:
     - *install-deps
     - *inject-gopath
@@ -36,10 +39,22 @@ test:
     - make test
 
 coverage:
-  stage: test
+  stage: check
   before_script:
     - *install-deps
     - *inject-gopath
   script:
     - make deps
     - make cover-ci
+  artifacts:
+    paths:
+      - coverage.html
+
+quality:
+  stage: check
+  before_script:
+    - *install-deps
+    - *inject-gopath
+  script:
+    - make deps
+    - make quality
