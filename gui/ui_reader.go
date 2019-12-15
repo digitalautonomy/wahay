@@ -42,7 +42,7 @@ func fileNotFound(fileName string) bool {
 func readFile(fileName string) string {
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
-		log.Fatal(err)
+		fatal(err)
 	}
 	return string(data)
 }
@@ -52,8 +52,7 @@ func getDefinitionWithFileFallback(uiName string) string {
 
 	embeddedFile, err := FSString(false, fname)
 	if err != nil {
-		//Enforce the file is embedded, but dont use it.
-		log.Fatalf("No definition found for %s", uiName)
+		fatalf("No definition found for %s", uiName)
 	}
 
 	fileName := filepath.Join(getActualDefsFolder(), uiName+xmlExtension)
@@ -71,14 +70,13 @@ func (g *Graphics) builderForDefinition(uiName string) gtki.Builder {
 
 	builder, err := g.gtk.BuilderNew()
 	if err != nil {
-		log.Fatal(err)
+		fatal(err)
 	}
 
 	//We dont use NewFromString because it doesnt give us an error message
 	err = builder.AddFromString(template)
 	if err != nil {
-		//This is a programming error
-		log.Fatalf("gui: failed load %s: %s\n", uiName, err.Error())
+		fatalf("gui: failed load %s: %s", uiName, err.Error())
 	}
 
 	return builder
@@ -87,7 +85,7 @@ func (g *Graphics) builderForDefinition(uiName string) gtki.Builder {
 func (b *uiBuilder) get(name string) glibi.Object {
 	obj, err := b.GetObject(name)
 	if err != nil {
-		log.Fatal(err)
+		fatal(err)
 	}
 	return obj
 }

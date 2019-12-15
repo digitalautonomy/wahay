@@ -49,7 +49,7 @@ func NewGTK(gx Graphics) UI {
 
 	app, err := gx.gtk.ApplicationNew(applicationID, glibi.APPLICATION_FLAGS_NONE)
 	if err != nil {
-		panic(err)
+		fatalf("Couldn't create application: %v", err)
 	}
 
 	ret := &gtkUI{
@@ -76,7 +76,7 @@ func (u *gtkUI) Loop() {
 	// for us, so we ignore it.
 	_, err := u.app.Connect("activate", u.onActivate)
 	if err != nil {
-		panic(err)
+		fatalf("Couldn't activate application: %v", err)
 	}
 
 	u.app.Run([]string{})

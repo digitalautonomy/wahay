@@ -184,15 +184,15 @@ var _escData = map[string]*_escFile{
 
 	"/definitions/MainWindow.xml": {
 		local:   "definitions/MainWindow.xml",
-		size:    327,
+		size:    326,
 		modtime: 1489449600,
 		compressed: `
 PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPGludGVyZmFjZT4KICA8b2JqZWN0
 IGNsYXNzPSJHdGtBcHBsaWNhdGlvbldpbmRvdyIgaWQ9Im1haW5XaW5kb3ciPgogICAgPHByb3BlcnR5
 IG5hbWU9ImNhbl9mb2N1cyI+RmFsc2U8L3Byb3BlcnR5PgogICAgPHByb3BlcnR5IG5hbWU9InRpdGxl
-Ij5Ub25pbzIhPC9wcm9wZXJ0eT4KICAgIDxwcm9wZXJ0eSBuYW1lPSJkZWZhdWx0X3dpZHRoIj42MDA8
-L3Byb3BlcnR5PgogICAgPHByb3BlcnR5IG5hbWU9ImRlZmF1bHRfaGVpZ2h0Ij40MDA8L3Byb3BlcnR5
-PgogIDwvb2JqZWN0Pgo8L2ludGVyZmFjZT4K
+Ij5Ub25pbyE8L3Byb3BlcnR5PgogICAgPHByb3BlcnR5IG5hbWU9ImRlZmF1bHRfd2lkdGgiPjYwMDwv
+cHJvcGVydHk+CiAgICA8cHJvcGVydHkgbmFtZT0iZGVmYXVsdF9oZWlnaHQiPjQwMDwvcHJvcGVydHk+
+CiAgPC9vYmplY3Q+CjwvaW50ZXJmYWNlPgo=
 `,
 	},
 
