@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "generic/ubuntu1904"
+  config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -68,6 +68,7 @@ Vagrant.configure("2") do |config|
 	add-apt-repository ppa:longsleep/golang-backports
 	apt-get update
 	apt-get install -y golang-go git build-essential libgtk-3-dev
+  apt-get install tor
 	mkdir -p /gopath/pkg
 	chown -R vagrant /gopath
  SHELL
