@@ -4,7 +4,7 @@
 Go provides C-style /* */ block comments and C++-style // line comments. Line comments are the norm; block comments appear mostly as package comments, but are useful within an expression or to disable large swaths of code. 
 
 The program—and web server—godoc processes Go source files to extract documentation about the contents of the package. Comments that appear before top-level declarations, with no intervening newlines, are extracted along with the declaration to serve as explanatory text for the item. The nature and style of these comments determines the quality of the documentation godoc produces. 
-```
+```go
 $ go doc -all
 ```
 
@@ -31,7 +31,7 @@ Avoid redundant names, given their context:
 Longer names may help in long functions, or functions with many local variables. 
 
 Example bad practice:
-```
+```go
 func RuneCount(buffer []byte) int {
 
     runeCount := 0
@@ -48,7 +48,7 @@ func RuneCount(buffer []byte) int {
 }
 ```
 Example good practice:
-```
+```go
 func RuneCount(b []byte) int {
     count := 0
     for i := 0; i < len(b); {
@@ -64,94 +64,6 @@ func RuneCount(b []byte) int {
 }
 ```
 
-### Parameters
-Function parameters are like local variables,
-but they also serve as documentation.
-
-Where the types are descriptive, they should be short: 
-
-```
-func AfterFunc(d Duration, f func()) *Timer
-
-func Escape(w io.Writer, s []byte)
-```
-
-Where the types are more ambiguous, the names may provide documentation: 
-```
-func Unix(sec, nsec int64) Time
-
-func HasPrefix(s, prefix []byte) bool
-```
-
-### Return values
-Return values on exported functions should only be named for documentation purposes.
-
-These are good examples of named return values: 
-```
-func Copy(dst Writer, src Reader) (written int64, err error)
-
-func ScanBytes(data []byte, atEOF bool) (advance int, token []byte, err error)
-```
-
-### Receivers (Pointers)
-Receivers are a special kind of argument.
-
-By convention, they are one or two characters that reflect the receiver type,
-because they typically appear on almost every line: 
-```
-func (b *Buffer) Read(p []byte) (n int, err error)
-
-func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request)
-
-func (r Rectangle) Size() Point
-```
-Receiver names should be consistent across a type's methods.
-(Don't use r in one method and rdr in another.)
-
-### Exported package-level names
-Exported names are qualified by their package names.
-
-Remember this when naming exported variables, constants, functions, and types.
-
-That's why we have bytes.Buffer and strings.Reader,
-not bytes.ByteBuffer and strings.StringReader. 
-
-### Interface Types
-Interfaces that specify just one method are usually just that function name with 'er' appended to it. 
-```
-type Reader interface {
-    Read(p []byte) (n int, err error)
-} 
-```
-Sometimes the result isn't correct English, but we do it anyway: 
-```
-type Execer interface {
-    Exec(query string, args []Value) (Result, error)
-}
-```
-
-Sometimes we use English to make it nicer: 
-```
-type ByteReader interface {
-    ReadByte() (c byte, err error)
-}
-```
-
-When an interface includes multiple methods, choose a name that accurately describes its purpose (examples: net.Conn, http.ResponseWriter, io.ReadWriter). 
-
-### Errors
-Error types should be of the form FooError: 
-```
-type ExitError struct {
-    ...
-}
-```
-
-Error values should be of the form ErrFoo: 
-```
-var ErrFormat = errors.New("image: unknown format")
-```
-
 ### Packages
 By convention, packages are given lower case, single-word names; there should be no need for underscores or mixedCaps.
 
@@ -163,19 +75,108 @@ Choose package names that lend meaning to the names they export.
 
 Steer clear of util, common, and the like. 
 
+### Exported package-level names
+Exported names are qualified by their package names.
+
+Remember this when naming exported variables, constants, functions, and types.
+
+That's why we have bytes.Buffer and strings.Reader,
+not bytes.ByteBuffer and strings.StringReader. 
+
+### Parameters
+Function parameters are like local variables,
+but they also serve as documentation.
+
+Where the types are descriptive, they should be short: 
+
+```go
+func AfterFunc(d Duration, f func()) *Timer
+
+func Escape(w io.Writer, s []byte)
+```
+
+Where the types are more ambiguous, the names may provide documentation: 
+```go
+func Unix(sec, nsec int64) Time
+
+func HasPrefix(s, prefix []byte) bool
+```
+
+### Return values
+Return values on exported functions should only be named for documentation purposes.
+
+These are good examples of named return values: 
+```go
+func Copy(dst Writer, src Reader) (written int64, err error)
+
+func ScanBytes(data []byte, atEOF bool) (advance int, token []byte, err error)
+```
+
+### Method Receivers
+Receivers are a special kind of argument.
+
+By convention, they are one or two characters that reflect the receiver type,
+because they typically appear on almost every line: 
+```go
+func (b *Buffer) Read(p []byte) (n int, err error)
+
+func (sh serverHandler) ServeHTTP(rw ResponseWriter, req *Request)
+
+func (r Rectangle) Size() Point
+```
+Receiver names should be consistent across a type's methods.
+(Don't use r in one method and rdr in another.)
+
+
+### Interface Types
+Interfaces that specify just one method are usually just that function name with 'er' appended to it. 
+```go
+type Reader interface {
+    Read(p []byte) (n int, err error)
+} 
+```
+Sometimes the result isn't correct English, but we do it anyway: 
+```go
+type Execer interface {
+    Exec(query string, args []Value) (Result, error)
+}
+```
+
+Sometimes we use English to make it nicer: 
+```go
+type ByteReader interface {
+    ReadByte() (c byte, err error)
+}
+```
+
+When an interface includes multiple methods, choose a name that accurately describes its purpose (examples: net.Conn, http.ResponseWriter, io.ReadWriter). 
+
+### Errors
+Error types should be of the form FooError: 
+```go
+type ExitError struct {
+    ...
+}
+```
+
+Error values should be of the form ErrFoo: 
+```go
+var ErrFormat = errors.New("image: unknown format")
+```
+
 ### Import paths
 The last component of a package path should be the same as the package name. 
-```
+```go
 "compress/gzip" // package gzip
 ```
 
 Avoid stutter in repository and package paths: 
-```
+```go
 "code.google.com/p/goauth2/oauth2" // bad; my fault
 ```
 
 For libraries, it often works to put the package code in the repo root:
-```
+```go
 "github.com/golang/oauth2" // package oauth2
 ```
 
@@ -183,20 +184,21 @@ Also avoid upper case letters (not all file systems are case sensitive).
 
 ### Getters
 Go doesn't provide automatic support for getters and setters. There's nothing wrong with providing getters and setters yourself, and it's often appropriate to do so, but it's neither idiomatic nor necessary to put Get into the getter's name. If you have a field called owner (lower case, unexported), the getter method should be called Owner (upper case, exported), not GetOwner. The use of upper-case names for export provides the hook to discriminate the field from the method. A setter function, if needed, will likely be called SetOwner. Both names read well in practice: 
-```
+```go
 owner := obj.Owner()
 if owner != user {
     obj.SetOwner(user)
 }
 ```
 
+
 ### Tips
 Techniques to write Go code that is
 * simple,
 * readable,
-* maintainable
-* Avoid nesting by handling errors first
-```
+* maintainable,
+* handling error using ```return``` statement
+```go
 func (g *Gopher) WriteTo(w io.Writer) (size int64, err error) {
     err = binary.Write(w, binary.LittleEndian, int32(len(g.Name)))
     if err != nil {
@@ -215,11 +217,9 @@ func (g *Gopher) WriteTo(w io.Writer) (size int64, err error) {
     return
 }
 ```
-Less nesting means less cognitive load on the reader 
-* Avoid repetition when possible
 
 Deploy one-off utility types for simpler code 
-```
+```go
 type binWriter struct {
     w    io.Writer
     size int64
@@ -227,7 +227,7 @@ type binWriter struct {
 }
 ```
 
-```
+```go
 // Write writes a value to the provided writer in little endian form ((least significant value in the sequence) is stored first).
 func (w *binWriter) Write(v interface{}) {
     if w.err != nil {
@@ -239,9 +239,8 @@ func (w *binWriter) Write(v interface{}) {
 }
 ```
 
-* Avoid repetition when possible
 * Type switch to handle special cases
-```
+```go
 func (w *binWriter) Write(v interface{}) {
     if w.err != nil {
         return
@@ -263,7 +262,7 @@ func (w *binWriter) Write(v interface{}) {
 ```
 
 * Type switch with short variable declaration
-```
+```go
 func (w *binWriter) Write(v interface{}) {
     if w.err != nil {
         return
@@ -285,12 +284,12 @@ func (w *binWriter) Write(v interface{}) {
 * Shorter is better (or at least longer is not always better)
 
 * Try to find the shortest name that is self explanatory
-```
+```go
 Prefer MarshalIndent to MarshalWithIndentation
 ```
 
 * Don't forget that the package name will appear before the identifier you chose
-```
+```go
 In package encoding/json we find the type Encoder, not JSONEncoder.
 It is referred as json.Encoder.
 ```
@@ -303,27 +302,27 @@ containing the package documentation)
 * Ask for what you need
 
 Let's use the Gopher type:
-```
+```go
 type Gopher struct {
     Name     string
     AgeYears int
 }
 ```
 We could define this method 
-```
+```go
 func (g *Gopher) WriteToFile(f *os.File) (int64, error) {
 ```
 But using a concrete type makes this code difficult to test, so we use an interface. 
-```
+```go
 func (g *Gopher) WriteToReadWriter(rw io.ReadWriter) (int64, error) {
 ```
 And, since we're using an interface, we should ask only for the methods we need. 
-```
+```go
 func (g *Gopher) WriteToWriter(f io.Writer) (int64, error) {
 ```
 
-* Keep independent packages independent
-```
+* Keep packages independent
+```go
 import (
     "golang.org/x/talks/content/2013/bestpractices/funcdraw/drawer"
     "golang.org/x/talks/content/2013/bestpractices/funcdraw/parser"
@@ -331,7 +330,7 @@ import (
 ```
 
 * Avoid dependency by using an interface
-```
+```go
 import "image"
 
 // Function represent a drawable mathematical function.
@@ -345,9 +344,7 @@ func Draw(f Function) image.Image {
 
 * Using an interface instead of a concrete type makes testing easier. 
 
- 
-
 
 ### References
 * Andrew Gerrand (adg@golang.org), Google Inc. (October 2014), What's in a name? (https://talks.golang.org/2014/names.slide)
-* Francesc Campoy Flores (gopher@google), Google Inc, Twelve Go Best Practices (https://talks.golang.org/2013/bestpractices.slide)
+* Francesc Campoy Flores (gopher@google.com), Google Inc, Twelve Go Best Practices (https://talks.golang.org/2013/bestpractices.slide)
