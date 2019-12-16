@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"fmt"
 	"os"
 	"runtime"
 
@@ -68,6 +69,14 @@ func (u *gtkUI) createMainWindow() {
 	builder := u.g.uiBuilderFor("MainWindow")
 	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
+
+	builder.ConnectSignals(map[string]interface{}{
+		"on_host_meeting":    hostMeeting,
+		"on_join_meeting":    joinMeeting,
+		"on_test_connection": testTorConnection,
+		"on_open_settings":   openSettings,
+	})
+
 	win.ShowAll()
 }
 
@@ -80,4 +89,25 @@ func (u *gtkUI) Loop() {
 	}
 
 	u.app.Run([]string{})
+}
+
+/*
+Event handler functions for main window buttons
+TODO: Move to another file and remove from here.
+*/
+
+func hostMeeting() {
+	fmt.Printf("Clicked on host meeting button!\n")
+}
+
+func joinMeeting() {
+	fmt.Printf("Clicked on join meeting button!\n")
+}
+
+func testTorConnection() {
+	fmt.Printf("Clicked on test connection button!\n")
+}
+
+func openSettings() {
+	fmt.Printf("Clicked on open settings button!\n")
 }

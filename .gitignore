@@ -4,3 +4,4 @@ coverage.html
 /bin
 .idea/*
 dev/.vagrant/
+*.*~
