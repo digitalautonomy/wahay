@@ -1,4 +1,4 @@
-# Code Standards <sup>[1](#tookFrome)</sup>
+# Code Standards
 
 ### Comments
 Go provides C-style /* */ block comments and C++-style // line comments. Line comments are the norm; block comments appear mostly as package comments, but are useful within an expression or to disable large swaths of code. 
@@ -93,7 +93,7 @@ func Copy(dst Writer, src Reader) (written int64, err error)
 func ScanBytes(data []byte, atEOF bool) (advance int, token []byte, err error)
 ```
 
-### Receivers
+### Receivers (Pointers)
 Receivers are a special kind of argument.
 
 By convention, they are one or two characters that reflect the receiver type,
@@ -190,5 +190,164 @@ if owner != user {
 }
 ```
 
+### Tips
+Techniques to write Go code that is
+* simple,
+* readable,
+* maintainable
+* Avoid nesting by handling errors first
+```
+func (g *Gopher) WriteTo(w io.Writer) (size int64, err error) {
+    err = binary.Write(w, binary.LittleEndian, int32(len(g.Name)))
+    if err != nil {
+        return
+    }
+    size += 4
+    n, err := w.Write([]byte(g.Name))
+    size += int64(n)
+    if err != nil {
+        return
+    }
+    err = binary.Write(w, binary.LittleEndian, int64(g.AgeYears))
+    if err == nil {
+        size += 4
+    }
+    return
+}
+```
+Less nesting means less cognitive load on the reader 
+* Avoid repetition when possible
+
+Deploy one-off utility types for simpler code 
+```
+type binWriter struct {
+    w    io.Writer
+    size int64
+    err  error
+}
+```
+
+```
+// Write writes a value to the provided writer in little endian form ((least significant value in the sequence) is stored first).
+func (w *binWriter) Write(v interface{}) {
+    if w.err != nil {
+        return
+    }
+    if w.err = binary.Write(w.w, binary.LittleEndian, v); w.err == nil {
+        w.size += int64(binary.Size(v))
+    }
+}
+```
+
+* Avoid repetition when possible
+* Type switch to handle special cases
+```
+func (w *binWriter) Write(v interface{}) {
+    if w.err != nil {
+        return
+    }
+    switch v.(type) {
+    case string:
+        s := v.(string)
+        w.Write(int32(len(s)))
+        w.Write([]byte(s))
+    case int:
+        i := v.(int)
+        w.Write(int64(i))
+    default:
+        if w.err = binary.Write(w.w, binary.LittleEndian, v); w.err == nil {
+            w.size += int64(binary.Size(v))
+        }
+    }
+}
+```
+
+* Type switch with short variable declaration
+```
+func (w *binWriter) Write(v interface{}) {
+    if w.err != nil {
+        return
+    }
+    switch x := v.(type) {
+    case string:
+        w.Write(int32(len(x)))
+        w.Write([]byte(x))
+    case int:
+        w.Write(int64(x))
+    default:
+        if w.err = binary.Write(w.w, binary.LittleEndian, v); w.err == nil {
+            w.size += int64(binary.Size(v))
+        }
+    }
+}
+```
+
+* Shorter is better (or at least longer is not always better)
+
+* Try to find the shortest name that is self explanatory
+```
+Prefer MarshalIndent to MarshalWithIndentation
+```
+
+* Don't forget that the package name will appear before the identifier you chose
+```
+In package encoding/json we find the type Encoder, not JSONEncoder.
+It is referred as json.Encoder.
+```
+
+* Avoid very long files
+* Separate code and tests
+* Separated package documentation (When we have more than one file in a package, it's convention to create a doc.go
+containing the package documentation)
+* Make your packages "go get"-able (Some packages are potentially reusable, some others are not)
+* Ask for what you need
+
+Let's use the Gopher type:
+```
+type Gopher struct {
+    Name     string
+    AgeYears int
+}
+```
+We could define this method 
+```
+func (g *Gopher) WriteToFile(f *os.File) (int64, error) {
+```
+But using a concrete type makes this code difficult to test, so we use an interface. 
+```
+func (g *Gopher) WriteToReadWriter(rw io.ReadWriter) (int64, error) {
+```
+And, since we're using an interface, we should ask only for the methods we need. 
+```
+func (g *Gopher) WriteToWriter(f io.Writer) (int64, error) {
+```
+
+* Keep independent packages independent
+```
+import (
+    "golang.org/x/talks/content/2013/bestpractices/funcdraw/drawer"
+    "golang.org/x/talks/content/2013/bestpractices/funcdraw/parser"
+)
+```
+
+* Avoid dependency by using an interface
+```
+import "image"
+
+// Function represent a drawable mathematical function.
+type Function interface {
+    Eval(float64) float64
+}
+
+// Draw draws an image showing a rendering of the passed Function.
+func Draw(f Function) image.Image {
+```
+
+* Using an interface instead of a concrete type makes testing easier. 
+
+ 
+
+
 ### References
-* Andrew Gerrand (adg@golang.org), Google Inc. (October 2014), What's in a name? 
+* Andrew Gerrand (adg@golang.org), Google Inc. (October 2014), What's in a name? (https://talks.golang.org/2014/names.slide)
+* Francesc Campoy Flores (gopher@google), Google Inc, Twelve Go Best Practices (https://talks.golang.org/2013/bestpractices.slide)
