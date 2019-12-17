@@ -3,16 +3,13 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:00957b2dc423307c85aa0cdd4dbc50792646aecce34e18e542adedbe3e734337"
+  digest = "1:dc3bacf893330000e0c7c9638c26fc977054c8b37f6aeec5ebeef8f77365656a"
   name = "github.com/coyim/gotk3adapter"
   packages = [
-    "gdka",
     "gdki",
     "glib_mock",
-    "gliba",
     "glibi",
     "gtk_mock",
-    "gtka",
     "gtki",
   ]
   pruneopts = "UT"
@@ -20,7 +17,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5220bd5c663d2dd743df283c62f8c1c8b59a3cdb400a9945146462fd3040ceac"
+  digest = "1:e79706dbab0a49d998981ee95363d2607d80ab3b7866c7d96fb8b17c1401fe4e"
   name = "github.com/digitalautonomy/grumble"
   packages = [
     "pkg/acl",
@@ -40,7 +37,7 @@
     "server",
   ]
   pruneopts = "UT"
-  revision = "c66731ac262eca0b57595357f50942fb59e73626"
+  revision = "4db50b4fa37e4d4f57830d16aab1222284131197"
 
 [[projects]]
   digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
@@ -60,14 +57,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f16018a99ee63b724ad3fd0e290c14c0de45d0db93c6f2760c4dad1b4518e591"
+  digest = "1:7bfd025b1fe5e3837ba80f6995b94338dbd7a8b6fa75cc3d415182db1e91197e"
   name = "github.com/gotk3/gotk3"
   packages = [
-    "cairo",
     "gdk",
     "glib",
-    "gtk",
-    "pango",
   ]
   pruneopts = "UT"
   revision = "9d4abcb1602160e43cba88eb9fa81beb4318ee53"
@@ -145,8 +139,8 @@
   input-imports = [
     "github.com/coyim/gotk3adapter/glibi",
     "github.com/coyim/gotk3adapter/gtk_mock",
-    "github.com/coyim/gotk3adapter/gtka",
     "github.com/coyim/gotk3adapter/gtki",
+    "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/wybiral/torgo",
     "gopkg.in/check.v1",
