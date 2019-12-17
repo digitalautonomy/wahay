@@ -13,7 +13,7 @@ func main() {
 }
 
 func runClient() {
-	hosting.TestHosting()
+	go hosting.TestHosting()
 	g := gui.CreateGraphics(gtka.Real)
 	gui.NewGTK(g).Loop()
 }
