@@ -3,13 +3,15 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:651b95feaa47c704dfa38cb87182abdcec1a4e6e883fc5f41dca3692f4aa3119"
+  digest = "1:00957b2dc423307c85aa0cdd4dbc50792646aecce34e18e542adedbe3e734337"
   name = "github.com/coyim/gotk3adapter"
   packages = [
     "gdka",
     "gdki",
+    "glib_mock",
     "gliba",
     "glibi",
+    "gtk_mock",
     "gtka",
     "gtki",
   ]
@@ -47,6 +49,45 @@
   version = "v0.1.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:f270cec410cc52b9560705ad4dc2f4338ac9049b0e0bce0ff5a1905a1367d398"
+  name = "github.com/wybiral/torgo"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a19a6c8a50489e2fdf37223edc5f1284bb965308"
+
+[[projects]]
+  branch = "master"
+  digest = "1:de3ada36fec2d05c0efdfc94521e0bbb2db9d7538446987822482709de5bd4dc"
+  name = "golang.org/x/crypto"
+  packages = [
+    "ed25519",
+    "ed25519/internal/edwards25519",
+    "sha3",
+  ]
+  pruneopts = "UT"
+  revision = "e9b2fee46413994441b28dfca259d911d963dfed"
+
+[[projects]]
+  branch = "master"
+  digest = "1:3587bbb18e3d5299dc0020733e2839138afb0a29456ffd4073a3962bb9966556"
+  name = "golang.org/x/net"
+  packages = [
+    "internal/socks",
+    "proxy",
+  ]
+  pruneopts = "UT"
+  revision = "c0dbc17a35534bf2e581d7a942408dc936316da4"
+
+[[projects]]
+  branch = "master"
+  digest = "1:2620d7efbd6e99521e224cbc08b57e4fb928def72e7d9f138cde3a3c568a71c7"
+  name = "golang.org/x/sys"
+  packages = ["cpu"]
+  pruneopts = "UT"
+  revision = "ac6580df4449443a05718fd7858c1f91ad5f8d20"
+
+[[projects]]
   branch = "v1"
   digest = "1:bc88591477b5fee4520dcd3d8fa8fd26f5d78b83193ed0102a7e83552652daa4"
   name = "gopkg.in/check.v1"
@@ -59,8 +100,10 @@
   analyzer-version = 1
   input-imports = [
     "github.com/coyim/gotk3adapter/glibi",
+    "github.com/coyim/gotk3adapter/gtk_mock",
     "github.com/coyim/gotk3adapter/gtka",
     "github.com/coyim/gotk3adapter/gtki",
+    "github.com/wybiral/torgo",
     "gopkg.in/check.v1",
   ]
   solver-name = "gps-cdcl"

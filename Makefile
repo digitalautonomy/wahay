@@ -25,12 +25,13 @@ optional-deps:
 	go get -u github.com/rogpeppe/godef
 
 test:
-	go test -cover -v ./config ./gui
+	go test -cover -v ./config ./gui ./tor
 
 run-coverage: clean-cover
 	mkdir -p .coverprofiles
 	go test -coverprofile=.coverprofiles/config.coverprofile ./config
 	go test -coverprofile=.coverprofiles/gui.coverprofile ./gui
+	go test -coverprofile=.coverprofiles/tor.coverprofile ./tor
 	gover .coverprofiles .coverprofiles/gover.coverprofile
 
 clean-cover:

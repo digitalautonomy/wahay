@@ -1,0 +1,12 @@
+Tor: 
+- Take Tor information + control port password as arguments
+
+Grumble:
+- Download and vendor Grumble
+- Start the server to listen on that port
+
+UI:
+- Hook into the button to 
+- Create a random port for Grumble to listen on
+- Create hidden service pointing to it
+- Trigger Grumble start
