@@ -72,7 +72,9 @@ func (u *gtkUI) createMainWindow() {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_host_meeting":    hostMeeting,
-		"on_join_meeting":    joinMeeting,
+		"on_join_meeting":    func (){
+			u.joinMeeting()
+		},
 		"on_test_connection": testTorConnection,
 		"on_open_settings":   openSettings,
 	})
@@ -100,8 +102,26 @@ func hostMeeting() {
 	fmt.Printf("Clicked on host meeting button!\n")
 }
 
-func joinMeeting() {
+func (u *gtkUI) joinMeeting() {
 	fmt.Printf("Clicked on join meeting button!\n")
+
+
+	builder := u.g.uiBuilderFor("MainWindow")
+	win := builder.get("mainWindow").(gtki.ApplicationWindow)
+	win.SetApplication(u.app)
+	win.Hide()
+
+	u.openDialog()
+
+	/*cmd := exec.Command("mumble")
+	cmd.Env = append(os.Environ(),
+		"FOO=duplicate_value", // ignored
+		"FOO=actual_value",    // this value is used
+	)
+	if err := cmd.Run(); err != nil {
+		log.Fatal(err)
+	}*/
+
 }
 
 func testTorConnection() {
@@ -111,3 +131,5 @@ func testTorConnection() {
 func openSettings() {
 	fmt.Printf("Clicked on open settings button!\n")
 }
+
+
