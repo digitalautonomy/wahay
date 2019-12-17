@@ -83,14 +83,10 @@ func TestHosting() {
 		log.Fatalf("Unable to freeze newly created server to disk: %v", err.Error())
 	}
 
-	fmt.Printf("before starting server, %#v\n", logtarget.Target)
 	err = s.Start()
 	if err != nil {
 		log.Fatalf("Couldn't start server: %s", err.Error())
 	}
 
-	fmt.Printf("NewServer: %v\n", s)
 	server.SignalHandler()
-
-	//config: Address, Port and WebPort
 }
