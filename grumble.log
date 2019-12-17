@@ -1,0 +1,16 @@
+[G] 2019/12/17 16:31:14.793403 Grumble
+[G] 2019/12/17 16:31:14.793504 Using data directory: .grumble-tmp
+[G] 2019/12/17 16:31:14.793517 Generating 4096-bit RSA keypair for self-signed certificate...
+[G] 2019/12/17 16:31:14.882204 Loading definition from local file: "gui/definitions/MainWindow.xml"
+[G] 2019/12/17 16:31:16.546649 Certificate output to .grumble-tmp/cert.pem
+[G] 2019/12/17 16:31:16.546661 Private key output to .grumble-tmp/key.pem
+[1] 2019/12/17 16:31:16.557676 Started: listening on 127.0.0.1:64738
+[G] 2019/12/17 16:31:16.892973 Loading definition from local file: "gui/definitions/MainWindow.xml"
+[G] 2019/12/17 16:31:50.147705 Grumble
+[G] 2019/12/17 16:31:50.147809 Using data directory: .grumble-tmp
+[G] 2019/12/17 16:31:50.147823 Generating 4096-bit RSA keypair for self-signed certificate...
+[G] 2019/12/17 16:31:50.230282 Loading definition from local file: "gui/definitions/MainWindow.xml"
+[G] 2019/12/17 16:31:50.917317 Certificate output to .grumble-tmp/cert.pem
+[G] 2019/12/17 16:31:50.917330 Private key output to .grumble-tmp/key.pem
+[1] 2019/12/17 16:31:50.928499 Started: listening on 127.0.0.1:64738
+[G] 2019/12/17 16:31:51.993944 Loading definition from local file: "gui/definitions/MainWindow.xml"
