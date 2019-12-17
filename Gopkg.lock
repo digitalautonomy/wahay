@@ -20,6 +20,46 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:5220bd5c663d2dd743df283c62f8c1c8b59a3cdb400a9945146462fd3040ceac"
+  name = "github.com/digitalautonomy/grumble"
+  packages = [
+    "pkg/acl",
+    "pkg/ban",
+    "pkg/blobstore",
+    "pkg/cryptstate",
+    "pkg/cryptstate/ocb2",
+    "pkg/freezer",
+    "pkg/htmlfilter",
+    "pkg/logtarget",
+    "pkg/mumbleproto",
+    "pkg/packetdata",
+    "pkg/replacefile",
+    "pkg/serverconf",
+    "pkg/sessionpool",
+    "pkg/web",
+    "server",
+  ]
+  pruneopts = "UT"
+  revision = "c66731ac262eca0b57595357f50942fb59e73626"
+
+[[projects]]
+  digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  pruneopts = "UT"
+  revision = "6c65a5562fc06764971b7c5d05c76c75e84bdbf7"
+  version = "v1.3.2"
+
+[[projects]]
+  digest = "1:e62657cca9badaa308d86e7716083e4c5933bb78e30a17743fc67f50be26f6f4"
+  name = "github.com/gorilla/websocket"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c3e18be99d19e6b3e8f1559eea2c161a665c4b6b"
+  version = "v1.4.1"
+
+[[projects]]
+  branch = "master"
   digest = "1:f16018a99ee63b724ad3fd0e290c14c0de45d0db93c6f2760c4dad1b4518e591"
   name = "github.com/gotk3/gotk3"
   packages = [
@@ -58,11 +98,15 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:de3ada36fec2d05c0efdfc94521e0bbb2db9d7538446987822482709de5bd4dc"
+  digest = "1:c9724fe1aa4401928b603fa0581da0d84482052151f92f26a7047b0beb0a281e"
   name = "golang.org/x/crypto"
   packages = [
     "ed25519",
     "ed25519/internal/edwards25519",
+    "internal/subtle",
+    "nacl/secretbox",
+    "poly1305",
+    "salsa20/salsa",
     "sha3",
   ]
   pruneopts = "UT"
@@ -103,6 +147,7 @@
     "github.com/coyim/gotk3adapter/gtk_mock",
     "github.com/coyim/gotk3adapter/gtka",
     "github.com/coyim/gotk3adapter/gtki",
+    "github.com/digitalautonomy/grumble/server",
     "github.com/wybiral/torgo",
     "gopkg.in/check.v1",
   ]
