@@ -12,9 +12,8 @@ import (
 )
 
 func (u *gtkUI) hostMeetingHandler() {
-	var server hosting.Server
 	go func() {
-		server = u.createNewConferenceRoom()
+		_ = u.createNewConferenceRoom()
 	}()
 
 	u.currentWindow.Hide()
