@@ -52,7 +52,8 @@ func (cntrl *controller) EnsureTorCompatibility() error {
 	return err
 }
 
-func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort string, port string) (serviceID string, err error) {
+func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort string,
+	port string) (serviceID string, err error) {
 	tc, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
 
 	if err != nil {
@@ -88,7 +89,7 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 
 	serviceID = fmt.Sprintf("%s.onion", onion.ServiceID)
 
-	return
+	return serviceID, nil
 }
 
 // CreateController takes the Tor information given and returns a

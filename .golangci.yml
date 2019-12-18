@@ -25,7 +25,6 @@ linters:
     - bodyclose
     - deadcode
     - depguard
-    - dogsled
     - dupl
     - errcheck
     - funlen

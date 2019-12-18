@@ -11,7 +11,7 @@ import (
 
 func (u *gtkUI) getInviteCodeEntities() (gtki.Entry, gtki.ApplicationWindow, *uiBuilder) {
 	builder := u.g.uiBuilderFor("InviteCodeWindow")
-	url := builder.get("entMeetingID" ).(gtki.Entry)
+	url := builder.get("entMeetingID").(gtki.Entry)
 	win := builder.get("inviteWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
 
@@ -47,10 +47,9 @@ func openMumble(inviteID string) error {
 
 	if !isMeetingIDValid(inviteID) {
 		return fmt.Errorf("invalid Onion Address %s", inviteID)
-
 	}
 
-	go launchMumbleClient( inviteID )
+	go launchMumbleClient(inviteID)
 
 	return nil
 }
@@ -63,11 +62,10 @@ func isMeetingIDValid(meetingID string) bool {
 	return len(meetingID) > onionServiceLength && strings.HasSuffix(meetingID, ".onion")
 }
 
-func launchMumbleClient(inviteID string){
-
-	cmd := exec.Command("torify", "mumble", fmt.Sprintf("mumble://%s", inviteID))
+func launchMumbleClient(inviteID string) {
+	mumbleURL := fmt.Sprintf("mumble://%s", inviteID)
+	cmd := exec.Command("torify", "mumble", mumbleURL)
 	if err := cmd.Run(); err != nil {
 		log.Fatal(err)
 	}
-
 }

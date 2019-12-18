@@ -21,7 +21,6 @@ type controllerMock struct {
 
 	addOnionArg1           *torgo.Onion
 	addOnionCalled         bool
-	addOnionReturn         string
 	addOnionReturnError    error
 	addOnionAddServiceInfo string
 

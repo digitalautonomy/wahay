@@ -35,12 +35,7 @@ func isPortAvailable(port int) bool {
 		return false
 	}
 
-	err = ln.Close()
-	if err != nil {
-		return false
-	}
-
-	return true
+	return ln.Close() == nil
 }
 
 func randomPort() int {
@@ -51,7 +46,11 @@ func (u *gtkUI) reportError(message string) {
 	builder := u.g.uiBuilderFor("GeneralError")
 	dlg := builder.get("dialog").(gtki.MessageDialog)
 
-	dlg.SetProperty("text", message)
+	err := dlg.SetProperty("text", message)
+	if err != nil {
+		u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
+	}
+
 	dlg.SetTransientFor(u.currentWindow)
 
 	dlg.Run()
