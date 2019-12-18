@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"reflect"
 	"strings"
 
 	"github.com/coyim/gotk3adapter/glibi"
@@ -88,4 +89,24 @@ func (b *uiBuilder) get(name string) glibi.Object {
 		fatal(err)
 	}
 	return obj
+}
+
+func (b *uiBuilder) getItems(args ...interface{}) {
+	for len(args) >= 2 {
+		name, ok := args[0].(string)
+		if !ok {
+			panic("string argument expected in builder.getItems()")
+		}
+		b.getItem(name, args[1])
+		args = args[2:]
+	}
+}
+
+func (b *uiBuilder) getItem(name string, target interface{}) {
+	v := reflect.ValueOf(target)
+	if v.Kind() != reflect.Ptr {
+		panic("builder.getItem() target argument must be a pointer")
+	}
+	elem := v.Elem()
+	elem.Set(reflect.ValueOf(b.get(name)))
 }
