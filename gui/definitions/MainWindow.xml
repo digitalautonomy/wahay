@@ -7,6 +7,7 @@
     <property name="window_position">center-always</property>
     <property name="default_width">300</property>
     <property name="default_height">200</property>
+    <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -39,7 +40,7 @@
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="label" translatable="yes">Host metting</property>
+                    <property name="label" translatable="yes">Host meeting</property>
                     <property name="width_request">100</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>

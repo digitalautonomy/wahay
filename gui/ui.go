@@ -5,6 +5,7 @@ import (
 	"os"
 	"runtime"
 
+	"autonomia.digital/tonio/app/hosting"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
 )
@@ -39,8 +40,10 @@ func argsWithApplicationName() *[]string {
 }
 
 type gtkUI struct {
-	app gtki.Application
-	g   Graphics
+	app              gtki.Application
+	currentWindow    gtki.ApplicationWindow
+	g                Graphics
+	serverCollection hosting.Servers
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -68,15 +71,13 @@ func (u *gtkUI) onActivate() {
 func (u *gtkUI) createMainWindow() {
 	builder := u.g.uiBuilderFor("MainWindow")
 	win := builder.get("mainWindow").(gtki.ApplicationWindow)
+	u.currentWindow = win
 	win.SetApplication(u.app)
 
 	builder.ConnectSignals(map[string]interface{}{
-		"on_host_meeting": hostMeeting,
-		"on_join_meeting": func() {
-			u.joinMeeting()
-		},
-		"on_test_connection": testTorConnection,
-		"on_open_settings":   openSettings,
+		"on_close_window_signal": u.quit,
+		"on_host_meeting":        u.hostMeetingHandler,
+		"on_join_meeting":        u.joinMeeting,
 	})
 
 	win.ShowAll()
@@ -98,26 +99,13 @@ Event handler functions for main window buttons
 TODO: Move to another file and remove from here.
 */
 
-func hostMeeting() {
-	fmt.Printf("Clicked on host meeting button!\n")
-}
-
 func (u *gtkUI) joinMeeting() {
 	fmt.Printf("Clicked on join meeting button!\n")
 
-	builder := u.g.uiBuilderFor("MainWindow")
-	win := builder.get("mainWindow").(gtki.ApplicationWindow)
-	win.SetApplication(u.app)
-	win.Hide()
-
+	u.currentWindow.Hide()
 	u.openDialog()
-
 }
 
-func testTorConnection() {
-	fmt.Printf("Clicked on test connection button!\n")
-}
-
-func openSettings() {
-	fmt.Printf("Clicked on open settings button!\n")
+func (u *gtkUI) quit() {
+	u.app.Quit()
 }
