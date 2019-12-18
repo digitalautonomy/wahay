@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkApplicationWindow" id="currentMeetingWindow">
+    <property name="window_position">center-always</property>
+    <property name="title">You are currently in a meeting</property>
+    <property name="default_width">300</property>
+    <property name="default_height">200</property>
+    <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <property name="margin">10</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">You are currently participating in a meeting...</property>
+            <property name="wrap">true</property>
+          </object>
+          <packing>
+            <property name="expand">false</property>
+            <property name="fill">true</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">The meeting ID of your meeting is:</property>
+            <property name="wrap">true</property>
+          </object>
+          <packing>
+            <property name="expand">false</property>
+            <property name="fill">true</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="currentMeetingID">
+            <property name="label"></property>
+            <property name="wrap">false</property>
+          </object>
+          <packing>
+            <property name="expand">false</property>
+            <property name="fill">true</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Leave meeting</property>
+            <property name="width_request">100</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_leave_meeting" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">false</property>
+            <property name="fill">true</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

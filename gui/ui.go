@@ -17,13 +17,15 @@ const (
 
 // Graphics represent the graphic configuration
 type Graphics struct {
-	gtk gtki.Gtk
+	gtk  gtki.Gtk
+	glib glibi.Glib
 }
 
 // CreateGraphics creates a Graphic representation from the given arguments
-func CreateGraphics(gtkVal gtki.Gtk) Graphics {
+func CreateGraphics(gtkVal gtki.Gtk, glibVal glibi.Glib) Graphics {
 	return Graphics{
-		gtk: gtkVal,
+		gtk:  gtkVal,
+		glib: glibVal,
 	}
 }
 
@@ -41,6 +43,7 @@ func argsWithApplicationName() *[]string {
 
 type gtkUI struct {
 	app              gtki.Application
+	mainWindow       gtki.ApplicationWindow
 	currentWindow    gtki.ApplicationWindow
 	g                Graphics
 	serverCollection hosting.Servers
@@ -72,6 +75,7 @@ func (u *gtkUI) createMainWindow() {
 	builder := u.g.uiBuilderFor("MainWindow")
 	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	u.currentWindow = win
+	u.mainWindow = win
 	win.SetApplication(u.app)
 
 	builder.ConnectSignals(map[string]interface{}{
@@ -103,7 +107,7 @@ func (u *gtkUI) joinMeeting() {
 	fmt.Printf("Clicked on join meeting button!\n")
 
 	u.currentWindow.Hide()
-	u.openDialog()
+	u.openJoinWindow()
 }
 
 func (u *gtkUI) quit() {
