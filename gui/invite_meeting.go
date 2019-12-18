@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os/exec"
@@ -10,49 +9,26 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-type inviteMeetingData struct {
-	builder *uiBuilder
-	url     gtki.Entry
-}
-
-type inviteMeetingDetails struct {
-	url string
-}
-
-func (u *gtkUI) getInviteMeetingBuilderAndData() *inviteMeetingData {
-	data := &inviteMeetingData{}
-	data.builder = u.g.uiBuilderFor("InviteCodeWindow")
-
-	data.builder.getItems(
-		"entMeetingID", &data.url,
-	)
-
-	return data
-}
-
-func getInviteMeetingDetails(data *inviteMeetingData) *inviteMeetingDetails {
-
-	urlTxt, _ := data.url.GetText()
-
-	details := &inviteMeetingDetails{
-		urlTxt,
-	}
-
-	return details
-}
-
-func (u *gtkUI) openDialog() {
-
-	data := u.getInviteMeetingBuilderAndData()
-
-	builder := data.builder
+func (u *gtkUI) getInviteCodeEntities() (gtki.Entry, gtki.ApplicationWindow, *uiBuilder) {
+	builder := u.g.uiBuilderFor("InviteCodeWindow")
+	url := builder.get("entMeetingID" ).(gtki.Entry)
 	win := builder.get("inviteWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
 
+	return url, win, builder
+}
+
+func (u *gtkUI) openDialog() {
+	url, win, builder := u.getInviteCodeEntities()
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
-			inviteDetails := getInviteMeetingDetails(data)
-			err := openMumble(inviteDetails.url)
+			idEntered, err := url.GetText()
+			if err != nil {
+				u.openErrorDialog()
+				return
+			}
+			err = openMumble(idEntered)
 			if err != nil {
 				u.openErrorDialog()
 			}
@@ -64,29 +40,34 @@ func (u *gtkUI) openDialog() {
 	win.ShowAll()
 }
 
-func openMumble(onionURL string) error {
+func openMumble(inviteID string) error {
 	fmt.Println("Opening Mumble....")
-	log.Println(onionURL)
+	log.Println(inviteID)
 	//qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
 
-	if !validateMeetingID(onionURL) {
-		msg := fmt.Sprintf("Invalid Onion Address %s", onionURL)
-		return errors.New(msg)
-	}
-	cmd := exec.Command("torify", "mumble", fmt.Sprintf("mumble://%s", onionURL))
+	if !isMeetingIDValid(inviteID) {
+		return fmt.Errorf("invalid Onion Address %s", inviteID)
 
-	if err := cmd.Run(); err != nil {
-		log.Fatal(err)
 	}
+
+	go launchMumbleClient( inviteID )
 
 	return nil
 }
 
+const onionServiceLength = 60
+
 //This function needs to be improved in order to make a real validation of the Meeting ID or Onion Address.
 //At the moment, this function helps to test the error code window render.
-func validateMeetingID(meetingID string) bool {
-	if meetingID == "" || !strings.Contains(meetingID, ".onion") {
-		return false
+func isMeetingIDValid(meetingID string) bool {
+	return len(meetingID) > onionServiceLength && strings.HasSuffix(meetingID, ".onion")
+}
+
+func launchMumbleClient(inviteID string){
+
+	cmd := exec.Command("torify", "mumble", fmt.Sprintf("mumble://%s", inviteID))
+	if err := cmd.Run(); err != nil {
+		log.Fatal(err)
 	}
-	return true
+
 }
