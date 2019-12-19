@@ -3,7 +3,6 @@ package gui
 import (
 	"context"
 	"fmt"
-	"log"
 	"os/exec"
 	"strings"
 
@@ -39,6 +38,8 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble, meetingID string)
 	win.ShowAll()
 }
 
+// Test Onion that can be used: qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
+
 func (u *gtkUI) openJoinWindow() {
 	url, win, builder := u.getInviteCodeEntities()
 	u.currentWindow = win
@@ -50,7 +51,6 @@ func (u *gtkUI) openJoinWindow() {
 				u.openErrorDialog()
 				return
 			}
-			idEntered = "qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion"
 			state, err := openMumble(idEntered)
 			if err != nil {
 				u.openErrorDialog()
@@ -65,10 +65,6 @@ func (u *gtkUI) openJoinWindow() {
 }
 
 func openMumble(inviteID string) (*runningMumble, error) {
-	fmt.Println("Opening Mumble....")
-	log.Println(inviteID)
-	//qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
-
 	if !isMeetingIDValid(inviteID) {
 		return nil, fmt.Errorf("invalid Onion Address %s", inviteID)
 	}
