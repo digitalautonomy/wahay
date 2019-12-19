@@ -29,7 +29,7 @@ func Create() (Servers, error) {
 type servers struct {
 	dataDir string
 	started bool
-	nextID int
+	nextID  int
 	servers map[int64]*grumbleServer.Server
 	log     *log.Logger
 }

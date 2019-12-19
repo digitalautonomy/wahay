@@ -26,13 +26,13 @@ func (u *gtkUI) hostMeetingHandler() {
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": u.quit,
-		"on_finish_meeting": func () {
-			if server!=nil {
+		"on_finish_meeting": func() {
+			if server != nil {
 				u.finishMeeting(*server)
 			} else {
 				log.Print("server is nil")
 			}
-		} ,
+		},
 	})
 	u.currentWindow = win
 	win.SetApplication(u.app)
@@ -112,24 +112,21 @@ func (u *gtkUI) createNewConferenceRoom() hosting.Server {
 
 func (u *gtkUI) finishMeeting(s hosting.Server) {
 	u.wouldYouConfirmFinishMeeting(func(res bool) {
-
 		if res {
 			log.Print("Close meeting...")
 			err := s.Stop()
-			if err!=nil {
+			if err != nil {
 				log.Print(err)
 			}
 
 			log.Print("hidding window...")
-			u.doInUIThread( func () {
+			u.doInUIThread(func() {
 				u.currentWindow.Hide()
 				u.currentWindow = u.mainWindow
 				u.mainWindow.ShowAll()
 			})
 		}
-
 	})
-
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
@@ -142,4 +139,3 @@ func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
 	dialog.Destroy()
 	k(result)
 }
-
