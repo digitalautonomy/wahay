@@ -139,5 +139,21 @@ func (u *gtkUI) switchContextWhenMumbleFinished(state *runningMumble) {
 }
 
 func (u *gtkUI) leaveMeeting(state *runningMumble) {
-	state.cancelFunc()
+	u.wouldYouConfirmLeaveMeeting(func(res bool) {
+		if res {
+			state.cancelFunc()
+		}
+	})
+
+}
+
+func (u *gtkUI) wouldYouConfirmLeaveMeeting(k func(bool)) {
+	builder := u.g.uiBuilderFor("LeaveMeetingConfirmation")
+	dialog := builder.get("leaveMeeting").(gtki.MessageDialog)
+	dialog.SetDefaultResponse(gtki.RESPONSE_NO)
+	dialog.SetTransientFor(u.mainWindow)
+	responseType := gtki.ResponseType(dialog.Run())
+	result := responseType == gtki.RESPONSE_YES
+	dialog.Destroy()
+	k(result)
 }
