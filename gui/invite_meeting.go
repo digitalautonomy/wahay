@@ -140,7 +140,6 @@ func (u *gtkUI) leaveMeeting(state *runningMumble) {
 			state.cancelFunc()
 		}
 	})
-
 }
 
 func (u *gtkUI) wouldYouConfirmLeaveMeeting(k func(bool)) {
