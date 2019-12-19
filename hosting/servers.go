@@ -29,6 +29,7 @@ func Create() (Servers, error) {
 type servers struct {
 	dataDir string
 	started bool
+	nextID int
 	servers map[int64]*grumbleServer.Server
 	log     *log.Logger
 }
@@ -120,8 +121,8 @@ func (s *servers) startListener() {
 }
 
 func (s *servers) CreateServer(port string) (Server, error) {
-	nextID := len(s.servers) + 1
-	serv, err := grumbleServer.NewServer(int64(nextID))
+	s.nextID++
+	serv, err := grumbleServer.NewServer(int64(s.nextID))
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +131,7 @@ func (s *servers) CreateServer(port string) (Server, error) {
 	serv.Set("Address", "127.0.0.1")
 	serv.Set("Port", port)
 
-	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", 1)), 0750)
+	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
 	if err != nil {
 		return nil, err
 	}
