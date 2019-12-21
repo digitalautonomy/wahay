@@ -116,10 +116,10 @@ func (u *gtkUI) finishMeeting(s hosting.Server) {
 			log.Print("Close meeting...")
 			err := s.Stop()
 			if err != nil {
-				log.Print(err)
+				log.Println(err)
+				u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
 			}
 
-			log.Print("hidding window...")
 			u.doInUIThread(func() {
 				u.currentWindow.Hide()
 				u.currentWindow = u.mainWindow
