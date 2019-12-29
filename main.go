@@ -1,4 +1,4 @@
-package main
+asdfpackage main
 
 import (
 	"autonomia.digital/tonio/app/config"
