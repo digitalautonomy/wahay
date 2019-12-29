@@ -43,6 +43,7 @@ coverage:
   before_script:
     - *install-deps
     - *inject-gopath
+  coverage: '/total: .*?\d+\.\d+%/'
   script:
     - make deps
     - make cover-ci

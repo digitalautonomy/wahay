@@ -43,6 +43,7 @@ cover: run-coverage
 
 cover-ci: run-coverage
 	go tool cover -html=.coverprofiles/gover.coverprofile -o coverage.html
+	go tool cover -func=.coverprofiles/gover.coverprofile
 
 build:
 	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio
