@@ -29,19 +29,6 @@ build:
     paths:
       - bin/tonio
 
-build-x86:
-  image: i386/golang
-  stage: build
-  before_script:
-    - *install-deps
-    - *inject-gopath
-  script:
-    - make deps
-    - make build
-  artifacts:
-    paths:
-      - bin/tonio-x86
-
 test:
   stage: check
   before_script:
