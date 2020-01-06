@@ -6,6 +6,7 @@ variables:
 stages:
   - build
   - check
+  - deploy
 
   # A hack to make Golang-in-Gitlab happy
 .anchors:
@@ -28,6 +29,7 @@ build:
   artifacts:
     paths:
       - bin/tonio
+      - current-short-git-version
 
 test:
   stage: check
@@ -59,3 +61,22 @@ quality:
   script:
     - make deps
     - make quality
+
+deploy_staging:
+  image: olabini/ssh_rsync:0.1
+  stage: deploy
+  before_script:
+  - "eval $(ssh-agent -s)"
+  - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
+  - mkdir -p ~/.ssh; chmod 700 ~/.ssh
+  - 'echo -e "[staging.tonio.app]:2326,[185.108.76.88]:2326 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
+  - chmod 644 ~/.ssh/known_hosts
+  environment:
+    name: staging
+    url: https://staging.tonio.app
+  only:
+    - master
+  script:
+   - 'rsync -ra -O --no-perms -e "ssh -p2326" bin/tonio tonio@staging.tonio.app:/home/tonio/tmp/tonio'
+   - 'rsync -ra -O --no-perms -e "ssh -p2326" current-short-git-version tonio@staging.tonio.app:/home/tonio/tmp/current-short-git-version'
+   - 'ssh -p2326 tonio@staging.tonio.app /home/tonio/bin/publish-downloads.sh'

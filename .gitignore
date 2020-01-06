@@ -5,3 +5,4 @@ coverage.html
 .idea/*
 dev/.vagrant/
 *.*~
+current-short-git-version

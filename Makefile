@@ -2,6 +2,7 @@ GTK_VERSION=$(shell pkg-config --modversion gtk+-3.0 | tr . _ | cut -d '_' -f 1-
 GTK_BUILD_TAG="gtk_$(GTK_VERSION)"
 
 GIT_VERSION=$(shell git rev-parse HEAD)
+GIT_SHORT_VERSION=$(shell git rev-parse --short HEAD)
 TAG_VERSION=$(shell git tag -l --contains $$GIT_VERSION | tail -1)
 
 GOPATH_SINGLE=$(shell echo $${GOPATH%%:*})
@@ -47,6 +48,7 @@ cover-ci: run-coverage
 
 build:
 	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio
+	echo $(GIT_SHORT_VERSION) > current-short-git-version
 
 
 # QUALITY TOOLS
