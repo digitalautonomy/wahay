@@ -1498,7 +1498,12 @@ func (server *Server) Start() (err error) {
 	// for the servers. Each network goroutine defers a call to
 	// netwg.Done(). In the Stop() we close all the connections
 	// and call netwg.Wait() to wait for the goroutines to end.
-	server.netwg.Add(3)
+	numWG := 2
+	if shouldListenWeb {
+		numWG++
+	}
+
+	server.netwg.Add(numWG)
 	go server.udpListenLoop()
 	go server.acceptLoop(server.tlsl)
 	if shouldListenWeb {
@@ -1549,11 +1554,6 @@ func (server *Server) Stop() (err error) {
 
 	// Close the listeners
 	err = server.tlsl.Close()
-	if err != nil {
-		return err
-	}
-
-	err = server.tcpl.Close()
 	if err != nil {
 		return err
 	}
