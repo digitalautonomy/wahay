@@ -3,8 +3,10 @@ package tor
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net"
 	"strconv"
+	"strings"
 
 	"github.com/wybiral/torgo"
 )
@@ -13,6 +15,7 @@ import (
 type Control interface {
 	EnsureTorCompatibility() error
 	CreateNewOnionService(destinationHost, destinationPort string, port string) (serviceID string, err error)
+	DeleteOnionService(serviceID string) error
 }
 
 type controller struct {
@@ -20,6 +23,7 @@ type controller struct {
 	torPort  string
 	password string
 	tc       func(string) (torgoController, error)
+	c        torgoController
 }
 
 const MinSupportedVersion = "0.3.2"
@@ -52,6 +56,15 @@ func (cntrl *controller) EnsureTorCompatibility() error {
 	return err
 }
 
+func (cntrl *controller) DeleteOnionService(serviceID string) error {
+	if serviceID == "" {
+		return errors.New("the service ID cannot be empty")
+	}
+
+	s := strings.TrimSuffix(serviceID, ".onion")
+	return cntrl.c.DeleteOnion(s)
+}
+
 func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort string,
 	port string) (serviceID string, err error) {
 	tc, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
@@ -59,6 +72,8 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 	if err != nil {
 		return
 	}
+
+	cntrl.c = tc
 
 	err = tc.AuthenticatePassword(cntrl.password)
 
@@ -88,6 +103,7 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 	}
 
 	serviceID = fmt.Sprintf("%s.onion", onion.ServiceID)
+	log.Printf("Service ID created: %s", serviceID)
 
 	return serviceID, nil
 }
@@ -103,5 +119,6 @@ func CreateController(torHost, torPort, password string) Control {
 		torPort:  torPort,
 		password: password,
 		tc:       f,
+		c:        nil,
 	}
 }

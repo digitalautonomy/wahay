@@ -24,6 +24,10 @@ type controllerMock struct {
 	addOnionReturnError    error
 	addOnionAddServiceInfo string
 
+	deleteOnionArg         *string
+	deleteOnionCalled      bool
+	deleteOnionReturnError error
+
 	getVersionReturn1 string
 	getVersionReturn2 error
 }
@@ -45,6 +49,14 @@ func (m *controllerMock) AddOnion(v1 *torgo.Onion) error {
 
 func (m *controllerMock) GetVersion() (string, error) {
 	return m.getVersionReturn1, m.getVersionReturn2
+}
+
+func (m *controllerMock) DeleteOnion(serviceID string) error {
+	m.deleteOnionCalled = true
+	if serviceID != "" {
+		m.deleteOnionArg = &serviceID
+	}
+	return m.deleteOnionReturnError
 }
 
 func (m *controllerMock) createTestGotor(addr string) (torgoController, error) {
@@ -311,9 +323,10 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsNilIfTorIs
 	c.Assert(e, IsNil)
 }
 
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsNilIfTorIsTheSameVersion(c *C) {
+func (s *TonioTorSuite) Test_controller_DeleteOnionService_returnsErrorIfServiceIDIsEmpty(c *C) {
 	mock := &controllerMock{}
-	mock.getVersionReturn1 = MinSupportedVersion
+	mock.deleteOnionReturnError = errors.New("the service ID cannot be empty")
+
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
@@ -321,7 +334,29 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsNilIfTorIs
 		tc:       mock.createTestGotor,
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _ = cntrl.CreateNewOnionService("127.1.2.3", "9052", "7877")
 
-	c.Assert(e, IsNil)
+	e := cntrl.c.DeleteOnion("")
+
+	//error if delete fail
+	c.Assert(e, ErrorMatches, "the service ID cannot be empty")
+}
+
+func (s *TonioTorSuite) Test_controller_DeleteOnionService_returnsErrorIfFails(c *C) {
+	mock := &controllerMock{}
+	mock.deleteOnionReturnError = errors.New("service deletion error")
+
+	cntrl := &controller{
+		torHost:  "127.1.2.3",
+		torPort:  "9052",
+		password: "11112223",
+		tc:       mock.createTestGotor,
+	}
+
+	_, _ = cntrl.CreateNewOnionService("127.1.2.3", "9052", "7877")
+
+	e := cntrl.c.DeleteOnion("123456")
+
+	//error if delete fail
+	c.Assert(e, ErrorMatches, "service deletion error")
 }

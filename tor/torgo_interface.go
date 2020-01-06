@@ -6,4 +6,5 @@ type torgoController interface {
 	AuthenticatePassword(string) error
 	AddOnion(*torgo.Onion) error
 	GetVersion() (string, error)
+	DeleteOnion(string) error
 }

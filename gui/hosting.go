@@ -12,15 +12,34 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-func (u *gtkUI) hostMeetingHandler() {
-	var server *hosting.Server
+func (u *gtkUI) displayLoadingWindow(finished chan bool) {
+	builder := u.g.uiBuilderFor("LoadingWindow")
+	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
 
+	u.currentWindow = win
+	win.SetApplication(u.app)
+	u.doInUIThread(win.ShowAll)
+
+	<-finished
+
+	u.doInUIThread(win.Hide)
+}
+
+func (u *gtkUI) hostMeetingHandler() {
+	go u.realHostMeetingHandler()
+}
+
+func (u *gtkUI) realHostMeetingHandler() {
+	u.doInUIThread(u.currentWindow.Hide)
+
+	finished := make(chan bool)
 	go func() {
-		s := u.createNewConferenceRoom()
-		server = &s
+		u.displayLoadingWindow(finished)
 	}()
 
-	u.currentWindow.Hide()
+	server, tor, serviceID := u.createNewConferenceRoom()
+
+	finished <- true
 
 	builder := u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
@@ -28,15 +47,18 @@ func (u *gtkUI) hostMeetingHandler() {
 		"on_close_window_signal": u.quit,
 		"on_finish_meeting": func() {
 			if server != nil {
-				u.finishMeeting(*server)
+				u.finishMeeting(server, tor, serviceID)
 			} else {
 				log.Print("server is nil")
 			}
 		},
 	})
+
 	u.currentWindow = win
 	win.SetApplication(u.app)
-	win.ShowAll()
+	u.doInUIThread(win.ShowAll)
+
+	log.Println("Main: Completed")
 }
 
 func isPortAvailable(port int) bool {
@@ -79,7 +101,7 @@ func (u *gtkUI) ensureServerCollection() {
 	}
 }
 
-func (u *gtkUI) createNewConferenceRoom() hosting.Server {
+func (u *gtkUI) createNewConferenceRoom() (hosting.Server, tor.Control, string) {
 	port := randomPort()
 	for !isPortAvailable(port) {
 		port = randomPort()
@@ -90,27 +112,25 @@ func (u *gtkUI) createNewConferenceRoom() hosting.Server {
 	server, e := u.serverCollection.CreateServer(fmt.Sprintf("%d", port))
 	if e != nil {
 		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil
+		return nil, nil, ""
 	}
 	e = server.Start()
 	if e != nil {
 		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil
+		return nil, nil, ""
 	}
 
 	torController := tor.CreateController(*config.TorHost, *config.TorPort, *config.TorControlPassword)
 	serviceID, e := torController.CreateNewOnionService("127.0.0.1", fmt.Sprintf("%d", port), "64738")
 	if e != nil {
 		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil
+		return nil, nil, ""
 	}
 
-	fmt.Printf("created new conference room at: %s\n", serviceID)
-
-	return server
+	return server, torController, serviceID
 }
 
-func (u *gtkUI) finishMeeting(s hosting.Server) {
+func (u *gtkUI) finishMeeting(s hosting.Server, cntrl tor.Control, serviceID string) {
 	u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
 			log.Print("Close meeting...")
@@ -118,6 +138,12 @@ func (u *gtkUI) finishMeeting(s hosting.Server) {
 			if err != nil {
 				log.Println(err)
 				u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
+			}
+
+			err = cntrl.DeleteOnionService(serviceID)
+			if err != nil {
+				log.Println(err)
+				u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
 			}
 
 			u.doInUIThread(func() {
