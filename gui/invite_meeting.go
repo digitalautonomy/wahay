@@ -9,6 +9,12 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
+func (u *gtkUI) openMainWindow() {
+	u.currentWindow.Hide()
+	u.currentWindow = u.mainWindow
+	u.currentWindow.ShowAll()
+}
+
 func (u *gtkUI) getInviteCodeEntities() (gtki.Entry, gtki.ApplicationWindow, *uiBuilder) {
 	builder := u.g.uiBuilderFor("InviteCodeWindow")
 	url := builder.get("entMeetingID").(gtki.Entry)
@@ -25,12 +31,15 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble, meetingID string)
 	labelMeetingID := builder.get("currentMeetingID").(gtki.Label)
 	win.SetApplication(u.app)
 	u.currentWindow = win
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
 			u.leaveMeeting(state)
 			u.quit()
 		},
-		"on_leave_meeting": func() { u.leaveMeeting(state) },
+		"on_leave_meeting": func() {
+			u.leaveMeeting(state)
+		},
 	})
 
 	labelMeetingID.SetText(meetingID)
@@ -46,36 +55,46 @@ func (u *gtkUI) openJoinWindow() {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
-			idEntered, err := url.GetText()
+			meetingID, err := url.GetText()
 			if err != nil {
-				u.openErrorDialog()
+				u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
 				return
 			}
-			state, err := openMumble(idEntered)
-			if err != nil {
-				u.openErrorDialog()
+
+			if meetingID == "" {
+				u.openErrorDialog("The Meeting ID cannot be blank")
+				return
 			}
-			u.openCurrentMeetingWindow(state, idEntered)
+
+			state, err := openMumble(meetingID)
+			if err != nil {
+				u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
+				return
+			}
+
+			u.openCurrentMeetingWindow(state, meetingID)
 		},
 		"on_cancel": func() {
 			win.Hide()
+			u.openMainWindow()
 		},
 	})
+
 	win.ShowAll()
 }
 
-func openMumble(inviteID string) (*runningMumble, error) {
-	if !isMeetingIDValid(inviteID) {
-		return nil, fmt.Errorf("invalid Onion Address %s", inviteID)
+func openMumble(meetingID string) (*runningMumble, error) {
+	if !isMeetingIDValid(meetingID) {
+		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", meetingID)
 	}
 
-	return launchMumbleClient(inviteID)
+	return launchMumbleClient(meetingID)
 }
 
 const onionServiceLength = 60
 
-//This function needs to be improved in order to make a real validation of the Meeting ID or Onion Address.
-//At the moment, this function helps to test the error code window render.
+// This function needs to be improved in order to make a real validation of the Meeting ID or Onion Address.
+// At the moment, this function helps to test the error code window render.
 func isMeetingIDValid(meetingID string) bool {
 	return len(meetingID) > onionServiceLength && strings.HasSuffix(meetingID, ".onion")
 }
@@ -128,12 +147,11 @@ func launchMumbleClient(inviteID string) (*runningMumble, error) {
 func (u *gtkUI) switchContextWhenMumbleFinished(state *runningMumble) {
 	go func() {
 		<-state.finishChannel
-		// here, we  could check if the Mumble instance failed with an error
-		// and report this
+
+		// TODO: here, we  could check if the Mumble instance
+		// failed with an error and report this
 		u.doInUIThread(func() {
-			u.currentWindow.Hide()
-			u.currentWindow = u.mainWindow
-			u.currentWindow.ShowAll()
+			u.openMainWindow()
 		})
 	}()
 }
