@@ -80,3 +80,23 @@ deploy_staging:
    - 'rsync -ra -O --no-perms -e "ssh -p2326" bin/tonio tonio@staging.tonio.app:/home/tonio/tmp/tonio'
    - 'rsync -ra -O --no-perms -e "ssh -p2326" current-short-git-version tonio@staging.tonio.app:/home/tonio/tmp/current-short-git-version'
    - 'ssh -p2326 tonio@staging.tonio.app /home/tonio/bin/publish-downloads.sh'
+
+deploy_staging:
+  image: olabini/ssh_rsync:0.1
+  stage: deploy
+  before_script:
+  - "eval $(ssh-agent -s)"
+  - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
+  - mkdir -p ~/.ssh; chmod 700 ~/.ssh
+  - 'echo -e "[tonio.app]:2387,[185.108.76.87]:2387 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD7qdL4lFlIQwRU2h2fV6oIMBZl1ifd6bbcajd8iRYaFQfVvj7qxGvorfaBETyquGe+lk0xw3NrcJCfK1LvT2Wo=" >> ~/.ssh/known_hosts'
+  - chmod 644 ~/.ssh/known_hosts
+  environment:
+    name: production
+    url: https://tonio.app
+  when: manual
+  only:
+    - master
+  script:
+   - 'rsync -ra -O --no-perms -e "ssh -p2387" bin/tonio tonio@tonio.app:/home/tonio/tmp/tonio'
+   - 'rsync -ra -O --no-perms -e "ssh -p2387" current-short-git-version tonio@tonio.app:/home/tonio/tmp/current-short-git-version'
+   - 'ssh -p2387 tonio@tonio.app /home/tonio/bin/publish-downloads.sh'
