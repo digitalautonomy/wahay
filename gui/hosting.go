@@ -131,22 +131,6 @@ func (u *gtkUI) openHostJoinMeetingWindow(state *runningMumble, s hosting.Server
 	win.ShowAll()
 }
 
-func (u *gtkUI) reportError(message string) {
-	builder := u.g.uiBuilderFor("GeneralError")
-	dlg := builder.get("dialog").(gtki.MessageDialog)
-
-	err := dlg.SetProperty("text", message)
-	if err != nil {
-		u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
-	}
-
-	dlg.SetTransientFor(u.currentWindow)
-	u.doInUIThread(func() {
-		dlg.Run()
-		dlg.Destroy()
-	})
-}
-
 func (u *gtkUI) ensureServerCollection() {
 	if u.serverCollection == nil {
 		var e error
