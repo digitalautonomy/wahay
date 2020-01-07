@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"fmt"
 	"os"
 	"runtime"
 
@@ -104,8 +103,6 @@ TODO: Move to another file and remove from here.
 */
 
 func (u *gtkUI) joinMeeting() {
-	fmt.Printf("Clicked on join meeting button!\n")
-
 	u.currentWindow.Hide()
 	u.openJoinWindow()
 }

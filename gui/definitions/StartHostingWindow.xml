@@ -30,24 +30,57 @@
             <property name="margin_top">20</property>
             <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
-            <property name="homogeneous">True</property>
+            <property name="baseline_position">top</property>
             <child>
-              <object class="GtkLabel" id="lblHostMeeting">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">You are now hosting a meeting.</property>
-                <property name="track_visited_links">False</property>
+                <property name="spacing">30</property>
+                <child>
+                  <object class="GtkLabel" id="lblHostMeeting">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Now, you are hosting a meeting.</property>
+                    <property name="track_visited_links">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="btnJoinMeeting">
+                    <property name="label" translatable="yes">Join</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="valign">end</property>
+                    <signal name="clicked" handler="on_join_meeting" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="padding">20</property>
                 <property name="position">0</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_bottom">39</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <property name="baseline_position">top</property>
@@ -86,41 +119,36 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">20</property>
+                <property name="homogeneous">True</property>
                 <property name="baseline_position">bottom</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <object class="GtkButton" id="btnFinishMeeting">
-                    <property name="label" translatable="yes">Finish meeting</property>
+                    <property name="label" translatable="yes">Finish this meeting</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="valign">end</property>
-                    <property name="margin_bottom">20</property>
                     <signal name="clicked" handler="on_finish_meeting" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="pack_type">end</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>

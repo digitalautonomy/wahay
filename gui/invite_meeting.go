@@ -89,6 +89,10 @@ type runningMumble struct {
 	finishChannel     chan bool
 }
 
+func (r *runningMumble) close() {
+	r.cancelFunc()
+}
+
 func (r *runningMumble) waitForFinish() {
 	e := r.cmd.Wait()
 	r.finished = true

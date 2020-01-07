@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkApplicationWindow" id="loadingWindow">
     <property name="can_focus">False</property>
-    <property name="title">Loading</property>
+    <property name="title">Tonio</property>
     <property name="window_position">center-always</property>
     <property name="default_width">300</property>
     <property name="default_height">200</property>

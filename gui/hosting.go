@@ -41,13 +41,25 @@ func (u *gtkUI) realHostMeetingHandler() {
 
 	finished <- true
 
+	u.showMeetingControls(server, tor, serviceID)
+}
+
+func (u *gtkUI) showMeetingControls(server hosting.Server, cntrl tor.Control, serviceID string) {
+	log.Println("ACTION: showMeetingControls")
 	builder := u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": u.quit,
 		"on_finish_meeting": func() {
 			if server != nil {
-				u.finishMeeting(server, tor, serviceID)
+				u.finishMeeting(server, cntrl, serviceID)
+			} else {
+				log.Print("server is nil")
+			}
+		},
+		"on_join_meeting": func() {
+			if server != nil {
+				u.joinMeetingHost(server, cntrl, serviceID)
 			} else {
 				log.Print("server is nil")
 			}
@@ -64,7 +76,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 	win.SetApplication(u.app)
 	u.doInUIThread(win.ShowAll)
 
-	log.Println("Main: Completed")
+	log.Println("ACTION: showMeetingControls show window")
 }
 
 func isPortAvailable(port int) bool {
@@ -79,6 +91,44 @@ func isPortAvailable(port int) bool {
 
 func randomPort() int {
 	return 10000 + int(rand.Int31n(50000))
+}
+
+func (u *gtkUI) joinMeetingHost(s hosting.Server, cntrl tor.Control, serviceID string) {
+	if !isMeetingIDValid(serviceID) {
+		u.reportError(fmt.Sprintf("invalid Onion Address %s", serviceID))
+		return
+	}
+
+	state, err := launchMumbleClient(serviceID)
+	if err != nil {
+		u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
+		return
+	}
+
+	u.openHostJoinMeetingWindow(state, s, cntrl, serviceID)
+}
+
+func (u *gtkUI) openHostJoinMeetingWindow(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+	u.currentWindow.Hide()
+	builder := u.g.uiBuilderFor("CurrentHostMeetingWindow")
+	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
+	win.SetApplication(u.app)
+	u.currentWindow = win
+	builder.ConnectSignals(map[string]interface{}{
+		"on_close_window_signal": func() {
+			u.leaveHostMeeting(state, s, cntrl, serviceID)
+			u.quit()
+		},
+		"on_leave_meeting": func() {
+			u.leaveHostMeeting(state, s, cntrl, serviceID)
+		},
+		"on_finish_meeting": func() {
+			u.finishMeetingMumble(state, s, cntrl, serviceID)
+		},
+	})
+
+	//u.switchContextWhenMumbleFinished(state)
+	win.ShowAll()
 }
 
 func (u *gtkUI) reportError(message string) {
@@ -136,6 +186,35 @@ func (u *gtkUI) createNewConferenceRoom() (hosting.Server, tor.Control, string) 
 	return server, torController, serviceID
 }
 
+func (u *gtkUI) finishMeetingMumble(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+	u.wouldYouConfirmFinishMeeting(func(res bool) {
+		if res {
+			go state.close()
+
+			// hide the current window
+			u.doInUIThread(u.currentWindow.Hide)
+
+			err := s.Stop()
+			if err != nil {
+				log.Println(err)
+				u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
+			}
+
+			err = cntrl.DeleteOnionService(serviceID)
+			if err != nil {
+				log.Println(err)
+				u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
+			}
+
+			u.doInUIThread(func() {
+				u.currentWindow.Hide()
+				u.currentWindow = u.mainWindow
+				u.mainWindow.ShowAll()
+			})
+		}
+	})
+}
+
 func (u *gtkUI) finishMeeting(s hosting.Server, cntrl tor.Control, serviceID string) {
 	u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
@@ -159,6 +238,17 @@ func (u *gtkUI) finishMeeting(s hosting.Server, cntrl tor.Control, serviceID str
 			})
 		}
 	})
+}
+
+func (u *gtkUI) leaveHostMeeting(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+	// close the mumble instance
+	go state.close()
+
+	// hide the current window
+	u.doInUIThread(u.currentWindow.Hide)
+
+	// show meeting controls
+	u.showMeetingControls(s, cntrl, serviceID)
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
