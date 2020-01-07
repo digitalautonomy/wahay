@@ -54,6 +54,12 @@ func (u *gtkUI) realHostMeetingHandler() {
 		},
 	})
 
+	meetingID, err := builder.GetObject("lblMeetingID")
+	if err != nil {
+		log.Printf("meeting id error: %s", err)
+	}
+	_ = meetingID.SetProperty("label", serviceID)
+
 	u.currentWindow = win
 	win.SetApplication(u.app)
 	u.doInUIThread(win.ShowAll)
