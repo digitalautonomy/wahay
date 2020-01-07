@@ -4,6 +4,7 @@ GTK_BUILD_TAG="gtk_$(GTK_VERSION)"
 GIT_VERSION=$(shell git rev-parse HEAD)
 GIT_SHORT_VERSION=$(shell git rev-parse --short HEAD)
 TAG_VERSION=$(shell git tag -l --contains $$GIT_VERSION | tail -1)
+CURRENT_DATE=$(shell date "+%Y-%m-%d")
 
 GOPATH_SINGLE=$(shell echo $${GOPATH%%:*})
 
@@ -47,8 +48,7 @@ cover-ci: run-coverage
 	go tool cover -func=.coverprofiles/gover.coverprofile
 
 build:
-	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio
-	echo $(GIT_SHORT_VERSION) > current-short-git-version
+	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio-$(CURRENT_DATE)-$(GIT_SHORT_VERSION)
 
 
 # QUALITY TOOLS
