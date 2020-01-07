@@ -9,6 +9,7 @@
     <property name="window_position">center-always</property>
     <property name="default_width">500</property>
     <property name="default_height">160</property>
+    <signal name="destroy" handler="on_close" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
