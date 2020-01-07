@@ -28,8 +28,7 @@ build:
     - make build
   artifacts:
     paths:
-      - bin/tonio
-      - current-short-git-version
+      - bin/tonio*
 
 test:
   stage: check
@@ -77,8 +76,7 @@ deploy_staging:
   only:
     - master
   script:
-   - 'rsync -ra -O --no-perms -e "ssh -p2326" bin/tonio tonio@staging.tonio.app:/home/tonio/tmp/tonio'
-   - 'rsync -ra -O --no-perms -e "ssh -p2326" current-short-git-version tonio@staging.tonio.app:/home/tonio/tmp/current-short-git-version'
+   - 'rsync -ra -O --no-perms -e "ssh -p2326" bin/tonio* tonio@staging.tonio.app:/home/tonio/tmp/tonio'
    - 'ssh -p2326 tonio@staging.tonio.app /home/tonio/bin/publish-downloads.sh'
 
 deploy_production:
@@ -97,6 +95,5 @@ deploy_production:
   only:
     - master
   script:
-   - 'rsync -ra -O --no-perms -e "ssh -p2387" bin/tonio tonio@tonio.app:/home/tonio/tmp/tonio'
-   - 'rsync -ra -O --no-perms -e "ssh -p2387" current-short-git-version tonio@tonio.app:/home/tonio/tmp/current-short-git-version'
+   - 'scp -P2387" bin/tonio* tonio@tonio.app:/home/tonio/tmp/'
    - 'ssh -p2387 tonio@tonio.app /home/tonio/bin/publish-downloads.sh'
