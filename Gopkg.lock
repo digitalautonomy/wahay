@@ -60,7 +60,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f16018a99ee63b724ad3fd0e290c14c0de45d0db93c6f2760c4dad1b4518e591"
+  digest = "1:4b76d9d6e0ed67b8a61bfef967786e5aca1160995a0081b45e308452c74128e3"
   name = "github.com/gotk3/gotk3"
   packages = [
     "cairo",
@@ -70,15 +70,15 @@
     "pango",
   ]
   pruneopts = "UT"
-  revision = "9d4abcb1602160e43cba88eb9fa81beb4318ee53"
+  revision = "d3629b451bb5ab5b5f7b5adeebe965b767eff08a"
 
 [[projects]]
-  digest = "1:ca955a9cd5b50b0f43d2cc3aeb35c951473eeca41b34eb67507f1dbcc0542394"
+  digest = "1:4cc7748b74453830951f95ddc3fd980387e7c13f77cc33d7cba54cd6b96dad26"
   name = "github.com/kr/pretty"
   packages = ["."]
   pruneopts = "UT"
-  revision = "73f6ac0b30a98e433b289500d779f50c1a6f0712"
-  version = "v0.1.0"
+  revision = "4e0886370c3a67530192c6a238cff68f56c141b0"
+  version = "v0.2.0"
 
 [[projects]]
   digest = "1:15b5cc79aad436d47019f814fde81a10221c740dc8ddf769221a65097fb6c2e9"
@@ -110,7 +110,7 @@
     "sha3",
   ]
   pruneopts = "UT"
-  revision = "e9b2fee46413994441b28dfca259d911d963dfed"
+  revision = "53104e6ec876ad4e22ad27cce588b01392043c1b"
 
 [[projects]]
   branch = "master"
@@ -129,7 +129,7 @@
   name = "golang.org/x/sys"
   packages = ["cpu"]
   pruneopts = "UT"
-  revision = "ac6580df4449443a05718fd7858c1f91ad5f8d20"
+  revision = "548cf772de5052aa878ccb47cdeb7d262b75c8ec"
 
 [[projects]]
   branch = "v1"

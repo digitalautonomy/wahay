@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkMessageDialog" id="leaveMeeting">
-    <property name="title" translatable="yes">Confirm leave meeting</property>
-    <property name="text" translatable="yes">Are you sure you want to leave from the meeting?</property>
-    <property name="window-position">GTK_WIN_POS_CENTER</property>
-    <property name="modal">true</property>
+    <property name="can_focus">False</property>
     <property name="border_width">7</property>
-    <property name="message-type">GTK_MESSAGE_QUESTION</property>
-    <property name="buttons">GTK_BUTTONS_YES_NO</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">dialog</property>
+    <property name="message_type">question</property>
+    <property name="buttons">yes-no</property>
+    <property name="text" translatable="yes">Are you sure you want to leave this meeting?</property>
+    <property name="secondary_text" translatable="yes">By clicking Yes, you will leave this meeting.</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>
-
