@@ -81,7 +81,7 @@ deploy_staging:
    - 'rsync -ra -O --no-perms -e "ssh -p2326" current-short-git-version tonio@staging.tonio.app:/home/tonio/tmp/current-short-git-version'
    - 'ssh -p2326 tonio@staging.tonio.app /home/tonio/bin/publish-downloads.sh'
 
-deploy_staging:
+deploy_production:
   image: olabini/ssh_rsync:0.1
   stage: deploy
   before_script:
