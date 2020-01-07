@@ -50,6 +50,8 @@ cover-ci: run-coverage
 build:
 	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio-$(CURRENT_DATE)-$(GIT_SHORT_VERSION)
 
+preview:
+	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio
 
 # QUALITY TOOLS
 
