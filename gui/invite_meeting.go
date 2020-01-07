@@ -78,6 +78,9 @@ func (u *gtkUI) openJoinWindow() {
 			win.Hide()
 			u.openMainWindow()
 		},
+		"on_close": func() {
+			u.openMainWindow()
+		},
 	})
 
 	win.ShowAll()
