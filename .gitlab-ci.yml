@@ -95,5 +95,5 @@ deploy_production:
   only:
     - master
   script:
-   - 'rsync -ra -O --no-perms -e "ssh -p2387" bin/tonio* tonio@tonio.app:/home/tonio/tmp/tonio'
+   - 'scp -P2387" bin/tonio* tonio@tonio.app:/home/tonio/tmp/'
    - 'ssh -p2387 tonio@tonio.app /home/tonio/bin/publish-downloads.sh'
