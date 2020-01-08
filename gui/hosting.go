@@ -12,7 +12,7 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-func (u *gtkUI) displayLoadingWindow(finished chan bool) {
+func (u *gtkUI) displayLoadingWindow(loaded chan bool) {
 	builder := u.g.uiBuilderFor("LoadingWindow")
 	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
 
@@ -20,7 +20,7 @@ func (u *gtkUI) displayLoadingWindow(finished chan bool) {
 	win.SetApplication(u.app)
 	u.doInUIThread(win.ShowAll)
 
-	<-finished
+	<-loaded
 
 	u.doInUIThread(win.Hide)
 }
@@ -32,14 +32,14 @@ func (u *gtkUI) hostMeetingHandler() {
 func (u *gtkUI) realHostMeetingHandler() {
 	u.doInUIThread(u.currentWindow.Hide)
 
-	finished := make(chan bool)
+	loaded := make(chan bool)
 	go func() {
-		u.displayLoadingWindow(finished)
+		u.displayLoadingWindow(loaded)
 	}()
 
 	server, tor, serviceID := u.createNewConferenceRoom()
 
-	finished <- true
+	loaded <- true
 
 	u.showMeetingControls(server, tor, serviceID)
 }
@@ -124,8 +124,20 @@ func (u *gtkUI) openHostJoinMeetingWindow(state *runningMumble, s hosting.Server
 		},
 	})
 
-	//u.switchContextWhenMumbleFinished(state)
+	u.switchToHostContextWhenMumbleFinished(state, s, cntrl, serviceID)
 	win.ShowAll()
+}
+
+func (u *gtkUI) switchToHostContextWhenMumbleFinished(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+	go func() {
+		<-state.finishChannel
+
+		// TODO: here, we  could check if the Mumble instance
+		// failed with an error and report this
+		u.doInUIThread(func() {
+			u.finishMeetingReal(s, cntrl, serviceID)
+		})
+	}()
 }
 
 func (u *gtkUI) ensureServerCollection() {
@@ -167,31 +179,37 @@ func (u *gtkUI) createNewConferenceRoom() (hosting.Server, tor.Control, string) 
 	return server, torController, serviceID
 }
 
+func (u *gtkUI) finishMeetingReal(s hosting.Server, cntrl tor.Control, serviceID string) {
+	// Hide the current window
+	u.doInUIThread(u.currentWindow.Hide)
+
+	// TODO: What happen if two errors occurrs?
+	// We need to do a better controlling for each error
+	// and if multiple errors occurrs, show all the errors in the
+	// same window using the `u.reportError` function
+
+	err := s.Stop()
+	if err != nil {
+		u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
+	}
+
+	err = cntrl.DeleteOnionService(serviceID)
+	if err != nil {
+		u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
+	}
+
+	u.doInUIThread(func() {
+		u.currentWindow.Hide()
+		u.currentWindow = u.mainWindow
+		u.mainWindow.ShowAll()
+	})
+}
+
 func (u *gtkUI) finishMeetingMumble(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
 	u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
 			go state.close()
-
-			// hide the current window
-			u.doInUIThread(u.currentWindow.Hide)
-
-			err := s.Stop()
-			if err != nil {
-				log.Println(err)
-				u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
-			}
-
-			err = cntrl.DeleteOnionService(serviceID)
-			if err != nil {
-				log.Println(err)
-				u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
-			}
-
-			u.doInUIThread(func() {
-				u.currentWindow.Hide()
-				u.currentWindow = u.mainWindow
-				u.mainWindow.ShowAll()
-			})
+			u.finishMeetingReal(s, cntrl, serviceID)
 		}
 	})
 }
@@ -199,24 +217,7 @@ func (u *gtkUI) finishMeetingMumble(state *runningMumble, s hosting.Server, cntr
 func (u *gtkUI) finishMeeting(s hosting.Server, cntrl tor.Control, serviceID string) {
 	u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
-			log.Print("Close meeting...")
-			err := s.Stop()
-			if err != nil {
-				log.Println(err)
-				u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
-			}
-
-			err = cntrl.DeleteOnionService(serviceID)
-			if err != nil {
-				log.Println(err)
-				u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
-			}
-
-			u.doInUIThread(func() {
-				u.currentWindow.Hide()
-				u.currentWindow = u.mainWindow
-				u.mainWindow.ShowAll()
-			})
+			u.finishMeetingReal(s, cntrl, serviceID)
 		}
 	})
 }
