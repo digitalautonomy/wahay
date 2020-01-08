@@ -45,7 +45,6 @@ func (u *gtkUI) realHostMeetingHandler() {
 }
 
 func (u *gtkUI) showMeetingControls(server hosting.Server, cntrl tor.Control, serviceID string) {
-	log.Println("ACTION: showMeetingControls")
 	builder := u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 	builder.ConnectSignals(map[string]interface{}{
@@ -75,8 +74,6 @@ func (u *gtkUI) showMeetingControls(server hosting.Server, cntrl tor.Control, se
 	u.currentWindow = win
 	win.SetApplication(u.app)
 	u.doInUIThread(win.ShowAll)
-
-	log.Println("ACTION: showMeetingControls show window")
 }
 
 func isPortAvailable(port int) bool {
