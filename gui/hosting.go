@@ -113,14 +113,14 @@ func (u *gtkUI) openHostJoinMeetingWindow(state *runningMumble, s hosting.Server
 	u.currentWindow = win
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
-			u.leaveHostMeeting(state, s, cntrl, serviceID)
+			u.leaveHostMeeting(state)
 			u.quit()
 		},
 		"on_leave_meeting": func() {
-			u.leaveHostMeeting(state, s, cntrl, serviceID)
+			u.leaveHostMeeting(state)
 		},
 		"on_finish_meeting": func() {
-			u.finishMeetingMumble(state, s, cntrl, serviceID)
+			u.finishMeetingMumble(state)
 		},
 	})
 
@@ -139,13 +139,12 @@ func (u *gtkUI) switchToHostOnFinishMeeting(
 		// TODO: here, we  could check if the Mumble instance
 		// failed with an error and report this
 		u.doInUIThread(func() {
-			if u.op == UIActionFinishMeeting {
+			switch op := u.op; op {
+			case UIActionFinishMeeting:
 				u.finishMeetingReal(s, cntrl, serviceID)
-			} else if u.op == UIActionLeaveMeeting {
+			case UIActionLeaveMeeting:
 				u.currentWindow.Hide()
 				u.showMeetingControls(s, cntrl, serviceID)
-			} else {
-				// Unknow UI action or not required by this phase
 			}
 			// Reset the custom ui action
 			u.op = UIActionNone
@@ -218,7 +217,7 @@ func (u *gtkUI) finishMeetingReal(s hosting.Server, cntrl tor.Control, serviceID
 	})
 }
 
-func (u *gtkUI) finishMeetingMumble(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+func (u *gtkUI) finishMeetingMumble(state *runningMumble) {
 	u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
 			u.op = UIActionFinishMeeting
@@ -235,10 +234,8 @@ func (u *gtkUI) finishMeeting(s hosting.Server, cntrl tor.Control, serviceID str
 	})
 }
 
-func (u *gtkUI) leaveHostMeeting(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+func (u *gtkUI) leaveHostMeeting(state *runningMumble) {
 	u.op = UIActionLeaveMeeting
-
-	// close the mumble instance
 	go state.close()
 }
 
