@@ -140,11 +140,11 @@ func (u *gtkUI) switchToHostOnFinishMeeting(
 		// failed with an error and report this
 		u.doInUIThread(func() {
 			switch op := u.op; op {
-			case UIActionFinishMeeting:
-				u.finishMeetingReal(s, cntrl, serviceID)
 			case UIActionLeaveMeeting:
 				u.currentWindow.Hide()
 				u.showMeetingControls(s, cntrl, serviceID)
+			default:
+				u.finishMeetingReal(s, cntrl, serviceID)
 			}
 			// Reset the custom ui action
 			u.op = UIActionNone
