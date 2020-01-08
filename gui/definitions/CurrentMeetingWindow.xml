@@ -1,51 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkApplicationWindow" id="currentMeetingWindow">
+    <property name="can_focus">False</property>
+    <property name="resizable">False</property>
     <property name="window_position">center-always</property>
-    <property name="title">You are currently in a meeting</property>
     <property name="default_width">300</property>
-    <property name="default_height">200</property>
+    <property name="default_height">100</property>
     <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
-        <property name="margin">10</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="label">You are currently participating in a meeting...</property>
-            <property name="wrap">true</property>
-          </object>
-          <packing>
-            <property name="expand">false</property>
-            <property name="fill">true</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="label">The meeting ID of your meeting is:</property>
-            <property name="wrap">true</property>
-          </object>
-          <packing>
-            <property name="expand">false</property>
-            <property name="fill">true</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="currentMeetingID">
-            <property name="label"></property>
-            <property name="wrap">false</property>
-          </object>
-          <packing>
-            <property name="expand">false</property>
-            <property name="fill">true</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
+        <property name="homogeneous">True</property>
         <child>
           <object class="GtkButton">
             <property name="label" translatable="yes">Leave meeting</property>
@@ -53,11 +25,45 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <signal name="clicked" handler="on_leave_meeting" swapped="no"/>
           </object>
           <packing>
-            <property name="expand">false</property>
-            <property name="fill">true</property>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMessageDialog" id="leaveMeeting">
+    <property name="can_focus">False</property>
+    <property name="border_width">7</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">currentMeetingWindow</property>
+    <property name="attached_to">currentMeetingWindow</property>
+    <property name="message_type">question</property>
+    <property name="buttons">yes-no</property>
+    <property name="text" translatable="yes">Are you sure you want to leave this meeting?</property>
+    <property name="secondary_text" translatable="yes">By clicking Yes, you will leave this meeting.</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
             <property name="position">3</property>
           </packing>
         </child>

@@ -236,7 +236,7 @@ func (u *gtkUI) leaveHostMeeting(state *runningMumble, s hosting.Server, cntrl t
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
-	builder := u.g.uiBuilderFor("FinishMeetingConfirmation")
+	builder := u.g.uiBuilderFor("StartHostingWindow")
 	dialog := builder.get("finishMeeting").(gtki.MessageDialog)
 	dialog.SetDefaultResponse(gtki.RESPONSE_NO)
 	dialog.SetTransientFor(u.mainWindow)

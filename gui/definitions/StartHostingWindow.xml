@@ -97,7 +97,6 @@
               <object class="GtkLabel" id="lblMeetingID">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">p2v637fsqj5lbi6r3ic266pofv6xmplwyquwtin2jlzvnio2vvylbbyd.onion</property>
                 <property name="use_underline">True</property>
                 <property name="selectable">True</property>
                 <property name="track_visited_links">False</property>
@@ -148,6 +147,35 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMessageDialog" id="finishMeeting">
+    <property name="can_focus">False</property>
+    <property name="border_width">7</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">startHostingWindow</property>
+    <property name="attached_to">startHostingWindow</property>
+    <property name="message_type">question</property>
+    <property name="buttons">yes-no</property>
+    <property name="text" translatable="yes">Are you sure you want to end this meeting?</property>
+    <property name="secondary_text" translatable="yes">By clicking Yes, this meeting will end.</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </object>

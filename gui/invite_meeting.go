@@ -28,7 +28,6 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble, meetingID string)
 	u.currentWindow.Hide()
 	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
 	win := builder.get("currentMeetingWindow").(gtki.ApplicationWindow)
-	labelMeetingID := builder.get("currentMeetingID").(gtki.Label)
 	win.SetApplication(u.app)
 	u.currentWindow = win
 
@@ -42,12 +41,12 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble, meetingID string)
 		},
 	})
 
-	labelMeetingID.SetText(meetingID)
 	u.switchContextWhenMumbleFinished(state)
 	win.ShowAll()
 }
 
-// Test Onion that can be used: qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
+// Test Onion that can be used:
+// qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
 
 func (u *gtkUI) openJoinWindow() {
 	url, win, builder := u.getInviteCodeEntities()
@@ -168,10 +167,9 @@ func (u *gtkUI) leaveMeeting(state *runningMumble) {
 }
 
 func (u *gtkUI) wouldYouConfirmLeaveMeeting(k func(bool)) {
-	builder := u.g.uiBuilderFor("LeaveMeetingConfirmation")
+	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
 	dialog := builder.get("leaveMeeting").(gtki.MessageDialog)
 	dialog.SetDefaultResponse(gtki.RESPONSE_NO)
-	dialog.SetTransientFor(u.mainWindow)
 	responseType := gtki.ResponseType(dialog.Run())
 	result := responseType == gtki.RESPONSE_YES
 	dialog.Destroy()
