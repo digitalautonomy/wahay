@@ -60,19 +60,7 @@ func (u *gtkUI) launchMumbleRoutineStart(loaded chan bool) {
 		u.displayLoadingMeetingDialog()
 	})
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10000*time.Second)
-	defer cancel()
-
-	for {
-		out, err := exec.CommandContext(ctx, "bash", "-c", "ps --no-headers -C mumble -o args || echo false").Output()
-		if err != nil {
-			break
-		}
-
-		if strings.Contains(string(out), "mumble") {
-			break
-		}
-	}
+	time.Sleep(10 * time.Second)
 
 	loaded <- true
 
