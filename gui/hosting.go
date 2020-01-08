@@ -124,11 +124,15 @@ func (u *gtkUI) openHostJoinMeetingWindow(state *runningMumble, s hosting.Server
 		},
 	})
 
-	u.switchToHostContextWhenMumbleFinished(state, s, cntrl, serviceID)
+	u.switchToHostOnFinishMeeting(state, s, cntrl, serviceID)
 	win.ShowAll()
 }
 
-func (u *gtkUI) switchToHostContextWhenMumbleFinished(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+func (u *gtkUI) switchToHostOnFinishMeeting(
+	state *runningMumble,
+	s hosting.Server,
+	cntrl tor.Control,
+	serviceID string) {
 	go func() {
 		<-state.finishChannel
 
