@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/coyim/gotk3adapter/gtki"
 )
@@ -24,8 +25,22 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.Entry, gtki.ApplicationWindow, *ui
 	return url, win, builder
 }
 
-func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble, meetingID string) {
+func (u *gtkUI) displayLoadingMeetingDialog() {
 	u.currentWindow.Hide()
+
+	builder := u.g.uiBuilderFor("LoadingWindow")
+	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
+
+	u.currentWindow = win
+	win.SetApplication(u.app)
+	win.ShowAll()
+}
+
+func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
+	u.doInUIThread(func() {
+		u.currentWindow.Hide()
+	})
+
 	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
 	win := builder.get("currentMeetingWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
@@ -41,8 +56,63 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble, meetingID string)
 		},
 	})
 
+	u.doInUIThread(func() {
+		win.ShowAll()
+	})
+}
+
+func (u *gtkUI) launchMumbleRoutineStart(loaded chan bool) {
+	u.doInUIThread(func() {
+		u.displayLoadingMeetingDialog()
+	})
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10000*time.Second)
+	defer cancel()
+
+	for {
+		out, err := exec.CommandContext(ctx, "bash", "-c", "ps --no-headers -C mumble -o args || echo false").Output()
+		if err != nil {
+			break
+		}
+
+		if strings.Contains(string(out), "mumble") {
+			break
+		}
+	}
+
+	loaded <- true
+
+	u.doInUIThread(func() {
+		u.currentWindow.Hide()
+	})
+}
+
+func (u *gtkUI) joinMeetingHandler(url gtki.Entry) {
+	meetingID, err := url.GetText()
+	if err != nil {
+		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
+		return
+	}
+
+	if meetingID == "" {
+		u.openErrorDialog("The Meeting ID cannot be blank")
+		return
+	}
+
+	loaded := make(chan bool)
+	go u.launchMumbleRoutineStart(loaded)
+
+	state, err := openMumble(meetingID)
+	if err != nil {
+		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
+		return
+	}
+
 	u.switchContextWhenMumbleFinished(state)
-	win.ShowAll()
+	go func() {
+		<-loaded
+		u.openCurrentMeetingWindow(state)
+	}()
 }
 
 // Test Onion that can be used:
@@ -54,24 +124,7 @@ func (u *gtkUI) openJoinWindow() {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
-			meetingID, err := url.GetText()
-			if err != nil {
-				u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
-				return
-			}
-
-			if meetingID == "" {
-				u.openErrorDialog("The Meeting ID cannot be blank")
-				return
-			}
-
-			state, err := openMumble(meetingID)
-			if err != nil {
-				u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
-				return
-			}
-
-			u.openCurrentMeetingWindow(state, meetingID)
+			u.joinMeetingHandler(url)
 		},
 		"on_cancel": func() {
 			win.Hide()
