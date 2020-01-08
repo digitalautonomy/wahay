@@ -139,7 +139,16 @@ func (u *gtkUI) switchToHostOnFinishMeeting(
 		// TODO: here, we  could check if the Mumble instance
 		// failed with an error and report this
 		u.doInUIThread(func() {
-			u.finishMeetingReal(s, cntrl, serviceID)
+			if u.op == UIActionFinishMeeting {
+				u.finishMeetingReal(s, cntrl, serviceID)
+			} else if u.op == UIActionLeaveMeeting {
+				u.currentWindow.Hide()
+				u.showMeetingControls(s, cntrl, serviceID)
+			} else {
+				// Unknow UI action or not required by this phase
+			}
+			// Reset the custom ui action
+			u.op = UIActionNone
 		})
 	}()
 }
@@ -212,8 +221,8 @@ func (u *gtkUI) finishMeetingReal(s hosting.Server, cntrl tor.Control, serviceID
 func (u *gtkUI) finishMeetingMumble(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
 	u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
+			u.op = UIActionFinishMeeting
 			go state.close()
-			u.finishMeetingReal(s, cntrl, serviceID)
 		}
 	})
 }
@@ -227,14 +236,10 @@ func (u *gtkUI) finishMeeting(s hosting.Server, cntrl tor.Control, serviceID str
 }
 
 func (u *gtkUI) leaveHostMeeting(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
+	u.op = UIActionLeaveMeeting
+
 	// close the mumble instance
 	go state.close()
-
-	// hide the current window
-	u.doInUIThread(u.currentWindow.Hide)
-
-	// show meeting controls
-	u.showMeetingControls(s, cntrl, serviceID)
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
