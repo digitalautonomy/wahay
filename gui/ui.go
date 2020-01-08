@@ -40,24 +40,12 @@ func argsWithApplicationName() *[]string {
 	return &newSlice
 }
 
-// UIOperation is a custom type for defining
-// custom UI operations
-type UIOperation string
-
-// UI specific operations
-const (
-	UIActionNone          UIOperation = "none"
-	UIActionLeaveMeeting  UIOperation = "leave_meeting"
-	UIActionFinishMeeting UIOperation = "finish_meeting"
-)
-
 type gtkUI struct {
 	app              gtki.Application
 	mainWindow       gtki.ApplicationWindow
 	currentWindow    gtki.ApplicationWindow
 	g                Graphics
 	serverCollection hosting.Servers
-	op               UIOperation
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -73,7 +61,6 @@ func NewGTK(gx Graphics) UI {
 	ret := &gtkUI{
 		app: app,
 		g:   gx,
-		op:  UIActionNone,
 	}
 
 	return ret
@@ -122,4 +109,10 @@ func (u *gtkUI) joinMeeting() {
 
 func (u *gtkUI) quit() {
 	u.app.Quit()
+}
+
+func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
+	u.currentWindow = win
+	win.SetApplication(u.app)
+	u.doInUIThread(win.ShowAll)
 }

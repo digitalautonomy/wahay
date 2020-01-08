@@ -31,9 +31,7 @@ func (u *gtkUI) displayLoadingMeetingDialog() {
 	builder := u.g.uiBuilderFor("LoadingWindow")
 	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
 
-	u.currentWindow = win
-	win.SetApplication(u.app)
-	win.ShowAll()
+	u.switchToWindow(win)
 }
 
 func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
@@ -43,8 +41,6 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
 
 	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
 	win := builder.get("currentMeetingWindow").(gtki.ApplicationWindow)
-	win.SetApplication(u.app)
-	u.currentWindow = win
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
@@ -56,9 +52,7 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
 		},
 	})
 
-	u.doInUIThread(func() {
-		win.ShowAll()
-	})
+	u.switchToWindow(win)
 }
 
 func (u *gtkUI) launchMumbleRoutineStart(loaded chan bool) {

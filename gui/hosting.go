@@ -16,9 +16,7 @@ func (u *gtkUI) displayLoadingWindow(loaded chan bool) {
 	builder := u.g.uiBuilderFor("LoadingWindow")
 	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
 
-	u.currentWindow = win
-	win.SetApplication(u.app)
-	u.doInUIThread(win.ShowAll)
+	u.switchToWindow(win)
 
 	<-loaded
 
@@ -37,28 +35,28 @@ func (u *gtkUI) realHostMeetingHandler() {
 		u.displayLoadingWindow(loaded)
 	}()
 
-	server, tor, serviceID := u.createNewConferenceRoom()
+	h := u.createNewConferenceRoom()
 
 	loaded <- true
 
-	u.showMeetingControls(server, tor, serviceID)
+	h.showMeetingControls()
 }
 
-func (u *gtkUI) showMeetingControls(server hosting.Server, cntrl tor.Control, serviceID string) {
-	builder := u.g.uiBuilderFor("StartHostingWindow")
+func (h *hostData) showMeetingControls() {
+	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 	builder.ConnectSignals(map[string]interface{}{
-		"on_close_window_signal": u.quit,
+		"on_close_window_signal": h.u.quit,
 		"on_finish_meeting": func() {
-			if server != nil {
-				u.finishMeeting(server, cntrl, serviceID)
+			if h.serverControl != nil {
+				h.finishMeeting()
 			} else {
 				log.Print("server is nil")
 			}
 		},
 		"on_join_meeting": func() {
-			if server != nil {
-				u.joinMeetingHost(server, cntrl, serviceID)
+			if h.serverControl != nil {
+				h.joinMeetingHost()
 			} else {
 				log.Print("server is nil")
 			}
@@ -69,11 +67,9 @@ func (u *gtkUI) showMeetingControls(server hosting.Server, cntrl tor.Control, se
 	if err != nil {
 		log.Printf("meeting id error: %s", err)
 	}
-	_ = meetingID.SetProperty("label", serviceID)
+	_ = meetingID.SetProperty("label", h.serviceID)
 
-	u.currentWindow = win
-	win.SetApplication(u.app)
-	u.doInUIThread(win.ShowAll)
+	h.u.switchToWindow(win)
 }
 
 func isPortAvailable(port int) bool {
@@ -90,64 +86,61 @@ func randomPort() int {
 	return 10000 + int(rand.Int31n(50000))
 }
 
-func (u *gtkUI) joinMeetingHost(s hosting.Server, cntrl tor.Control, serviceID string) {
-	if !isMeetingIDValid(serviceID) {
-		u.reportError(fmt.Sprintf("invalid Onion Address %s", serviceID))
-		return
-	}
-
-	state, err := launchMumbleClient(serviceID)
+func (h *hostData) joinMeetingHost() {
+	state, err := launchMumbleClient(h.serviceID)
 	if err != nil {
-		u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
+		h.u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
 		return
 	}
+	h.runningState = state
 
-	u.openHostJoinMeetingWindow(state, s, cntrl, serviceID)
+	h.openHostJoinMeetingWindow()
 }
 
-func (u *gtkUI) openHostJoinMeetingWindow(state *runningMumble, s hosting.Server, cntrl tor.Control, serviceID string) {
-	u.currentWindow.Hide()
-	builder := u.g.uiBuilderFor("CurrentHostMeetingWindow")
+func (h *hostData) openHostJoinMeetingWindow() {
+	h.u.currentWindow.Hide()
+	builder := h.u.g.uiBuilderFor("CurrentHostMeetingWindow")
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
-	win.SetApplication(u.app)
-	u.currentWindow = win
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
-			u.leaveHostMeeting(state)
-			u.quit()
+			h.leaveHostMeeting()
+			h.u.quit()
 		},
-		"on_leave_meeting": func() {
-			u.leaveHostMeeting(state)
-		},
-		"on_finish_meeting": func() {
-			u.finishMeetingMumble(state)
-		},
+		"on_leave_meeting":  h.leaveHostMeeting,
+		"on_finish_meeting": h.finishMeetingMumble,
 	})
 
-	u.switchToHostOnFinishMeeting(state, s, cntrl, serviceID)
-	win.ShowAll()
+	h.switchToHostOnFinishMeeting()
+	h.u.switchToWindow(win)
 }
 
-func (u *gtkUI) switchToHostOnFinishMeeting(
-	state *runningMumble,
-	s hosting.Server,
-	cntrl tor.Control,
-	serviceID string) {
+type hostData struct {
+	u             *gtkUI
+	runningState  *runningMumble
+	serverControl hosting.Server
+	torControl    tor.Control
+	serviceID     string
+	next          func()
+}
+
+func (h *hostData) uiActionLeaveMeeting() {
+	h.u.currentWindow.Hide()
+	h.showMeetingControls()
+}
+
+func (h *hostData) uiActionFinishMeeting() {
+	h.finishMeetingReal()
+}
+
+func (h *hostData) switchToHostOnFinishMeeting() {
 	go func() {
-		<-state.finishChannel
+		<-h.runningState.finishChannel
 
 		// TODO: here, we  could check if the Mumble instance
 		// failed with an error and report this
-		u.doInUIThread(func() {
-			switch op := u.op; op {
-			case UIActionLeaveMeeting:
-				u.currentWindow.Hide()
-				u.showMeetingControls(s, cntrl, serviceID)
-			default:
-				u.finishMeetingReal(s, cntrl, serviceID)
-			}
-			// Reset the custom ui action
-			u.op = UIActionNone
+		h.u.doInUIThread(func() {
+			h.next()
+			h.next = func() {}
 		})
 	}()
 }
@@ -162,7 +155,7 @@ func (u *gtkUI) ensureServerCollection() {
 	}
 }
 
-func (u *gtkUI) createNewConferenceRoom() (hosting.Server, tor.Control, string) {
+func (u *gtkUI) createNewConferenceRoom() *hostData {
 	port := randomPort()
 	for !isPortAvailable(port) {
 		port = randomPort()
@@ -173,70 +166,77 @@ func (u *gtkUI) createNewConferenceRoom() (hosting.Server, tor.Control, string) 
 	server, e := u.serverCollection.CreateServer(fmt.Sprintf("%d", port))
 	if e != nil {
 		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil, nil, ""
+		return nil
 	}
 	e = server.Start()
 	if e != nil {
 		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil, nil, ""
+		return nil
 	}
 
 	torController := tor.CreateController(*config.TorHost, *config.TorPort, *config.TorControlPassword)
 	serviceID, e := torController.CreateNewOnionService("127.0.0.1", fmt.Sprintf("%d", port), "64738")
 	if e != nil {
 		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil, nil, ""
+		return nil
 	}
 
-	return server, torController, serviceID
+	h := &hostData{
+		u:             u,
+		serverControl: server,
+		torControl:    torController,
+		serviceID:     serviceID,
+		next:          func() {},
+	}
+	return h
 }
 
-func (u *gtkUI) finishMeetingReal(s hosting.Server, cntrl tor.Control, serviceID string) {
+func (h *hostData) finishMeetingReal() {
 	// Hide the current window
-	u.doInUIThread(u.currentWindow.Hide)
+	h.u.doInUIThread(h.u.currentWindow.Hide)
 
 	// TODO: What happen if two errors occurrs?
 	// We need to do a better controlling for each error
 	// and if multiple errors occurrs, show all the errors in the
 	// same window using the `u.reportError` function
 
-	err := s.Stop()
+	err := h.serverControl.Stop()
 	if err != nil {
-		u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
+		h.u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
 	}
 
-	err = cntrl.DeleteOnionService(serviceID)
+	err = h.torControl.DeleteOnionService(h.serviceID)
 	if err != nil {
-		u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
+		h.u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
 	}
 
-	u.doInUIThread(func() {
-		u.currentWindow.Hide()
-		u.currentWindow = u.mainWindow
-		u.mainWindow.ShowAll()
+	h.u.doInUIThread(func() {
+		h.u.currentWindow.Hide()
+		h.u.currentWindow = h.u.mainWindow
+		h.u.mainWindow.ShowAll()
 	})
 }
 
-func (u *gtkUI) finishMeetingMumble(state *runningMumble) {
-	u.wouldYouConfirmFinishMeeting(func(res bool) {
+func (h *hostData) finishMeetingMumble() {
+	h.u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
-			u.op = UIActionFinishMeeting
-			go state.close()
+			h.next = h.uiActionFinishMeeting
+			go h.runningState.close()
 		}
 	})
 }
 
-func (u *gtkUI) finishMeeting(s hosting.Server, cntrl tor.Control, serviceID string) {
-	u.wouldYouConfirmFinishMeeting(func(res bool) {
+func (h *hostData) finishMeeting() {
+	h.u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
-			u.finishMeetingReal(s, cntrl, serviceID)
+			h.finishMeetingReal()
 		}
 	})
 }
 
-func (u *gtkUI) leaveHostMeeting(state *runningMumble) {
-	u.op = UIActionLeaveMeeting
-	go state.close()
+func (h *hostData) leaveHostMeeting() {
+	h.next = h.uiActionLeaveMeeting
+	go h.runningState.close()
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {

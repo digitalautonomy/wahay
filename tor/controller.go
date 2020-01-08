@@ -57,10 +57,6 @@ func (cntrl *controller) EnsureTorCompatibility() error {
 }
 
 func (cntrl *controller) DeleteOnionService(serviceID string) error {
-	if serviceID == "" {
-		return errors.New("the service ID cannot be empty")
-	}
-
 	s := strings.TrimSuffix(serviceID, ".onion")
 	return cntrl.c.DeleteOnion(s)
 }
