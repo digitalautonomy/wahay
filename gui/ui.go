@@ -58,6 +58,19 @@ func NewGTK(gx Graphics) UI {
 		fatalf("Couldn't create application: %v", err)
 	}
 
+	// // Create the GUI css provider
+	// data, err := ioutil.ReadFile("./providers/gui.css")
+	// if err != nil {
+	// 	fatalf("Couldn't create css provider: %v", err)
+	// }
+
+	// cssProvider, err := gx.gtk.CssProviderNew()
+	// if err != nil {
+	// 	fatalf("Couldn't create css provider: %v", err)
+	// }
+
+	// _ = cssProvider.LoadFromData(string(data))
+
 	ret := &gtkUI{
 		app: app,
 		g:   gx,
