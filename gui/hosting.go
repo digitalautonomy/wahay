@@ -87,6 +87,9 @@ func randomPort() int {
 }
 
 func (h *hostData) joinMeetingHost() {
+	loaded := make(chan bool)
+	go h.u.launchMumbleRoutineStart(loaded)
+
 	state, err := launchMumbleClient(h.serviceID)
 	if err != nil {
 		h.u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
@@ -94,13 +97,20 @@ func (h *hostData) joinMeetingHost() {
 	}
 	h.runningState = state
 
-	h.openHostJoinMeetingWindow()
+	go func() {
+		<-loaded
+		h.openHostJoinMeetingWindow()
+	}()
 }
 
 func (h *hostData) openHostJoinMeetingWindow() {
-	h.u.currentWindow.Hide()
+	h.u.doInUIThread(func() {
+		h.u.currentWindow.Hide()
+	})
+
 	builder := h.u.g.uiBuilderFor("CurrentHostMeetingWindow")
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
 			h.leaveHostMeeting()
