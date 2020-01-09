@@ -7,7 +7,7 @@
     <property name="title">Tonio</property>
     <property name="resizable">False</property>
     <property name="window_position">center-always</property>
-    <property name="default_width">300</property>
+    <property name="default_width">350</property>
     <property name="default_height">200</property>
     <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
     <child>
@@ -32,6 +32,9 @@
             <property name="receives_default">True</property>
             <property name="image_position">top</property>
             <signal name="clicked" handler="on_leave_meeting" swapped="no"/>
+            <style>
+              <class name="hostMeetingLeaveButton"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -48,6 +51,9 @@
             <property name="receives_default">True</property>
             <property name="image_position">bottom</property>
             <signal name="clicked" handler="on_finish_meeting" swapped="no"/>
+            <style>
+              <class name="hostMeetingFinishButton"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>

@@ -1,15 +1,228 @@
+/** This applies to all widgets */
+window {
+  color:#2D3748;
+  background-color: #FFFFFF;
+}
+
+/** TONIO MAIN WINDOW
+  ========================================================== */
+.topBar {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #CBD5E0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  padding: 15px 20px;
+}
+
+.topBarSettingsButton {
+  color: #002D04;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+.topBarSettingsButton:hover {
+  color: #FFFFFF;
+  border-color: #1A202C;
+  background-color: #1A202C;
+}
+
 .hostMeetingButton {
-  color: #22543D;
-  background-color: #9AE6B4;
-  padding: 20px 20px;
-  font-size: 21px;
-  font-weight: bold;
+  color: #FFFFFF;
+  opacity: 0.9;
+  font-family: sans-serif;
+  border: 2px solid #2A4365;
+  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.hostMeetingButton:hover {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
+}
+
+.hostMeetingButton:active {
+  background: rgb(43, 110, 177);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
 }
 
 .joinMeetingButton {
-  color: #744210;
-  background-color: #FAF089;
-  padding: 20px 20px;
-  font-size: 21px;
-  font-weight: bold;
+  color: #FFFFFF;
+  opacity: 0.9;
+  font-family: sans-serif;
+  border: 2px solid #744210;
+  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.joinMeetingButton:hover {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
+}
+
+.joinMeetingButton:active {
+  background: rgb(223, 110, 34);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.statusBar {
+  background-color: #1A202C;
+  padding: 15px 20px;
+}
+
+.statusBarLabel {
+  color: #FFFFFF;
+  font-size: 14px;
+}
+
+/** TONIO HOST MEETING WINDOW
+  ========================================================== */
+.hostMeetingWindowTopBar {
+  padding: 15px 20px;
+  background: linear-gradient(to bottom, rgba(104, 211, 145, 1) 0%, rgba(58, 191, 127, 1) 100%);
+}
+
+.hostMeetingWindowTopBarLabel {
+  font-size: 18px;
+  color: #002D04;
+  font-weight: 500;
+}
+
+.hostMeetingWindowTopBarButton {
+  color: #002D04;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.hostMeetingFinishButton {
+  color: #FFFFFF;
+  opacity: 0.9;
+  border: 2px solid #C53030;
+  background: linear-gradient(to bottom, rgba(245, 101, 101, 1) 0%, rgba(229, 62, 62, 1) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.hostMeetingFinishButton:hover {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(245, 101, 101, 1) 0%, rgba(229, 62, 62, 1) 100%);
+}
+
+.hostMeetingFinishButton:active {
+  background: rgb(229, 62, 62);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.hostMeetingWindowLabel {
+  font-weight: 700;
+  font-size: 18px;
+  color: #1A202C;
+}
+
+.hostMeetingWindowValue {
+  font-size: 18px;
+  color: #4A5568;
+}
+
+/** TONIO HOST MEETING CONTROLS WINDOW
+  ========================================================== */
+.hostMeetingLeaveButton {
+  color: #FFFFFF;
+  opacity: 0.9;
+  font-family: sans-serif;
+  border: 2px solid #744210;
+  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.hostMeetingLeaveButton:hover {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
+}
+
+.hostMeetingLeaveButton:active {
+  background: rgb(223, 110, 34);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+/** TONIO PARTICIPANT JOIN MEETING WINDOW
+  ========================================================== */
+.inviteJoinCancelButton {
+  color: #002D04;
+  font-size: 16px;
+  font-weight: 500;
+  border: 2px solid #E2E8F0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(238, 244, 251, 1) 100%);
+  border-radius: 4px;
+  padding: 15px 20px;
+  box-shadow: none;
+}
+
+.inviteJoinButton {
+  color: #FFFFFF;
+  opacity: 0.9;
+  font-family: sans-serif;
+  border: 2px solid #2A4365;
+  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.inviteJoinButton:hover {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
+}
+
+.inviteJoinButton:active {
+  background: rgb(43, 110, 177);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+/** TONIO PARTICIPANT MEETING CONTROLS WINDOW
+  ========================================================== */
+.meetingLeaveButton {
+  color: #FFFFFF;
+  opacity: 0.9;
+  font-family: sans-serif;
+  border: 2px solid #744210;
+  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.meetingLeaveButton:hover {
+  opacity: 1;
+  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
+}
+
+.meetingLeaveButton:active {
+  background: rgb(223, 110, 34);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
 }

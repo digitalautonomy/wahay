@@ -21,9 +21,6 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
-            <property name="margin_top">20</property>
             <property name="margin_bottom">20</property>
             <property name="baseline_position">top</property>
             <child>
@@ -33,6 +30,9 @@
                 <property name="margin_right">20</property>
                 <property name="label" translatable="yes">Now you are hosting a meeting.</property>
                 <property name="track_visited_links">False</property>
+                <style>
+                  <class name="hostMeetingWindowTopBarLabel"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -50,6 +50,9 @@
                 <property name="valign">end</property>
                 <property name="margin_left">20</property>
                 <signal name="clicked" handler="on_join_meeting" swapped="no"/>
+                <style>
+                  <class name="hostMeetingWindowTopBarButton"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -58,6 +61,9 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <style>
+              <class name="hostMeetingWindowTopBar"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -71,6 +77,8 @@
             <property name="can_focus">False</property>
             <property name="margin_left">20</property>
             <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <property name="border_width">0</property>
             <property name="orientation">vertical</property>
             <property name="spacing">10</property>
@@ -83,9 +91,9 @@
                 <property name="label" translatable="yes">Meeting ID</property>
                 <property name="track_visited_links">False</property>
                 <property name="xalign">0</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
+                <style>
+                  <class name="hostMeetingWindowLabel"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -97,14 +105,15 @@
               <object class="GtkLabel" id="lblMeetingID">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="label" translatable="yes">sdlssldsdsdskdskdlkssqwkiwqwqwq.onion</property>
                 <property name="use_underline">True</property>
                 <property name="selectable">True</property>
                 <property name="track_visited_links">False</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
-                <attributes>
-                  <attribute name="underline" value="True"/>
-                </attributes>
+                <style>
+                  <class name="hostMeetingWindowValue"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -135,6 +144,9 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_finish_meeting" swapped="no"/>
+                <style>
+                  <class name="hostMeetingFinishButton"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
