@@ -48,7 +48,3 @@
 [[constraint]]
   name = "github.com/atotto/clipboard"
   version = "0.1.2"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/TheCreeper/go-notify"

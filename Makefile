@@ -22,7 +22,6 @@ deps:
 	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
 	go get -u github.com/atotto/clipboard
-	go get -u github.com/TheCreeper/go-notify
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin v1.21.0
 
 optional-deps:

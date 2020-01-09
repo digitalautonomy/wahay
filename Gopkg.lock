@@ -2,14 +2,6 @@
 
 
 [[projects]]
-  branch = "master"
-  digest = "1:e4966a46ef59a523a6f669e6b38a048ac9069184b3708ff5c23a3a17612bca76"
-  name = "github.com/TheCreeper/go-notify"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "b5cd14745a5c675c08f7d5c3203cf5f0324e85f3"
-
-[[projects]]
   digest = "1:323ef1c999160d12fafa4074b5a5706511baf1cd91a935ae62494791c94abaf4"
   name = "github.com/atotto/clipboard"
   packages = ["."]
@@ -57,14 +49,6 @@
   ]
   pruneopts = "UT"
   revision = "9a8f381923ee8c93363158dc17d0f92c35ab6d29"
-
-[[projects]]
-  digest = "1:75ea251921accab70d09dfd854f8d287224b65ab8d5da23447f0aeb2c0ee906b"
-  name = "github.com/godbus/dbus"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "37bf87eef99d69c4f1d3528bd66e3a87dc201472"
-  version = "v5.0.3"
 
 [[projects]]
   digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
@@ -122,7 +106,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:757e7c4dc09fd98b1e03fda4c0a768f8bf4531ee6238596102c9372ab2563716"
+  digest = "1:2d0679d664dd905f42b805215f8e45d1678139b0b0991279fba9d1937263bc3c"
   name = "golang.org/x/crypto"
   packages = [
     "ed25519",
@@ -134,7 +118,7 @@
     "sha3",
   ]
   pruneopts = "UT"
-  revision = "5d647ca1575777a812e903a7e98177174d8c295a"
+  revision = "61a87790db17894570dfb32dbaa0a4af9ce60cb4"
 
 [[projects]]
   branch = "master"
@@ -167,7 +151,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/TheCreeper/go-notify",
     "github.com/atotto/clipboard",
     "github.com/coyim/gotk3adapter/gdka",
     "github.com/coyim/gotk3adapter/gdki",

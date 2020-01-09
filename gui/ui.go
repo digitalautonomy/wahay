@@ -5,7 +5,6 @@ import (
 	"runtime"
 
 	"autonomia.digital/tonio/app/hosting"
-	"github.com/TheCreeper/go-notify"
 	"github.com/atotto/clipboard"
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
@@ -134,13 +133,10 @@ func (u *gtkUI) quit() {
 
 func (u *gtkUI) copyToClipboard(text string) {
 	// TODO: show a notification
-	clipboard.WriteAll(text)
-	u.showNotification("Tonio", "The Meeting ID was copied to the clipboard.")
+	_ = clipboard.WriteAll(text)
+	//u.showNotification("Tonio", "The Meeting ID was copied to the clipboard.")
 }
 
-func (u *gtkUI) showNotification(title string, message string) {
-	ntf := notify.NewNotification(title, message)
-	if _, err := ntf.Show(); err != nil {
-		return
-	}
-}
+// func (u *gtkUI) showNotification(title string, message string) {
+
+// }
