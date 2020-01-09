@@ -3,6 +3,22 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:e4966a46ef59a523a6f669e6b38a048ac9069184b3708ff5c23a3a17612bca76"
+  name = "github.com/TheCreeper/go-notify"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "b5cd14745a5c675c08f7d5c3203cf5f0324e85f3"
+
+[[projects]]
+  digest = "1:323ef1c999160d12fafa4074b5a5706511baf1cd91a935ae62494791c94abaf4"
+  name = "github.com/atotto/clipboard"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "579379fa8ff8a6d3fa979cec107f8f6d7f8fde90"
+  version = "v0.1.2"
+
+[[projects]]
+  branch = "master"
   digest = "1:00957b2dc423307c85aa0cdd4dbc50792646aecce34e18e542adedbe3e734337"
   name = "github.com/coyim/gotk3adapter"
   packages = [
@@ -41,6 +57,14 @@
   ]
   pruneopts = "UT"
   revision = "9a8f381923ee8c93363158dc17d0f92c35ab6d29"
+
+[[projects]]
+  digest = "1:75ea251921accab70d09dfd854f8d287224b65ab8d5da23447f0aeb2c0ee906b"
+  name = "github.com/godbus/dbus"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "37bf87eef99d69c4f1d3528bd66e3a87dc201472"
+  version = "v5.0.3"
 
 [[projects]]
   digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
@@ -143,6 +167,9 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/TheCreeper/go-notify",
+    "github.com/atotto/clipboard",
+    "github.com/coyim/gotk3adapter/gdka",
     "github.com/coyim/gotk3adapter/gdki",
     "github.com/coyim/gotk3adapter/gliba",
     "github.com/coyim/gotk3adapter/glibi",
