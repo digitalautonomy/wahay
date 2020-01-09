@@ -5,6 +5,8 @@ import (
 	"runtime"
 
 	"autonomia.digital/tonio/app/hosting"
+	"github.com/TheCreeper/go-notify"
+	"github.com/atotto/clipboard"
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
@@ -120,12 +122,25 @@ func (u *gtkUI) joinMeeting() {
 	u.openJoinWindow()
 }
 
-func (u *gtkUI) quit() {
-	u.app.Quit()
-}
-
 func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
 	u.currentWindow = win
 	win.SetApplication(u.app)
 	u.doInUIThread(win.ShowAll)
+}
+
+func (u *gtkUI) quit() {
+	u.app.Quit()
+}
+
+func (u *gtkUI) copyToClipboard(text string) {
+	// TODO: show a notification
+	clipboard.WriteAll(text)
+	u.showNotification("Tonio", "The Meeting ID was copied to the clipboard.")
+}
+
+func (u *gtkUI) showNotification(title string, message string) {
+	ntf := notify.NewNotification(title, message)
+	if _, err := ntf.Show(); err != nil {
+		return
+	}
 }

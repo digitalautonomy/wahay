@@ -4,6 +4,29 @@ window {
   background-color: #FFFFFF;
 }
 
+.tertiaryButton {
+  color: #002D04;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #E2E8F0;
+  background-color: #FFFFFF;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(238, 244, 251, 1) 100%);
+  border-radius: 4px;
+  box-shadow: none;
+  padding: 10px 20px;
+}
+
+.tertiaryButton:hover {
+  color: #002D04;
+  background: rgb(238, 244, 251);
+}
+
+.tertiaryButton:active {
+  color: #002D04;
+  background: rgb(238, 244, 251);
+  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
 /** TONIO MAIN WINDOW
   ========================================================== */
 .topBar {

@@ -61,6 +61,7 @@ func (h *hostData) showMeetingControls() {
 				log.Print("server is nil")
 			}
 		},
+		"on_copy_meeting_id": h.copyMeetingIDToClipboard,
 	})
 
 	meetingID, err := builder.GetObject("lblMeetingID")
@@ -247,6 +248,10 @@ func (h *hostData) finishMeeting() {
 func (h *hostData) leaveHostMeeting() {
 	h.next = h.uiActionLeaveMeeting
 	go h.runningState.close()
+}
+
+func (h *hostData) copyMeetingIDToClipboard() {
+	h.u.copyToClipboard(h.serviceID)
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
