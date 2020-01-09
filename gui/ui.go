@@ -91,6 +91,9 @@ func (u *gtkUI) createMainWindow() {
 }
 
 func (u *gtkUI) setGlobalStyles() {
+	if u.g.gdk == nil {
+		return
+	}
 	prov := u.g.cssFor("gui")
 	screen, _ := u.g.gdk.ScreenGetDefault()
 	u.g.gtk.AddProviderForScreen(screen, prov, uint(gtki.STYLE_PROVIDER_PRIORITY_APPLICATION))

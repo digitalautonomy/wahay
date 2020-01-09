@@ -70,7 +70,7 @@ func getFileWithFallback(fileName string, fileExtension string, directory string
 
 	embeddedFile, err := FSString(false, fname)
 	if err != nil {
-		fatalf("No existing file found for %s", fname)
+		fatalf("No definition found for %s", fname)
 	}
 
 	file := filepath.Join(getActualFolder(directory), fileName+fileExtension)

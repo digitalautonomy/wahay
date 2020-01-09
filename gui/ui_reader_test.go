@@ -34,7 +34,7 @@ func (s *TonioGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsDefini
 }
 
 func (s *TonioGUIUIReaderSuite) Test_getDefinitionWithFileFallback_panicsForNonExistingDefinition(c *C) {
-	g1 := CreateGraphics(nil, nil)
+	g1 := CreateGraphics(nil, nil, nil)
 	c.Assert(func() { g1.uiBuilderFor("definitionThatDoesntExist") }, PanicMatches,
 		"No definition found for .*")
 }
@@ -97,7 +97,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilder_get_returnsTheObjectForKnown(c *C
 	ourBuilder.getObjectToReturn1 = ourBuilder
 	ourBuilder.getObjectToReturn2 = nil
 
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 	ss := g1.uiBuilderFor("MainWindow")
 	v := ss.get("something")
 	c.Assert(v, Equals, ourBuilder)
@@ -111,7 +111,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilder_get_forUnknownObjectPanics(c *C) 
 	ourBuilder.getObjectToReturn1 = nil
 	ourBuilder.getObjectToReturn2 = errors.New("couldn't find it")
 
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 	ss := g1.uiBuilderFor("MainWindow")
 	c.Assert(func() { ss.get("somethingNonExisting") }, PanicMatches, "failing on error: couldn't find it")
 }
@@ -123,7 +123,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilderFor_panicsOnBadlyFormattedTemplate
 
 	ourBuilder.addFromStringToReturn = errors.New("badly formatted template")
 
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 
 	c.Assert(func() { g1.uiBuilderFor("MainWindow") }, PanicMatches,
 		"gui: failed load MainWindow: badly formatted template")
@@ -133,7 +133,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilderFor_panicsIfBuilderCantBeCreated(c
 	ourGtk := &testGtkWithBuilder{}
 	ourGtk.builderNewToReturn2 = errors.New("bad GTK error")
 
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 
 	c.Assert(func() { g1.uiBuilderFor("MainWindow") }, PanicMatches, "failing on error: bad GTK error")
 }

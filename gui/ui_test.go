@@ -45,12 +45,12 @@ func (t *testGtkStruct) ApplicationNew(a1 string, a2 glibi.ApplicationFlags) (gt
 }
 
 func (s *TonioGUISuite) Test_CreateGraphics_createsAGraphicsObjectWithTheArgumentProvided(c *C) {
-	g1 := CreateGraphics(nil, nil)
+	g1 := CreateGraphics(nil, nil, nil)
 	c.Assert(g1.gtk, IsNil)
 	c.Assert(g1.glib, IsNil)
 
 	v := &testGtkStruct{}
-	g2 := CreateGraphics(v, nil)
+	g2 := CreateGraphics(v, nil, nil)
 	c.Assert(g2.gtk, Equals, v)
 	c.Assert(g2.glib, IsNil)
 }
@@ -77,7 +77,7 @@ func (s *TonioGUISuite) Test_NewGTK_initializesGTK(c *C) {
 	}()
 
 	ourGtk := &testGtkStruct{}
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 	_ = NewGTK(g1)
 
 	c.Assert(ourGtk.initCalled, Equals, true)
@@ -86,7 +86,7 @@ func (s *TonioGUISuite) Test_NewGTK_initializesGTK(c *C) {
 
 func (s *TonioGUISuite) Test_NewGTK_callsApplicationNewWithAppropriateArguments(c *C) {
 	ourGtk := &testGtkStruct{}
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 	_ = NewGTK(g1)
 
 	c.Assert(ourGtk.applicationNewCalled, Equals, true)
@@ -97,7 +97,7 @@ func (s *TonioGUISuite) Test_NewGTK_callsApplicationNewWithAppropriateArguments(
 func (s *TonioGUISuite) Test_NewGTK_panicsIfApplicationNewFails(c *C) {
 	ourGtk := &testGtkStruct{}
 	ourGtk.applicationNewToReturn2 = errors.New("something went wrong")
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 
 	c.Assert(func() { NewGTK(g1) }, PanicMatches, "Couldn't create application: something went wrong")
 }
@@ -106,7 +106,7 @@ func (s *TonioGUISuite) Test_NewGTK_returnsAGTKUIWithProperData(c *C) {
 	app := &gtk_mock.MockApplication{}
 	ourGtk := &testGtkStruct{}
 	ourGtk.applicationNewToReturn1 = app
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 	ret := NewGTK(g1).(*gtkUI)
 
 	c.Assert(ret.app, Equals, app)
@@ -120,7 +120,7 @@ func (s *TonioGUISuite) Test_gtkUI_onActivate_createsMainWindow(c *C) {
 	ourAppWindow := &gtk_mock.MockApplicationWindow{}
 	ourBuilder.getObjectToReturn1 = ourAppWindow
 
-	g1 := CreateGraphics(ourGtk, nil)
+	g1 := CreateGraphics(ourGtk, nil, nil)
 
 	u := &gtkUI{g: g1}
 	u.onActivate()
