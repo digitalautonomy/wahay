@@ -98,7 +98,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:c9724fe1aa4401928b603fa0581da0d84482052151f92f26a7047b0beb0a281e"
+  digest = "1:757e7c4dc09fd98b1e03fda4c0a768f8bf4531ee6238596102c9372ab2563716"
   name = "golang.org/x/crypto"
   packages = [
     "ed25519",
@@ -110,7 +110,7 @@
     "sha3",
   ]
   pruneopts = "UT"
-  revision = "53104e6ec876ad4e22ad27cce588b01392043c1b"
+  revision = "5d647ca1575777a812e903a7e98177174d8c295a"
 
 [[projects]]
   branch = "master"
@@ -143,6 +143,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/coyim/gotk3adapter/gdki",
     "github.com/coyim/gotk3adapter/gliba",
     "github.com/coyim/gotk3adapter/glibi",
     "github.com/coyim/gotk3adapter/gtk_mock",

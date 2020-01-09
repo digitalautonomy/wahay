@@ -1,4 +1,4 @@
-//go:generate esc -o definitions.go -modtime 1489449600 -pkg gui -ignore "Makefile" definitions/
+//go:generate esc -o definitions.go -modtime 1489449600 -pkg gui -ignore "Makefile" definitions/ styles/
 
 package gui
 
@@ -16,14 +16,32 @@ import (
 
 const (
 	xmlExtension = ".xml"
+	cssExtension = ".css"
+)
+
+const (
+	definitionsDir = "definitions"
+	cssDir         = "styles"
 )
 
 type uiBuilder struct {
 	gtki.Builder
 }
 
+func (g *Graphics) cssFor(name string) gtki.CssProvider {
+	return g.loadCSSFor(name)
+}
+
 func (g *Graphics) uiBuilderFor(name string) *uiBuilder {
 	return &uiBuilder{g.builderForDefinition(name)}
+}
+
+func getActualFolder(directory string) string {
+	wd, _ := os.Getwd()
+	if strings.HasSuffix(wd, "/gui") {
+		return directory
+	}
+	return path.Join("gui/", directory)
 }
 
 func getActualDefsFolder() string {
@@ -47,21 +65,45 @@ func readFile(fileName string) string {
 	return string(data)
 }
 
-func getDefinitionWithFileFallback(uiName string) string {
-	fname := path.Join("/definitions", uiName+xmlExtension)
+func getFileWithFallback(fileName string, fileExtension string, directory string) string {
+	fname := path.Join("/"+directory, fileName+fileExtension)
 
 	embeddedFile, err := FSString(false, fname)
 	if err != nil {
-		fatalf("No definition found for %s", uiName)
+		fatalf("No existing file found for %s", fname)
 	}
 
-	fileName := filepath.Join(getActualDefsFolder(), uiName+xmlExtension)
-	if fileNotFound(fileName) {
+	file := filepath.Join(getActualFolder(directory), fileName+fileExtension)
+	if fileNotFound(file) {
 		return embeddedFile
 	}
 
-	log.Printf("Loading definition from local file: %q\n", fileName)
-	return readFile(fileName)
+	log.Printf("Loading content from local file: %q\n", file)
+	return readFile(file)
+}
+
+func getCSSFileWithFallback(fileName string) string {
+	return getFileWithFallback(fileName, cssExtension, cssDir)
+}
+
+func getDefinitionWithFileFallback(uiName string) string {
+	return getFileWithFallback(uiName, xmlExtension, definitionsDir)
+}
+
+func (g *Graphics) loadCSSFor(cssFile string) gtki.CssProvider {
+	cssData := getCSSFileWithFallback(cssFile)
+
+	cssProvider, err := g.gtk.CssProviderNew()
+	if err != nil {
+		fatal(err)
+	}
+
+	err = cssProvider.LoadFromData(cssData)
+	if err != nil {
+		fatalf("gui: failed load %s: %s", cssFile, err.Error())
+	}
+
+	return cssProvider
 }
 
 // This must be called from the UI thread - otherwise bad things will happen sooner or later

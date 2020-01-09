@@ -1,0 +1,15 @@
+.hostMeetingButton {
+  color: #22543D;
+  background-color: #9AE6B4;
+  padding: 20px 20px;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.joinMeetingButton {
+  color: #744210;
+  background-color: #FAF089;
+  padding: 20px 20px;
+  font-size: 21px;
+  font-weight: bold;
+}

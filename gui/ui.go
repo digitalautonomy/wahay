@@ -5,6 +5,7 @@ import (
 	"runtime"
 
 	"autonomia.digital/tonio/app/hosting"
+	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
 )
@@ -17,13 +18,15 @@ const (
 // Graphics represent the graphic configuration
 type Graphics struct {
 	gtk  gtki.Gtk
+	gdk  gdki.Gdk
 	glib glibi.Glib
 }
 
 // CreateGraphics creates a Graphic representation from the given arguments
-func CreateGraphics(gtkVal gtki.Gtk, glibVal glibi.Glib) Graphics {
+func CreateGraphics(gtkVal gtki.Gtk, glibVal glibi.Glib, gdkVal gdki.Gdk) Graphics {
 	return Graphics{
 		gtk:  gtkVal,
+		gdk:  gdkVal,
 		glib: glibVal,
 	}
 }
@@ -58,19 +61,6 @@ func NewGTK(gx Graphics) UI {
 		fatalf("Couldn't create application: %v", err)
 	}
 
-	// // Create the GUI css provider
-	// data, err := ioutil.ReadFile("./providers/gui.css")
-	// if err != nil {
-	// 	fatalf("Couldn't create css provider: %v", err)
-	// }
-
-	// cssProvider, err := gx.gtk.CssProviderNew()
-	// if err != nil {
-	// 	fatalf("Couldn't create css provider: %v", err)
-	// }
-
-	// _ = cssProvider.LoadFromData(string(data))
-
 	ret := &gtkUI{
 		app: app,
 		g:   gx,
@@ -81,6 +71,7 @@ func NewGTK(gx Graphics) UI {
 
 func (u *gtkUI) onActivate() {
 	u.createMainWindow()
+	u.setGlobalStyles()
 }
 
 func (u *gtkUI) createMainWindow() {
@@ -97,6 +88,12 @@ func (u *gtkUI) createMainWindow() {
 	})
 
 	win.ShowAll()
+}
+
+func (u *gtkUI) setGlobalStyles() {
+	prov := u.g.cssFor("gui")
+	screen, _ := u.g.gdk.ScreenGetDefault()
+	u.g.gtk.AddProviderForScreen(screen, prov, uint(gtki.STYLE_PROVIDER_PRIORITY_APPLICATION))
 }
 
 func (u *gtkUI) Loop() {

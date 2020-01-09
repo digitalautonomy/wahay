@@ -26,6 +26,7 @@
         <child>
           <object class="GtkButton" id="btnHostMeeting">
             <property name="label" translatable="yes">Host meeting</property>
+            <property name="name">hostMeetingButton</property>
             <property name="width_request">100</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -33,6 +34,9 @@
             <property name="tooltip_text" translatable="yes">Host a new meeting</property>
             <property name="image_position">top</property>
             <signal name="clicked" handler="on_host_meeting" swapped="no"/>
+            <style>
+              <class name="hostMeetingButton"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -44,6 +48,7 @@
         <child>
           <object class="GtkButton" id="btnJoinMeeting">
             <property name="label" translatable="yes">Join meeting</property>
+            <property name="name">joinMeetingButton</property>
             <property name="width_request">100</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -51,6 +56,9 @@
             <property name="tooltip_text" translatable="yes">Join to a meeting</property>
             <property name="image_position">bottom</property>
             <signal name="clicked" handler="on_join_meeting" swapped="no"/>
+            <style>
+              <class name="joinMeetingButton"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
