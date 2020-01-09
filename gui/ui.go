@@ -3,6 +3,7 @@ package gui
 import (
 	"os"
 	"runtime"
+	"time"
 
 	"autonomia.digital/tonio/app/hosting"
 	"github.com/atotto/clipboard"
@@ -131,12 +132,12 @@ func (u *gtkUI) quit() {
 	u.app.Quit()
 }
 
-func (u *gtkUI) copyToClipboard(text string) {
-	// TODO: show a notification
-	_ = clipboard.WriteAll(text)
-	//u.showNotification("Tonio", "The Meeting ID was copied to the clipboard.")
+func (u *gtkUI) copyToClipboard(text string) error {
+	return clipboard.WriteAll(text)
 }
 
-// func (u *gtkUI) showNotification(title string, message string) {
-
-// }
+func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
+	label.SetText(message)
+	time.Sleep(time.Duration(seconds) * time.Second)
+	label.SetText("")
+}

@@ -61,7 +61,9 @@ func (h *hostData) showMeetingControls() {
 				log.Print("server is nil")
 			}
 		},
-		"on_copy_meeting_id": h.copyMeetingIDToClipboard,
+		"on_copy_meeting_id": func() {
+			h.copyMeetingIDToClipboard(builder)
+		},
 	})
 
 	meetingID, err := builder.GetObject("lblMeetingID")
@@ -250,8 +252,19 @@ func (h *hostData) leaveHostMeeting() {
 	go h.runningState.close()
 }
 
-func (h *hostData) copyMeetingIDToClipboard() {
-	h.u.copyToClipboard(h.serviceID)
+func (h *hostData) copyMeetingIDToClipboard(builder gtki.Builder) {
+	err := h.u.copyToClipboard(h.serviceID)
+	if err != nil {
+		fatal("clipboard copying error")
+	}
+	object, err := builder.GetObject("lblMessage")
+	msgLabel := object.(gtki.Label)
+	if err != nil {
+		fatal("progamming error")
+	}
+	go func() {
+		h.u.messageToLabel(msgLabel, "The meeting ID was copied to clipboard", 5)
+	}()
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
