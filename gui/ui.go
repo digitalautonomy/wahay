@@ -125,7 +125,7 @@ func (u *gtkUI) joinMeeting() {
 func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
 	u.currentWindow = win
 	win.SetApplication(u.app)
-	u.doInUIThread(win.ShowAll)
+	u.doInUIThread(win.Show)
 }
 
 func (u *gtkUI) quit() {
