@@ -103,6 +103,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="margin_left">10</property>
+                <signal name="clicked" handler="on_send_by_email" swapped="no"/>
                 <style>
                   <class name="tertiaryButton"/>
                 </style>
@@ -184,8 +185,14 @@
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel" id="lblMessage">
-                <property name="visible">True</property>
+                <property name="visible">False</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
+                <property name="double_buffered">False</property>
+                <property name="label" translatable="yes">The meeting ID has been copied to Clipboard</property>
+                <style>
+                  <class name="notificationLabel"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -233,6 +240,20 @@
             <property name="position">4</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkLinkButton" id="lnkEmail">
+            <property name="sensitive">False</property>
+            <property name="can_focus">False</property>
+            <property name="receives_default">False</property>
+            <property name="double_buffered">False</property>
+            <property name="relief">none</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
@@ -249,9 +270,6 @@
     <property name="buttons">yes-no</property>
     <property name="text" translatable="yes">Are you sure you want to end this meeting?</property>
     <property name="secondary_text" translatable="yes">By clicking Yes, this meeting will end.</property>
-    <child>
-      <placeholder/>
-    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>

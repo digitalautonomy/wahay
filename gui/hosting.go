@@ -1,16 +1,27 @@
 package gui
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"math/rand"
 	"net"
+	"text/template"
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
 	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
 )
+
+type hostData struct {
+	u             *gtkUI
+	runningState  *runningMumble
+	serverControl hosting.Server
+	torControl    tor.Control
+	serviceID     string
+	next          func()
+}
 
 func (u *gtkUI) displayLoadingWindow(loaded chan bool) {
 	builder := u.g.uiBuilderFor("LoadingWindow")
@@ -63,6 +74,9 @@ func (h *hostData) showMeetingControls() {
 		},
 		"on_copy_meeting_id": func() {
 			h.copyMeetingIDToClipboard(builder)
+		},
+		"on_send_by_email": func() {
+			h.sendInvitationByEmail(builder)
 		},
 	})
 
@@ -125,15 +139,6 @@ func (h *hostData) openHostJoinMeetingWindow() {
 
 	h.switchToHostOnFinishMeeting()
 	h.u.switchToWindow(win)
-}
-
-type hostData struct {
-	u             *gtkUI
-	runningState  *runningMumble
-	serverControl hosting.Server
-	torControl    tor.Control
-	serviceID     string
-	next          func()
 }
 
 func (h *hostData) uiActionLeaveMeeting() {
@@ -252,19 +257,55 @@ func (h *hostData) leaveHostMeeting() {
 	go h.runningState.close()
 }
 
-func (h *hostData) copyMeetingIDToClipboard(builder gtki.Builder) {
+func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder) {
 	err := h.u.copyToClipboard(h.serviceID)
 	if err != nil {
 		fatal("clipboard copying error")
 	}
-	object, err := builder.GetObject("lblMessage")
-	msgLabel := object.(gtki.Label)
-	if err != nil {
-		fatal("progamming error")
-	}
+	lblMessage := builder.get("lblMessage").(gtki.Label)
+	lblMessage.SetProperty("visible", false)
+
 	go func() {
-		h.u.messageToLabel(msgLabel, "The meeting ID was copied to clipboard", 5)
+		h.u.messageToLabel(lblMessage, "The meeting ID has been copied to Clipboard", 5)
 	}()
+}
+
+func (h *hostData) sendInvitationByEmail(builder *uiBuilder) {
+	lnkEmail := builder.get("lnkEmail").(gtki.LinkButton)
+	lnkEmail.SetProperty("uri", h.getInvitationEmailURI())
+	lnkEmail.Emit("clicked")
+}
+
+func (h *hostData) getInvitationEmailURI() string {
+	subject := "Join Tonio Meeting"
+	body := h.getInvitationText()
+	uri := fmt.Sprintf("mailto:?subject=%s&body=%s", subject, body)
+	return uri
+}
+
+const invitationTextTemplate = `
+Please join Tonio meeting with the following details:%0D%0A%0D%0A
+{{ if .MeetingID }}
+Meeting ID: {{ .MeetingID }}%0D%0A
+{{ end }}
+`
+
+// Invitation is the information of the meeting
+type Invitation struct {
+	MeetingID string
+}
+
+func (h *hostData) getInvitationText() string {
+	data := Invitation{h.serviceID}
+	tmpl := template.Must(template.New("invitation").Parse(invitationTextTemplate))
+
+	var b bytes.Buffer
+	err := tmpl.Execute(&b, &data)
+	if err != nil {
+		fatal("an error ocurred while parsing the invitation text")
+	}
+
+	return b.String()
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
