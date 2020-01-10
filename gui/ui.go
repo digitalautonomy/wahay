@@ -137,9 +137,9 @@ func (u *gtkUI) copyToClipboard(text string) error {
 }
 
 func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
-	label.SetProperty("visible", true)
+	_ = label.SetProperty("visible", true)
 	label.SetText(message)
 	time.Sleep(time.Duration(seconds) * time.Second)
 	label.SetText("")
-	label.SetProperty("visible", false)
+	_ = label.SetProperty("visible", false)
 }

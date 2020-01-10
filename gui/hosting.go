@@ -263,7 +263,7 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder) {
 		fatal("clipboard copying error")
 	}
 	lblMessage := builder.get("lblMessage").(gtki.Label)
-	lblMessage.SetProperty("visible", false)
+	_ = lblMessage.SetProperty("visible", false)
 
 	go func() {
 		h.u.messageToLabel(lblMessage, "The meeting ID has been copied to Clipboard", 5)
@@ -272,8 +272,8 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder) {
 
 func (h *hostData) sendInvitationByEmail(builder *uiBuilder) {
 	lnkEmail := builder.get("lnkEmail").(gtki.LinkButton)
-	lnkEmail.SetProperty("uri", h.getInvitationEmailURI())
-	lnkEmail.Emit("clicked")
+	_ = lnkEmail.SetProperty("uri", h.getInvitationEmailURI())
+	_, _ = lnkEmail.Emit("clicked")
 }
 
 func (h *hostData) getInvitationEmailURI() string {
@@ -302,7 +302,7 @@ func (h *hostData) getInvitationText() string {
 	var b bytes.Buffer
 	err := tmpl.Execute(&b, &data)
 	if err != nil {
-		fatal("an error ocurred while parsing the invitation text")
+		fatal("An error occurred while parsing the invitation template")
 	}
 
 	return b.String()
