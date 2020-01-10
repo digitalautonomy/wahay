@@ -122,6 +122,10 @@ func (u *gtkUI) joinMeeting() {
 	u.openJoinWindow()
 }
 
+func (u *gtkUI) switchToMainWindow() {
+	u.switchToWindow(u.mainWindow)
+}
+
 func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
 	u.currentWindow = win
 	win.SetApplication(u.app)

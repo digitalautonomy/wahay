@@ -17,9 +17,11 @@ import (
 type hostData struct {
 	u             *gtkUI
 	runningState  *runningMumble
+	serverPort    int
 	serverControl hosting.Server
 	torControl    tor.Control
 	serviceID     string
+	autoJoin      bool
 	next          func()
 }
 
@@ -46,11 +48,17 @@ func (u *gtkUI) realHostMeetingHandler() {
 		u.displayLoadingWindow(loaded)
 	}()
 
-	h := u.createNewConferenceRoom()
+	h := &hostData{
+		u:        u,
+		autoJoin: false,
+		next:     func() {},
+	}
+
+	h.createOnionService()
 
 	loaded <- true
 
-	h.showMeetingControls()
+	h.showMeetingConfiguration()
 }
 
 func (h *hostData) showMeetingControls() {
@@ -173,40 +181,41 @@ func (u *gtkUI) ensureServerCollection() {
 	}
 }
 
-func (u *gtkUI) createNewConferenceRoom() *hostData {
+func (h *hostData) createOnionService() {
 	port := randomPort()
 	for !isPortAvailable(port) {
 		port = randomPort()
 	}
 
-	u.ensureServerCollection()
-
-	server, e := u.serverCollection.CreateServer(fmt.Sprintf("%d", port))
-	if e != nil {
-		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil
-	}
-	e = server.Start()
-	if e != nil {
-		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil
-	}
+	h.u.ensureServerCollection()
 
 	torController := tor.CreateController(*config.TorHost, *config.TorPort, *config.TorControlPassword)
 	serviceID, e := torController.CreateNewOnionService("127.0.0.1", fmt.Sprintf("%d", port), "64738")
 	if e != nil {
-		u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return nil
+		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+		return
 	}
 
-	h := &hostData{
-		u:             u,
-		serverControl: server,
-		torControl:    torController,
-		serviceID:     serviceID,
-		next:          func() {},
+	h.serverPort = port
+	h.torControl = torController
+	h.serviceID = serviceID
+}
+
+func (h *hostData) createNewConferenceRoom(creatingService chan bool) {
+	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort))
+	if e != nil {
+		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+		return
 	}
-	return h
+	e = server.Start()
+	if e != nil {
+		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+		return
+	}
+
+	h.serverControl = server
+
+	creatingService <- true
 }
 
 func (h *hostData) finishMeetingReal() {
@@ -318,3 +327,70 @@ func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
 	dialog.Destroy()
 	k(result)
 }
+
+/*Configure Meeting*/
+func (h *hostData) showMeetingConfiguration() {
+	builder := h.u.g.uiBuilderFor("ConfigureMeetingWindow")
+	win := builder.get("configureMeetingWindow").(gtki.ApplicationWindow)
+	chk := builder.get("chkAutoJoin").(gtki.CheckButton)
+	btnStart := builder.get("btnStartMeeting").(gtki.Button)
+
+	chk.SetActive(h.autoJoin)
+	h.changeStartButtonText(btnStart)
+
+	builder.ConnectSignals(map[string]interface{}{
+		"on_copy_meeting_id": func() {
+			h.copyMeetingIDToClipboard(builder)
+		},
+		"on_send_by_email": func() {
+			h.sendInvitationByEmail(builder)
+		},
+		"on_cancel": func() {
+			h.u.currentWindow.Hide()
+			h.u.switchToMainWindow()
+		},
+		"on_start_meeting": func() {
+			go h.startMeetingHandler()
+		},
+		"on_chkAutoJoin_toggled": func() {
+			h.autoJoin = chk.GetActive()
+			h.changeStartButtonText(btnStart)
+		},
+	})
+
+	meetingID, err := builder.GetObject("inpMeetingID")
+	if err != nil {
+		log.Printf("meeting id error: %s", err)
+	}
+	_ = meetingID.SetProperty("text", h.serviceID)
+
+	h.u.switchToWindow(win)
+}
+
+func (h *hostData) changeStartButtonText(btn gtki.Button) {
+	if h.autoJoin {
+		_ = btn.SetProperty("label", "Start & Join")
+	} else {
+		_ = btn.SetProperty("label", "Start Meeting")
+	}
+}
+
+func (h *hostData) startMeetingHandler() {
+	h.u.currentWindow.Hide()
+
+	creatingService := make(chan bool)
+
+	h.u.doInUIThread(func() {
+		h.u.displayLoadingWindow(creatingService)
+	})
+
+	h.createNewConferenceRoom(creatingService)
+
+	if h.autoJoin {
+		log.Printf("autojoin to the mumble instance")
+	} else {
+		h.showMeetingControls()
+	}
+}
+
+/*Configure Meeting*/
