@@ -15,14 +15,15 @@ import (
 )
 
 type hostData struct {
-	u             *gtkUI
-	runningState  *runningMumble
-	serverPort    int
-	serverControl hosting.Server
-	torControl    tor.Control
-	serviceID     string
-	autoJoin      bool
-	next          func()
+	u               *gtkUI
+	runningState    *runningMumble
+	serverPort      int
+	serverControl   hosting.Server
+	torControl      tor.Control
+	serviceID       string
+	autoJoin        bool
+	meetingPassword string
+	next            func()
 }
 
 func (u *gtkUI) displayLoadingWindow(loaded chan bool) {
@@ -49,9 +50,10 @@ func (u *gtkUI) realHostMeetingHandler() {
 	}()
 
 	h := &hostData{
-		u:        u,
-		autoJoin: false,
-		next:     func() {},
+		u:               u,
+		autoJoin:        u.config.GetAutoJoin(),
+		meetingPassword: "",
+		next:            func() {},
 	}
 
 	h.createOnionService()
@@ -202,7 +204,7 @@ func (h *hostData) createOnionService() {
 }
 
 func (h *hostData) createNewConferenceRoom(creatingService chan bool) {
-	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort))
+	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort), h.meetingPassword)
 	if e != nil {
 		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
 		return
@@ -333,6 +335,7 @@ func (h *hostData) showMeetingConfiguration() {
 	builder := h.u.g.uiBuilderFor("ConfigureMeetingWindow")
 	win := builder.get("configureMeetingWindow").(gtki.ApplicationWindow)
 	chk := builder.get("chkAutoJoin").(gtki.CheckButton)
+	password := builder.get("inpMeetingPassword").(gtki.Entry)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
 
 	chk.SetActive(h.autoJoin)
@@ -350,10 +353,14 @@ func (h *hostData) showMeetingConfiguration() {
 			h.u.switchToMainWindow()
 		},
 		"on_start_meeting": func() {
+			//TODO: Implement some validation function to check password.
+			h.meetingPassword, _ = password.GetText()
 			go h.startMeetingHandler()
 		},
 		"on_chkAutoJoin_toggled": func() {
 			h.autoJoin = chk.GetActive()
+			h.u.config.SetAutoJoin(h.autoJoin)
+			h.u.saveConfigOnly()
 			h.changeStartButtonText(btnStart)
 		},
 	})

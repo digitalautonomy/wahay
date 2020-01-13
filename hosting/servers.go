@@ -14,7 +14,7 @@ import (
 
 // Servers serves
 type Servers interface {
-	CreateServer(port string) (Server, error)
+	CreateServer(port string, password string) (Server, error)
 	DestroyServer(Server) error
 	Shutdown() error
 }
@@ -120,7 +120,7 @@ func (s *servers) startListener() {
 	}
 }
 
-func (s *servers) CreateServer(port string) (Server, error) {
+func (s *servers) CreateServer(port string, password string) (Server, error) {
 	s.nextID++
 	serv, err := grumbleServer.NewServer(int64(s.nextID))
 	if err != nil {
