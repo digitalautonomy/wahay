@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
-	"time"
 
 	"github.com/coyim/gotk3adapter/gtki"
 )
@@ -23,15 +22,6 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.Entry, gtki.ApplicationWindow, *ui
 	win.SetApplication(u.app)
 
 	return url, win, builder
-}
-
-func (u *gtkUI) displayLoadingMeetingDialog() {
-	u.currentWindow.Hide()
-
-	builder := u.g.uiBuilderFor("LoadingWindow")
-	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
-
-	u.switchToWindow(win)
 }
 
 func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
@@ -55,46 +45,30 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
 	u.switchToWindow(win)
 }
 
-func (u *gtkUI) launchMumbleRoutineStart(loaded chan bool) {
-	u.doInUIThread(func() {
-		u.displayLoadingMeetingDialog()
-	})
-
-	time.Sleep(10 * time.Second)
-
-	loaded <- true
-
-	u.doInUIThread(func() {
-		u.currentWindow.Hide()
-	})
-}
-
-func (u *gtkUI) joinMeetingHandler(url gtki.Entry) {
-	meetingID, err := url.GetText()
-	if err != nil {
-		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
-		return
-	}
-
-	if meetingID == "" {
+func (u *gtkUI) joinMeetingHandler(meetingID string) {
+	if len(meetingID) == 0 {
 		u.openErrorDialog("The Meeting ID cannot be blank")
 		return
 	}
 
-	loaded := make(chan bool)
-	go u.launchMumbleRoutineStart(loaded)
+	//loaded := make(chan bool)
 
 	state, err := openMumble(meetingID)
 	if err != nil {
 		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
 		return
 	}
+	//loaded <- true
 
 	u.switchContextWhenMumbleFinished(state)
-	go func() {
-		<-loaded
-		u.openCurrentMeetingWindow(state)
-	}()
+
+	u.currentWindow.Hide()
+	u.openCurrentMeetingWindow(state)
+
+	// go func() {
+	// 	//<-loaded
+	// 	//u.openCurrentMeetingWindow(state)
+	// }()
 }
 
 // Test Onion that can be used:
@@ -106,7 +80,8 @@ func (u *gtkUI) openJoinWindow() {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
-			u.joinMeetingHandler(url)
+			meetingID, _ := url.GetText()
+			u.joinMeetingHandler(meetingID)
 		},
 		"on_cancel": func() {
 			win.Hide()

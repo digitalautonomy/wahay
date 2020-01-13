@@ -115,14 +115,16 @@ func randomPort() int {
 
 func (h *hostData) joinMeetingHost() {
 	loaded := make(chan bool)
-	go h.u.launchMumbleRoutineStart(loaded)
 
-	state, err := launchMumbleClient(h.serviceID)
-	if err != nil {
-		h.u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
-		return
-	}
-	h.runningState = state
+	go func() {
+		state, err := launchMumbleClient(h.serviceID)
+		if err != nil {
+			h.u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
+			return
+		}
+		h.runningState = state
+		loaded <- true
+	}()
 
 	go func() {
 		<-loaded
@@ -203,7 +205,7 @@ func (h *hostData) createOnionService() {
 	h.serviceID = serviceID
 }
 
-func (h *hostData) createNewConferenceRoom(creatingService chan bool) {
+func (h *hostData) createNewConferenceRoom(complete chan bool) {
 	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort), h.meetingPassword)
 	if e != nil {
 		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
@@ -217,7 +219,7 @@ func (h *hostData) createNewConferenceRoom(creatingService chan bool) {
 
 	h.serverControl = server
 
-	creatingService <- true
+	complete <- true
 }
 
 func (h *hostData) finishMeetingReal() {
@@ -385,16 +387,16 @@ func (h *hostData) changeStartButtonText(btn gtki.Button) {
 func (h *hostData) startMeetingHandler() {
 	h.u.currentWindow.Hide()
 
-	creatingService := make(chan bool)
+	complete := make(chan bool)
 
-	h.u.doInUIThread(func() {
-		h.u.displayLoadingWindow(creatingService)
-	})
+	go func() {
+		h.createNewConferenceRoom(complete)
+	}()
 
-	h.createNewConferenceRoom(creatingService)
+	<-complete
 
 	if h.autoJoin {
-		log.Printf("autojoin to the mumble instance")
+		h.joinMeetingHost()
 	} else {
 		h.showMeetingControls()
 	}
