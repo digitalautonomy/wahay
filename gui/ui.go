@@ -1,10 +1,12 @@
 package gui
 
 import (
+	"log"
 	"os"
 	"runtime"
 	"time"
 
+	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
 	"github.com/atotto/clipboard"
 	"github.com/coyim/gotk3adapter/gdki"
@@ -51,6 +53,8 @@ type gtkUI struct {
 	currentWindow    gtki.ApplicationWindow
 	g                Graphics
 	serverCollection hosting.Servers
+
+	config *config.ApplicationConfig
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -74,6 +78,8 @@ func NewGTK(gx Graphics) UI {
 func (u *gtkUI) onActivate() {
 	u.createMainWindow()
 	u.setGlobalStyles()
+
+	go u.loadConfig("")
 }
 
 func (u *gtkUI) createMainWindow() {
@@ -146,4 +152,41 @@ func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
 	time.Sleep(time.Duration(seconds) * time.Second)
 	label.SetText("")
 	_ = label.SetProperty("visible", false)
+}
+
+func (u *gtkUI) loadConfig(configFile string) {
+	u.config.WhenLoaded(u.configLoaded)
+
+	var conf *config.ApplicationConfig
+	var err error
+	conf, err = config.LoadOrCreate(configFile)
+
+	u.config = conf
+
+	if err != nil {
+		log.Panic(err.Error())
+		u.doInUIThread(u.initialSetupWindow)
+		return
+	}
+}
+
+func (u *gtkUI) configLoaded(c *config.ApplicationConfig) {
+	//TODO: do stuffs when config loaded
+}
+
+func (u *gtkUI) initialSetupWindow() {
+	u.saveConfigOnly()
+}
+
+func (u *gtkUI) saveConfigOnlyInternal() error {
+	return u.config.Save()
+}
+
+func (u *gtkUI) saveConfigOnly() {
+	go func() {
+		err := u.saveConfigOnlyInternal()
+		if err != nil {
+			log.Println("Failed to save config file:", err.Error())
+		}
+	}()
 }
