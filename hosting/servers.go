@@ -130,6 +130,9 @@ func (s *servers) CreateServer(port string, password string) (Server, error) {
 	serv.Set("NoWebServer", "true")
 	serv.Set("Address", "127.0.0.1")
 	serv.Set("Port", port)
+	if len(password) > 0 {
+		serv.Set("ServerPassword", password)
+	}
 
 	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
 	if err != nil {

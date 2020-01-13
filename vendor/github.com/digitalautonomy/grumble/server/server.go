@@ -10,6 +10,7 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/sha1"
+	"crypto/sha256"
 	"crypto/tls"
 	"encoding/binary"
 	"encoding/hex"
@@ -175,8 +176,7 @@ func (server *Server) RootChannel() *Channel {
 	return root
 }
 
-// Set password as the new SuperUser password
-func (server *Server) SetSuperUserPassword(password string) {
+func (server *Server) setConfigPassword(key, password string) {
 	saltBytes := make([]byte, 24)
 	_, err := rand.Read(saltBytes)
 	if err != nil {
@@ -190,15 +190,23 @@ func (server *Server) SetSuperUserPassword(password string) {
 	digest := hex.EncodeToString(hasher.Sum(nil))
 
 	// Could be racy, but shouldn't really matter...
-	key := "SuperUserPassword"
 	val := "sha1$" + salt + "$" + digest
 	server.cfg.Set(key, val)
 	server.cfgUpdate <- &KeyValuePair{Key: key, Value: val}
 }
 
-// CheckSuperUserPassword checks whether password matches the set SuperUser password.
-func (server *Server) CheckSuperUserPassword(password string) bool {
-	parts := strings.Split(server.cfg.StringValue("SuperUserPassword"), "$")
+// Set password as the new SuperUser password
+func (server *Server) SetSuperUserPassword(password string) {
+	server.setConfigPassword("SuperUserPassword", password)
+}
+
+// Set password as the new Server password
+func (server *Server) SetServerPassword(password string) {
+	server.setConfigPassword("ServerPassword", password)
+}
+
+func (server *Server) checkPassword(key, password string) bool {
+	parts := strings.Split(server.cfg.StringValue(key), "$")
 	if len(parts) != 3 {
 		return false
 	}
@@ -234,6 +242,11 @@ func (server *Server) CheckSuperUserPassword(password string) bool {
 	}
 
 	return false
+}
+
+// CheckSuperUserPassword checks whether password matches the set SuperUser password.
+func (server *Server) CheckSuperUserPassword(password string) bool {
+	return server.checkPassword("SuperUserPassword", password)
 }
 
 // Called by the server to initiate a new client connection.
@@ -439,6 +452,20 @@ func (server *Server) handlerLoop() {
 	}
 }
 
+func constantTimeEqual(s1, s2 string) bool {
+	one := sha256.Sum256([]byte(s1))
+	two := sha256.Sum256([]byte(s2))
+	return bytes.Compare(one[:], two[:]) == 0
+}
+
+func (server *Server) hasServerPassword() bool {
+	return server.cfg.StringValue("ServerPassword") != ""
+}
+
+func (server *Server) checkServerPassword(password string) bool {
+	return server.checkPassword("ServerPassword", password)
+}
+
 // Handle an Authenticate protobuf message.  This is handled in a separate
 // goroutine to allow for remote authenticators that are slow to respond.
 //
@@ -498,12 +525,16 @@ func (server *Server) handleAuthenticate(client *Client, msg *Message) {
 		// First look up registration by name.
 		user, exists := server.UserNameMap[client.Username]
 		if exists {
-			if client.HasCertificate() && user.CertHash == client.CertHash() {
-				client.user = user
-			} else {
-				client.RejectAuth(mumbleproto.Reject_WrongUserPW, "Wrong certificate hash")
+			if client.HasCertificate() {
+				if user.CertHash != client.CertHash() {
+					client.RejectAuth(mumbleproto.Reject_WrongUserPW, "Wrong certificate or password for existing user")
+					return
+				}
+			} else if *auth.Password != "" && user.Password != "" && !constantTimeEqual(*auth.Password, user.Password) {
+				client.RejectAuth(mumbleproto.Reject_WrongUserPW, "Wrong certificate or password for existing user")
 				return
 			}
+			client.user = user
 		}
 
 		// Name matching didn't do.  Try matching by certificate.
@@ -511,6 +542,18 @@ func (server *Server) handleAuthenticate(client *Client, msg *Message) {
 			user, exists := server.UserCertMap[client.CertHash()]
 			if exists {
 				client.user = user
+			}
+		}
+	}
+
+	if client.user == nil && server.hasServerPassword() {
+		if auth.Password == nil {
+			client.RejectAuth(mumbleproto.Reject_WrongServerPW, "Invalid server password")
+			return
+		} else {
+			if !server.checkServerPassword(*auth.Password) {
+				client.RejectAuth(mumbleproto.Reject_WrongServerPW, "Invalid server password")
+				return
 			}
 		}
 	}
