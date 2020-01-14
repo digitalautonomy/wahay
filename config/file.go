@@ -1,9 +1,15 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
+)
+
+const (
+	fileExtensionJSON = ".json"
 )
 
 // TODO: Implements configuration file encryption
@@ -20,11 +26,14 @@ func ensureDir(dirname string, perm os.FileMode) {
 	}
 }
 
-func findConfigFile(filename string) string {
+func findFile(file string, filename string) string {
 	if len(filename) == 0 {
+		if len(file) == 0 {
+			log.Fatal("the filename is required")
+		}
 		dir := configDir()
 		ensureDir(dir, 0700)
-		basePath := filepath.Join(dir, "config.json")
+		basePath := filepath.Join(dir, file)
 		switch {
 		case fileExists(basePath + encryptedFileEnding):
 			return basePath + encryptedFileEnding
@@ -35,6 +44,10 @@ func findConfigFile(filename string) string {
 	}
 	ensureDir(filepath.Dir(filename), 0700)
 	return filename
+}
+
+func findConfigFile(filename string) string {
+	return findFile(fmt.Sprintf("config.%s", fileExtensionJSON), filename)
 }
 
 const tmpExtension = ".000~"
