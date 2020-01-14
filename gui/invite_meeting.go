@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"autonomia.digital/tonio/app/hosting"
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
@@ -99,8 +100,12 @@ func openMumble(meetingID string) (*runningMumble, error) {
 	if !isMeetingIDValid(meetingID) {
 		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", meetingID)
 	}
-
-	return launchMumbleClient(meetingID)
+	data := hosting.MeetingData{
+		MeetingID: meetingID,
+		Password:  "",
+		Username:  "",
+	}
+	return launchMumbleClient(data)
 }
 
 const onionServiceLength = 60
@@ -131,12 +136,10 @@ func (r *runningMumble) waitForFinish() {
 	r.finishChannel <- true
 }
 
-func launchMumbleClient(inviteID string) (*runningMumble, error) {
-	mumbleURL := fmt.Sprintf("mumble://%s", inviteID)
-
+func launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
-	cmd := exec.CommandContext(ctx, "torify", "mumble", mumbleURL)
+	cmd := exec.CommandContext(ctx, "torify", "mumble", hosting.GenerateURL(data))
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
 		return nil, err

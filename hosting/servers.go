@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -19,6 +20,14 @@ type Servers interface {
 	Shutdown() error
 }
 
+// MeetingData is an structure for storing meeting info
+// for creating the mumble url
+type MeetingData struct {
+	MeetingID string
+	Password  string
+	Username  string
+}
+
 // Create creates
 func Create() (Servers, error) {
 	s := &servers{}
@@ -32,6 +41,16 @@ type servers struct {
 	nextID  int
 	servers map[int64]*grumbleServer.Server
 	log     *log.Logger
+}
+
+// GenerateURL is a helper function for creating Mumble valid URLs
+func GenerateURL(data MeetingData) string {
+	u := url.URL{
+		Scheme: "mumble",
+		User:   url.UserPassword(data.Username, data.Password),
+		Host:   data.MeetingID,
+	}
+	return u.String()
 }
 
 func (s *servers) initializeSharedObjects() {

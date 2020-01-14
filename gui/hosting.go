@@ -21,6 +21,7 @@ type hostData struct {
 	torControl      tor.Control
 	serviceID       string
 	autoJoin        bool
+	meetingUsername string
 	meetingPassword string
 	next            func()
 }
@@ -122,7 +123,12 @@ func (h *hostData) joinMeetingHost() {
 	loaded := make(chan bool)
 
 	go func() {
-		state, err := launchMumbleClient(h.serviceID)
+		data := hosting.MeetingData{
+			MeetingID: h.serviceID,
+			Password:  h.meetingPassword,
+			Username:  h.meetingUsername,
+		}
+		state, err := launchMumbleClient(data)
 		if err != nil {
 			h.u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
 			return
@@ -403,7 +409,9 @@ func (h *hostData) showMeetingConfiguration() {
 		},
 		"on_start_meeting": func() {
 			//TODO: Implement some validation function to check password.
+			username := builder.get("inpMeetingUsername").(gtki.Entry)
 			password := builder.get("inpMeetingPassword").(gtki.Entry)
+			h.meetingUsername, _ = username.GetText()
 			h.meetingPassword, _ = password.GetText()
 			go h.startMeetingHandler()
 		},
@@ -468,10 +476,10 @@ func (h *hostData) onInviteParticipants() {
 	btnYahoo := builder.get("btnYahoo").(gtki.LinkButton)
 	btnOutlook := builder.get("btnMicrosoft").(gtki.LinkButton)
 
-	btnEmail.SetProperty("uri", h.getInvitationEmailURI())
-	btnGmail.SetProperty("uri", h.getInvitationGmailURI())
-	btnYahoo.SetProperty("uri", h.getInvitationYahooURI())
-	btnOutlook.SetProperty("uri", h.getInvitationMicrosoftURI())
+	_ = btnEmail.SetProperty("uri", h.getInvitationEmailURI())
+	_ = btnGmail.SetProperty("uri", h.getInvitationGmailURI())
+	_ = btnYahoo.SetProperty("uri", h.getInvitationYahooURI())
+	_ = btnOutlook.SetProperty("uri", h.getInvitationMicrosoftURI())
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": win.Hide,
