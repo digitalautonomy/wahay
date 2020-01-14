@@ -1,4 +1,4 @@
-image: golang:1.12
+image: golang:1.11
 
 variables:
   PACKAGE_PATH: /go/src/autonomia.digital/tonio/app
