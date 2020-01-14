@@ -81,11 +81,17 @@ func (h *hostData) showMeetingControls() {
 				log.Print("server is nil")
 			}
 		},
+		"on_invite_others": func() {
+			h.showInvitePeopleWindow(builder)
+		},
 		"on_copy_meeting_id": func() {
-			h.copyMeetingIDToClipboard(builder)
+			h.copyMeetingIDToClipboard(builder, "")
 		},
 		"on_send_by_email": func() {
 			h.sendInvitationByEmail(builder)
+		},
+		"on_copy_meeting_url": func() {
+			h.copyMeetingIDToClipboard(builder, "lblCopyUrlMessage")
 		},
 	})
 
@@ -269,8 +275,27 @@ func (h *hostData) leaveHostMeeting() {
 	go h.runningState.close()
 }
 
-func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder) {
+func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
 	err := h.u.copyToClipboard(h.serviceID)
+	if err != nil {
+		fatal("clipboard copying error")
+	}
+
+	var lblMessage gtki.Label
+	if len(label) == 0 {
+		lblMessage = builder.get("lblMessage").(gtki.Label)
+	} else {
+		lblMessage = builder.get(label).(gtki.Label)
+	}
+	_ = lblMessage.SetProperty("visible", false)
+
+	go func() {
+		h.u.messageToLabel(lblMessage, "The meeting ID has been copied to Clipboard", 5)
+	}()
+}
+
+func (h *hostData) copyInvitationToClipboard(builder *uiBuilder) {
+	err := h.u.copyToClipboard(h.getInvitationText())
 	if err != nil {
 		fatal("clipboard copying error")
 	}
@@ -278,7 +303,7 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder) {
 	_ = lblMessage.SetProperty("visible", false)
 
 	go func() {
-		h.u.messageToLabel(lblMessage, "The meeting ID has been copied to Clipboard", 5)
+		h.u.messageToLabel(lblMessage, "The invitation email has been copied to Clipboard", 5)
 	}()
 }
 
@@ -289,9 +314,30 @@ func (h *hostData) sendInvitationByEmail(builder *uiBuilder) {
 }
 
 func (h *hostData) getInvitationEmailURI() string {
-	subject := "Join Tonio Meeting"
+	subject := h.getInvitationSubject()
 	body := h.getInvitationText()
 	uri := fmt.Sprintf("mailto:?subject=%s&body=%s", subject, body)
+	return uri
+}
+
+func (h *hostData) getInvitationGmailURI() string {
+	subject := h.getInvitationSubject()
+	body := h.getInvitationText()
+	uri := fmt.Sprintf("https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=%s&body=%s", subject, body)
+	return uri
+}
+
+func (h *hostData) getInvitationYahooURI() string {
+	subject := h.getInvitationSubject()
+	body := h.getInvitationText()
+	uri := fmt.Sprintf("http://compose.mail.yahoo.com/?To=&Subj=%s&Body=%s", subject, body)
+	return uri
+}
+
+func (h *hostData) getInvitationMicrosoftURI() string {
+	subject := h.getInvitationSubject()
+	body := h.getInvitationText()
+	uri := fmt.Sprintf("https://dub130.mail.live.com/default.aspx?rru=compose&subject=%s&body=%s&to=#page=Compose", subject, body)
 	return uri
 }
 
@@ -305,6 +351,10 @@ Meeting ID: {{ .MeetingID }}%0D%0A
 // Invitation is the information of the meeting
 type Invitation struct {
 	MeetingID string
+}
+
+func (h *hostData) getInvitationSubject() string {
+	return "Join Tonio Meeting"
 }
 
 func (h *hostData) getInvitationText() string {
@@ -331,12 +381,10 @@ func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
 	k(result)
 }
 
-/*Configure Meeting*/
 func (h *hostData) showMeetingConfiguration() {
 	builder := h.u.g.uiBuilderFor("ConfigureMeetingWindow")
 	win := builder.get("configureMeetingWindow").(gtki.ApplicationWindow)
 	chk := builder.get("chkAutoJoin").(gtki.CheckButton)
-	password := builder.get("inpMeetingPassword").(gtki.Entry)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
 
 	chk.SetActive(h.autoJoin)
@@ -344,7 +392,7 @@ func (h *hostData) showMeetingConfiguration() {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_copy_meeting_id": func() {
-			h.copyMeetingIDToClipboard(builder)
+			h.copyMeetingIDToClipboard(builder, "")
 		},
 		"on_send_by_email": func() {
 			h.sendInvitationByEmail(builder)
@@ -355,9 +403,11 @@ func (h *hostData) showMeetingConfiguration() {
 		},
 		"on_start_meeting": func() {
 			//TODO: Implement some validation function to check password.
+			password := builder.get("inpMeetingPassword").(gtki.Entry)
 			h.meetingPassword, _ = password.GetText()
 			go h.startMeetingHandler()
 		},
+		"on_invite_others": h.onInviteParticipants,
 		"on_chkAutoJoin_toggled": func() {
 			h.autoJoin = chk.GetActive()
 			h.u.config.SetAutoJoin(h.autoJoin)
@@ -375,9 +425,15 @@ func (h *hostData) showMeetingConfiguration() {
 	h.u.switchToWindow(win)
 }
 
+func (h *hostData) showInvitePeopleWindow(builder *uiBuilder) {
+	h.u.currentWindow.Hide()
+	win := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
+	h.u.switchToWindow(win)
+}
+
 func (h *hostData) changeStartButtonText(btn gtki.Button) {
 	if h.autoJoin {
-		_ = btn.SetProperty("label", "Start & Join")
+		_ = btn.SetProperty("label", "Start Meeting & Join")
 	} else {
 		_ = btn.SetProperty("label", "Start Meeting")
 	}
@@ -394,11 +450,39 @@ func (h *hostData) startMeetingHandler() {
 
 	<-complete
 
-	if h.autoJoin {
-		h.joinMeetingHost()
-	} else {
-		h.showMeetingControls()
-	}
+	h.u.doInUIThread(func() {
+		if h.autoJoin {
+			h.joinMeetingHost()
+		} else {
+			h.showMeetingControls()
+		}
+	})
 }
 
-/*Configure Meeting*/
+func (h *hostData) onInviteParticipants() {
+	builder := h.u.g.uiBuilderFor("InvitePeopleWindow")
+	win := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
+
+	btnEmail := builder.get("btnEmail").(gtki.LinkButton)
+	btnGmail := builder.get("btnGmail").(gtki.LinkButton)
+	btnYahoo := builder.get("btnYahoo").(gtki.LinkButton)
+	btnOutlook := builder.get("btnMicrosoft").(gtki.LinkButton)
+
+	btnEmail.SetProperty("uri", h.getInvitationEmailURI())
+	btnGmail.SetProperty("uri", h.getInvitationGmailURI())
+	btnYahoo.SetProperty("uri", h.getInvitationYahooURI())
+	btnOutlook.SetProperty("uri", h.getInvitationMicrosoftURI())
+
+	builder.ConnectSignals(map[string]interface{}{
+		"on_close_window_signal": win.Hide,
+		"on_link_clicked":        win.Hide,
+		"on_copy_meeting_id": func() {
+			h.copyMeetingIDToClipboard(builder, "")
+		},
+		"on_copy_invitation": func() {
+			h.copyInvitationToClipboard(builder)
+		},
+	})
+
+	h.u.doInUIThread(win.Show)
+}
