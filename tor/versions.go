@@ -6,6 +6,9 @@ import (
 	"strings"
 )
 
+// MinSupportedVersion is the TOR minimun supported version
+const MinSupportedVersion = "0.3.2"
+
 // Simple utilities to manage version comparisons
 
 func errorsAny(es ...error) error {

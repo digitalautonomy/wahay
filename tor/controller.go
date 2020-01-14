@@ -25,10 +25,16 @@ type controller struct {
 	c        torgoController
 }
 
-const MinSupportedVersion = "0.3.2"
-const ControllerHost = "127.0.0.1"
-const ControllerPortTorService = "9051"
-const ControllerPortTonioTorInstance = "9951"
+// type controllerAuthData struct {
+// 	mode     string
+// 	host     string
+// 	port     string
+// 	password string
+// }
+
+// const ControllerHost = "127.0.0.1"
+// const ControllerPortTorService = "9051"
+// const ControllerPortTonioTorInstance = "9951"
 
 func (cntrl *controller) EnsureTorCompatibility() error {
 	tc, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
@@ -39,7 +45,6 @@ func (cntrl *controller) EnsureTorCompatibility() error {
 	err = tc.AuthenticatePassword(cntrl.password)
 	if err != nil {
 		return err
-		//log.Fatalf("Can not authenticate with password to control port: %s", err)
 	}
 
 	version, err := tc.GetVersion()
@@ -57,6 +62,10 @@ func (cntrl *controller) EnsureTorCompatibility() error {
 	}
 
 	return err
+}
+
+func (cntrl *controller) Authenticate() error {
+	return nil
 }
 
 func (cntrl *controller) DeleteOnionService(serviceID string) error {

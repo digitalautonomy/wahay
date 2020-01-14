@@ -330,21 +330,21 @@ func (h *hostData) getInvitationEmailURI() string {
 func (h *hostData) getInvitationGmailURI() string {
 	subject := h.getInvitationSubject()
 	body := h.getInvitationText()
-	uri := fmt.Sprintf("https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=%s&body=%s", subject, body)
+	uri := fmt.Sprintf("%s?view=cm&fs=1&tf=1&to=&su=%s&body=%s", gmailURL, subject, body)
 	return uri
 }
 
 func (h *hostData) getInvitationYahooURI() string {
 	subject := h.getInvitationSubject()
 	body := h.getInvitationText()
-	uri := fmt.Sprintf("http://compose.mail.yahoo.com/?To=&Subj=%s&Body=%s", subject, body)
+	uri := fmt.Sprintf("%s?To=&Subj=%s&Body=%s", yahooURL, subject, body)
 	return uri
 }
 
 func (h *hostData) getInvitationMicrosoftURI() string {
 	subject := h.getInvitationSubject()
 	body := h.getInvitationText()
-	uri := fmt.Sprintf("https://dub130.mail.live.com/default.aspx?rru=compose&subject=%s&body=%s&to=#page=Compose", subject, body)
+	uri := fmt.Sprintf("%s?rru=compose&subject=%s&body=%s&to=#page=Compose", outlookURL, subject, body)
 	return uri
 }
 
