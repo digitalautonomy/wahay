@@ -37,7 +37,6 @@ func createFile(configFile string) error {
 
 	_, _ = f.WriteString("CookieAuthentication 1\n")
 
-	log.Println("bytes written successfully")
 	err = f.Close()
 	if err != nil {
 		return err
@@ -55,31 +54,28 @@ func checkConfigFile() {
 	dataApp := fmt.Sprintf("%s/%s", configDir, "tonio/tor/data")
 	_, err := os.Stat(dataApp)
 	if err != nil {
-		log.Printf("Data directory not found, creating...")
-
 		errDir := createDirectory(dataApp)
 		if errDir != nil {
-			log.Fatalf("TOR data directory can not be created: %v", errDir)
+			log.Fatalf("Tor data directory can not be created: %v", errDir)
 		}
 
 		torConfigFile := fmt.Sprintf("%s/%s/%s/%s", configDir, "tonio", "tor", "torrc")
 
 		errFile := createFile(torConfigFile)
 		if errFile != nil {
-			log.Fatalf("TOR configuration file can not be created: %v", errDir)
+			log.Fatalf("Tor configuration file can not be created: %v", errDir)
 		}
 	}
 }
 
 func LaunchTorInstance() {
-	log.Println("LaunchTorInstance...")
-
 	checkConfigFile()
 
 	ctx := context.Background()
 
-	cmd := exec.CommandContext(ctx, "tor", "-f", "~/.config/tonio/tor/torrc")
+	ch := fmt.Sprintf("%s/tonio/tor/torrc", config.XdgConfigHome())
+	cmd := exec.CommandContext(ctx, "tor", "-f", ch)
 	if err := cmd.Start(); err != nil {
-		log.Fatalf("TOR instance can not be launched: %s", err)
+		log.Fatalf("Tor instance can not be launched: %s", err)
 	}
 }

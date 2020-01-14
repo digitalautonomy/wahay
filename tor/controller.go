@@ -3,12 +3,9 @@ package tor
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net"
 	"strconv"
 	"strings"
-
-	"autonomia.digital/tonio/app/config"
 
 	"github.com/wybiral/torgo"
 )
@@ -30,7 +27,8 @@ type controller struct {
 
 const MinSupportedVersion = "0.3.2"
 const ControllerHost = "127.0.0.1"
-const ControllerPort = "9951"
+const ControllerPortTorService = "9051"
+const ControllerPortTonioTorInstance = "9951"
 
 func (cntrl *controller) EnsureTorCompatibility() error {
 	tc, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
@@ -38,9 +36,10 @@ func (cntrl *controller) EnsureTorCompatibility() error {
 		return err
 	}
 
-	err = tc.AuthenticateCookie()
+	err = tc.AuthenticatePassword(cntrl.password)
 	if err != nil {
-		log.Fatalf("TOR new instance can not be launched: %s", err)
+		return err
+		//log.Fatalf("Can not authenticate with password to control port: %s", err)
 	}
 
 	version, err := tc.GetVersion()
@@ -75,9 +74,9 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 
 	cntrl.c = tc
 
-	err = tc.AuthenticateCookie()
+	err = tc.AuthenticatePassword(cntrl.password)
 	if err != nil {
-		log.Fatalf("TOR new instance can not be authenticated by cookie: %s", err)
+		return
 	}
 
 	servicePort, err := strconv.ParseUint(port, 10, 16)
@@ -102,29 +101,20 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 	}
 
 	serviceID = fmt.Sprintf("%s.onion", onion.ServiceID)
-	log.Printf("Service ID created: %s", serviceID)
 
 	return serviceID, nil
 }
 
 // CreateController takes the Tor information given and returns a
 // controlling interface
-func CreateController() Control {
+func CreateController(torHost, torPort, password string) Control {
 	f := func(v string) (torgoController, error) {
-		c, err := torgo.NewController(v)
-		if err != nil {
-			return nil, err
-		}
-
-		hd := config.XdgConfigHome()
-		c.CookieFile = fmt.Sprintf("%s/tonio/tor/data/control_auth_cookie", hd)
-
-		return c, nil
+		return torgo.NewController(v)
 	}
 	return &controller{
-		torHost:  ControllerHost,
-		torPort:  ControllerPort,
-		password: "",
+		torHost:  torHost,
+		torPort:  torPort,
+		password: password,
 		tc:       f,
 		c:        nil,
 	}

@@ -11,7 +11,6 @@ func fatal(v interface{}) {
 }
 
 func fatalf(format string, v ...interface{}) {
-	//	log.Printf(format, v...)
 	panic(fmt.Sprintf(format, v...))
 }
 

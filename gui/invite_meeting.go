@@ -52,14 +52,11 @@ func (u *gtkUI) joinMeetingHandler(meetingID string) {
 		return
 	}
 
-	//loaded := make(chan bool)
-
 	state, err := openMumble(meetingID)
 	if err != nil {
 		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
 		return
 	}
-	//loaded <- true
 
 	u.switchContextWhenMumbleFinished(state)
 
