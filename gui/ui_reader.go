@@ -8,8 +8,11 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"reflect"
 	"strings"
+	"sync"
 
+	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
 )
@@ -17,6 +20,7 @@ import (
 const (
 	xmlExtension = ".xml"
 	cssExtension = ".css"
+	imagesFolder = "images/"
 )
 
 const (
@@ -124,10 +128,75 @@ func (g *Graphics) builderForDefinition(uiName string) gtki.Builder {
 	return builder
 }
 
+func (b *uiBuilder) getItem(name string, target interface{}) {
+	v := reflect.ValueOf(target)
+	if v.Kind() != reflect.Ptr {
+		panic("builder.getItem() target argument must be a pointer")
+	}
+	elem := v.Elem()
+	elem.Set(reflect.ValueOf(b.get(name)))
+}
+
+//TODO: Why not a map[string]interface{}?
+func (b *uiBuilder) getItems(args ...interface{}) {
+	for len(args) >= 2 {
+		name, ok := args[0].(string)
+		if !ok {
+			panic("string argument expected in builder.getItems()")
+		}
+		b.getItem(name, args[1])
+		args = args[2:]
+	}
+}
+
 func (b *uiBuilder) get(name string) glibi.Object {
 	obj, err := b.GetObject(name)
 	if err != nil {
 		fatal(err)
 	}
 	return obj
+}
+
+func mustGetImageBytes(filename string) []byte {
+	bs, err := FSByte(false, imagesFolder+filename)
+	if err != nil {
+		panic("Developer error: getting the image " + filename + " but it does not exist")
+	}
+	return bs
+}
+
+// getPixbufFromBytes returns the pixbuff from a byte array.
+func (u *gtkUI) getPixbufFromBytes(bstream []byte) gdki.Pixbuf {
+	pl, err := u.g.gdk.PixbufLoaderNew()
+	if err != nil {
+		panic("Developer error: setting the image from >>>>>>>>")
+	}
+
+	var w sync.WaitGroup
+	w.Add(1)
+	pl.Connect("area-prepared", w.Done)
+
+	if _, err := pl.Write(bstream); err != nil {
+		log.Println(">> WARN - cannot write to PixbufLoader: " + err.Error())
+		return nil
+	}
+	if err := pl.Close(); err != nil {
+		log.Println(">> WARN - cannot close PixbufLoader: " + err.Error())
+		return nil
+	}
+
+	w.Wait() //Waiting for Pixbuf to load before using it
+
+	pb, err := pl.GetPixbuf()
+	if err != nil {
+		log.Println(">> WARN - cannot write to PixbufLoader: " + err.Error())
+		return nil
+	}
+	return pb
+}
+
+// setImageFromFile sets an image from a file name.
+func (u *gtkUI) setImageFromFile(i gtki.Image, filename string) {
+	pb := u.getPixbufFromBytes(mustGetImageBytes(filename))
+	i.SetFromPixbuf(pb)
 }
