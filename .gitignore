@@ -6,3 +6,4 @@ coverage.html
 dev/.vagrant/
 *.*~
 current-short-git-version
+.sass-cache

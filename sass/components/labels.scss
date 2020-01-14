@@ -1,0 +1,13 @@
+label {
+  &.control-label {
+    color: $text-black;
+    font-weight: $font-weight-bold;
+  }
+
+  &.label-success {
+    font-size: $font-size-medium;
+    color: $yellow-900;
+    background-color: $yellow-200;
+    padding: $spacing/1.5 $spacing;
+  }
+}

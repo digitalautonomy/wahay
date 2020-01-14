@@ -1,0 +1,80 @@
+.btn {
+  padding: 8px 20px;
+  font-size: $body-font-size;
+  font-weight: $font-weight-normal;
+  background-repeat: repeat-x;
+  border: $border-width $border-style $border-color-button;
+  box-shadow: none;
+  border-radius: 0.25em;
+
+  &:hover {
+    background-repeat: repeat-x;
+  }
+
+  &:active {
+    background-image: none;
+  }
+}
+
+.btn           { @include btn-solid($text-gray-dark, $gray-000, darken($gray-100, 2%)); }
+.btn-primary   { @include btn-solid($text-white, $green-400, $green-500); }
+.btn-secondary { @include btn-inverse($gray-900, $gray-000, darken($gray-100, 2%)); }
+.btn-blue      { @include btn-solid($text-white, lighten($blue-500, 8%), darken($blue-500, 2%)); }
+.btn-danger    { @include btn-inverse($red-600, $gray-000, darken($gray-100, 2%)); }
+.btn-orange    { @include btn-solid($text-white, $orange-600, darken($orange-600, 2%)); }
+
+// Outline button
+//
+// For when we need a linky-action that's not too heavy in busier
+// areas like conversation timelines.
+.btn-outline {
+  @include btn-outline($text-blue);
+}
+
+// Sizes
+.btn-lg {
+  border-radius: 0.2em;
+  padding: 15px 20px;
+  font-size: $font-size-large;
+}
+
+.btn-md {
+  border-radius: 0.2em;
+  padding: 12px 25px;
+  font-size: $font-size-medium;
+}
+
+.btn-sm {
+  border-radius: 0.1em;
+  padding: 3px 10px;
+  font-size: $font-size-small;
+}
+
+.btn-large {
+  padding: $em-spacer-6 1.25em;
+  font-size: inherit;
+  border-radius: 6px;
+}
+
+// Invisible button
+//
+// Typically used as a "cancel" button next to a .btn
+.btn-invisible {
+  color: $text-blue;
+  background: none;
+  border-width: 0;
+  box-shadow: none;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $text-blue;
+    background: none;
+    box-shadow: none;
+  }
+}
+
+.btn-link {
+  padding-left: 0;
+  padding-right: 0;
+}

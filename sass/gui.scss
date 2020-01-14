@@ -1,0 +1,27 @@
+// For more information about the GTK supported CSS2/CSS3
+// properties, please visit https://developer.gnome.org/gtk3/stable/chap-css-properties.html
+
+// Variables
+@import "./variables/typography";
+@import "./variables/colors";
+@import "./variables/layout";
+@import "./variables/misc";
+
+// Mixins
+@import "./mixins/buttons";
+
+// Utilities
+@import "./utilities/box-shadow";
+
+// Components
+@import "./components/windows";
+@import "./components/forms";
+@import "./components/buttons";
+@import "./components/labels";
+
+// Specific components
+@import "./ui/main-window";
+@import "./ui/loading-window";
+@import "./ui/invite-people-window";
+@import "./ui/host-meeting-window";
+@import "./ui/meeting-controls-window";

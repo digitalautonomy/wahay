@@ -3,13 +3,11 @@
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkApplicationWindow" id="startHostingWindow">
+    <property name="width_request">600</property>
     <property name="can_focus">False</property>
-    <property name="title">Meeting information</property>
-    <property name="window_position">center-always</property>
-    <property name="default_width">400</property>
-    <property name="default_height">500</property>
+    <property name="window_position">center</property>
     <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
     <child>
@@ -21,7 +19,6 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_bottom">20</property>
             <property name="baseline_position">top</property>
             <child>
               <object class="GtkLabel" id="lblHostMeeting">
@@ -51,7 +48,7 @@
                 <property name="margin_left">20</property>
                 <signal name="clicked" handler="on_join_meeting" swapped="no"/>
                 <style>
-                  <class name="hostMeetingWindowTopBarButton"/>
+                  <class name="btn"/>
                 </style>
               </object>
               <packing>
@@ -62,7 +59,7 @@
               </packing>
             </child>
             <style>
-              <class name="hostMeetingWindowTopBar"/>
+              <class name="host-meeting-toolbar"/>
             </style>
           </object>
           <packing>
@@ -75,95 +72,121 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="valign">center</property>
             <property name="margin_left">20</property>
             <property name="margin_right">20</property>
-            <property name="homogeneous">True</property>
-            <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Copy Meeting ID</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_right">10</property>
-                <signal name="clicked" handler="on_copy_meeting_id" swapped="no"/>
-                <style>
-                  <class name="tertiaryButton"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">Send by email</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_left">10</property>
-                <signal name="clicked" handler="on_send_by_email" swapped="no"/>
-                <style>
-                  <class name="tertiaryButton"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
-            <property name="margin_top">20</property>
-            <property name="margin_bottom">20</property>
-            <property name="border_width">0</property>
+            <property name="margin_top">40</property>
+            <property name="margin_bottom">40</property>
             <property name="orientation">vertical</property>
-            <property name="spacing">10</property>
             <property name="baseline_position">top</property>
             <child>
-              <object class="GtkLabel">
-                <property name="name">lblMeetingID</property>
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Meeting ID</property>
-                <property name="track_visited_links">False</property>
-                <property name="xalign">0</property>
-                <style>
-                  <class name="hostMeetingWindowLabel"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="lblMeetingID">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">sdlssldsdsdskdskdlkssqwkiwqwqwq.onion</property>
-                <property name="use_underline">True</property>
-                <property name="selectable">True</property>
-                <property name="track_visited_links">False</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
-                <style>
-                  <class name="hostMeetingWindowValue"/>
-                </style>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">center</property>
+                    <property name="border_width">0</property>
+                    <property name="spacing">10</property>
+                    <property name="baseline_position">top</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="name">lblMeetingID</property>
+                        <property name="width_request">120</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Meeting ID:</property>
+                        <property name="track_visited_links">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <style>
+                          <class name="control-label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="lblMeetingID">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="selectable">True</property>
+                        <property name="track_visited_links">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <style>
+                          <class name="hostMeetingWindowValue"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">center</property>
+                    <property name="margin_left">130</property>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Copy URL</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_copy_meeting_url" swapped="no"/>
+                        <style>
+                          <class name="btn-invisible"/>
+                          <class name="btn-link"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="lblCopyUrlMessage">
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="double_buffered">False</property>
+                        <property name="valign">center</property>
+                        <property name="margin_left">20</property>
+                        <property name="label" translatable="yes">The meeting ID has been copied to Clipboard</property>
+                        <property name="track_visited_links">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -175,83 +198,53 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkLabel" id="lblMessage">
-                <property name="visible">False</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
-                <property name="double_buffered">False</property>
-                <property name="label" translatable="yes">The meeting ID has been copied to Clipboard</property>
-                <style>
-                  <class name="notificationLabel"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
-            <property name="margin_top">20</property>
-            <property name="margin_bottom">20</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="btnFinishMeeting">
-                <property name="label" translatable="yes">Finish this meeting</property>
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_finish_meeting" swapped="no"/>
-                <style>
-                  <class name="hostMeetingFinishButton"/>
-                </style>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkButton" id="btnFinishMeeting">
+                    <property name="label" translatable="yes">Finish this meeting</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="on_finish_meeting" swapped="no"/>
+                    <style>
+                      <class name="btn-danger"/>
+                      <class name="btn-md"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
               </packing>
             </child>
+            <style>
+              <class name="window-actions"/>
+              <class name="bordered"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLinkButton" id="lnkEmail">
-            <property name="sensitive">False</property>
-            <property name="can_focus">False</property>
-            <property name="receives_default">False</property>
-            <property name="double_buffered">False</property>
-            <property name="relief">none</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">5</property>
           </packing>
         </child>
       </object>

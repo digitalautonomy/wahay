@@ -6,9 +6,8 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Join a meeting</property>
     <property name="resizable">False</property>
-    <property name="window_position">center-always</property>
-    <property name="default_width">500</property>
-    <property name="default_height">160</property>
+    <property name="window_position">mouse</property>
+    <property name="default_width">600</property>
     <signal name="destroy" handler="on_close" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
@@ -22,23 +21,56 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
             <property name="margin_top">20</property>
             <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel" id="lblMeetingID">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_bottom">10</property>
-                <property name="label" translatable="yes">Meeting ID</property>
-                <property name="track_visited_links">False</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
+                <property name="margin_bottom">20</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_bottom">10</property>
+                    <property name="label" translatable="yes">Meeting ID</property>
+                    <property name="track_visited_links">False</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entMeetingID">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="caps_lock_warning">False</property>
+                    <property name="secondary_icon_stock">gtk-info</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">False</property>
+                    <property name="secondary_icon_sensitive">False</property>
+                    <property name="placeholder_text" translatable="yes">Type the Meeting ID (normally an .onion address)</property>
+                    <property name="input_purpose">url</property>
+                    <style>
+                      <class name="form-control"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -47,17 +79,50 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entMeetingID">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="caps_lock_warning">False</property>
-                <property name="secondary_icon_stock">gtk-info</property>
-                <property name="primary_icon_activatable">False</property>
-                <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">False</property>
-                <property name="secondary_icon_sensitive">False</property>
-                <property name="placeholder_text" translatable="yes">Type the Meeting ID (normally an .onion address)</property>
-                <property name="input_purpose">url</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_bottom">10</property>
+                    <property name="label" translatable="yes">Screen Name</property>
+                    <property name="track_visited_links">False</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entScreenName">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="caps_lock_warning">False</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">False</property>
+                    <property name="secondary_icon_sensitive">False</property>
+                    <property name="placeholder_text" translatable="yes">Type your username or screen name</property>
+                    <property name="input_purpose">url</property>
+                    <style>
+                      <class name="form-control"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -65,6 +130,9 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <style>
+              <class name="window-content"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -76,48 +144,59 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
-            <property name="margin_bottom">20</property>
-            <property name="homogeneous">True</property>
             <property name="baseline_position">bottom</property>
             <child>
-              <object class="GtkButton" id="btnCancel">
-                <property name="label" translatable="yes">Cancel</property>
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_right">10</property>
-                <property name="relief">none</property>
-                <signal name="clicked" handler="on_cancel" swapped="no"/>
-                <style>
-                  <class name="inviteJoinCancelButton"/>
-                </style>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkButton" id="btnCancel">
+                    <property name="label" translatable="yes">Cancel</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="relief">none</property>
+                    <signal name="clicked" handler="on_cancel" swapped="no"/>
+                    <style>
+                      <class name="btn"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="btnJoin">
+                    <property name="label" translatable="yes">Join to the meeting</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="margin_left">20</property>
+                    <signal name="clicked" handler="on_join" swapped="no"/>
+                    <style>
+                      <class name="btn-orange"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkButton" id="btnJoin">
-                <property name="label" translatable="yes">Join to the meeting</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="margin_left">10</property>
-                <signal name="clicked" handler="on_join" swapped="no"/>
-                <style>
-                  <class name="inviteJoinButton"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
+            <style>
+              <class name="window-actions"/>
+              <class name="bordered"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -128,5 +207,8 @@
         </child>
       </object>
     </child>
+    <style>
+      <class name="light"/>
+    </style>
   </object>
 </interface>

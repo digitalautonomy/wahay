@@ -1,0 +1,24 @@
+// Box shadow utilities
+
+// Box shadows
+
+.box-shadow {
+  box-shadow: $box-shadow;
+}
+
+.box-shadow-medium {
+  box-shadow: $box-shadow-medium;
+}
+
+.box-shadow-large {
+  box-shadow: $box-shadow-large;
+}
+
+.box-shadow-extra-large {
+  box-shadow: $box-shadow-extra-large;
+}
+
+// Turn off box shadow
+.box-shadow-none {
+  box-shadow: none;
+}

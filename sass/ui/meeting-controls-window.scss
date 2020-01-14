@@ -1,0 +1,16 @@
+%meeting-control {
+  border-radius: 100%;
+  padding: $spacing;
+  font-size: 21px;
+  font-weight: $font-weight-bold;
+}
+
+.control-leave-call {
+  @extend %meeting-control;
+  @include btn-solid($text-white, $orange-600, darken($orange-600, 2%));
+}
+
+.control-finish-call {
+  @extend %meeting-control;
+  @include btn-solid($text-white, $red-600, darken($red-600, 2%));
+}

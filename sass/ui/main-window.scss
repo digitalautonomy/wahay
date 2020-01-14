@@ -1,0 +1,29 @@
+.main-window-top-bar {
+  padding: $spacing;
+
+  .main-window-btn-settings {
+    @extend .btn;
+  }
+}
+
+.main-window-actions {
+  padding: $spacing;
+
+  .btn-host-meeting {
+    @extend .btn;
+    @extend .btn-lg;
+    @extend .btn-blue;
+  }
+  
+  .btn-join-meeting {
+    @extend .btn;
+    @extend .btn-lg;
+    @extend .btn-orange;
+  }
+}
+
+.main-window-status-bar {
+  color: $gray-200;
+  padding: $spacing;
+  background-color: $gray-800;
+}

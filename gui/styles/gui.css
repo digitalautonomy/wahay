@@ -1,282 +1,344 @@
-/** This applies to all widgets */
+.box-shadow {
+  box-shadow: 0 1px 1px rgba(27, 31, 35, 0.1); }
+
+.box-shadow-medium {
+  box-shadow: 0 1px 5px rgba(27, 31, 35, 0.15); }
+
+.box-shadow-large {
+  box-shadow: 0 1px 15px rgba(27, 31, 35, 0.15); }
+
+.box-shadow-extra-large {
+  box-shadow: 0 10px 50px rgba(27, 31, 35, 0.07); }
+
+.box-shadow-none {
+  box-shadow: none; }
+
 window {
-  color:#2D3748;
-  background-color: #FFFFFF;
-}
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  background-color: #fff;
+  font-size: 14px; }
+  window .window-content {
+    padding: 20px; }
+  window .window-actions {
+    padding: 20px; }
+    window .window-actions.bordered {
+      border-top: 1px solid #d1d5da;
+      background-color: #f6f8fa; }
+  window.light {
+    background-color: #f6f8fa; }
+    window.light .window-actions.bordered {
+      background-color: #fff; }
 
-.primaryButton {
-  color: #FFFFFF;
-  font-size: 14px;
-  opacity: 0.9;
-  font-weight: 500;
-  border: 2px solid #2A4365;
-  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
-  border-radius: 4px;
-  box-shadow: none;
-  padding: 10px 20px;
-}
-
-.primaryButton:hover {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
-}
-
-.primaryButton:active {
-  color: #FFFFFF;
-  background: rgb(43, 110, 177);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
-
-.tertiaryButton {
-  color: #002D04;
-  font-size: 14px;
-  font-weight: 500;
-  border: 1px solid #E2E8F0;
-  background-color: #FFFFFF;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(238, 244, 251, 1) 100%);
-  border-radius: 4px;
-  box-shadow: none;
-  padding: 10px 20px;
-}
-
-.tertiaryButton:hover {
-  color: #002D04;
-  background: rgb(238, 244, 251);
-}
-
-.tertiaryButton:active {
-  color: #002D04;
-  background: rgb(238, 244, 251);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
-
-.notificationLabel {
-  color: #744210;
-  background-color: #FAF089;
-  padding: 15px 20px;
-  font-size: 16px;
-}
-
-/** TONIO MAIN WINDOW
-  ========================================================== */
-.topBar {
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #CBD5E0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  padding: 15px 20px;
-}
-
-.topBarSettingsButton {
-  color: #002D04;
-  font-size: 14px;
-  font-weight: 500;
-  border: 1px solid #E2E8F0;
-  background-color: #FFFFFF;
-  border-radius: 4px;
-  box-shadow: none;
-}
-
-.topBarSettingsButton:hover {
-  color: #FFFFFF;
-  border-color: #1A202C;
-  background-color: #1A202C;
-}
-
-.hostMeetingButton {
-  color: #FFFFFF;
-  opacity: 0.9;
-  font-family: sans-serif;
-  border: 2px solid #2A4365;
-  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
-  padding: 20px;
-  font-size: 24px;
-  font-weight: 500;
-  border-radius: 4px;
-}
-
-.hostMeetingButton:hover {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
-}
-
-.hostMeetingButton:active {
-  background: rgb(43, 110, 177);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
-
-.joinMeetingButton {
-  color: #FFFFFF;
-  opacity: 0.9;
-  font-family: sans-serif;
-  border: 2px solid #744210;
-  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
-  padding: 20px;
-  font-size: 24px;
-  font-weight: 500;
-  border-radius: 4px;
-}
-
-.joinMeetingButton:hover {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
-}
-
-.joinMeetingButton:active {
-  background: rgb(223, 110, 34);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
-
-.statusBar {
-  background-color: #1A202C;
-  padding: 15px 20px;
-}
-
-.statusBarLabel {
-  color: #FFFFFF;
-  font-size: 14px;
-}
-
-/** TONIO HOST MEETING WINDOW
-  ========================================================== */
-.hostMeetingWindowTopBar {
-  padding: 15px 20px;
-  background: linear-gradient(to bottom, rgba(104, 211, 145, 1) 0%, rgba(58, 191, 127, 1) 100%);
-}
-
-.hostMeetingWindowTopBarLabel {
+.form-control {
+  background-color: #fff;
+  border: 1px solid rgba(27, 31, 35, 0.3);
+  box-shadow: inset 0 2px 2px rgba(27, 31, 35, 0.1);
   font-size: 18px;
-  color: #002D04;
-  font-weight: 500;
-}
+  padding-left: 10px;
+  padding-right: 10px; }
+  .form-control:disabled {
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+  .form-control:not(:disabled):focus {
+    border-color: rgba(27, 31, 35, 0.4);
+    box-shadow: 0 2px 3px rgba(27, 31, 35, 0.2); }
 
-.hostMeetingWindowTopBarButton {
-  color: #002D04;
+.btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
+  padding: 8px 20px;
   font-size: 14px;
-  font-weight: 500;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background-color: #FFFFFF;
-  border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-}
-
-.hostMeetingFinishButton {
-  color: #FFFFFF;
-  opacity: 0.9;
-  border: 2px solid #C53030;
-  background: linear-gradient(to bottom, rgba(245, 101, 101, 1) 0%, rgba(229, 62, 62, 1) 100%);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
-  padding: 20px;
-  font-size: 24px;
-  font-weight: 500;
-  border-radius: 4px;
-}
-
-.hostMeetingFinishButton:hover {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(245, 101, 101, 1) 0%, rgba(229, 62, 62, 1) 100%);
-}
-
-.hostMeetingFinishButton:active {
-  background: rgb(229, 62, 62);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
-
-.hostMeetingWindowLabel {
-  font-weight: 700;
-  font-size: 18px;
-  color: #1A202C;
-}
-
-.hostMeetingWindowValue {
-  font-size: 18px;
-  color: #4A5568;
-}
-
-/** TONIO HOST MEETING CONTROLS WINDOW
-  ========================================================== */
-.hostMeetingLeaveButton {
-  color: #FFFFFF;
-  opacity: 0.9;
-  font-family: sans-serif;
-  border: 2px solid #744210;
-  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
-  padding: 20px;
-  font-size: 24px;
-  font-weight: 500;
-  border-radius: 4px;
-}
-
-.hostMeetingLeaveButton:hover {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
-}
-
-.hostMeetingLeaveButton:active {
-  background: rgb(223, 110, 34);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
-
-/** TONIO PARTICIPANT JOIN MEETING WINDOW
-  ========================================================== */
-.inviteJoinCancelButton {
-  color: #002D04;
-  font-size: 16px;
-  font-weight: 500;
-  border: 2px solid #E2E8F0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(238, 244, 251, 1) 100%);
-  border-radius: 4px;
-  padding: 15px 20px;
+  font-weight: 400;
+  background-repeat: repeat-x;
+  border: 1px solid rgba(27, 31, 35, 0.2);
   box-shadow: none;
-}
+  border-radius: 0.25em; }
+  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover, .main-window-actions .btn-host-meeting:hover, .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
+    background-repeat: repeat-x; }
+  .btn:active, .main-window-top-bar .main-window-btn-settings:active, .main-window-actions .btn-host-meeting:active, .main-window-actions .btn-join-meeting:active, .invite-email-link:active, .invite-window-btn:active {
+    background-image: none; }
 
-.inviteJoinButton {
-  color: #FFFFFF;
-  opacity: 0.9;
-  font-family: sans-serif;
-  border: 2px solid #2A4365;
-  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+.btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
+  color: #24292e;
+  background-color: #eff3f6;
+  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%); }
+  .btn:focus, .main-window-top-bar .main-window-btn-settings:focus, .main-window-actions .btn-host-meeting:focus, .main-window-actions .btn-join-meeting:focus, .invite-email-link:focus, .invite-window-btn:focus {
+    box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0.3); }
+  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover, .main-window-actions .btn-host-meeting:hover, .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
+    background-color: #e6ebf1;
+    background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
+    border-color: rgba(27, 31, 35, 0.35); }
+  .btn:active, .main-window-top-bar .main-window-btn-settings:active, .main-window-actions .btn-host-meeting:active, .main-window-actions .btn-join-meeting:active, .invite-email-link:active, .invite-window-btn:active {
+    background-color: #e9ecef;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.35);
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled, .main-window-actions .btn-host-meeting:disabled, .main-window-actions .btn-join-meeting:disabled, .invite-email-link:disabled, .invite-window-btn:disabled {
+    color: rgba(36, 41, 46, 0.4);
+    background-color: #eff3f6;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+.btn-primary {
+  color: #fff;
+  background-color: #28a745;
+  background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+  border-color: #28a745; }
+  .btn-primary:focus {
+    box-shadow: 0 0 0 0.2em rgba(52, 208, 88, 0.4); }
+  .btn-primary:hover {
+    background-color: #269f42;
+    background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
+    border-color: #269f42; }
+  .btn-primary:active {
+    background-color: #279f43;
+    background-image: none;
+    border-color: #269f42;
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .btn-primary:disabled {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #94d3a2;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+.btn-secondary {
+  color: #24292e;
+  background-color: #fafbfc;
+  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%); }
+  .btn-secondary:focus {
+    box-shadow: 0 0 0 0.2em rgba(36, 41, 46, 0.4); }
+  .btn-secondary:hover {
+    color: #fff;
+    background-color: #24292e;
+    background-image: linear-gradient(-180deg, #3a434b 0%, #24292e 90%);
+    border-color: rgba(27, 31, 35, 0.5); }
+  .btn-secondary:active {
+    color: #fff;
+    background-color: #191c20;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.5);
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .btn-secondary:disabled {
+    color: rgba(36, 41, 46, 0.4);
+    background-color: #eff3f6;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+.btn-blue, .main-window-actions .btn-host-meeting {
+  color: #fff;
+  background-color: #0361cc;
+  background-image: linear-gradient(-180deg, #0679fc 0%, #0361cc 90%);
+  border-color: #0361cc; }
+  .btn-blue:focus, .main-window-actions .btn-host-meeting:focus {
+    box-shadow: 0 0 0 0.2em rgba(6, 121, 252, 0.4); }
+  .btn-blue:hover, .main-window-actions .btn-host-meeting:hover {
+    background-color: #035cc2;
+    background-image: linear-gradient(-180deg, #0374f4 0%, #035cc2 90%);
+    border-color: #035cc2; }
+  .btn-blue:active, .main-window-actions .btn-host-meeting:active {
+    background-color: #045cc1;
+    background-image: none;
+    border-color: #035cc2;
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .btn-blue:disabled, .main-window-actions .btn-host-meeting:disabled {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #81b0e6;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+.btn-danger {
+  color: #cb2431;
+  background-color: #fafbfc;
+  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%); }
+  .btn-danger:focus {
+    box-shadow: 0 0 0 0.2em rgba(203, 36, 49, 0.4); }
+  .btn-danger:hover {
+    color: #fff;
+    background-color: #cb2431;
+    background-image: linear-gradient(-180deg, #de4450 0%, #cb2431 90%);
+    border-color: rgba(27, 31, 35, 0.5); }
+  .btn-danger:active {
+    color: #fff;
+    background-color: #b5202c;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.5);
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .btn-danger:disabled {
+    color: rgba(203, 36, 49, 0.4);
+    background-color: #eff3f6;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+.btn-orange, .main-window-actions .btn-join-meeting {
+  color: #fff;
+  background-color: #d95e09;
+  background-image: linear-gradient(-180deg, #e36209 0%, #d95e09 90%);
+  border-color: #d95e09; }
+  .btn-orange:focus, .main-window-actions .btn-join-meeting:focus {
+    box-shadow: 0 0 0 0.2em rgba(227, 98, 9, 0.4); }
+  .btn-orange:hover, .main-window-actions .btn-join-meeting:hover {
+    background-color: #cf5a08;
+    background-image: linear-gradient(-180deg, #d95e09 0%, #cf5a08 90%);
+    border-color: #cf5a08; }
+  .btn-orange:active, .main-window-actions .btn-join-meeting:active {
+    background-color: #bc5108;
+    background-image: none;
+    border-color: #cf5a08;
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .btn-orange:disabled, .main-window-actions .btn-join-meeting:disabled {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #ecaf84;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+.btn-outline {
+  color: #0366d6;
+  background-color: #fff;
+  background-image: none; }
+  .btn-outline:hover, .btn-outline:active {
+    color: #fff;
+    background-color: #0366d6;
+    background-image: none;
+    border-color: #0366d6; }
+  .btn-outline:focus {
+    border-color: #0366d6;
+    box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0.4); }
+  .btn-outline:disabled {
+    color: rgba(27, 31, 35, 0.3);
+    background-color: #fff;
+    border-color: rgba(27, 31, 35, 0.15);
+    box-shadow: none; }
+
+.btn-lg, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting {
+  border-radius: 0.2em;
   padding: 15px 20px;
+  font-size: 18px; }
+
+.btn-md {
+  border-radius: 0.2em;
+  padding: 12px 25px;
+  font-size: 16px; }
+
+.btn-sm {
+  border-radius: 0.1em;
+  padding: 3px 10px;
+  font-size: 12px; }
+
+.btn-large {
+  padding: 0.75em 1.25em;
+  font-size: inherit;
+  border-radius: 6px; }
+
+.btn-invisible {
+  color: #0366d6;
+  background: none;
+  border-width: 0;
+  box-shadow: none; }
+  .btn-invisible:hover, .btn-invisible:active, .btn-invisible:focus {
+    color: #0366d6;
+    background: none;
+    box-shadow: none; }
+
+.btn-link {
+  padding-left: 0;
+  padding-right: 0; }
+
+label.control-label {
+  color: #1b1f23;
+  font-weight: 600; }
+label.label-success {
   font-size: 16px;
-  font-weight: 500;
-  border-radius: 4px;
-}
+  color: #735c0f;
+  background-color: #fff5b1;
+  padding: 13.3333333333px 20px; }
 
-.inviteJoinButton:hover {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(53, 132, 207, 1) 0%, rgba(43, 110, 177, 1) 100%);
-}
+.main-window-top-bar {
+  padding: 20px; }
 
-.inviteJoinButton:active {
-  background: rgb(43, 110, 177);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
+.main-window-actions {
+  padding: 20px; }
 
-/** TONIO PARTICIPANT MEETING CONTROLS WINDOW
-  ========================================================== */
-.meetingLeaveButton {
-  color: #FFFFFF;
-  opacity: 0.9;
-  font-family: sans-serif;
-  border: 2px solid #744210;
-  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+.main-window-status-bar {
+  color: #e1e4e8;
   padding: 20px;
-  font-size: 24px;
-  font-weight: 500;
-  border-radius: 4px;
-}
+  background-color: #2f363d; }
 
-.meetingLeaveButton:hover {
-  opacity: 1;
-  background: linear-gradient(to bottom, rgba(236, 135, 52, 1) 0%, rgba(223, 110, 34, 1) 100%);
-}
+.loading-window {
+  color: #e1e4e8;
+  background-color: #2f363d;
+  font-size: 16px; }
 
-.meetingLeaveButton:active {
-  background: rgb(223, 110, 34);
-  box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.25);
-}
+.invite-email-link {
+  border-radius: 100%; }
+
+.invite-window-bottom {
+  padding: 20px;
+  border-top: 1px solid #e1e4e8; }
+
+.invite-window-btn {
+  padding-left: 20px;
+  padding-right: 20px; }
+
+.host-meeting-toolbar {
+  background-color: #28a745;
+  padding: 20px;
+  font-size: 18px;
+  color: #fff; }
+
+.control-leave-call, .control-finish-call {
+  border-radius: 100%;
+  padding: 20px;
+  font-size: 21px;
+  font-weight: 600; }
+
+.control-leave-call {
+  color: #fff;
+  background-color: #d95e09;
+  background-image: linear-gradient(-180deg, #e36209 0%, #d95e09 90%);
+  border-color: #d95e09; }
+  .control-leave-call:focus {
+    box-shadow: 0 0 0 0.2em rgba(227, 98, 9, 0.4); }
+  .control-leave-call:hover {
+    background-color: #cf5a08;
+    background-image: linear-gradient(-180deg, #d95e09 0%, #cf5a08 90%);
+    border-color: #cf5a08; }
+  .control-leave-call:active {
+    background-color: #bc5108;
+    background-image: none;
+    border-color: #cf5a08;
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .control-leave-call:disabled {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #ecaf84;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+.control-finish-call {
+  color: #fff;
+  background-color: #c2222f;
+  background-image: linear-gradient(-180deg, #cb2431 0%, #c2222f 90%);
+  border-color: #c2222f; }
+  .control-finish-call:focus {
+    box-shadow: 0 0 0 0.2em rgba(203, 36, 49, 0.4); }
+  .control-finish-call:hover {
+    background-color: #ba212d;
+    background-image: linear-gradient(-180deg, #c2222f 0%, #ba212d 90%);
+    border-color: #ba212d; }
+  .control-finish-call:active {
+    background-color: #a91e29;
+    background-image: none;
+    border-color: #ba212d;
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+  .control-finish-call:disabled {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #e19197;
+    background-image: none;
+    border-color: rgba(27, 31, 35, 0.2);
+    box-shadow: none; }
+
+/*# sourceMappingURL=gui.css.map */

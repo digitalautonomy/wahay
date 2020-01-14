@@ -1,0 +1,26 @@
+window {
+  font-family: $desktop-font;
+  background-color: $bg-white;
+  font-size: $desktop-font-size;
+
+  .window-content {
+    padding: $spacing;
+  }
+
+  .window-actions {
+    padding: $spacing;
+
+    &.bordered {
+      border-top: 1px solid $gray-300;
+      background-color: $gray-100;
+    }
+  }
+
+  &.light {
+    background-color: $gray-100;
+
+    .window-actions.bordered {
+      background-color: $white;
+    }
+  }
+}

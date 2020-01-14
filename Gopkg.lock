@@ -28,7 +28,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:343ede58dbe3c0ecefc347c4515a68e11f689429357419bcc0c361b87716ea64"
+  digest = "1:d86d221cec0ea1b42edbd2cb578c860102632bf0bff88d539f7aedddb9bd809e"
   name = "github.com/digitalautonomy/grumble"
   packages = [
     "pkg/acl",
@@ -48,7 +48,7 @@
     "server",
   ]
   pruneopts = "UT"
-  revision = "ef96dd74e512c046f608e21dace9b78df083dd99"
+  revision = "c109af8d88b4b9cb77afe1f18572c66027cf8c0b"
 
 [[projects]]
   digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
@@ -154,6 +154,7 @@
     "github.com/atotto/clipboard",
     "github.com/coyim/gotk3adapter/gdka",
     "github.com/coyim/gotk3adapter/gdki",
+    "github.com/coyim/gotk3adapter/glib_mock",
     "github.com/coyim/gotk3adapter/gliba",
     "github.com/coyim/gotk3adapter/glibi",
     "github.com/coyim/gotk3adapter/gtk_mock",

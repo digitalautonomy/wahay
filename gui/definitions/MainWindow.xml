@@ -42,11 +42,11 @@
               <object class="GtkButton">
                 <property name="label" translatable="yes">Settings</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <signal name="clicked" handler="on_settings_click" swapped="no"/>
                 <style>
-                  <class name="topBarSettingsButton"/>
+                  <class name="main-window-btn-settings"/>
                 </style>
               </object>
               <packing>
@@ -56,7 +56,7 @@
               </packing>
             </child>
             <style>
-              <class name="topBar"/>
+              <class name="main-window-top-bar"/>
             </style>
           </object>
           <packing>
@@ -69,8 +69,6 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
             <property name="margin_top">100</property>
             <property name="margin_bottom">100</property>
             <property name="orientation">vertical</property>
@@ -80,13 +78,13 @@
                 <property name="name">joinMeetingButton</property>
                 <property name="width_request">100</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Join to a meeting</property>
                 <property name="image_position">bottom</property>
                 <signal name="clicked" handler="on_join_meeting" swapped="no"/>
                 <style>
-                  <class name="joinMeetingButton"/>
+                  <class name="btn-join-meeting"/>
                 </style>
               </object>
               <packing>
@@ -103,13 +101,13 @@
                 <property name="name">hostMeetingButton</property>
                 <property name="width_request">100</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
+                <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Host a new meeting</property>
                 <property name="image_position">top</property>
                 <signal name="clicked" handler="on_host_meeting" swapped="no"/>
                 <style>
-                  <class name="hostMeetingButton"/>
+                  <class name="btn-host-meeting"/>
                 </style>
               </object>
               <packing>
@@ -122,6 +120,9 @@
             <child>
               <placeholder/>
             </child>
+            <style>
+              <class name="main-window-actions"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -155,7 +156,7 @@
               </packing>
             </child>
             <style>
-              <class name="statusBar"/>
+              <class name="main-window-status-bar"/>
             </style>
           </object>
           <packing>
