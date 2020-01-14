@@ -1,5 +1,0 @@
-UI:
-- Hook into the button to 
-- Create a random port for Grumble to listen on
-- Create hidden service pointing to it
-- Trigger Grumble start
