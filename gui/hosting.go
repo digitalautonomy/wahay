@@ -8,7 +8,6 @@ import (
 	"net"
 	"text/template"
 
-	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
 	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
@@ -193,7 +192,7 @@ func (h *hostData) createOnionService() {
 
 	h.u.ensureServerCollection()
 
-	torController := tor.CreateController(*config.TorHost, *config.TorPort, *config.TorControlPassword)
+	torController := tor.CreateController()
 	serviceID, e := torController.CreateNewOnionService("127.0.0.1", fmt.Sprintf("%d", port), "64738")
 	if e != nil {
 		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))

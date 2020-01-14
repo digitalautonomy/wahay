@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"strconv"
 	"strings"
 
@@ -27,6 +28,8 @@ type controller struct {
 }
 
 const MinSupportedVersion = "0.3.2"
+const ControllerHost = "127.0.0.1"
+const ControllerPort = "9951"
 
 func (cntrl *controller) EnsureTorCompatibility() error {
 	tc, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
@@ -34,9 +37,9 @@ func (cntrl *controller) EnsureTorCompatibility() error {
 		return err
 	}
 
-	err = tc.AuthenticatePassword(cntrl.password)
+	err = tc.AuthenticateCookie()
 	if err != nil {
-		return err
+		log.Fatalf("TOR new instance can not be launched: %s", err)
 	}
 
 	version, err := tc.GetVersion()
@@ -71,10 +74,9 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 
 	cntrl.c = tc
 
-	err = tc.AuthenticatePassword(cntrl.password)
-
+	err = tc.AuthenticateCookie()
 	if err != nil {
-		return
+		log.Fatalf("TOR new instance can not be authenticated by cookie: %s", err)
 	}
 
 	servicePort, err := strconv.ParseUint(port, 10, 16)
@@ -106,14 +108,22 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 
 // CreateController takes the Tor information given and returns a
 // controlling interface
-func CreateController(torHost, torPort, password string) Control {
+func CreateController() Control {
 	f := func(v string) (torgoController, error) {
-		return torgo.NewController(v)
+		c, err := torgo.NewController(v)
+		if err != nil {
+			return nil, err
+		}
+
+		hd, _ := os.UserHomeDir()
+		c.CookieFile = fmt.Sprintf("%s/.config/tonio/tor/data/control_auth_cookie", hd)
+
+		return c, nil
 	}
 	return &controller{
-		torHost:  torHost,
-		torPort:  torPort,
-		password: password,
+		torHost:  ControllerHost,
+		torPort:  ControllerPort,
+		password: "",
 		tc:       f,
 		c:        nil,
 	}
