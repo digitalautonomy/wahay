@@ -164,7 +164,7 @@ func (u *gtkUI) loadConfig(configFile string) {
 	u.config = conf
 
 	if err != nil {
-		log.Panic(err.Error())
+		log.Println("configuration file error:", err.Error())
 		u.doInUIThread(u.initialSetupWindow)
 		return
 	}

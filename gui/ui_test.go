@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
-	. "gopkg.in/check.v1"
-
+	"github.com/coyim/gotk3adapter/glib_mock"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtk_mock"
 	"github.com/coyim/gotk3adapter/gtki"
+	. "gopkg.in/check.v1"
 )
 
 func Test(t *testing.T) { TestingT(t) }
@@ -115,12 +115,13 @@ func (s *TonioGUISuite) Test_NewGTK_returnsAGTKUIWithProperData(c *C) {
 
 func (s *TonioGUISuite) Test_gtkUI_onActivate_createsMainWindow(c *C) {
 	ourGtk := &testGtkWithBuilder{}
+	ourGlib := &testGlibStruct{}
 	ourBuilder := &testBuilder{}
 	ourGtk.builderNewToReturn1 = ourBuilder
 	ourAppWindow := &gtk_mock.MockApplicationWindow{}
 	ourBuilder.getObjectToReturn1 = ourAppWindow
 
-	g1 := CreateGraphics(ourGtk, nil, nil)
+	g1 := CreateGraphics(ourGtk, ourGlib, nil)
 
 	u := &gtkUI{g: g1}
 	u.onActivate()
@@ -153,9 +154,19 @@ func (ta *testApplication) Run(v1 []string) int {
 	return ta.runReturn1
 }
 
+type testGlibStruct struct {
+	glib_mock.Mock
+}
+
 func (s *TonioGUISuite) Test_gtkUI_Loop_connectsActivate(c *C) {
 	app := &testApplication{}
-	u := &gtkUI{app: app}
+	ourGtk := &testGtkStruct{}
+	ourGlib := &testGlibStruct{}
+	g := CreateGraphics(ourGtk, ourGlib, nil)
+	u := &gtkUI{
+		app: app,
+		g:   g,
+	}
 	u.Loop()
 
 	c.Assert(app.connectArg1, Equals, "activate")
@@ -164,7 +175,13 @@ func (s *TonioGUISuite) Test_gtkUI_Loop_connectsActivate(c *C) {
 
 func (s *TonioGUISuite) Test_gtkUI_Loop_runsTheAppWithArguments(c *C) {
 	app := &testApplication{}
-	u := &gtkUI{app: app}
+	ourGtk := &testGtkStruct{}
+	ourGlib := &testGlibStruct{}
+	g := CreateGraphics(ourGtk, ourGlib, nil)
+	u := &gtkUI{
+		app: app,
+		g:   g,
+	}
 	u.Loop()
 
 	c.Assert(app.runArg1, DeepEquals, []string{})
@@ -172,7 +189,13 @@ func (s *TonioGUISuite) Test_gtkUI_Loop_runsTheAppWithArguments(c *C) {
 
 func (s *TonioGUISuite) Test_gtkUI_Loop_panicsIfActivateFails(c *C) {
 	app := &testApplication{}
-	u := &gtkUI{app: app}
+	ourGtk := &testGtkStruct{}
+	ourGlib := &testGlibStruct{}
+	g := CreateGraphics(ourGtk, ourGlib, nil)
+	u := &gtkUI{
+		app: app,
+		g:   g,
+	}
 	app.connectReturn2 = errors.New("oh nooo")
 	c.Assert(func() { u.Loop() }, PanicMatches, "Couldn't activate application: oh nooo")
 }
