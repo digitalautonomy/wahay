@@ -42,6 +42,9 @@
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
+                    <style>
+                      <class name="control-label"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -82,19 +85,23 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="margin_bottom">10</property>
-                    <property name="label" translatable="yes">Screen Name</property>
+                    <property name="label" translatable="yes">Username</property>
                     <property name="track_visited_links">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
+                    <style>
+                      <class name="control-label"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -111,7 +118,7 @@
                     <property name="secondary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">False</property>
                     <property name="secondary_icon_sensitive">False</property>
-                    <property name="placeholder_text" translatable="yes">Type your username or screen name</property>
+                    <property name="placeholder_text" translatable="yes">Optional meeting username</property>
                     <property name="input_purpose">url</property>
                     <style>
                       <class name="form-control"/>
@@ -128,6 +135,60 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_bottom">20</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_bottom">10</property>
+                    <property name="label" translatable="yes">Meeting password</property>
+                    <property name="track_visited_links">False</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                    <style>
+                      <class name="control-label"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="entMeetingPassword">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="primary_icon_activatable">False</property>
+                    <property name="secondary_icon_activatable">False</property>
+                    <property name="primary_icon_sensitive">False</property>
+                    <property name="secondary_icon_sensitive">False</property>
+                    <property name="placeholder_text" translatable="yes">Optional meeting password</property>
+                    <style>
+                      <class name="form-control"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <style>

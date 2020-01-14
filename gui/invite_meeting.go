@@ -16,13 +16,12 @@ func (u *gtkUI) openMainWindow() {
 	u.currentWindow.ShowAll()
 }
 
-func (u *gtkUI) getInviteCodeEntities() (gtki.Entry, gtki.ApplicationWindow, *uiBuilder) {
+func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
 	builder := u.g.uiBuilderFor("InviteCodeWindow")
-	url := builder.get("entMeetingID").(gtki.Entry)
 	win := builder.get("inviteWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
 
-	return url, win, builder
+	return win, builder
 }
 
 func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
@@ -46,13 +45,13 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
 	u.switchToWindow(win)
 }
 
-func (u *gtkUI) joinMeetingHandler(meetingID string) {
-	if len(meetingID) == 0 {
+func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
+	if len(data.MeetingID) == 0 {
 		u.openErrorDialog("The Meeting ID cannot be blank")
 		return
 	}
 
-	state, err := openMumble(meetingID)
+	state, err := openMumble(data)
 	if err != nil {
 		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
 		return
@@ -73,13 +72,26 @@ func (u *gtkUI) joinMeetingHandler(meetingID string) {
 // qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
 
 func (u *gtkUI) openJoinWindow() {
-	url, win, builder := u.getInviteCodeEntities()
+	win, builder := u.getInviteCodeEntities()
+
 	u.currentWindow = win
+
+	entMeetingID, _ := builder.get("entMeetingID").(gtki.Entry)
+	entScreenName, _ := builder.get("entScreenName").(gtki.Entry)
+	entMeetingPassword, _ := builder.get("entMeetingPassword").(gtki.Entry)
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
-			meetingID, _ := url.GetText()
-			u.joinMeetingHandler(meetingID)
+			meetingID, _ := entMeetingID.GetText()
+			username, _ := entScreenName.GetText()
+			password, _ := entMeetingPassword.GetText()
+
+			data := hosting.MeetingData{
+				MeetingID: meetingID,
+				Username:  username,
+				Password:  password,
+			}
+			u.joinMeetingHandler(data)
 		},
 		"on_cancel": func() {
 			win.Hide()
@@ -93,14 +105,9 @@ func (u *gtkUI) openJoinWindow() {
 	win.ShowAll()
 }
 
-func openMumble(meetingID string) (*runningMumble, error) {
-	if !isMeetingIDValid(meetingID) {
-		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", meetingID)
-	}
-	data := hosting.MeetingData{
-		MeetingID: meetingID,
-		Password:  "",
-		Username:  "",
+func openMumble(data hosting.MeetingData) (*runningMumble, error) {
+	if !isMeetingIDValid(data.MeetingID) {
+		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", data.MeetingID)
 	}
 	return launchMumbleClient(data)
 }
