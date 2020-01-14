@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
+
+	"autonomia.digital/tonio/app/config"
 )
 
 func createDirectory(dir string) error {
@@ -45,15 +47,13 @@ func createFile(configFile string) error {
 }
 
 func checkConfigFile() {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatalf("Home dir can not be found: %s", err)
-	}
+	//homeDir, err := os.UserHomeDir()
+	homeDir := config.XdgConfigHome()
 
-	configDir := fmt.Sprintf("%s/.config", homeDir)
+	configDir := fmt.Sprintf("%s/", homeDir)
 
 	dataApp := fmt.Sprintf("%s/%s", configDir, "tonio/tor/data")
-	_, err = os.Stat(dataApp)
+	_, err := os.Stat(dataApp)
 	if err != nil {
 		log.Printf("Data directory not found, creating...")
 

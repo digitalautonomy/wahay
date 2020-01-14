@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
 	"strconv"
 	"strings"
+
+	"autonomia.digital/tonio/app/config"
 
 	"github.com/wybiral/torgo"
 )
@@ -115,8 +116,8 @@ func CreateController() Control {
 			return nil, err
 		}
 
-		hd, _ := os.UserHomeDir()
-		c.CookieFile = fmt.Sprintf("%s/.config/tonio/tor/data/control_auth_cookie", hd)
+		hd := config.XdgConfigHome()
+		c.CookieFile = fmt.Sprintf("%s/tonio/tor/data/control_auth_cookie", hd)
 
 		return c, nil
 	}
