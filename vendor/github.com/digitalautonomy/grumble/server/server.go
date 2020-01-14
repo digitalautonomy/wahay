@@ -192,7 +192,9 @@ func (server *Server) setConfigPassword(key, password string) {
 	// Could be racy, but shouldn't really matter...
 	val := "sha1$" + salt + "$" + digest
 	server.cfg.Set(key, val)
-	server.cfgUpdate <- &KeyValuePair{Key: key, Value: val}
+	if server.cfgUpdate != nil {
+		server.cfgUpdate <- &KeyValuePair{Key: key, Value: val}
+	}
 }
 
 // Set password as the new SuperUser password
@@ -550,11 +552,10 @@ func (server *Server) handleAuthenticate(client *Client, msg *Message) {
 		if auth.Password == nil {
 			client.RejectAuth(mumbleproto.Reject_WrongServerPW, "Invalid server password")
 			return
-		} else {
-			if !server.checkServerPassword(*auth.Password) {
-				client.RejectAuth(mumbleproto.Reject_WrongServerPW, "Invalid server password")
-				return
-			}
+		}
+		if !server.checkServerPassword(*auth.Password) {
+			client.RejectAuth(mumbleproto.Reject_WrongServerPW, "Invalid server password")
+			return
 		}
 	}
 
