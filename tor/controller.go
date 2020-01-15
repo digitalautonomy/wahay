@@ -133,7 +133,7 @@ func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
 // Authenticate make possible authentication depending of the mode
 func Authenticate(tc torgoController, authType string, password string) error {
 	if len(authType) == 0 {
-		return errors.New("A valid authentication type was not provided")
+		return errors.New("a valid authentication type was not provided")
 	}
 
 	switch authType {
