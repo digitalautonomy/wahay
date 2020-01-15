@@ -220,13 +220,15 @@ func (u *gtkUI) ensureTorNetwork() {
 		log.Println(err)
 		instance, err := tor.NewInstance()
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return
 		}
 
 		// Start our Tor Control Port instance
 		err = instance.Start()
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return
 		}
 
 		// We don't check here the Tor compatibility again because we are using
