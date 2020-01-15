@@ -199,7 +199,7 @@ func (u *gtkUI) saveConfigOnly() {
 
 func (u *gtkUI) ensureTorNetwork() {
 	if !tor.Network.Detect() {
-		log.Fatal("tor is not running")
+		log.Println("tor is not running")
 		return
 	}
 
