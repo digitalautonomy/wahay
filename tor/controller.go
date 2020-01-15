@@ -88,7 +88,7 @@ func GetAuthenticationMethod(tc torgoController, cntrl *controller) (string, err
 	}
 
 	addr := net.JoinHostPort(cntrl.torHost, cntrl.torPort)
-	return AuthTypeNotDefined, fmt.Errorf("cannot authenticate to the TCP running on %s", addr)
+	return AuthTypeNotDefined, fmt.Errorf("Cannot authenticate to the Tor Control Port on %s", addr)
 }
 
 func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
@@ -133,7 +133,7 @@ func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
 // Authenticate make possible authentication depending of the mode
 func Authenticate(tc torgoController, authType string, password string) error {
 	if len(authType) == 0 {
-		return errors.New("provide a specific authentication type")
+		return errors.New("Not provided authentication type")
 	}
 
 	switch authType {
@@ -193,7 +193,7 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 
 func (cntrl *controller) Close() {
 	if cntrl.i != nil {
-		log.Println("closing our tor control port instance")
+		log.Println("Closing our Tor Control Port instance")
 		cntrl.i.close()
 	}
 }
