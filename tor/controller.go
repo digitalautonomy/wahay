@@ -88,7 +88,7 @@ func GetAuthenticationMethod(tc torgoController, cntrl *controller) (string, err
 	}
 
 	addr := net.JoinHostPort(cntrl.torHost, cntrl.torPort)
-	return AuthTypeNotDefined, fmt.Errorf("Cannot authenticate to the Tor Control Port on %s", addr)
+	return AuthTypeNotDefined, fmt.Errorf("cannot authenticate to the Tor Control Port on %s", addr)
 }
 
 func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
@@ -133,7 +133,7 @@ func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
 // Authenticate make possible authentication depending of the mode
 func Authenticate(tc torgoController, authType string, password string) error {
 	if len(authType) == 0 {
-		return errors.New("Not provided authentication type")
+		return errors.New("A valid authentication type was not provided")
 	}
 
 	switch authType {
