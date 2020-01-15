@@ -77,9 +77,11 @@ deploy_staging:
     - master
   script:
    - 'ssh -p2326 tonio@staging.tonio.app rm -f /home/tonio/tmp/*'
-   - 'scp -P2326 bin/tonio* tonio@staging.tonio.app:/home/tonio/tmp/'
+   - 'cd bin'
+   - 'BINARY_NAME=$(ls tonio* )'
+   - 'scp -P2326 $BINARY_NAME tonio@staging.tonio.app:/home/tonio/tmp/'
    - 'ssh -p2326 tonio@staging.tonio.app /home/tonio/bin/publish-downloads.sh'
-   - 'echo $GPG_STAGING_PASSPHRASE | ssh -p 2326 tonio@staging.tonio.app  gpg --batch --yes --detach-sign --passphrase-fd  0 --pinentry-mode=loopback  /usr/local/www/tonio/downloads/SHA256SUMS.txt'
+   - 'echo $GPG_STAGING_PASSPHRASE | ssh -p 2326 tonio@staging.tonio.app  gpg --batch --yes --detach-sign --passphrase-fd  0 --pinentry-mode=loopback  /usr/local/www/tonio/downloads/$BINARY_NAME.sha256sum'
 
 deploy_production:
   image: olabini/ssh_rsync:0.1
