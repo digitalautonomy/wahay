@@ -297,6 +297,5 @@ func (u *gtkUI) switchContextWhenMumbleFinished(state *runningMumble) {
 func (u *gtkUI) cleanUp() {
 	u.tor.Close()
 	// TODO: delete our onion service if created
-	// TODO: close our tor control port if created
 	// TODO: close our mumble service if running
 }
