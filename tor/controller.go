@@ -11,6 +11,17 @@ import (
 	"github.com/wybiral/torgo"
 )
 
+const (
+	// AuthTypeNotDefined if the type for non-defined Tor Control Port auth type
+	AuthTypeNotDefined = ""
+	// AuthTypeNone if the type for Tor Control Port `none` auth
+	AuthTypeNone = "none"
+	// AuthTypeCookie if the type for Tor Control Port `cookie` auth
+	AuthTypeCookie = "cookie"
+	// AuthTypePassword if the type for Tor Control Port `password` auth
+	AuthTypePassword = "password"
+)
+
 // Control is the interface for controlling the Tor instance on this system
 type Control interface {
 	GetTorController() (torgoController, error)
@@ -56,14 +67,14 @@ func GetAuthenticationMethod(tc torgoController, cntrl *controller) (string, err
 	log.Println("Checking Tor Control Port none authentication")
 	err := tc.AuthenticateNone()
 	if err == nil {
-		return "none", nil
+		return AuthTypeNone, nil
 	}
 	log.Println(fmt.Sprintf("auth-none: %s", err))
 
 	log.Println("Checking Tor Control Port cookie authentication")
 	err = tc.AuthenticateCookie()
 	if err == nil {
-		return "cookie", nil
+		return AuthTypeCookie, nil
 	}
 	log.Println(fmt.Sprintf("auth-cookie: %s", err))
 
@@ -71,13 +82,13 @@ func GetAuthenticationMethod(tc torgoController, cntrl *controller) (string, err
 		log.Println("Checking Tor Control Port password authentication")
 		err = tc.AuthenticatePassword(cntrl.password)
 		if err == nil {
-			return "password", nil
+			return AuthTypePassword, nil
 		}
 		log.Println(fmt.Sprintf("auth-passw: %s", err))
 	}
 
 	addr := net.JoinHostPort(cntrl.torHost, cntrl.torPort)
-	return "", fmt.Errorf("cannot authenticate to the TCP running on %s", addr)
+	return AuthTypeNotDefined, fmt.Errorf("cannot authenticate to the TCP running on %s", addr)
 }
 
 func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
@@ -122,13 +133,13 @@ func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
 // Authenticate make possible authentication depending of the mode
 func Authenticate(tc torgoController, authType string, password string) error {
 	if len(authType) == 0 {
-		return errors.New("provie a specific authentication type")
+		return errors.New("provide a specific authentication type")
 	}
 
 	switch authType {
-	case "cookie":
+	case AuthTypeCookie:
 		return tc.AuthenticateCookie()
-	case "password":
+	case AuthTypePassword:
 		return tc.AuthenticatePassword(password)
 	default:
 		return tc.AuthenticateNone()
@@ -194,8 +205,10 @@ func CreateController(torHost, torPort, password string, authType string) Contro
 		return torgo.NewController(v)
 	}
 
-	if len(authType) == 0 {
-		authType = "none"
+	// If password is provided, then our `authType` should
+	// be `password` as the default value
+	if len(authType) == 0 && len(password) > 0 {
+		authType = AuthTypePassword
 	}
 
 	return &controller{

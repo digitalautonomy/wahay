@@ -86,7 +86,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAuth
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 
@@ -102,7 +102,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_authenticatesWithG
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "11112222",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 
@@ -152,7 +152,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAddO
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 
@@ -168,7 +168,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_createsOnionWithGi
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 
@@ -190,7 +190,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_signalsErrorForInv
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 
@@ -211,7 +211,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsTheServiceI
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 
@@ -228,7 +228,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_authenticatesCorr
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "11112223",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 
@@ -245,7 +245,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_failsOnAuthentica
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "11112223",
-		authType: "password",
+		authType: AuthTypePassword,
 		tc:       mock.createTestGotor,
 	}
 

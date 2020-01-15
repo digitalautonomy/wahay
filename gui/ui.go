@@ -170,7 +170,7 @@ func (u *gtkUI) loadConfig(configFile string) {
 	u.config = conf
 
 	if err != nil {
-		log.Println("configuration file error:", err.Error())
+		log.Println("Configuration file error:", err.Error())
 		u.doInUIThread(u.initialSetupWindow)
 		return
 	}
@@ -199,7 +199,7 @@ func (u *gtkUI) saveConfigOnly() {
 
 func (u *gtkUI) ensureTorNetwork() {
 	if !tor.Network.Detect() {
-		log.Println("tor is not running")
+		log.Println("Tor is not running")
 		return
 	}
 
@@ -209,11 +209,12 @@ func (u *gtkUI) ensureTorNetwork() {
 	log.Printf("DETECTED TCP HOST: %s\n", h)
 	log.Printf("DETECTED TCP PORT: %s\n", p)
 
-	torController := tor.CreateController(h, p, *config.TorControlPassword, "")
+	torController := tor.CreateController(h, p, *config.TorControlPassword, tor.AuthTypeNotDefined)
 
 	isCompatible, isValid, err := torController.EnsureTorCompatibility()
 	if !isCompatible && !isValid {
-		log.Fatalf("incompatibility error: %s", err)
+		log.Printf("Incompatibility error: %s\n", err)
+		return
 	}
 
 	if err != nil {
@@ -234,9 +235,11 @@ func (u *gtkUI) ensureTorNetwork() {
 		// We don't check here the Tor compatibility again because we are using
 		// the local Tor for now. Remove this comment or implement this when Tonio
 		// has it's own Tor.
+		log.Println("Using our Tor Control Port")
 		u.tor = tor.CreateController(instance.GetHost(), instance.GetControlPort(), "", instance.GetPreferredAuthType())
 		u.tor.SetInstance(instance)
 	} else {
+		log.Println("Using local Tor Control Port")
 		u.tor = torController
 	}
 }
@@ -297,7 +300,10 @@ func (u *gtkUI) switchContextWhenMumbleFinished(state *runningMumble) {
 }
 
 func (u *gtkUI) cleanUp() {
-	u.tor.Close()
+	if u.tor != nil {
+		u.tor.Close()
+	}
+
 	// TODO: delete our onion service if created
 	// TODO: close our mumble service if running
 }

@@ -57,7 +57,7 @@ func (r *runningTor) waitForFinish() {
 
 // NewInstance initialized our Tor Control Port instance
 func NewInstance() (*Instance, error) {
-	log.Println("creating new tor control port instance")
+	log.Println("Creating new Tor Control Port instance")
 
 	i := &Instance{
 		started:        false,
@@ -92,7 +92,7 @@ func (i *Instance) GetPreferredAuthType() string {
 
 // Start our Tor Control Port
 func (i *Instance) Start() error {
-	log.Println("starting our tor control instance")
+	log.Println("Starting our Tor Control Port instance")
 
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
@@ -127,12 +127,12 @@ func (i *Instance) loadOrCreateConfigFile() error {
 	i.dataDirectory = filepath.Join(filepath.Dir(i.configFile), "data")
 	config.EnsureDir(i.dataDirectory, 0700)
 
-	data, err := i.loadConfigFile()
-	if err != nil {
+	data, exists, err := i.loadConfigFile()
+	if exists && err != nil {
 		return err
 	}
 
-	if len(data) == 0 {
+	if !exists || len(data) == 0 {
 		go func() {
 			err = i.save()
 			if err != nil {
@@ -161,10 +161,10 @@ func (i *Instance) getConfigFileContents() []byte {
 	return []byte(strings.Join(content, "\n"))
 }
 
-func (i *Instance) loadConfigFile() ([]byte, error) {
+func (i *Instance) loadConfigFile() ([]byte, bool, error) {
 	if config.FileExists(i.configFile) {
 		data, err := ioutil.ReadFile(i.configFile)
-		return data, err
+		return data, true, err
 	}
-	return nil, errors.New("tor control port file not found")
+	return nil, false, errors.New("tor control port file not found")
 }
