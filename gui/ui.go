@@ -1,13 +1,16 @@
 package gui
 
 import (
+	"context"
 	"log"
 	"os"
+	"os/exec"
 	"runtime"
 	"time"
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
+	"autonomia.digital/tonio/app/tor"
 	"github.com/atotto/clipboard"
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
@@ -53,6 +56,7 @@ type gtkUI struct {
 	currentWindow    gtki.ApplicationWindow
 	g                Graphics
 	serverCollection hosting.Servers
+	tor              tor.Control
 
 	config *config.ApplicationConfig
 }
@@ -80,6 +84,7 @@ func (u *gtkUI) onActivate() {
 	u.setGlobalStyles()
 
 	go u.loadConfig("")
+	go u.ensureTorNetwork()
 }
 
 func (u *gtkUI) createMainWindow() {
@@ -139,6 +144,7 @@ func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
 }
 
 func (u *gtkUI) quit() {
+	u.cleanUp()
 	u.app.Quit()
 }
 
@@ -189,4 +195,108 @@ func (u *gtkUI) saveConfigOnly() {
 			log.Println("Failed to save config file:", err.Error())
 		}
 	}()
+}
+
+func (u *gtkUI) ensureTorNetwork() {
+	if !tor.Network.Detect() {
+		log.Fatal("tor is not running")
+		return
+	}
+
+	h := tor.Network.Host()
+	p := tor.Network.Port()
+
+	log.Printf("DETECTED TCP HOST: %s\n", h)
+	log.Printf("DETECTED TCP PORT: %s\n", p)
+
+	torController := tor.CreateController(h, p, *config.TorControlPassword, "")
+
+	isCompatible, isValid, err := torController.EnsureTorCompatibility()
+	if !isCompatible && !isValid {
+		log.Fatalf("incompatibility error: %s", err)
+	}
+
+	if err != nil {
+		log.Println(err)
+		instance, err := tor.NewInstance()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Start our Tor Control Port instance
+		err = instance.Start()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// We don't check here the Tor compatibility again because we are using
+		// the local Tor for now. Remove this comment or implement this when Tonio
+		// has it's own Tor.
+		u.tor = tor.CreateController(instance.GetHost(), instance.GetControlPort(), "", instance.GetPreferredAuthType())
+		u.tor.SetInstance(instance)
+	} else {
+		u.tor = torController
+	}
+}
+
+type runningMumble struct {
+	cmd               *exec.Cmd
+	ctx               context.Context
+	cancelFunc        context.CancelFunc
+	finished          bool
+	finishedWithError error
+	finishChannel     chan bool
+}
+
+func (r *runningMumble) close() {
+	r.cancelFunc()
+}
+
+func (r *runningMumble) waitForFinish() {
+	e := r.cmd.Wait()
+	r.finished = true
+	r.finishedWithError = e
+	r.finishChannel <- true
+}
+
+func launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
+	ctx, cancelFunc := context.WithCancel(context.Background())
+
+	cmd := exec.CommandContext(ctx, "torify", "mumble", hosting.GenerateURL(data))
+	if err := cmd.Start(); err != nil {
+		cancelFunc()
+		return nil, err
+	}
+
+	state := &runningMumble{
+		cmd:               cmd,
+		ctx:               ctx,
+		cancelFunc:        cancelFunc,
+		finished:          false,
+		finishedWithError: nil,
+		finishChannel:     make(chan bool, 100),
+	}
+
+	go state.waitForFinish()
+
+	return state, nil
+}
+
+func (u *gtkUI) switchContextWhenMumbleFinished(state *runningMumble) {
+	go func() {
+		<-state.finishChannel
+
+		// TODO: here, we  could check if the Mumble instance
+		// failed with an error and report this
+		u.doInUIThread(func() {
+			u.openMainWindow()
+		})
+	}()
+}
+
+func (u *gtkUI) cleanUp() {
+	u.tor.Close()
+	// TODO: delete our onion service if created
+	// TODO: close our tor control port if created
+	// TODO: close our mumble service if running
 }

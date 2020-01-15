@@ -86,6 +86,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAuth
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
@@ -101,6 +102,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_authenticatesWithG
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "11112222",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
@@ -150,6 +152,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAddO
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
@@ -165,6 +168,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_createsOnionWithGi
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
@@ -186,6 +190,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_signalsErrorForInv
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
@@ -206,6 +211,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsTheServiceI
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "doesntMatter",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
@@ -222,10 +228,11 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_authenticatesCorr
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "11112223",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _, e := cntrl.EnsureTorCompatibility()
 
 	c.Assert(e, IsNil)
 	c.Assert(mock.authenticatePasswordArg1, Equals, "11112223")
@@ -238,10 +245,11 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_failsOnAuthentica
 		torHost:  "127.1.2.3",
 		torPort:  "9052",
 		password: "11112223",
+		authType: "password",
 		tc:       mock.createTestGotor,
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _, e := cntrl.EnsureTorCompatibility()
 
 	c.Assert(e, ErrorMatches, "oh no, godzilla")
 }
@@ -256,7 +264,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_reportsErrorWhenF
 		},
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _, e := cntrl.EnsureTorCompatibility()
 
 	c.Assert(e, ErrorMatches, "couldn't create torgocontroller")
 }
@@ -273,7 +281,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_triesToCreateTorC
 		},
 	}
 
-	_ = cntrl.EnsureTorCompatibility()
+	_, _, _ = cntrl.EnsureTorCompatibility()
 
 	c.Assert(addrGiven, Not(IsNil))
 	c.Assert(*addrGiven, Equals, "127.1.2.4:9053")
@@ -289,7 +297,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsErrorIfCal
 		tc:       mock.createTestGotor,
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _, e := cntrl.EnsureTorCompatibility()
 
 	c.Assert(e, ErrorMatches, "connection failed")
 }
@@ -304,7 +312,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsErrorIfVer
 		tc:       mock.createTestGotor,
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _, e := cntrl.EnsureTorCompatibility()
 
 	c.Assert(e, ErrorMatches, "invalid version string")
 }
@@ -319,7 +327,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsErrorIfTor
 		tc:       mock.createTestGotor,
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _, e := cntrl.EnsureTorCompatibility()
 
 	c.Assert(e, ErrorMatches, "version of Tor is not compatible")
 }
@@ -334,7 +342,7 @@ func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsNilIfTorIs
 		tc:       mock.createTestGotor,
 	}
 
-	e := cntrl.EnsureTorCompatibility()
+	_, _, e := cntrl.EnsureTorCompatibility()
 
 	c.Assert(e, IsNil)
 }

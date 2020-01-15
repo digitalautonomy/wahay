@@ -2,80 +2,169 @@ package tor
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
-	"os"
 	"os/exec"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"sync"
 
 	"autonomia.digital/tonio/app/config"
 )
 
-func createDirectory(dir string) error {
-	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		err = os.MkdirAll(dir, 0750)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// Instance if a representation of our Tor Control Port instance
+type Instance struct {
+	started        bool
+	configFile     string
+	configFileName string
+	socksPort      int
+	controlHost    string
+	controlPort    int
+	dataDirectory  string
+	authType       string
+	runningTor     *runningTor
+	ioLock         sync.Mutex
 }
 
-func createFile(configFile string) error {
-	f, err := os.Create(configFile)
-	if err != nil {
-		return err
-	}
-
-	_, _ = f.WriteString("#Tor Proxy Port \n")
-	_, _ = f.WriteString("SocksPort 9950 \n")
-
-	_, _ = f.WriteString("#Tor Control Port \n")
-	_, _ = f.WriteString("ControlPort 9951 \n")
-
-	_, _ = f.WriteString("#Data directory where authentication cookie would be saved \n")
-	_, _ = f.WriteString("DataDirectory ~/.config/tonio/tor/data \n")
-
-	_, _ = f.WriteString("CookieAuthentication 1\n")
-
-	err = f.Close()
-	if err != nil {
-		return err
-	}
-
-	return nil
+type runningTor struct {
+	cmd               *exec.Cmd
+	ctx               context.Context
+	cancelFunc        context.CancelFunc
+	finished          bool
+	finishedWithError error
+	finishChannel     chan bool
 }
 
-func checkConfigFile() {
-	//homeDir, err := os.UserHomeDir()
-	homeDir := config.XdgConfigHome()
-
-	configDir := fmt.Sprintf("%s/", homeDir)
-
-	dataApp := fmt.Sprintf("%s/%s", configDir, "tonio/tor/data")
-	_, err := os.Stat(dataApp)
-	if err != nil {
-		errDir := createDirectory(dataApp)
-		if errDir != nil {
-			log.Fatalf("Tor data directory can not be created: %v", errDir)
-		}
-
-		torConfigFile := fmt.Sprintf("%s/%s/%s/%s", configDir, "tonio", "tor", "torrc")
-
-		errFile := createFile(torConfigFile)
-		if errFile != nil {
-			log.Fatalf("Tor configuration file can not be created: %v", errDir)
-		}
+func (i *Instance) close() {
+	if i.runningTor != nil {
+		i.runningTor.close()
 	}
 }
 
-func LaunchTorInstance() {
-	checkConfigFile()
+func (r *runningTor) close() {
+	r.cancelFunc()
+}
 
-	ctx := context.Background()
+func (r *runningTor) waitForFinish() {
+	e := r.cmd.Wait()
+	r.finished = true
+	r.finishedWithError = e
+	r.finishChannel <- true
+}
 
-	ch := fmt.Sprintf("%s/tonio/tor/torrc", config.XdgConfigHome())
-	cmd := exec.CommandContext(ctx, "tor", "-f", ch)
+// NewInstance initialized our Tor Control Port instance
+func NewInstance() (*Instance, error) {
+	log.Println("creating new tor control port instance")
+
+	i := &Instance{
+		started:        false,
+		configFile:     "",
+		configFileName: "tor/torrc",
+		socksPort:      9950,
+		controlHost:    "127.0.0.1",
+		controlPort:    9951,
+		dataDirectory:  "",
+		authType:       "cookie",
+	}
+
+	err := i.loadOrCreateConfigFile()
+
+	return i, err
+}
+
+// GetHost returns the custom Tor Control Port instance host
+func (i *Instance) GetHost() string {
+	return i.controlHost
+}
+
+// GetControlPort returns the custom Tor Control Port instance port
+func (i *Instance) GetControlPort() string {
+	return strconv.Itoa(i.controlPort)
+}
+
+// GetPreferredAuthType returns the custom Tor Control Port authentication mode
+func (i *Instance) GetPreferredAuthType() string {
+	return i.authType
+}
+
+// Start our Tor Control Port
+func (i *Instance) Start() error {
+	log.Println("starting our tor control instance")
+
+	ctx, cancelFunc := context.WithCancel(context.Background())
+
+	cmd := exec.CommandContext(ctx, "tor", "-f", i.configFile)
 	if err := cmd.Start(); err != nil {
-		log.Fatalf("Tor instance can not be launched: %s", err)
+		cancelFunc()
+		return err
 	}
+
+	state := &runningTor{
+		cmd:               cmd,
+		ctx:               ctx,
+		cancelFunc:        cancelFunc,
+		finished:          false,
+		finishedWithError: nil,
+		finishChannel:     make(chan bool, 100),
+	}
+
+	i.started = true
+	i.runningTor = state
+
+	go state.waitForFinish()
+
+	return nil
+}
+
+func (i *Instance) loadOrCreateConfigFile() error {
+	i.ioLock.Lock()
+	defer i.ioLock.Unlock()
+
+	i.configFile = config.FindFile(i.configFileName, "")
+	i.dataDirectory = filepath.Join(filepath.Dir(i.configFile), "data")
+	config.EnsureDir(i.dataDirectory, 0700)
+
+	data, err := i.loadConfigFile()
+	if err != nil {
+		return err
+	}
+
+	if len(data) == 0 {
+		go func() {
+			err = i.save()
+			if err != nil {
+				log.Println(err)
+			}
+		}()
+	}
+
+	return nil
+}
+
+func (i *Instance) save() error {
+	i.ioLock.Lock()
+	defer i.ioLock.Unlock()
+
+	return config.SafeWrite(i.configFile, i.getConfigFileContents(), 0600)
+}
+
+func (i *Instance) getConfigFileContents() []byte {
+	content := []string{
+		fmt.Sprintf("SocksPort %d", i.socksPort),
+		fmt.Sprintf("ControlPort %d", i.controlPort),
+		fmt.Sprintf("DataDirectory %s", i.dataDirectory),
+		fmt.Sprintf("CookieAuthentication %d", 1),
+	}
+	return []byte(strings.Join(content, "\n"))
+}
+
+func (i *Instance) loadConfigFile() ([]byte, error) {
+	if config.FileExists(i.configFile) {
+		data, err := ioutil.ReadFile(i.configFile)
+		return data, err
+	}
+	return nil, errors.New("tor control port file not found")
 }

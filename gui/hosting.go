@@ -4,13 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"log"
-	"math/rand"
-	"net"
 	"text/template"
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
-	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
@@ -19,7 +16,6 @@ type hostData struct {
 	runningState    *runningMumble
 	serverPort      int
 	serverControl   hosting.Server
-	torControl      tor.Control
 	serviceID       string
 	autoJoin        bool
 	meetingUsername string
@@ -106,20 +102,6 @@ func (h *hostData) showMeetingControls() {
 	h.u.switchToWindow(win)
 }
 
-func isPortAvailable(port int) bool {
-	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
-
-	if err != nil {
-		return false
-	}
-
-	return ln.Close() == nil
-}
-
-func randomPort() int {
-	return 10000 + int(rand.Int31n(50000))
-}
-
 func (h *hostData) joinMeetingHost() {
 	loaded := make(chan bool)
 
@@ -198,22 +180,17 @@ func (u *gtkUI) ensureServerCollection() {
 }
 
 func (h *hostData) createOnionService() {
-	port := randomPort()
-	for !isPortAvailable(port) {
-		port = randomPort()
-	}
+	port := config.GetRandomPort()
 
 	h.u.ensureServerCollection()
 
-	torController := tor.CreateController(*config.TorHost, *config.TorPort, *config.TorControlPassword)
-	serviceID, e := torController.CreateNewOnionService("127.0.0.1", fmt.Sprintf("%d", port), "64738")
+	serviceID, e := h.u.tor.CreateNewOnionService("127.0.0.1", fmt.Sprintf("%d", port), "64738")
 	if e != nil {
 		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
 		return
 	}
 
 	h.serverPort = port
-	h.torControl = torController
 	h.serviceID = serviceID
 }
 
@@ -248,7 +225,7 @@ func (h *hostData) finishMeetingReal() {
 		h.u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
 	}
 
-	err = h.torControl.DeleteOnionService(h.serviceID)
+	err = h.u.tor.DeleteOnionService(h.serviceID)
 	if err != nil {
 		h.u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
 	}

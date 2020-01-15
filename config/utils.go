@@ -3,7 +3,10 @@ package config
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
 	"io"
+	mrand "math/rand"
+	"net"
 	"os"
 	"path/filepath"
 	"strings"
@@ -44,10 +47,10 @@ func xdgOrWithHome(env, or string) string {
 	return x
 }
 
-// FindFile will check each path and if that file exists return the file name and true
-func FindFile(places []string) (string, bool) {
+// FindFileInLocations will check each path and if that file exists return the file name and true
+func FindFileInLocations(places []string) (string, bool) {
 	for _, p := range places {
-		if fileExists(p) {
+		if FileExists(p) {
 			return p, true
 		}
 	}
@@ -73,4 +76,30 @@ func XdgDataHome() string {
 func XdgDataDirs() []string {
 	x := os.Getenv("XDG_DATA_DIRS")
 	return strings.Split(x, ":")
+}
+
+// IsPortAvailable return a boolean indicatin if a specific
+// port is available to use
+func IsPortAvailable(port int) bool {
+	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+
+	if err != nil {
+		return false
+	}
+
+	return ln.Close() == nil
+}
+
+// RandomPort returns a random port
+func RandomPort() int {
+	return 10000 + int(mrand.Int31n(50000))
+}
+
+// GetRandomPort returns an available random port
+func GetRandomPort() int {
+	port := RandomPort()
+	for !IsPortAvailable(port) {
+		port = RandomPort()
+	}
+	return port
 }

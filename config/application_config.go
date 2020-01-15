@@ -84,7 +84,7 @@ func (a *ApplicationConfig) tryLoad() error {
 	var contents []byte
 	var err error
 
-	contents, err = readFileOrTemporaryBackup(a.filename)
+	contents, err = ReadFileOrTemporaryBackup(a.filename)
 	if err != nil {
 		return errInvalidConfigFile
 	}
@@ -108,7 +108,7 @@ func (a *ApplicationConfig) Save() error {
 		return err
 	}
 
-	return safeWrite(a.filename, contents, 0600)
+	return SafeWrite(a.filename, contents, 0600)
 }
 
 //TODO: This is where we generate a new JSON representation and serialize it.

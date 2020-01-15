@@ -3,6 +3,7 @@ package tor
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net"
 	"strconv"
 	"strings"
@@ -12,60 +13,126 @@ import (
 
 // Control is the interface for controlling the Tor instance on this system
 type Control interface {
-	EnsureTorCompatibility() error
+	GetTorController() (torgoController, error)
+	EnsureTorCompatibility() (bool, bool, error)
 	CreateNewOnionService(destinationHost, destinationPort string, port string) (serviceID string, err error)
 	DeleteOnionService(serviceID string) error
+	SetInstance(i *Instance)
+	Close()
 }
 
 type controller struct {
 	torHost  string
 	torPort  string
 	password string
-	tc       func(string) (torgoController, error)
+	authType string
 	c        torgoController
+	i        *Instance
+	tc       func(string) (torgoController, error)
 }
 
-// type controllerAuthData struct {
-// 	mode     string
-// 	host     string
-// 	port     string
-// 	password string
-// }
+func (cntrl *controller) SetInstance(i *Instance) {
+	cntrl.i = i
+}
 
-// const ControllerHost = "127.0.0.1"
-// const ControllerPortTorService = "9051"
-// const ControllerPortTonioTorInstance = "9951"
-
-func (cntrl *controller) EnsureTorCompatibility() error {
-	tc, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
-	if err != nil {
-		return err
+func (cntrl *controller) GetTorController() (torgoController, error) {
+	if cntrl.c != nil {
+		return cntrl.c, nil
 	}
 
-	err = tc.AuthenticatePassword(cntrl.password)
+	log.Printf("Creating new Tor Control Port controller with host=%s and port=%s\n", cntrl.torHost, cntrl.torPort)
+	c, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
 	if err != nil {
-		return err
+		return nil, err
+	}
+
+	cntrl.c = c
+
+	return c, nil
+}
+
+// GetAuthenticationMethod checks the TOR Control Port available auth type
+func GetAuthenticationMethod(tc torgoController, cntrl *controller) (string, error) {
+	log.Println("Checking Tor Control Port none authentication")
+	err := tc.AuthenticateNone()
+	if err == nil {
+		return "none", nil
+	}
+	log.Println(fmt.Sprintf("auth-none: %s", err))
+
+	log.Println("Checking Tor Control Port cookie authentication")
+	err = tc.AuthenticateCookie()
+	if err == nil {
+		return "cookie", nil
+	}
+	log.Println(fmt.Sprintf("auth-cookie: %s", err))
+
+	if len(cntrl.password) > 0 {
+		log.Println("Checking Tor Control Port password authentication")
+		err = tc.AuthenticatePassword(cntrl.password)
+		if err == nil {
+			return "password", nil
+		}
+		log.Println(fmt.Sprintf("auth-passw: %s", err))
+	}
+
+	addr := net.JoinHostPort(cntrl.torHost, cntrl.torPort)
+	return "", fmt.Errorf("cannot authenticate to the TCP running on %s", addr)
+}
+
+func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
+	tc, err := cntrl.GetTorController()
+	if err != nil {
+		return false, false, err
+	}
+
+	if len(cntrl.authType) == 0 {
+		cntrl.authType, err = GetAuthenticationMethod(tc, cntrl)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
+	err = Authenticate(tc, cntrl.authType, cntrl.password)
+	if err != nil {
+		return false, true, err
+	}
+
+	if cntrl.authType == "" {
+		return false, true, errors.New("the current tor control port cannot be used")
 	}
 
 	version, err := tc.GetVersion()
 	if err != nil {
-		return err
+		return false, true, err
 	}
 
 	diff, err := compareVersions(version, MinSupportedVersion)
 	if err != nil {
-		return err
+		return false, true, err
 	}
 
 	if diff < 0 {
-		return errors.New("version of Tor is not compatible")
+		return false, false, errors.New("version of Tor is not compatible")
 	}
 
-	return err
+	return false, true, nil
 }
 
-func (cntrl *controller) Authenticate() error {
-	return nil
+// Authenticate make possible authentication depending of the mode
+func Authenticate(tc torgoController, authType string, password string) error {
+	if len(authType) == 0 {
+		return errors.New("provie a specific authentication type")
+	}
+
+	switch authType {
+	case "cookie":
+		return tc.AuthenticateCookie()
+	case "password":
+		return tc.AuthenticatePassword(password)
+	default:
+		return tc.AuthenticateNone()
+	}
 }
 
 func (cntrl *controller) DeleteOnionService(serviceID string) error {
@@ -75,15 +142,14 @@ func (cntrl *controller) DeleteOnionService(serviceID string) error {
 
 func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort string,
 	port string) (serviceID string, err error) {
-	tc, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
+	tc, err := cntrl.GetTorController()
 
 	if err != nil {
+		log.Println(err)
 		return
 	}
 
-	cntrl.c = tc
-
-	err = tc.AuthenticatePassword(cntrl.password)
+	err = Authenticate(tc, cntrl.authType, cntrl.password)
 	if err != nil {
 		return
 	}
@@ -114,17 +180,31 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 	return serviceID, nil
 }
 
+func (cntrl *controller) Close() {
+	if cntrl.i != nil {
+		log.Println("closing our tor control port instance")
+		cntrl.i.close()
+	}
+}
+
 // CreateController takes the Tor information given and returns a
 // controlling interface
-func CreateController(torHost, torPort, password string) Control {
+func CreateController(torHost, torPort, password string, authType string) Control {
 	f := func(v string) (torgoController, error) {
 		return torgo.NewController(v)
 	}
+
+	if len(authType) == 0 {
+		authType = "none"
+	}
+
 	return &controller{
 		torHost:  torHost,
 		torPort:  torPort,
 		password: password,
+		authType: authType,
 		tc:       f,
 		c:        nil,
+		i:        nil,
 	}
 }

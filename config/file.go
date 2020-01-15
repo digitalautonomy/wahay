@@ -15,61 +15,66 @@ const (
 // TODO: Implements configuration file encryption
 const encryptedFileEnding = ".enc"
 
-func fileExists(filename string) bool {
+// FileExists check if a specific file exists
+func FileExists(filename string) bool {
 	_, err := os.Stat(filename)
 	return err == nil
 }
 
-func ensureDir(dirname string, perm os.FileMode) {
-	if !fileExists(dirname) {
+// EnsureDir creates a directory if not exists
+func EnsureDir(dirname string, perm os.FileMode) {
+	if !FileExists(dirname) {
 		_ = os.MkdirAll(dirname, perm)
 	}
 }
 
-func findFile(file string, filename string) string {
+// FindFile search for a specific file in the data directory
+func FindFile(file string, filename string) string {
 	if len(filename) == 0 {
 		if len(file) == 0 {
 			log.Fatal("the filename is required")
 		}
 		dir := configDir()
-		ensureDir(dir, 0700)
+		EnsureDir(dir, 0700)
 		basePath := filepath.Join(dir, file)
 		switch {
-		case fileExists(basePath + encryptedFileEnding):
+		case FileExists(basePath + encryptedFileEnding):
 			return basePath + encryptedFileEnding
-		case fileExists(basePath + encryptedFileEnding + tmpExtension):
+		case FileExists(basePath + encryptedFileEnding + tmpExtension):
 			return basePath + encryptedFileEnding
 		}
 		return basePath
 	}
-	ensureDir(filepath.Dir(filename), 0700)
+	EnsureDir(filepath.Dir(filename), 0700)
 	return filename
 }
 
 func findConfigFile(filename string) string {
-	return findFile(fmt.Sprintf("config.%s", fileExtensionJSON), filename)
+	return FindFile(fmt.Sprintf("config%s", fileExtensionJSON), filename)
 }
 
 const tmpExtension = ".000~"
 
-func safeWrite(name string, data []byte, perm os.FileMode) error {
+// SafeWrite is a helper function to write content on specific file
+func SafeWrite(name string, data []byte, perm os.FileMode) error {
 	tempName := name + tmpExtension
 	err := ioutil.WriteFile(tempName, data, perm)
 	if err != nil {
 		return err
 	}
 
-	if fileExists(name) {
+	if FileExists(name) {
 		os.Remove(name)
 	}
 
 	return os.Rename(tempName, name)
 }
 
-func readFileOrTemporaryBackup(name string) (data []byte, e error) {
-	if fileExists(name) {
+// ReadFileOrTemporaryBackup tries to load a specific file
+func ReadFileOrTemporaryBackup(name string) (data []byte, e error) {
+	if FileExists(name) {
 		data, e = ioutil.ReadFile(name)
-		if len(data) == 0 && fileExists(name+tmpExtension) {
+		if len(data) == 0 && FileExists(name+tmpExtension) {
 			data, e = ioutil.ReadFile(name + tmpExtension)
 		}
 		return
