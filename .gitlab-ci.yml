@@ -65,11 +65,12 @@ deploy_staging:
   image: olabini/ssh_rsync:0.1
   stage: deploy
   before_script:
-  - "eval $(ssh-agent -s)"
+  - 'eval $(ssh-agent -s)'
   - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[staging.tonio.app]:2326,[185.108.76.88]:2326 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
+  - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
   environment:
     name: staging
     url: https://staging.tonio.app
@@ -79,10 +80,9 @@ deploy_staging:
    - 'ssh -p2326 tonio@staging.tonio.app rm -f /home/tonio/tmp/*'
    - 'cd bin'
    - 'BINARY_NAME=$(ls tonio* )'
-   - 'scp -P2326 $BINARY_NAME tonio@staging.tonio.app:/home/tonio/tmp/'
-   - 'ssh -p2326 tonio@staging.tonio.app /home/tonio/bin/publish-downloads.sh'
-   - 'echo $GPG_STAGING_PASSPHRASE | ssh -p 2326 tonio@staging.tonio.app  gpg --batch --yes --detach-sign --passphrase-fd  0 --pinentry-mode=loopback  /usr/local/www/tonio/downloads/$BINARY_NAME.sha256sum'
-   - 'echo $GPG_STAGING_PASSPHRASE | ssh -p 2326 tonio@staging.tonio.app  gpg --batch --yes --detach-sign --passphrase-fd  0 --pinentry-mode=loopback  /usr/local/www/tonio/downloads/tonio-latest.sha256sum'
+   - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
+   - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
+   - 'scp -P2326 $BINARY_NAME* tonio@staging.tonio.app:/usr/local/www/tonio/downloads/'
    - 'ssh -p 2326 tonio@staging.tonio.app ./generate-downloads.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'
 
 deploy_production:
@@ -104,8 +104,7 @@ deploy_production:
    - 'ssh -p2387 tonio@tonio.app rm -f /home/tonio/tmp/*'
    - 'cd bin'
    - 'BINARY_NAME=$(ls tonio* )'
-   - 'scp -P2387 $BINARY_NAME tonio@tonio.app:/home/tonio/tmp/'
-   - 'ssh -p2387 tonio@tonio.app /home/tonio/bin/publish-downloads.sh'
-   - 'echo $GPG_STAGING_PASSPHRASE | ssh -p 2387 tonio@tonio.app  gpg --batch --yes --detach-sign --passphrase-fd  0 --pinentry-mode=loopback  /usr/local/www/tonio/downloads/$BINARY_NAME.sha256sum'
-   - 'echo $GPG_STAGING_PASSPHRASE | ssh -p 2387 tonio@tonio.app  gpg --batch --yes --detach-sign --passphrase-fd  0 --pinentry-mode=loopback  /usr/local/www/tonio/downloads/tonio-latest.sha256sum'
+   - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
+   - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
+   - 'scp -P2387 $BINARY_NAME* tonio@tonio.app:/usr/local/www/tonio/downloads/'
    - 'ssh -p 2387 tonio@tonio.app ./generate-downloads.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'
