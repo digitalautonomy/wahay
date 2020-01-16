@@ -123,7 +123,10 @@ func (s *TonioGUISuite) Test_gtkUI_onActivate_createsMainWindow(c *C) {
 
 	g1 := CreateGraphics(ourGtk, ourGlib, nil)
 
-	u := &gtkUI{g: g1}
+	u := &gtkUI{
+		g:      g1,
+		status: getInitialStatus(),
+	}
 	u.onActivate()
 
 	c.Assert(ourBuilder.getObjectArg1, Equals, "mainWindow")

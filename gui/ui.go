@@ -2,6 +2,7 @@ package gui
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -50,6 +51,13 @@ func argsWithApplicationName() *[]string {
 	return &newSlice
 }
 
+// ApplicationStatus is a representation of the
+// current application state
+type ApplicationStatus struct {
+	errors  *Error
+	signals map[string][]chan string
+}
+
 type gtkUI struct {
 	app              gtki.Application
 	mainWindow       gtki.ApplicationWindow
@@ -59,6 +67,15 @@ type gtkUI struct {
 	tor              tor.Control
 
 	config *config.ApplicationConfig
+	status *ApplicationStatus
+}
+
+func getInitialStatus() *ApplicationStatus {
+	errors := &Error{}
+
+	return &ApplicationStatus{
+		errors: errors,
+	}
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -72,8 +89,9 @@ func NewGTK(gx Graphics) UI {
 	}
 
 	ret := &gtkUI{
-		app: app,
-		g:   gx,
+		app:    app,
+		g:      gx,
+		status: getInitialStatus(),
 	}
 
 	return ret
@@ -98,9 +116,61 @@ func (u *gtkUI) createMainWindow() {
 		"on_close_window_signal": u.quit,
 		"on_host_meeting":        u.hostMeetingHandler,
 		"on_join_meeting":        u.joinMeeting,
+		"on_show_errors": func() {
+			u.showStatusErrorsWindow(builder)
+		},
+		"on_close_window_errors": func() {
+			u.currentWindow.Hide()
+		},
 	})
 
-	win.ShowAll()
+	win.Show()
+
+	u.addSignals(builder)
+}
+
+func (u *gtkUI) addSignals(builder *uiBuilder) {
+	if u.status == nil {
+		return
+	}
+
+	ch := make(chan string)
+
+	u.status.AddSignal(SignalErrorsUpdated, ch)
+
+	go func() {
+		for {
+			<-ch
+			u.showStatusIfErrors(builder)
+			u.status.RemoveSignal(SignalErrorsUpdated, ch)
+		}
+	}()
+}
+
+func (u *gtkUI) showStatusIfErrors(builder *uiBuilder) {
+	lbl := builder.get("lblApplicationStatus").(gtki.Label)
+	btn := builder.get("btnStatusShowErrors").(gtki.Widget)
+
+	text := "Tonio is ready to use"
+	visibility := false
+	if !u.status.errors.empty() {
+		text = "We've found errors"
+		visibility = true
+	}
+
+	lbl.SetLabel(text)
+	btn.SetVisible(visibility)
+}
+
+func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
+	// TODO show the errors window
+	if !u.status.errors.empty() {
+		win := builder.get("mainWindowErrors").(gtki.Dialog)
+		txt := builder.get("textContent").(gtki.Label)
+		txt.SetMarkup(u.status.errors.all())
+		u.currentWindow = win
+		win.Show()
+	}
 }
 
 func (u *gtkUI) setGlobalStyles() {
@@ -153,11 +223,11 @@ func (u *gtkUI) copyToClipboard(text string) error {
 }
 
 func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
-	_ = label.SetProperty("visible", true)
+	label.SetVisible(true)
 	label.SetText(message)
 	time.Sleep(time.Duration(seconds) * time.Second)
 	label.SetText("")
-	_ = label.SetProperty("visible", false)
+	label.SetVisible(false)
 }
 
 func (u *gtkUI) loadConfig(configFile string) {
@@ -199,7 +269,7 @@ func (u *gtkUI) saveConfigOnly() {
 
 func (u *gtkUI) ensureTorNetwork() {
 	if !tor.Network.Detect() {
-		log.Println("Tor is not running")
+		u.newError("Tor is not running", true)
 		return
 	}
 
@@ -213,22 +283,22 @@ func (u *gtkUI) ensureTorNetwork() {
 
 	isCompatible, isValid, err := torController.EnsureTorCompatibility()
 	if !isCompatible && !isValid {
-		log.Printf("Incompatibility error: %s\n", err)
+		u.newError(fmt.Sprintf("Incompatibility error: %s\n", err), true)
 		return
 	}
 
 	if err != nil {
-		log.Println(err)
+		u.newError(err.Error(), false)
 		instance, err := tor.NewInstance()
 		if err != nil {
-			log.Println(err)
+			u.newError(err.Error(), true)
 			return
 		}
 
 		// Start our Tor Control Port instance
 		err = instance.Start()
 		if err != nil {
-			log.Println(err)
+			u.newError(err.Error(), true)
 			return
 		}
 
