@@ -11,7 +11,7 @@ import (
 func (u *gtkUI) openMainWindow() {
 	u.currentWindow.Hide()
 	u.currentWindow = u.mainWindow
-	u.currentWindow.ShowAll()
+	u.currentWindow.Show()
 }
 
 func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
@@ -100,7 +100,7 @@ func (u *gtkUI) openJoinWindow() {
 		},
 	})
 
-	win.ShowAll()
+	win.Show()
 }
 
 func openMumble(data hosting.MeetingData) (*runningMumble, error) {

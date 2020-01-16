@@ -233,7 +233,7 @@ func (h *hostData) finishMeetingReal() {
 	h.u.doInUIThread(func() {
 		h.u.currentWindow.Hide()
 		h.u.currentWindow = h.u.mainWindow
-		h.u.mainWindow.ShowAll()
+		h.u.mainWindow.Show()
 	})
 }
 
