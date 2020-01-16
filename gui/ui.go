@@ -91,6 +91,7 @@ func NewGTK(gx Graphics) UI {
 	ret := &gtkUI{
 		app:    app,
 		g:      gx,
+		tor:    nil,
 		status: getInitialStatus(),
 	}
 
@@ -137,12 +138,15 @@ func (u *gtkUI) addSignals(builder *uiBuilder) {
 	ch := make(chan string)
 
 	u.status.AddSignal(SignalErrorsUpdated, ch)
+	u.status.AddSignal(SignalTorNotAvailable, ch)
 
 	go func() {
 		for {
 			<-ch
 			u.showStatusIfErrors(builder)
+			u.disableControlsIfErrors(builder)
 			u.status.RemoveSignal(SignalErrorsUpdated, ch)
+			u.status.RemoveSignal(SignalTorNotAvailable, ch)
 		}
 	}()
 }
@@ -160,6 +164,18 @@ func (u *gtkUI) showStatusIfErrors(builder *uiBuilder) {
 
 	lbl.SetLabel(text)
 	btn.SetVisible(visibility)
+}
+
+func (u *gtkUI) disableControlsIfErrors(builder *uiBuilder) {
+	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
+	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
+
+	if u.tor == nil {
+		btnHostMeeting.SetSensitive(false)
+		btnJoinMeeting.SetSensitive(false)
+		btnHostMeeting.SetTooltipText("You can't host a meeting without Tor")
+		btnJoinMeeting.SetTooltipText("You can't join a meeting without Tor")
+	}
 }
 
 func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
@@ -268,8 +284,11 @@ func (u *gtkUI) saveConfigOnly() {
 }
 
 func (u *gtkUI) ensureTorNetwork() {
+	u.newError("A valid Tor service wasn't found on this computer", true)
+	return
+
 	if !tor.Network.Detect() {
-		u.newError("Tor is not running", true)
+		u.newError("A valid Tor service wasn't found on this computer", true)
 		return
 	}
 

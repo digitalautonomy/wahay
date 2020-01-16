@@ -4,6 +4,9 @@ const (
 	// StatusChanged is a custom signal executed when
 	// the application status change
 	StatusChanged = "status-changed"
+
+	// SignalTorNotAvailable indicates Tor is not available
+	SignalTorNotAvailable = "tor-unavailable"
 )
 
 // AddSignal adds an event listener to the ApplicationStatus struct instance
