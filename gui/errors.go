@@ -7,7 +7,7 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-// SignalErrorsUpdated indicates errors ocurred
+// SignalErrorsUpdated indicates errors ocurrs
 const SignalErrorsUpdated = "errors-updated"
 
 // Error is a representation of multiple errors

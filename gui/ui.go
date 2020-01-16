@@ -284,9 +284,6 @@ func (u *gtkUI) saveConfigOnly() {
 }
 
 func (u *gtkUI) ensureTorNetwork() {
-	u.newError("A valid Tor service wasn't found on this computer", true)
-	return
-
 	if !tor.Network.Detect() {
 		u.newError("A valid Tor service wasn't found on this computer", true)
 		return
