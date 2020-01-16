@@ -65,7 +65,7 @@ func NewInstance() (*Instance, error) {
 		configFileName: "tor/torrc",
 		socksPort:      9950,
 		controlHost:    "127.0.0.1",
-		controlPort:    9951,
+		controlPort:    config.GetRandomPort(),
 		dataDirectory:  "",
 		authType:       "cookie",
 	}
