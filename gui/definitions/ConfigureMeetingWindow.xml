@@ -134,7 +134,7 @@
                       <object class="GtkEntry" id="inpMeetingUsername">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">Optional meeting username</property>
+                        <property name="placeholder_text" translatable="yes">Type your preferred screen name</property>
                         <style>
                           <class name="form-control"/>
                         </style>
@@ -192,7 +192,7 @@
                       <object class="GtkEntry" id="inpMeetingPassword">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="placeholder_text" translatable="yes">Optional meeting password</property>
+                        <property name="placeholder_text" translatable="yes">Specify a password for the meeting</property>
                         <style>
                           <class name="form-control"/>
                         </style>

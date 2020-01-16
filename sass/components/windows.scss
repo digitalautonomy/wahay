@@ -1,6 +1,6 @@
 window {
   font-family: $desktop-font;
-  background-color: $bg-white;
+  background-color: $white;
   font-size: $desktop-font-size;
 
   .window-content {
@@ -8,6 +8,33 @@ window {
   }
 
   .window-actions {
+    padding: $spacing;
+
+    &.bordered {
+      border-top: 1px solid $gray-300;
+      background-color: $gray-100;
+    }
+  }
+
+  &.light {
+    background-color: $gray-100;
+
+    .window-actions.bordered {
+      background-color: $white;
+    }
+  }
+}
+
+dialog {
+  font-family: $desktop-font;
+  background-color: $white;
+  font-size: $desktop-font-size;
+
+  .dialog-content {
+    padding: $spacing;
+  }
+
+  .dialog-actions {
     padding: $spacing;
 
     &.bordered {

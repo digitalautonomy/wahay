@@ -10,4 +10,8 @@ label {
     background-color: $yellow-200;
     padding: $spacing/1.5 $spacing;
   }
+
+  &.label-text {
+    font-size: $font-size-medium;
+  }
 }

@@ -29,6 +29,22 @@ window {
     window.light .window-actions.bordered {
       background-color: #fff; }
 
+dialog {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  background-color: #fff;
+  font-size: 14px; }
+  dialog .dialog-content {
+    padding: 20px; }
+  dialog .dialog-actions {
+    padding: 20px; }
+    dialog .dialog-actions.bordered {
+      border-top: 1px solid #d1d5da;
+      background-color: #f6f8fa; }
+  dialog.light {
+    background-color: #f6f8fa; }
+    dialog.light .window-actions.bordered {
+      background-color: #fff; }
+
 .form-control {
   background-color: #fff;
   border: 1px solid rgba(27, 31, 35, 0.3);
@@ -233,12 +249,12 @@ window {
   font-size: inherit;
   border-radius: 6px; }
 
-.btn-invisible {
+.btn-invisible, .main-window-status-bar .status-show-errors {
   color: #0366d6;
   background: none;
   border-width: 0;
   box-shadow: none; }
-  .btn-invisible:hover, .btn-invisible:active, .btn-invisible:focus {
+  .btn-invisible:hover, .main-window-status-bar .status-show-errors:hover, .btn-invisible:active, .main-window-status-bar .status-show-errors:active, .btn-invisible:focus, .main-window-status-bar .status-show-errors:focus {
     color: #0366d6;
     background: none;
     box-shadow: none; }
@@ -255,6 +271,8 @@ label.label-success {
   color: #735c0f;
   background-color: #fff5b1;
   padding: 13.3333333333px 20px; }
+label.label-text {
+  font-size: 16px; }
 
 .main-window-top-bar {
   padding: 20px; }
@@ -264,8 +282,22 @@ label.label-success {
 
 .main-window-status-bar {
   color: #e1e4e8;
-  padding: 20px;
-  background-color: #2f363d; }
+  padding: 10px 20px;
+  background-color: #24292e;
+  background-image: linear-gradient(-180deg, #282e34 0%, #14171a 90%); }
+  .main-window-status-bar .status-label {
+    font-size: 16px; }
+  .main-window-status-bar .status-show-errors {
+    color: #fff;
+    font-weight: 400;
+    font-size: 16px;
+    padding: 5px 20px;
+    border-radius: 10em;
+    border: 2px solid rgba(255, 255, 255, 0.1); }
+    .main-window-status-bar .status-show-errors:hover {
+      color: #fff;
+      background: #9e1c23;
+      border-color: #9e1c23; }
 
 .loading-window {
   color: #e1e4e8;
