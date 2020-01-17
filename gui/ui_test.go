@@ -124,8 +124,7 @@ func (s *TonioGUISuite) Test_gtkUI_onActivate_createsMainWindow(c *C) {
 	g1 := CreateGraphics(ourGtk, ourGlib, nil)
 
 	u := &gtkUI{
-		g:      g1,
-		status: getInitialStatus(),
+		g: g1,
 	}
 	u.onActivate()
 
