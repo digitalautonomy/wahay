@@ -2,31 +2,35 @@ package tor
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
-	"strings"
-	"sync"
 
 	"autonomia.digital/tonio/app/config"
 )
 
-// Instance if a representation of our Tor Control Port instance
-type Instance struct {
-	started        bool
-	configFile     string
-	configFileName string
-	socksPort      int
-	controlHost    string
-	controlPort    int
-	dataDirectory  string
-	authType       string
-	runningTor     *runningTor
-	ioLock         sync.Mutex
+const torConfigName = "torrc"
+const torConfigData = "data"
+const defaultSocksPort = 9950
+const defaultControlPort = 9951
+const defaultControlHost = "127.0.0.1"
+
+// Instance contains functions to work with Tor instance
+type Instance interface {
+	Start() error
+	Destroy()
+}
+
+type instance struct {
+	started       bool
+	configFile    string
+	socksPort     int
+	controlHost   string
+	controlPort   int
+	dataDirectory string
+	runningTor    *runningTor
 }
 
 type runningTor struct {
@@ -38,67 +42,20 @@ type runningTor struct {
 	finishChannel     chan bool
 }
 
-func (i *Instance) close() {
-	if i.runningTor != nil {
-		i.runningTor.close()
-	}
-}
-
-func (r *runningTor) close() {
-	r.cancelFunc()
-}
-
-func (r *runningTor) waitForFinish() {
-	e := r.cmd.Wait()
-	r.finished = true
-	r.finishedWithError = e
-	r.finishChannel <- true
-}
-
 // NewInstance initialized our Tor Control Port instance
-func NewInstance() (*Instance, error) {
-	log.Println("Creating new Tor Control Port instance")
+func NewInstance() (Instance, error) {
+	i := createOurInstance()
 
-	i := &Instance{
-		started:        false,
-		configFile:     "",
-		configFileName: "tor/torrc",
-		socksPort:      9950,
-		controlHost:    "127.0.0.1",
-		controlPort:    config.GetRandomPort(),
-		dataDirectory:  "",
-		authType:       "cookie",
-	}
-
-	err := i.loadOrCreateConfigFile()
+	err := i.createConfigFile()
 
 	return i, err
 }
 
-// GetHost returns the custom Tor Control Port instance host
-func (i *Instance) GetHost() string {
-	return i.controlHost
-}
-
-// GetControlPort returns the custom Tor Control Port instance port
-func (i *Instance) GetControlPort() string {
-	return strconv.Itoa(i.controlPort)
-}
-
-// GetPreferredAuthType returns the custom Tor Control Port authentication mode
-func (i *Instance) GetPreferredAuthType() string {
-	return i.authType
-}
-
 // Start our Tor Control Port
-func (i *Instance) Start() error {
-	log.Println("Starting our Tor Control Port instance")
-
+func (i *instance) Start() error {
 	ctx, cancelFunc := context.WithCancel(context.Background())
-
 	cmd := exec.CommandContext(ctx, "tor", "-f", i.configFile)
 	if err := cmd.Start(); err != nil {
-		cancelFunc()
 		return err
 	}
 
@@ -119,52 +76,96 @@ func (i *Instance) Start() error {
 	return nil
 }
 
-func (i *Instance) loadOrCreateConfigFile() error {
-	i.ioLock.Lock()
-	defer i.ioLock.Unlock()
+// Destroy close our instance running
+func (i *instance) Destroy() {
+	_ = os.RemoveAll(filepath.Dir(i.configFile))
 
-	i.configFile = config.FindFile(i.configFileName, "")
-	i.dataDirectory = filepath.Join(filepath.Dir(i.configFile), "data")
+	if i.runningTor != nil {
+		i.runningTor.closeTorService()
+		i.runningTor = nil
+	}
+}
+
+// GetSocksPort returns the custom Torsocks Port
+func (i *instance) GetSocksPort() int {
+	return i.socksPort
+}
+
+// GetHost returns the custom Tor Control Port instance host
+func (i *instance) GetHost() string {
+	return i.controlHost
+}
+
+// GetControlPort returns the custom Tor Control Port instance port
+func (i *instance) GetControlPort() int {
+	return i.controlPort
+}
+
+var tonioDataDir = filepath.Join(config.XdgDataHome(), "tonio")
+
+func ensureTonioDataDir() {
+	os.MkdirAll(tonioDataDir, 0700)
+}
+
+func createOurInstance() *instance {
+	ensureTonioDataDir()
+	d, _ := ioutil.TempDir(tonioDataDir, "tor")
+	controlPort, routePort := findAvailableTorPorts()
+
+	i := &instance{
+		started:       false,
+		configFile:    filepath.Join(d, torConfigName),
+		socksPort:     routePort,
+		controlHost:   defaultControlHost,
+		controlPort:   controlPort,
+		dataDirectory: filepath.Join(d, torConfigData),
+	}
+
+	return i
+}
+
+func findAvailablePort(initial int) int {
+	port := initial
+	for !config.IsPortAvailable(port) {
+		port = config.GetRandomPort()
+	}
+	return port
+}
+
+func findAvailableTorPorts() (controlPort, routePort int) {
+	controlPort = findAvailablePort(defaultControlPort)
+	routePort = findAvailablePort(defaultSocksPort)
+	return
+}
+
+func (i *instance) createConfigFile() error {
 	config.EnsureDir(i.dataDirectory, 0700)
-
-	data, exists, err := i.loadConfigFile()
-	if exists && err != nil {
-		return err
-	}
-
-	if !exists || len(data) == 0 {
-		go func() {
-			err = i.save()
-			if err != nil {
-				log.Println(err)
-			}
-		}()
-	}
-
-	return nil
+	return i.writeToFile()
 }
 
-func (i *Instance) save() error {
-	i.ioLock.Lock()
-	defer i.ioLock.Unlock()
-
-	return config.SafeWrite(i.configFile, i.getConfigFileContents(), 0600)
+func (i *instance) getConfigFileContents() []byte {
+	content := fmt.Sprintf(`
+SocksPort %d
+ControlPort %d
+DataDirectory %s
+CookieAuthentication %d`,
+		i.socksPort, i.controlPort, i.dataDirectory, 1)
+	return []byte(content)
 }
 
-func (i *Instance) getConfigFileContents() []byte {
-	content := []string{
-		fmt.Sprintf("SocksPort %d", i.socksPort),
-		fmt.Sprintf("ControlPort %d", i.controlPort),
-		fmt.Sprintf("DataDirectory %s", i.dataDirectory),
-		fmt.Sprintf("CookieAuthentication %d", 1),
-	}
-	return []byte(strings.Join(content, "\n"))
+func (i *instance) writeToFile() error {
+	return ioutil.WriteFile(i.configFile, i.getConfigFileContents(), 0600)
 }
 
-func (i *Instance) loadConfigFile() ([]byte, bool, error) {
-	if config.FileExists(i.configFile) {
-		data, err := ioutil.ReadFile(i.configFile)
-		return data, true, err
-	}
-	return nil, false, errors.New("tor control port file not found")
+func (r *runningTor) closeTorService() {
+	r.cancelFunc()
+}
+
+func (r *runningTor) waitForFinish() {
+	e := r.cmd.Wait()
+	r.finished = true
+	r.finishedWithError = e
+	// TODO: Maybe here, we should check if the failure was because
+	// of taken ports, regenerate the ports and try again?
+	r.finishChannel <- true
 }

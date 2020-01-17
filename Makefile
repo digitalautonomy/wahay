@@ -30,6 +30,9 @@ optional-deps:
 test:
 	go test -cover -v ./config ./gui ./tor
 
+test-clean: test
+	go clean -testcache
+
 run-coverage: clean-cover
 	mkdir -p .coverprofiles
 	go test -coverprofile=.coverprofiles/config.coverprofile ./config
