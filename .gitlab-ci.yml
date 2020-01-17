@@ -83,7 +83,7 @@ deploy_staging:
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
    - 'scp -P2326 $BINARY_NAME* tonio@staging.tonio.app:/usr/local/www/tonio/downloads/'
-   - 'ssh -p 2326 tonio@staging.tonio.app ./generate-downloads.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'
+   - 'ssh -p 2326 tonio@staging.tonio.app bin/update-downloads.sh'
 
 deploy_production:
   image: olabini/ssh_rsync:0.1
@@ -107,4 +107,4 @@ deploy_production:
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
    - 'scp -P2387 $BINARY_NAME* tonio@tonio.app:/usr/local/www/tonio/downloads/'
-   - 'ssh -p 2387 tonio@tonio.app ./generate-downloads.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'
+   - 'ssh -p 2387 tonio@tonio.app bin/update-downloads.sh'
