@@ -28,13 +28,13 @@ func EnsureDir(dirname string, perm os.FileMode) {
 	}
 }
 
-// FindFile search for a specific file in the data directory
+// FindFile search for a specific file in the config directory
 func FindFile(file string, filename string) string {
 	if len(filename) == 0 {
 		if len(file) == 0 {
 			log.Fatal("the filename is required")
 		}
-		dir := configDir()
+		dir := Dir()
 		EnsureDir(dir, 0700)
 		basePath := filepath.Join(dir, file)
 		switch {
@@ -82,7 +82,8 @@ func ReadFileOrTemporaryBackup(name string) (data []byte, e error) {
 	return ioutil.ReadFile(name + tmpExtension)
 }
 
-func configDir() string {
+// Dir returns the default config directory for Tonio
+func Dir() string {
 	return filepath.Join(SystemConfigDir(), "tonio")
 }
 

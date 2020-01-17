@@ -1,0 +1,10 @@
+- Create the full tor.Checker functionality
+- Create a helper object for Tor control that contains all info about
+   which ports to use and has helper functions:
+   - For connection to control port
+   - And for generating all arguments necessary for Torsocks
+- Make sure all places that currently use Torify, use the new helper Tor object
+- Make sure all places that currently uses Tor control port communication
+   uses the new helper object
+- Use the Tor checking functionality to create the Tor helper object
+    or report an error we can't recover from

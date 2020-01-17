@@ -2,31 +2,34 @@ package tor
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"sync"
 
 	"autonomia.digital/tonio/app/config"
 )
 
+const defaultInstanceConfigDir = "tor"
+const defaultInstanceConfigName = "torrc"
+const defaultInstanceConfigData = "data"
+const defaultInstanceSocksPort = 9950
+const defaultInstanceControlPort = 9951
+const defaultInstanceControlHost = "127.0.0.1"
+
 // Instance if a representation of our Tor Control Port instance
 type Instance struct {
-	started        bool
-	configFile     string
-	configFileName string
-	socksPort      int
-	controlHost    string
-	controlPort    int
-	dataDirectory  string
-	authType       string
-	runningTor     *runningTor
-	ioLock         sync.Mutex
+	started       bool
+	configFile    string
+	socksPort     int
+	controlHost   string
+	controlPort   int
+	dataDirectory string
+	runningTor    *runningTor
+	ioLock        sync.Mutex
 }
 
 type runningTor struct {
@@ -38,64 +41,18 @@ type runningTor struct {
 	finishChannel     chan bool
 }
 
-func (i *Instance) close() {
-	if i.runningTor != nil {
-		i.runningTor.close()
-	}
-}
-
-func (r *runningTor) close() {
-	r.cancelFunc()
-}
-
-func (r *runningTor) waitForFinish() {
-	e := r.cmd.Wait()
-	r.finished = true
-	r.finishedWithError = e
-	r.finishChannel <- true
-}
-
 // NewInstance initialized our Tor Control Port instance
-func NewInstance() (*Instance, error) {
-	log.Println("Creating new Tor Control Port instance")
+func NewInstance() *Instance {
+	i := createOurInstance()
 
-	i := &Instance{
-		started:        false,
-		configFile:     "",
-		configFileName: "tor/torrc",
-		socksPort:      9950,
-		controlHost:    "127.0.0.1",
-		controlPort:    config.GetRandomPort(),
-		dataDirectory:  "",
-		authType:       "cookie",
-	}
+	i.createConfigFile()
 
-	err := i.loadOrCreateConfigFile()
-
-	return i, err
-}
-
-// GetHost returns the custom Tor Control Port instance host
-func (i *Instance) GetHost() string {
-	return i.controlHost
-}
-
-// GetControlPort returns the custom Tor Control Port instance port
-func (i *Instance) GetControlPort() string {
-	return strconv.Itoa(i.controlPort)
-}
-
-// GetPreferredAuthType returns the custom Tor Control Port authentication mode
-func (i *Instance) GetPreferredAuthType() string {
-	return i.authType
+	return i
 }
 
 // Start our Tor Control Port
 func (i *Instance) Start() error {
-	log.Println("Starting our Tor Control Port instance")
-
 	ctx, cancelFunc := context.WithCancel(context.Background())
-
 	cmd := exec.CommandContext(ctx, "tor", "-f", i.configFile)
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
@@ -119,36 +76,81 @@ func (i *Instance) Start() error {
 	return nil
 }
 
-func (i *Instance) loadOrCreateConfigFile() error {
-	i.ioLock.Lock()
-	defer i.ioLock.Unlock()
-
-	i.configFile = config.FindFile(i.configFileName, "")
-	i.dataDirectory = filepath.Join(filepath.Dir(i.configFile), "data")
-	config.EnsureDir(i.dataDirectory, 0700)
-
-	data, exists, err := i.loadConfigFile()
-	if exists && err != nil {
-		return err
+// Destroy close our instance running
+func (i *Instance) Destroy() {
+	d := filepath.Dir(i.configFile)
+	if _, err := os.Stat(d); !os.IsNotExist(err) {
+		_ = os.RemoveAll(d)
 	}
 
-	if !exists || len(data) == 0 {
-		go func() {
-			err = i.save()
-			if err != nil {
-				log.Println(err)
-			}
-		}()
+	if i.runningTor != nil {
+		i.runningTor.closeTorService()
 	}
-
-	return nil
 }
 
-func (i *Instance) save() error {
+// GetSocksPort returns the custom Torsocks Port
+func (i *Instance) GetSocksPort() int {
+	return i.socksPort
+}
+
+// GetHost returns the custom Tor Control Port instance host
+func (i *Instance) GetHost() string {
+	return i.controlHost
+}
+
+// GetControlPort returns the custom Tor Control Port instance port
+func (i *Instance) GetControlPort() int {
+	return i.controlPort
+}
+
+func getTempDir() string {
+	dir := filepath.Join(config.Dir(), fmt.Sprintf(".%s-%d", defaultInstanceConfigDir, os.Getpid()))
+	return dir
+}
+
+func createOurInstance() *Instance {
+	d := getTempDir()
+	routePort, controlPort := findAvailableTorPorts()
+
+	i := &Instance{
+		started:       false,
+		configFile:    filepath.Join(d, defaultInstanceConfigName),
+		socksPort:     routePort,
+		controlHost:   defaultInstanceControlHost,
+		controlPort:   controlPort,
+		dataDirectory: filepath.Join(d, defaultInstanceConfigData),
+	}
+
+	return i
+}
+
+func findAvailableTorPorts() (int, int) {
+	controlPort := defaultInstanceControlPort
+	if !config.IsPortAvailable(controlPort) {
+		controlPort = config.GetRandomPort()
+	}
+
+	routePort := defaultInstanceSocksPort
+	if !config.IsPortAvailable(routePort) {
+		routePort = config.GetRandomPort()
+	}
+
+	return controlPort, routePort
+}
+
+func (i *Instance) createConfigFile() {
 	i.ioLock.Lock()
 	defer i.ioLock.Unlock()
 
-	return config.SafeWrite(i.configFile, i.getConfigFileContents(), 0600)
+	config.EnsureDir(filepath.Dir(i.configFile), 0700)
+	config.EnsureDir(i.dataDirectory, 0700)
+
+	go func() {
+		err := i.writeToFile()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 }
 
 func (i *Instance) getConfigFileContents() []byte {
@@ -161,10 +163,19 @@ func (i *Instance) getConfigFileContents() []byte {
 	return []byte(strings.Join(content, "\n"))
 }
 
-func (i *Instance) loadConfigFile() ([]byte, bool, error) {
-	if config.FileExists(i.configFile) {
-		data, err := ioutil.ReadFile(i.configFile)
-		return data, true, err
-	}
-	return nil, false, errors.New("tor control port file not found")
+func (i *Instance) writeToFile() error {
+	i.ioLock.Lock()
+	defer i.ioLock.Unlock()
+	return config.SafeWrite(i.configFile, i.getConfigFileContents(), 0600)
+}
+
+func (r *runningTor) closeTorService() {
+	r.cancelFunc()
+}
+
+func (r *runningTor) waitForFinish() {
+	e := r.cmd.Wait()
+	r.finished = true
+	r.finishedWithError = e
+	r.finishChannel <- true
 }
