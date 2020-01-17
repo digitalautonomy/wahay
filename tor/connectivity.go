@@ -93,7 +93,6 @@ func (c *connectivity) checkTorVersionCompatibility() bool {
 func (c *connectivity) checkTorControlPortExists() bool {
 	port := fmt.Sprintf("%d", c.controlPort)
 	_, err := torgo.NewController(net.JoinHostPort(c.host, port))
-	fmt.Println(err)
 	return err == nil
 }
 

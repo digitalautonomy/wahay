@@ -156,13 +156,12 @@ func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort 
 
 func (cntrl *controller) Close() {
 	if cntrl.i != nil {
-		log.Println("Closing our Tor Control Port instance")
 		cntrl.i.Destroy()
 	}
 }
 
-// CreateController takes the Tor information given and returns a
-// controlling interface
+// CreateController takes the Tor information given
+// and returns a controlling interface
 func CreateController(torHost, torPort, password string) Control {
 	f := func(v string) (torgoController, error) {
 		return torgo.NewController(v)
@@ -170,7 +169,7 @@ func CreateController(torHost, torPort, password string) Control {
 
 	var a authenticationMethod = authenticateNone
 	// If password is provided, then our `authType` should
-	// be `password` as the default value
+	// be `authenticatePassword` as the default value
 	if len(password) > 0 {
 		a = authenticatePassword(password)
 	}
