@@ -7,7 +7,7 @@
     <property name="type">popup</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
-    <property name="window_position">mouse</property>
+    <property name="window_position">center</property>
     <property name="default_width">300</property>
     <property name="default_height">100</property>
     <property name="type_hint">notification</property>
