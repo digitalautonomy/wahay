@@ -6,14 +6,6 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-func fatal(v interface{}) {
-	panic(fmt.Sprintf("failing on error: %v", v))
-}
-
-func fatalf(format string, v ...interface{}) {
-	panic(fmt.Sprintf(format, v...))
-}
-
 func (u *gtkUI) reportError(message string) {
 	builder := u.g.uiBuilderFor("GeneralError")
 	dlg := builder.get("dialog").(gtki.MessageDialog)
@@ -28,4 +20,16 @@ func (u *gtkUI) reportError(message string) {
 		dlg.Run()
 		dlg.Destroy()
 	})
+}
+
+func (u *gtkUI) displayStartupError(err error) {
+	u.reportError(err.Error())
+}
+
+func fatal(v interface{}) {
+	panic(fmt.Sprintf("failing on error: %v", v))
+}
+
+func fatalf(format string, v ...interface{}) {
+	panic(fmt.Sprintf(format, v...))
 }
