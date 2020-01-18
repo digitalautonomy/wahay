@@ -103,3 +103,11 @@ func GetRandomPort() int {
 	}
 	return port
 }
+
+// CheckPort returns boolean indicating if the port is valid or not
+func CheckPort(port int) bool {
+	if port <= 0 || port > 65535 {
+		return false
+	}
+	return true
+}
