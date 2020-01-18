@@ -2,6 +2,7 @@ package gui
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"log"
 	"text/template"
@@ -23,28 +24,15 @@ type hostData struct {
 	next            func()
 }
 
-func (u *gtkUI) displayLoadingWindow(loaded chan bool) {
-	builder := u.g.uiBuilderFor("LoadingWindow")
-	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
-
-	u.switchToWindow(win)
-
-	<-loaded
-
-	u.doInUIThread(win.Hide)
-}
-
 func (u *gtkUI) hostMeetingHandler() {
 	go u.realHostMeetingHandler()
 }
 
 func (u *gtkUI) realHostMeetingHandler() {
-	u.doInUIThread(u.currentWindow.Hide)
-
-	loaded := make(chan bool)
-	go func() {
-		u.displayLoadingWindow(loaded)
-	}()
+	u.doInUIThread(func() {
+		u.currentWindow.Hide()
+		u.displayLoadingWindow()
+	})
 
 	h := &hostData{
 		u:               u,
@@ -53,11 +41,16 @@ func (u *gtkUI) realHostMeetingHandler() {
 		next:            func() {},
 	}
 
-	h.createOnionService()
+	ch := make(chan bool)
 
-	loaded <- true
+	go h.createOnionService(ch)
 
-	h.showMeetingConfiguration()
+	<-ch
+
+	u.doInUIThread(func() {
+		u.hideLoadingWindow()
+		h.showMeetingConfiguration()
+	})
 }
 
 func (h *hostData) showMeetingControls() {
@@ -179,19 +172,24 @@ func (u *gtkUI) ensureServerCollection() {
 	}
 }
 
-func (h *hostData) createOnionService() {
-	port := config.GetRandomPort()
+func (h *hostData) createOnionService(ch chan bool) {
+	if h.u.tor != nil {
+		h.u.ensureServerCollection()
 
-	h.u.ensureServerCollection()
+		port := config.GetRandomPort()
 
-	serviceID, e := h.u.tor.CreateNewOnionService("127.0.0.1", fmt.Sprintf("%d", port), "64738")
-	if e != nil {
-		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
-		return
+		controller := h.u.tor.GetController()
+		serviceID, e := controller.CreateNewOnionService("127.0.0.1", port, 64738)
+		if e != nil {
+			h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+			return
+		}
+
+		h.serverPort = port
+		h.serviceID = serviceID
 	}
 
-	h.serverPort = port
-	h.serviceID = serviceID
+	ch <- true
 }
 
 func (h *hostData) createNewConferenceRoom(complete chan bool) {
@@ -219,22 +217,35 @@ func (h *hostData) finishMeetingReal() {
 	// We need to do a better controlling for each error
 	// and if multiple errors occurrs, show all the errors in the
 	// same window using the `u.reportError` function
-
 	err := h.serverControl.Stop()
 	if err != nil {
 		h.u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
 	}
 
-	err = h.u.tor.DeleteOnionService(h.serviceID)
-	if err != nil {
-		h.u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
-	}
+	h.deleteOnionService()
 
 	h.u.doInUIThread(func() {
 		h.u.currentWindow.Hide()
 		h.u.currentWindow = h.u.mainWindow
 		h.u.mainWindow.Show()
 	})
+}
+
+func (h *hostData) deleteOnionService() {
+	var err error
+	if h.u.tor != nil && len(h.serviceID) != 0 {
+		controller := h.u.tor.GetController()
+		err = controller.DeleteOnionService(h.serviceID)
+		if err == nil {
+			h.serviceID = ""
+		}
+	} else {
+		err = errors.New("tor is not defined")
+	}
+
+	if err != nil {
+		h.u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
+	}
 }
 
 func (h *hostData) finishMeetingMumble() {
@@ -382,11 +393,11 @@ func (h *hostData) showMeetingConfiguration() {
 			h.sendInvitationByEmail(builder)
 		},
 		"on_cancel": func() {
+			h.deleteOnionService()
 			h.u.currentWindow.Hide()
 			h.u.switchToMainWindow()
 		},
 		"on_start_meeting": func() {
-			//TODO: Implement some validation function to check password.
 			username := builder.get("inpMeetingUsername").(gtki.Entry)
 			password := builder.get("inpMeetingPassword").(gtki.Entry)
 			h.meetingUsername, _ = username.GetText()

@@ -1,10 +1,8 @@
 package gui
 
 import (
-	"context"
 	"log"
 	"os"
-	"os/exec"
 	"runtime"
 	"time"
 
@@ -54,11 +52,11 @@ type gtkUI struct {
 	app              gtki.Application
 	mainWindow       gtki.ApplicationWindow
 	currentWindow    gtki.ApplicationWindow
+	loadingWindow    gtki.ApplicationWindow
 	g                Graphics
 	serverCollection hosting.Servers
-	tor              tor.Control
-
-	config *config.ApplicationConfig
+	tor              tor.Instance
+	config           *config.ApplicationConfig
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -81,54 +79,65 @@ func NewGTK(gx Graphics) UI {
 }
 
 func (u *gtkUI) onActivate() {
-	u.createMainWindow()
 	u.setGlobalStyles()
-
+	u.displayLoadingWindow()
 	go u.loadConfig("")
-	go u.ensureTorNetwork()
+	go u.ensureTonioNetwork(func(startupSuccess bool) {
+		u.doInUIThread(func() {
+			u.createMainWindow(startupSuccess)
+		})
+	})
 }
 
-func (u *gtkUI) createMainWindow() {
+func (u *gtkUI) createMainWindow(startupSuccess bool) {
 	builder := u.g.uiBuilderFor("MainWindow")
 	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	u.currentWindow = win
 	u.mainWindow = win
+
 	win.SetApplication(u.app)
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": u.quit,
 		"on_host_meeting":        u.hostMeetingHandler,
 		"on_join_meeting":        u.joinMeeting,
-		"on_show_errors":         func() {},
+		"on_show_errors": func() {
+			u.showStatusErrorsWindow(builder)
+		},
 		"on_close_window_errors": func() {
 			u.currentWindow.Hide()
 		},
 	})
 
+	if !startupSuccess {
+		u.updateStatusBar(builder)
+		u.disableControls(builder)
+	}
+
 	win.Show()
 }
 
-// func (u *gtkUI) disableControlsIfErrors(builder *uiBuilder) {
-// 	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
-// 	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
+func (u *gtkUI) updateStatusBar(builder *uiBuilder) {
+	lblAppStatus := builder.get("lblApplicationStatus").(gtki.Label)
+	btnStatusShow := builder.get("btnStatusShowErrors").(gtki.Button)
 
-// 	if u.tor == nil {
-// 		btnHostMeeting.SetSensitive(false)
-// 		btnJoinMeeting.SetSensitive(false)
-// 		btnHostMeeting.SetTooltipText("You can't host a meeting without Tor")
-// 		btnJoinMeeting.SetTooltipText("You can't join a meeting without Tor")
-// 	}
-// }
+	if u.tor == nil {
+		lblAppStatus.SetLabel("We've found errors")
+		btnStatusShow.SetVisible(true)
+	}
+}
 
-// func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
-// 	if !u.status.errors.empty() {
-// 		win := builder.get("mainWindowErrors").(gtki.Dialog)
-// 		txt := builder.get("textContent").(gtki.Label)
-// 		txt.SetMarkup(u.status.errors.all())
-// 		u.currentWindow = win
-// 		win.Show()
-// 	}
-// }
+func (u *gtkUI) disableControls(builder *uiBuilder) {
+	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
+	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
+
+	if u.tor == nil {
+		btnHostMeeting.SetSensitive(false)
+		btnJoinMeeting.SetSensitive(false)
+		btnHostMeeting.SetTooltipText("You can't host a meeting without Tor")
+		btnJoinMeeting.SetTooltipText("You can't join a meeting without Tor")
+	}
+}
 
 func (u *gtkUI) setGlobalStyles() {
 	if u.g.gdk == nil {
@@ -197,14 +206,13 @@ func (u *gtkUI) loadConfig(configFile string) {
 	u.config = conf
 
 	if err != nil {
-		log.Println("Configuration file error:", err.Error())
 		u.doInUIThread(u.initialSetupWindow)
 		return
 	}
 }
 
 func (u *gtkUI) configLoaded(c *config.ApplicationConfig) {
-	//TODO: do stuffs when config loaded
+	// TODO: do stuffs when config loaded
 }
 
 func (u *gtkUI) initialSetupWindow() {
@@ -224,69 +232,9 @@ func (u *gtkUI) saveConfigOnly() {
 	}()
 }
 
-func (u *gtkUI) ensureTorNetwork() {
-	// TODO: check for Tor errors and implement the UI
-	// TODO: we should also check that either Torify or Torsocks is installed
-}
-
-type runningMumble struct {
-	cmd               *exec.Cmd
-	ctx               context.Context
-	cancelFunc        context.CancelFunc
-	finished          bool
-	finishedWithError error
-	finishChannel     chan bool
-}
-
-func (r *runningMumble) close() {
-	r.cancelFunc()
-}
-
-func (r *runningMumble) waitForFinish() {
-	e := r.cmd.Wait()
-	r.finished = true
-	r.finishedWithError = e
-	r.finishChannel <- true
-}
-
-func launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
-	ctx, cancelFunc := context.WithCancel(context.Background())
-
-	cmd := exec.CommandContext(ctx, "torify", "mumble", hosting.GenerateURL(data))
-	if err := cmd.Start(); err != nil {
-		cancelFunc()
-		return nil, err
-	}
-
-	state := &runningMumble{
-		cmd:               cmd,
-		ctx:               ctx,
-		cancelFunc:        cancelFunc,
-		finished:          false,
-		finishedWithError: nil,
-		finishChannel:     make(chan bool, 100),
-	}
-
-	go state.waitForFinish()
-
-	return state, nil
-}
-
-func (u *gtkUI) switchContextWhenMumbleFinished(state *runningMumble) {
-	go func() {
-		<-state.finishChannel
-
-		// TODO: here, we  could check if the Mumble instance
-		// failed with an error and report this
-		u.doInUIThread(func() {
-			u.openMainWindow()
-		})
-	}()
-}
-
 func (u *gtkUI) cleanUp() {
 	if u.tor != nil {
-		u.tor.Close()
+		u.tor.Destroy()
 	}
 
 	// TODO: delete our onion service if created
