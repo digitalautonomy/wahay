@@ -55,15 +55,10 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 		return
 	}
 
-	u.switchContextWhenMumbleFinished(state)
+	u.switchContextWhenMumbleFinish(state)
 
 	u.currentWindow.Hide()
 	u.openCurrentMeetingWindow(state)
-
-	// go func() {
-	// 	//<-loaded
-	// 	//u.openCurrentMeetingWindow(state)
-	// }()
 }
 
 // Test Onion that can be used:
