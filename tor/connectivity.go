@@ -4,15 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
-	"net/http"
-	"net/url"
 	"os/exec"
 	"regexp"
 
 	"github.com/wybiral/torgo"
-	"golang.org/x/net/proxy"
 )
 
 // Connectivity is used to check whether Tor can connect in different ways
@@ -99,9 +95,7 @@ func (c *connectivity) checkTorControlPortExists() bool {
 func (c *connectivity) checkTorControlAuth() bool {
 	port := fmt.Sprintf("%d", c.controlPort)
 	tc, err := torgo.NewController(net.JoinHostPort(c.host, port))
-
 	if err != nil {
-		fmt.Println(err.Error())
 		return false
 	}
 
@@ -117,48 +111,20 @@ type checkTorResult struct {
 }
 
 func (c *connectivity) checkConnectionOverTor() bool {
-	d, r := getTorProxy(c.host, c.routePort)
-	if d == nil || !r {
-		return false
-	}
-
-	cl := &http.Client{Transport: &http.Transport{Dial: d.Dial}}
-
-	resp, err := cl.Get("https://check.torproject.org/api/ip")
-	if err != nil {
-		return false
-	}
-
-	defer resp.Body.Close()
-
-	content, err := ioutil.ReadAll(resp.Body)
+	p := fmt.Sprintf("%d", c.routePort)
+	cmd := exec.Command("torsocks", "curl", "https://check.torproject.org/api/ip", "-P", p)
+	output, err := cmd.Output()
 	if err != nil {
 		return false
 	}
 
 	v := checkTorResult{}
-	err = json.Unmarshal(content, &v)
+	err = json.Unmarshal(output, &v)
 	if err != nil {
 		return false
 	}
 
 	return v.IsTor
-}
-
-func getTorProxy(host string, port int) (proxy.Dialer, bool) {
-	var dialer proxy.Dialer
-	var err error
-
-	u, e := url.Parse(fmt.Sprintf("socks5://%s:%d", host, port))
-	if e != nil {
-		return nil, true
-	}
-
-	if dialer, err = proxy.FromURL(u, dialer); err != nil {
-		return nil, true
-	}
-
-	return dialer, false
 }
 
 func (c *connectivity) Check() (total error, partial error) {

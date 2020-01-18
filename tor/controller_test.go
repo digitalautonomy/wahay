@@ -88,13 +88,13 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAuth
 	var a authenticationMethod = authenticatePassword(passw)
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: passw,
 		authType: &a,
 		tc:       mock.createTestGotor,
 	}
 
-	_, e := cntrl.CreateNewOnionService("addr", "dport", "123")
+	_, e := cntrl.CreateNewOnionService("addr", 4567, 123)
 
 	c.Assert(mock.authenticatePasswordCalled, Equals, true)
 	c.Assert(e, ErrorMatches, "authentication failed.*")
@@ -106,13 +106,13 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_authenticatesWithG
 	var a authenticationMethod = authenticatePassword(passw)
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: passw,
 		authType: &a,
 		tc:       mock.createTestGotor,
 	}
 
-	_, e := cntrl.CreateNewOnionService("addr", "dport", "123")
+	_, e := cntrl.CreateNewOnionService("addr", 4567, 123)
 
 	c.Assert(e, IsNil)
 	c.Assert(mock.authenticatePasswordArg1, Equals, passw)
@@ -121,14 +121,14 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_authenticatesWithG
 func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfTorControllerCantBeCreated(c *C) {
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: "11112222",
 		tc: func(string) (torgoController, error) {
 			return nil, errors.New("couldn't create torgocontroller")
 		},
 	}
 
-	_, e := cntrl.CreateNewOnionService("addr", "dport", "123")
+	_, e := cntrl.CreateNewOnionService("addr", 4567, 123)
 
 	c.Assert(e, ErrorMatches, "couldn't create torgocontroller")
 }
@@ -137,7 +137,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_triesToCreateTorCo
 	var addrGiven *string
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: "11112222",
 		tc: func(v string) (torgoController, error) {
 			addrGiven = &v
@@ -145,7 +145,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_triesToCreateTorCo
 		},
 	}
 
-	_, _ = cntrl.CreateNewOnionService("128.0.42.1", "3535", "123")
+	_, _ = cntrl.CreateNewOnionService("128.0.42.1", 3535, 123)
 
 	c.Assert(addrGiven, Not(IsNil))
 	c.Assert(*addrGiven, Equals, "127.1.2.3:9052")
@@ -158,13 +158,13 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAddO
 	var a authenticationMethod = authenticatePassword(passw)
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: passw,
 		authType: &a,
 		tc:       mock.createTestGotor,
 	}
 
-	_, e := cntrl.CreateNewOnionService("addr", "dport", "123")
+	_, e := cntrl.CreateNewOnionService("addr", 6477, 123)
 
 	c.Assert(mock.addOnionCalled, Equals, true)
 	c.Assert(e, ErrorMatches, "add onion failed.*")
@@ -176,13 +176,13 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_createsOnionWithGi
 	var a authenticationMethod = authenticatePassword(passw)
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: passw,
 		authType: &a,
 		tc:       mock.createTestGotor,
 	}
 
-	_, e := cntrl.CreateNewOnionService("127.0.42.1", "42", "7877")
+	_, e := cntrl.CreateNewOnionService("127.0.42.1", 42, 7877)
 
 	c.Assert(mock.addOnionCalled, Equals, true)
 	c.Assert(e, IsNil)
@@ -200,19 +200,19 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_signalsErrorForInv
 	var a authenticationMethod = authenticatePassword(passw)
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: passw,
 		authType: &a,
 		tc:       mock.createTestGotor,
 	}
 
-	_, e := cntrl.CreateNewOnionService("127.0.42.1", "42", "not port")
+	_, e := cntrl.CreateNewOnionService("127.0.42.1", 42, 100000)
 	c.Assert(e, ErrorMatches, "invalid source port")
 
-	_, e = cntrl.CreateNewOnionService("127.0.42.1", "42", "-1")
+	_, e = cntrl.CreateNewOnionService("127.0.42.1", 42, -1)
 	c.Assert(e, ErrorMatches, "invalid source port")
 
-	_, e = cntrl.CreateNewOnionService("127.0.42.1", "42", "65536")
+	_, e = cntrl.CreateNewOnionService("127.0.42.1", 42, 65536)
 	c.Assert(e, ErrorMatches, "invalid source port")
 }
 
@@ -223,184 +223,51 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsTheServiceI
 	var a authenticationMethod = authenticatePassword(passw)
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
-		torPort:  "9052",
+		torPort:  9052,
 		password: passw,
 		authType: &a,
 		tc:       mock.createTestGotor,
 	}
 
-	serviceID, e := cntrl.CreateNewOnionService("127.0.42.1", "42", "7877")
+	serviceID, e := cntrl.CreateNewOnionService("127.0.42.1", 42, 7877)
 
 	c.Assert(e, IsNil)
 	c.Assert(serviceID, Equals, "123abcfff.onion")
 }
 
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_authenticatesCorrectly(c *C) {
-	mock := &controllerMock{}
-	mock.getVersionReturn1 = "1.2.3.4"
-	passw := "11112223"
-	var a authenticationMethod = authenticatePassword(passw)
-	cntrl := &controller{
-		torHost:  "127.1.2.3",
-		torPort:  "9052",
-		password: passw,
-		authType: &a,
-		tc:       mock.createTestGotor,
-	}
-
-	_, _, e := cntrl.EnsureTorCompatibility()
-
-	c.Assert(e, IsNil)
-	c.Assert(mock.authenticatePasswordArg1, Equals, "11112223")
-}
-
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_failsOnAuthenticationError(c *C) {
-	mock := &controllerMock{}
-	mock.authenticatePasswordReturn = errors.New("oh no, godzilla")
-
-	var a authenticationMethod = authenticatePassword(passw)
-	cntrl := &controller{
-		torHost:  "127.1.2.3",
-		torPort:  "9052",
-		password: passw,
-		authType: &a,
-		tc:       mock.createTestGotor,
-	}
-
-	_, _, e := cntrl.EnsureTorCompatibility()
-
-	c.Assert(e, ErrorMatches, "oh no, godzilla")
-}
-
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_reportsErrorWhenFailingToCreateController(c *C) {
-	cntrl := &controller{
-		torHost:  "127.1.2.4",
-		torPort:  "9053",
-		password: "11112223",
-		tc: func(string) (torgoController, error) {
-			return nil, errors.New("couldn't create torgocontroller")
-		},
-	}
-
-	_, _, e := cntrl.EnsureTorCompatibility()
-
-	c.Assert(e, ErrorMatches, "couldn't create torgocontroller")
-}
-
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_triesToCreateTorControllerWithGivenAddress(c *C) {
-	var addrGiven *string
-	cntrl := &controller{
-		torHost:  "127.1.2.4",
-		torPort:  "9053",
-		password: "11112222",
-		tc: func(v string) (torgoController, error) {
-			addrGiven = &v
-			return nil, errors.New("we want stop early. this error is not part of the test")
-		},
-	}
-
-	_, _, _ = cntrl.EnsureTorCompatibility()
-
-	c.Assert(addrGiven, Not(IsNil))
-	c.Assert(*addrGiven, Equals, "127.1.2.4:9053")
-}
-
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsErrorIfCallForCurrentVersionFails(c *C) {
-	mock := &controllerMock{}
-	mock.getVersionReturn2 = errors.New("connection failed")
-	cntrl := &controller{
-		torHost:  "127.1.2.3",
-		torPort:  "9052",
-		password: "11112223",
-		tc:       mock.createTestGotor,
-	}
-
-	_, _, e := cntrl.EnsureTorCompatibility()
-
-	c.Assert(e, ErrorMatches, "connection failed")
-}
-
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsErrorIfVersionGivenFromTorIsBadlyFormatted(c *C) {
-	mock := &controllerMock{}
-	mock.getVersionReturn1 = "1.x.12"
-	cntrl := &controller{
-		torHost:  "127.1.2.3",
-		torPort:  "9052",
-		password: "11112223",
-		tc:       mock.createTestGotor,
-	}
-
-	_, _, e := cntrl.EnsureTorCompatibility()
-
-	c.Assert(e, ErrorMatches, "invalid version string")
-}
-
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsErrorIfTorVersionIsTooLow(c *C) {
-	mock := &controllerMock{}
-	mock.getVersionReturn1 = "0.1.42.x"
-	cntrl := &controller{
-		torHost:  "127.1.2.3",
-		torPort:  "9052",
-		password: "11112223",
-		tc:       mock.createTestGotor,
-	}
-
-	_, _, e := cntrl.EnsureTorCompatibility()
-
-	c.Assert(e, ErrorMatches, "version of Tor is not compatible")
-}
-
-func (s *TonioTorSuite) Test_controller_EnsureTorCompatibility_returnsNilIfTorIsCompatible(c *C) {
-	mock := &controllerMock{}
-	mock.getVersionReturn1 = "0.4.1"
-	cntrl := &controller{
-		torHost:  "127.1.2.3",
-		torPort:  "9052",
-		password: "11112223",
-		tc:       mock.createTestGotor,
-	}
-
-	_, _, e := cntrl.EnsureTorCompatibility()
-
-	c.Assert(e, IsNil)
-}
-
 func (s *TonioTorSuite) Test_controller_DeleteOnionService_returnsErrorIfServiceIDIsEmpty(c *C) {
-	// TODO: Remove comments when we finished the refactoring
-	// mock := &controllerMock{}
-	// mock.deleteOnionReturnError = errors.New("the service ID cannot be empty")
+	mock := &controllerMock{}
+	mock.deleteOnionReturnError = errors.New("the service ID cannot be empty")
 
-	// cntrl := &controller{
-	// 	torHost:  "127.1.2.3",
-	// 	torPort:  "9052",
-	// 	password: "11112223",
-	// 	tc:       mock.createTestGotor,
-	// }
+	cntrl := &controller{
+		torHost:  "127.1.2.3",
+		torPort:  9052,
+		password: "11112223",
+		tc:       mock.createTestGotor,
+	}
 
-	// _, _ = cntrl.CreateNewOnionService("127.1.2.3", "9052", "7877")
+	_, _ = cntrl.CreateNewOnionService("127.1.2.3", 9052, 7877)
 
-	// e := cntrl.c.DeleteOnion("")
+	e := cntrl.c.DeleteOnion("")
 
-	// //error if delete fail
-	// c.Assert(e, ErrorMatches, "the service ID cannot be empty")
+	c.Assert(e, ErrorMatches, "the service ID cannot be empty")
 }
 
 func (s *TonioTorSuite) Test_controller_DeleteOnionService_returnsErrorIfFails(c *C) {
-	// TODO: Remove comments when we finished the refactoring
-	// mock := &controllerMock{}
-	// mock.deleteOnionReturnError = errors.New("service deletion error")
+	mock := &controllerMock{}
+	mock.deleteOnionReturnError = errors.New("service deletion error")
 
-	// cntrl := &controller{
-	// 	torHost:  "127.1.2.3",
-	// 	torPort:  "9052",
-	// 	password: "11112223",
-	// 	tc:       mock.createTestGotor,
-	// }
+	cntrl := &controller{
+		torHost:  "127.1.2.3",
+		torPort:  9052,
+		password: "11112223",
+		tc:       mock.createTestGotor,
+	}
 
-	// _, _ = cntrl.CreateNewOnionService("127.1.2.3", "9052", "7877")
+	_, _ = cntrl.CreateNewOnionService("127.1.2.3", 9052, 7877)
 
-	// e := cntrl.c.DeleteOnion("123456")
+	e := cntrl.c.DeleteOnion("123456")
 
-	// //error if delete fail
-	// c.Assert(e, ErrorMatches, "service deletion error")
+	//error if delete fail
+	c.Assert(e, ErrorMatches, "service deletion error")
 }

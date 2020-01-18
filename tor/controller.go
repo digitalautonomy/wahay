@@ -3,166 +3,35 @@ package tor
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net"
 	"strconv"
 	"strings"
 
+	"autonomia.digital/tonio/app/config"
 	"github.com/wybiral/torgo"
 )
 
 // Control is the interface for controlling the Tor instance on this system
 type Control interface {
-	GetTorController() (torgoController, error)
-	EnsureTorCompatibility() (bool, bool, error)
-	CreateNewOnionService(destinationHost, destinationPort string, port string) (serviceID string, err error)
+	CreateNewOnionService(destinationHost string, destinationPort int, port int) (serviceID string, err error)
 	DeleteOnionService(serviceID string) error
-	SetInstance(i *Instance)
-	Close()
+	DeleteOnionServices()
 }
 
 type controller struct {
 	torHost  string
-	torPort  string
-	password string
+	torPort  int
 	authType *authenticationMethod
+	password string
 	c        torgoController
-	i        *Instance
 	tc       func(string) (torgoController, error)
 }
 
-func (cntrl *controller) SetInstance(i *Instance) {
-	cntrl.i = i
-}
-
-func (cntrl *controller) GetTorController() (torgoController, error) {
-	if cntrl.c != nil {
-		return cntrl.c, nil
-	}
-
-	c, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, cntrl.torPort))
-	if err != nil {
-		return nil, err
-	}
-
-	cntrl.c = c
-
-	return c, nil
-}
-
-func getAuthenticationMethod(tc torgoController, cntrl *controller) (authenticationMethod, error) {
-	err := tc.AuthenticateNone()
-	if err == nil {
-		return authenticateNone, nil
-	}
-
-	err = tc.AuthenticateCookie()
-	if err == nil {
-		return authenticateCookie, nil
-	}
-
-	if len(cntrl.password) > 0 {
-		err = tc.AuthenticatePassword(cntrl.password)
-		if err == nil {
-			return authenticatePassword(cntrl.password), nil
-		}
-	}
-
-	addr := net.JoinHostPort(cntrl.torHost, cntrl.torPort)
-	return authenticateNone, fmt.Errorf("cannot authenticate to the Tor Control Port on %s", addr)
-}
-
-func (cntrl *controller) EnsureTorCompatibility() (bool, bool, error) {
-	tc, err := cntrl.GetTorController()
-	if err != nil {
-		return false, false, err
-	}
-
-	if cntrl.authType == nil {
-		a, err := getAuthenticationMethod(tc, cntrl)
-		if err != nil {
-			log.Println(err)
-		} else {
-			cntrl.authType = &a
-		}
-	}
-
-	err = (*cntrl.authType)(tc)
-	if err != nil {
-		return false, true, err
-	}
-
-	version, err := tc.GetVersion()
-	if err != nil {
-		return false, true, err
-	}
-
-	diff, err := compareVersions(version, MinSupportedVersion)
-	if err != nil {
-		return false, true, err
-	}
-
-	if diff < 0 {
-		return false, false, errors.New("version of Tor is not compatible")
-	}
-
-	return false, true, nil
-}
-
-func (cntrl *controller) DeleteOnionService(serviceID string) error {
-	s := strings.TrimSuffix(serviceID, ".onion")
-	return cntrl.c.DeleteOnion(s)
-}
-
-func (cntrl *controller) CreateNewOnionService(destinationHost, destinationPort string,
-	port string) (serviceID string, err error) {
-	tc, err := cntrl.GetTorController()
-
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	err = (*cntrl.authType)(tc)
-	if err != nil {
-		return
-	}
-
-	servicePort, err := strconv.ParseUint(port, 10, 16)
-
-	if err != nil {
-		err = errors.New("invalid source port")
-		return
-	}
-
-	onion := &torgo.Onion{
-		Ports: map[int]string{
-			int(servicePort): net.JoinHostPort(destinationHost, destinationPort),
-		},
-		PrivateKeyType: "NEW",
-		PrivateKey:     "ED25519-V3",
-	}
-
-	err = tc.AddOnion(onion)
-
-	if err != nil {
-		return "", err
-	}
-
-	serviceID = fmt.Sprintf("%s.onion", onion.ServiceID)
-
-	return serviceID, nil
-}
-
-func (cntrl *controller) Close() {
-	if cntrl.i != nil {
-		cntrl.i.Destroy()
-	}
-}
+var onions = []string{}
 
 // CreateController takes the Tor information given
 // and returns a controlling interface
-func CreateController(torHost, torPort, password string) Control {
+func CreateController(torHost string, torPort int, password string) Control {
 	f := func(v string) (torgoController, error) {
 		return torgo.NewController(v)
 	}
@@ -181,6 +50,85 @@ func CreateController(torHost, torPort, password string) Control {
 		authType: &a,
 		tc:       f,
 		c:        nil,
-		i:        nil,
 	}
+}
+
+func (cntrl *controller) CreateNewOnionService(destinationHost string, destinationPort int,
+	servicePort int) (serviceID string, err error) {
+	tc, err := cntrl.getTorController()
+	if err != nil {
+		return
+	}
+
+	if cntrl.authType != nil {
+		err = (*cntrl.authType)(tc)
+		if err != nil {
+			return
+		}
+	}
+
+	if !config.CheckPort(destinationPort) || !config.CheckPort(servicePort) {
+		return "", errors.New("invalid source port")
+	}
+
+	onion := &torgo.Onion{
+		Ports: map[int]string{
+			servicePort: net.JoinHostPort(destinationHost, strconv.Itoa(destinationPort)),
+		},
+		PrivateKeyType: "NEW",
+		PrivateKey:     "ED25519-V3",
+	}
+
+	err = tc.AddOnion(onion)
+	if err != nil {
+		return "", err
+	}
+
+	serviceID = fmt.Sprintf("%s.onion", onion.ServiceID)
+	onions = append(onions, serviceID)
+
+	return serviceID, nil
+}
+
+func (cntrl *controller) DeleteOnionService(serviceID string) error {
+	s := strings.TrimSuffix(serviceID, ".onion")
+	err := cntrl.c.DeleteOnion(s)
+	if err != nil {
+		return err
+	}
+
+	for i := range onions {
+		if onions[i] == serviceID {
+			onions[i] = onions[len(onions)-1]
+			onions[len(onions)-1] = ""
+			onions = onions[:len(onions)-1]
+			break
+		}
+	}
+
+	return nil
+}
+
+func (cntrl *controller) DeleteOnionServices() {
+	if len(onions) > 0 {
+		for i := range onions {
+			_ = cntrl.DeleteOnionService(onions[i])
+		}
+	}
+	onions = []string{}
+}
+
+func (cntrl *controller) getTorController() (torgoController, error) {
+	if cntrl.c != nil {
+		return cntrl.c, nil
+	}
+
+	c, err := cntrl.tc(net.JoinHostPort(cntrl.torHost, strconv.Itoa(cntrl.torPort)))
+	if err != nil {
+		return nil, err
+	}
+
+	cntrl.c = c
+
+	return c, nil
 }
