@@ -6,7 +6,7 @@
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
     <property name="window_position">center-always</property>
-    <property name="default_width">200</property>
+    <property name="deletable">False</property>
     <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
@@ -23,18 +23,19 @@
             <property name="can_focus">False</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkButton">
                 <property name="label" translatable="yes">Leave</property>
                 <property name="width_request">150</property>
-                <property name="height_request">150</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Leave this meeting</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
                 <signal name="clicked" handler="on_leave_meeting" swapped="no"/>
                 <style>
                   <class name="control-leave-call"/>
@@ -55,6 +56,9 @@
         </child>
       </object>
     </child>
+    <style>
+      <class name="meeting-controls"/>
+    </style>
   </object>
   <object class="GtkMessageDialog" id="leaveMeeting">
     <property name="can_focus">False</property>

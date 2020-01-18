@@ -1,16 +1,22 @@
-%meeting-control {
-  border-radius: 100%;
-  padding: $spacing;
-  font-size: 21px;
-  font-weight: $font-weight-bold;
-}
+window {
+  &.meeting-controls {
+    border-radius: 2px;
 
-.control-leave-call {
-  @extend %meeting-control;
-  @include btn-solid($text-white, $orange-600, darken($orange-600, 2%));
-}
+    %meeting-control {
+      padding: $spacing;
+      font-size: 21px;
+      font-weight: $font-weight-bold;
+      border-radius: 6px;
+    }
 
-.control-finish-call {
-  @extend %meeting-control;
-  @include btn-solid($text-white, $red-600, darken($red-600, 2%));
+    .control-leave-call {
+      @extend %meeting-control;
+      @include btn-solid($text-white, $orange-600, darken($orange-600, 2%));
+    }
+
+    .control-finish-call {
+      @extend %meeting-control;
+      @include btn-solid($text-white, $red-600, darken($red-600, 2%));
+    }
+  }
 }

@@ -321,56 +321,56 @@ label.label-text {
   font-size: 18px;
   color: #fff; }
 
-.control-leave-call, .control-finish-call {
-  border-radius: 100%;
-  padding: 20px;
-  font-size: 21px;
-  font-weight: 600; }
-
-.control-leave-call {
-  color: #fff;
-  background-color: #d95e09;
-  background-image: linear-gradient(-180deg, #e36209 0%, #d95e09 90%);
-  border-color: #d95e09; }
-  .control-leave-call:focus {
-    box-shadow: 0 0 0 0.2em rgba(227, 98, 9, 0.4); }
-  .control-leave-call:hover {
-    background-color: #cf5a08;
-    background-image: linear-gradient(-180deg, #d95e09 0%, #cf5a08 90%);
-    border-color: #cf5a08; }
-  .control-leave-call:active {
-    background-color: #bc5108;
-    background-image: none;
-    border-color: #cf5a08;
-    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
-  .control-leave-call:disabled {
-    color: rgba(255, 255, 255, 0.75);
-    background-color: #ecaf84;
-    background-image: none;
-    border-color: rgba(27, 31, 35, 0.2);
-    box-shadow: none; }
-
-.control-finish-call {
-  color: #fff;
-  background-color: #c2222f;
-  background-image: linear-gradient(-180deg, #cb2431 0%, #c2222f 90%);
-  border-color: #c2222f; }
-  .control-finish-call:focus {
-    box-shadow: 0 0 0 0.2em rgba(203, 36, 49, 0.4); }
-  .control-finish-call:hover {
-    background-color: #ba212d;
-    background-image: linear-gradient(-180deg, #c2222f 0%, #ba212d 90%);
-    border-color: #ba212d; }
-  .control-finish-call:active {
-    background-color: #a91e29;
-    background-image: none;
-    border-color: #ba212d;
-    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
-  .control-finish-call:disabled {
-    color: rgba(255, 255, 255, 0.75);
-    background-color: #e19197;
-    background-image: none;
-    border-color: rgba(27, 31, 35, 0.2);
-    box-shadow: none; }
+window.meeting-controls {
+  border-radius: 2px; }
+  window.meeting-controls .control-leave-call, window.meeting-controls .control-finish-call {
+    padding: 20px;
+    font-size: 21px;
+    font-weight: 600;
+    border-radius: 6px; }
+  window.meeting-controls .control-leave-call {
+    color: #fff;
+    background-color: #d95e09;
+    background-image: linear-gradient(-180deg, #e36209 0%, #d95e09 90%);
+    border-color: #d95e09; }
+    window.meeting-controls .control-leave-call:focus {
+      box-shadow: 0 0 0 0.2em rgba(227, 98, 9, 0.4); }
+    window.meeting-controls .control-leave-call:hover {
+      background-color: #cf5a08;
+      background-image: linear-gradient(-180deg, #d95e09 0%, #cf5a08 90%);
+      border-color: #cf5a08; }
+    window.meeting-controls .control-leave-call:active {
+      background-color: #bc5108;
+      background-image: none;
+      border-color: #cf5a08;
+      box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+    window.meeting-controls .control-leave-call:disabled {
+      color: rgba(255, 255, 255, 0.75);
+      background-color: #ecaf84;
+      background-image: none;
+      border-color: rgba(27, 31, 35, 0.2);
+      box-shadow: none; }
+  window.meeting-controls .control-finish-call {
+    color: #fff;
+    background-color: #c2222f;
+    background-image: linear-gradient(-180deg, #cb2431 0%, #c2222f 90%);
+    border-color: #c2222f; }
+    window.meeting-controls .control-finish-call:focus {
+      box-shadow: 0 0 0 0.2em rgba(203, 36, 49, 0.4); }
+    window.meeting-controls .control-finish-call:hover {
+      background-color: #ba212d;
+      background-image: linear-gradient(-180deg, #c2222f 0%, #ba212d 90%);
+      border-color: #ba212d; }
+    window.meeting-controls .control-finish-call:active {
+      background-color: #a91e29;
+      background-image: none;
+      border-color: #ba212d;
+      box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
+    window.meeting-controls .control-finish-call:disabled {
+      color: rgba(255, 255, 255, 0.75);
+      background-color: #e19197;
+      background-image: none;
+      border-color: rgba(27, 31, 35, 0.2);
+      box-shadow: none; }
 
 /*# sourceMappingURL=gui.css.map */

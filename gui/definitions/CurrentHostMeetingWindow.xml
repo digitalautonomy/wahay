@@ -4,12 +4,12 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkApplicationWindow" id="hostMeetingWindow">
     <property name="can_focus">False</property>
-    <property name="title">Tonio</property>
     <property name="resizable">False</property>
     <property name="window_position">center-always</property>
-    <property name="default_width">200</property>
+    <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
     <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
     <child>
@@ -17,23 +17,20 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="valign">center</property>
-        <property name="margin_left">20</property>
-        <property name="margin_right">20</property>
-        <property name="margin_top">20</property>
-        <property name="margin_bottom">20</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name="orientation">vertical</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
+            <property name="homogeneous">True</property>
             <child>
               <object class="GtkButton" id="btnFinishMeeting">
                 <property name="label" translatable="yes">Finish</property>
-                <property name="width_request">150</property>
-                <property name="height_request">150</property>
+                <property name="width_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
@@ -55,8 +52,7 @@
             <child>
               <object class="GtkButton" id="btnLeaveMeeting">
                 <property name="label" translatable="yes">Leave</property>
-                <property name="width_request">150</property>
-                <property name="height_request">150</property>
+                <property name="width_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
@@ -74,14 +70,20 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <style>
+              <class name="buttons"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
       </object>
     </child>
+    <style>
+      <class name="meeting-controls"/>
+    </style>
   </object>
 </interface>
