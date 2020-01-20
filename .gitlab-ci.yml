@@ -88,8 +88,8 @@ deploy_staging:
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
    - 'scp -P2326 $BINARY_NAME* tonio@staging.tonio.app:$DEPLOY_DIR/'
-   - 'scp -P2326 deployment/* tonio@staging.tonio.app:bin/'
-   - '$DO_SSH chmod +x bin/*'
+   - 'scp -P2326 deployment/*sh tonio@staging.tonio.app:bin/'
+   - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
 
 deploy_production:
