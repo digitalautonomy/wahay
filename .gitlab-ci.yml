@@ -79,14 +79,17 @@ deploy_staging:
   only:
     - master
   script:
-   - 'ssh -p2326 tonio@staging.tonio.app rm -f /home/tonio/tmp/*'
-   - 'cd bin'
-   - 'BINARY_NAME=$(ls tonio* )'
+   - 'export DEPLOY_DIR=/home/tonio/tmp/deploy_binaries'
+   - 'export DO_SSH="ssh -p2326 tonio@staging.tonio.app "'
+   - '$DO_SSH mkdir -p $DEPLOY_DIR'
+   - '$DO_SSH rm -rf $DEPLOY_DIR/*'
+   - 'BINARY_NAME=$(find bin -name "tonio*" | head -1)'
    - 'echo $BINARY_NAME'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
-   - 'scp -P2326 $BINARY_NAME* tonio@staging.tonio.app:/home/tonio/tmp/'
-   - 'ssh -p 2326 tonio@staging.tonio.app bin/update-downloads.sh'
+   - 'scp -P2326 $BINARY_NAME* tonio@staging.tonio.app:$DEPLOY_DIR/'
+   - 'scp -P2326 deployment/* tonio@staging.tonio.app:bin/'
+   - '$DO_SSH bin/publish-downloads.sh'
 
 deploy_production:
   image: olabini/ssh_rsync:0.1
