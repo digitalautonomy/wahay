@@ -78,22 +78,21 @@ func getOurInstance() (Instance, error) {
 		return nil, errors.New("error: we can't start our instance")
 	}
 
-	// TODO: ??? Give time to Tor to finish the command
-	time.Sleep(2 * time.Second)
-
 	checker := NewChecker(false, i.GetHost(), i.GetRoutePort(), i.GetControlPort())
 
-	total, partial := checker.Check()
+	timeout := time.Now().Add(10 * time.Second)
+	j := 0
+	for {
+		total, partial := checker.Check()
+		if total != nil || time.Now().After(timeout) {
+			return nil, errors.New("error: we can't check our instance")
+		}
 
-	if total != nil {
-		return nil, errors.New("error: we can't check our instance")
+		if partial != nil {
+			return i, nil
+		}
+		j++
 	}
-
-	if partial != nil {
-		return nil, errors.New("error: we can't use our instance")
-	}
-
-	return i, nil
 }
 
 // NewInstance initialized our Tor Control Port instance
@@ -234,7 +233,7 @@ func (i *instance) getConfigFileContents() []byte {
 
 	content := fmt.Sprintf(
 		`## Configuration file for a typical Tor user
-	
+
 ## Tell Tor to open a SOCKS proxy on port %d
 SOCKSPort %d
 
