@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"autonomia.digital/tonio/app/config"
@@ -27,6 +28,7 @@ type Instance interface {
 	GetHost() string
 	GetControlPort() int
 	GetRoutePort() int
+	Exec(command string, args []string) (*RunningCommand, error)
 }
 
 type instance struct {
@@ -37,6 +39,7 @@ type instance struct {
 	controlPort   int
 	dataDirectory string
 	controller    Control
+	isLocal       bool
 	runningTor    *runningTor
 }
 
@@ -170,6 +173,53 @@ func (i *instance) Destroy() {
 	}
 }
 
+// RunningCommand is a representation of a torify command
+type RunningCommand struct {
+	Ctx        context.Context
+	Cmd        *exec.Cmd
+	CancelFunc context.CancelFunc
+}
+
+func (i *instance) Exec(command string, args []string) (*RunningCommand, error) {
+	if i.isLocal {
+		return i.torify(command, args)
+	}
+	return i.torsocks(command, args)
+}
+
+func (i *instance) torify(command string, args []string) (*RunningCommand, error) {
+	arguments := append([]string{command}, args...)
+	return i.exec("torify", arguments)
+}
+
+func (i *instance) torsocks(command string, args []string) (*RunningCommand, error) {
+	arguments := append([]string{command}, args...)
+	arguments = append(arguments, []string{
+		"--address", i.controlHost,
+		"--port", strconv.Itoa(i.socksPort),
+	}...)
+
+	return i.exec("torsocks", arguments)
+}
+
+func (i *instance) exec(command string, args []string) (*RunningCommand, error) {
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	cmd := exec.CommandContext(ctx, command, args...)
+
+	if err := cmd.Start(); err != nil {
+		cancelFunc()
+		return nil, err
+	}
+
+	rc := &RunningCommand{
+		Ctx:        ctx,
+		Cmd:        cmd,
+		CancelFunc: cancelFunc,
+	}
+
+	return rc, nil
+}
+
 var tonioDataDir = filepath.Join(config.XdgDataHome(), "tonio")
 
 func ensureTonioDataDir() {
@@ -187,6 +237,7 @@ func createOurInstance() *instance {
 		controlPort:   controlPort,
 		socksPort:     routePort,
 		dataDirectory: filepath.Join(d, torConfigData),
+		isLocal:       false,
 		controller:    nil,
 	}
 
@@ -203,6 +254,7 @@ func createSystemInstance() *instance {
 		controlHost:   DefaultHost,
 		controlPort:   DefaultControlPort,
 		dataDirectory: filepath.Join(d, torConfigData),
+		isLocal:       true,
 		controller:    nil,
 	}
 

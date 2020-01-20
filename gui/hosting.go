@@ -104,7 +104,7 @@ func (h *hostData) joinMeetingHost() {
 			Password:  h.meetingPassword,
 			Username:  h.meetingUsername,
 		}
-		state, err := launchMumbleClient(data)
+		state, err := h.u.launchMumbleClient(data)
 		if err != nil {
 			h.u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
 			return

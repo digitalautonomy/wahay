@@ -1,6 +1,8 @@
 package gui
 
 import (
+	"errors"
+
 	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
 )
@@ -31,4 +33,12 @@ func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
 	txt.SetMarkup("Show the startup or Tor-related errors")
 	u.currentWindow = win
 	win.Show()
+}
+
+func (u *gtkUI) throughTor(command string, args []string) (*tor.RunningCommand, error) {
+	if u.tor == nil {
+		return nil, errors.New("no configured Tor found in the system")
+	}
+
+	return u.tor.Exec(command, args)
 }

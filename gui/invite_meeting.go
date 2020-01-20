@@ -49,7 +49,7 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 		return
 	}
 
-	state, err := openMumble(data)
+	state, err := u.openMumble(data)
 	if err != nil {
 		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
 		return
@@ -98,11 +98,11 @@ func (u *gtkUI) openJoinWindow() {
 	win.Show()
 }
 
-func openMumble(data hosting.MeetingData) (*runningMumble, error) {
+func (u *gtkUI) openMumble(data hosting.MeetingData) (*runningMumble, error) {
 	if !isMeetingIDValid(data.MeetingID) {
 		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", data.MeetingID)
 	}
-	return launchMumbleClient(data)
+	return u.launchMumbleClient(data)
 }
 
 const onionServiceLength = 60

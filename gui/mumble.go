@@ -2,6 +2,7 @@ package gui
 
 import (
 	"context"
+	"fmt"
 	"os/exec"
 
 	"autonomia.digital/tonio/app/hosting"
@@ -27,19 +28,19 @@ func (r *runningMumble) waitForFinish() {
 	r.finishChannel <- true
 }
 
-func launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
-	ctx, cancelFunc := context.WithCancel(context.Background())
-
-	cmd := exec.CommandContext(ctx, "torify", "mumble", hosting.GenerateURL(data))
-	if err := cmd.Start(); err != nil {
-		cancelFunc()
+func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
+	rc, err := u.throughTor("mumble", []string{
+		hosting.GenerateURL(data),
+	})
+	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
 	state := &runningMumble{
-		cmd:               cmd,
-		ctx:               ctx,
-		cancelFunc:        cancelFunc,
+		cmd:               rc.Cmd,
+		ctx:               rc.Ctx,
+		cancelFunc:        rc.CancelFunc,
 		finished:          false,
 		finishedWithError: nil,
 		finishChannel:     make(chan bool, 100),
