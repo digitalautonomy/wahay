@@ -81,17 +81,19 @@ func getOurInstance() (Instance, error) {
 	checker := NewChecker(false, i.GetHost(), i.GetRoutePort(), i.GetControlPort())
 
 	timeout := time.Now().Add(10 * time.Second)
-	j := 0
 	for {
 		total, partial := checker.Check()
-		if total != nil || time.Now().After(timeout) {
+		if total != nil {
 			return nil, errors.New("error: we can't check our instance")
 		}
 
-		if partial != nil {
+		if time.Now().After(timeout) {
+			return nil, errors.New("error: we can't start our instance")
+		}
+
+		if partial == nil {
 			return i, nil
 		}
-		j++
 	}
 }
 
