@@ -82,6 +82,7 @@ deploy_staging:
    - 'ssh -p2326 tonio@staging.tonio.app rm -f /home/tonio/tmp/*'
    - 'cd bin'
    - 'BINARY_NAME=$(ls tonio* )'
+   - 'echo $BINARY_NAME'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
    - 'scp -P2326 $BINARY_NAME* tonio@staging.tonio.app:/usr/local/www/tonio/downloads/'
