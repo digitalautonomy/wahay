@@ -17,6 +17,8 @@ SIGNATURE_FILE=$SHA256_SUM_FILE.asc
 
 DOWNLOADS_DIR=/usr/local/www/tonio/downloads
 
+WEBSITE_DOCUMENT_ROOT=/usr/local/www/tonio/
+
 #Compare NEW_TONIO_BINARY sha256sum with previous
 #hashes to avoid duplicated binaries if a binary 
 #is duplicated  clean the $TMP_DIR
@@ -67,4 +69,4 @@ else
 fi
 
 #Generate website
-~/bin/generate-downloads-html.sh $DOWNLOADS_DIR > $DOWNLOADS_DIR/downloads.html
+~/bin/generate-downloads-html.sh $DOWNLOADS_DIR > $WEBSITE_DOCUMENT_ROOT/downloads.html
