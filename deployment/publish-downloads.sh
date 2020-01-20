@@ -35,7 +35,7 @@ mv $TMP_DIR/tonio* $DOWNLOADS_DIR
 
 #Identified if the file has a date patern, that way we can
 #now that is not a tagged version
-DATE_FORMAT='-20[0-9]{2}-[0-1][0-9]-[0-3][0-9]-'
+DATE_FORMAT='20[0-9]{2}-[0-1][0-9]-[0-3][0-9]'
 
 echo $BINARY_NAME | grep "$DATE_FORMAT"
 
