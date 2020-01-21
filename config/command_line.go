@@ -4,11 +4,22 @@ import (
 	"flag"
 )
 
+// DefaultHost is where Tor is hosted
+const DefaultHost = "127.0.0.1"
+
+// DefaultRoutePort is the port Tor uses by default
+const DefaultRoutePort = 9050
+
+// DefaultControlPort is the port Tor uses by default for the control port
+const DefaultControlPort = 9051
+
 var (
 	// TorHost contains the command line argument given for the Tor host
-	TorHost = flag.String("tor-host", "127.0.0.1", "the host where Tor is listening")
+	TorHost = flag.String("tor-host", DefaultHost, "the host where Tor is listening")
 	// TorPort contains the command line argument given for the Tor port
-	TorPort = flag.String("tor-port", "9051", "the control port for Tor")
+	TorPort = flag.Int("tor-port", DefaultControlPort, "the control port for Tor")
+	// TorRoutePort contains the command line argument given for the Tor route port
+	TorRoutePort = flag.Int("tor-route-port", DefaultRoutePort, "the route port for Tor")
 	// TorControlPassword contains the command line argument given for the Tor control port password
 	TorControlPassword = flag.String("tor-password", "", "the password for controlling Tor - can not be empty")
 )

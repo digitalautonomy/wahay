@@ -20,6 +20,10 @@ const defaultSocksPort = 9950
 const defaultControlPort = 9951
 const defaultControlHost = "127.0.0.1"
 
+var systemTorControlHost = *config.TorHost
+var systemTorControlPort = *config.TorPort
+var systemTorRoutePort = *config.TorRoutePort
+
 // Instance contains functions to work with Tor instance
 type Instance interface {
 	Start() error
@@ -38,6 +42,7 @@ type instance struct {
 	controlHost   string
 	controlPort   int
 	dataDirectory string
+	password      string
 	controller    Control
 	isLocal       bool
 	runningTor    *runningTor
@@ -81,7 +86,11 @@ func getOurInstance() (Instance, error) {
 		return nil, errors.New("error: we can't start our instance")
 	}
 
-	checker := NewChecker(false, i.GetHost(), i.GetRoutePort(), i.GetControlPort())
+	h := i.GetHost()
+	s := i.GetRoutePort()
+	c := i.GetControlPort()
+
+	checker := NewChecker(false, h, s, c, "")
 
 	timeout := time.Now().Add(10 * time.Second)
 	for {
@@ -138,7 +147,7 @@ func (i *instance) Start() error {
 // GetController returns a controller for the instance `i`
 func (i *instance) GetController() Control {
 	if i.controller == nil {
-		i.controller = CreateController(i.controlHost, i.controlPort, "")
+		i.controller = CreateController(i.controlHost, i.controlPort, i.password)
 	}
 	return i.controller
 }
@@ -237,6 +246,7 @@ func createOurInstance() *instance {
 		controlPort:   controlPort,
 		socksPort:     routePort,
 		dataDirectory: filepath.Join(d, torConfigData),
+		password:      "", // our instance don't use authentication with password
 		isLocal:       false,
 		controller:    nil,
 	}
@@ -250,10 +260,11 @@ func createSystemInstance() *instance {
 	i := &instance{
 		started:       false,
 		configFile:    filepath.Join(d, torConfigName),
-		socksPort:     DefaultRoutePort,
-		controlHost:   DefaultHost,
-		controlPort:   DefaultControlPort,
+		socksPort:     systemTorRoutePort,
+		controlHost:   systemTorControlHost,
+		controlPort:   systemTorControlPort,
 		dataDirectory: filepath.Join(d, torConfigData),
+		password:      *config.TorControlPassword,
 		isLocal:       true,
 		controller:    nil,
 	}

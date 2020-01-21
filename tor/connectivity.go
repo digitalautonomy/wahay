@@ -7,7 +7,9 @@ import (
 	"net"
 	"os/exec"
 	"regexp"
+	"strconv"
 
+	"autonomia.digital/tonio/app/config"
 	"github.com/wybiral/torgo"
 )
 
@@ -21,32 +23,25 @@ type connectivity struct {
 	checkBinary bool
 	routePort   int
 	controlPort int
+	password    string
 }
-
-// DefaultHost is where Tor is hosted
-const DefaultHost = "127.0.0.1"
-
-// DefaultRoutePort is the port Tor uses by default
-const DefaultRoutePort = 9050
-
-// DefaultControlPort is the port Tor uses by default for the control port
-const DefaultControlPort = 9051
 
 // NewDefaultChecker will test whether the default ports can
 // be reached and are appropriate for our use
 func NewDefaultChecker() Connectivity {
 	// This checks everything, including binaries against the default ports
-	return NewChecker(true, DefaultHost, DefaultRoutePort, DefaultControlPort)
+	return NewChecker(true, *config.TorHost, *config.TorRoutePort, *config.TorPort, *config.TorControlPassword)
 }
 
 // NewChecker can check connectivity on custom ports, and optionally
 // avoid checking for binary compatibility
-func NewChecker(checkBinary bool, host string, routePort, controlPort int) Connectivity {
+func NewChecker(checkBinary bool, host string, routePort, controlPort int, password string) Connectivity {
 	return &connectivity{
 		host:        host,
 		checkBinary: checkBinary,
 		routePort:   routePort,
 		controlPort: controlPort,
+		password:    password,
 	}
 }
 
@@ -87,19 +82,17 @@ func (c *connectivity) checkTorVersionCompatibility() bool {
 }
 
 func (c *connectivity) checkTorControlPortExists() bool {
-	port := fmt.Sprintf("%d", c.controlPort)
-	_, err := torgo.NewController(net.JoinHostPort(c.host, port))
+	_, err := torgo.NewController(net.JoinHostPort(c.host, strconv.Itoa(c.controlPort)))
 	return err == nil
 }
 
 func (c *connectivity) checkTorControlAuth() bool {
-	port := fmt.Sprintf("%d", c.controlPort)
-	tc, err := torgo.NewController(net.JoinHostPort(c.host, port))
+	tc, err := torgo.NewController(net.JoinHostPort(c.host, strconv.Itoa(c.controlPort)))
 	if err != nil {
 		return false
 	}
 
-	authCallback := authenticateAny(authenticateNone, authenticateCookie, authenticatePassword(""))
+	authCallback := authenticateAny(authenticateNone, authenticateCookie, authenticatePassword(c.password))
 	err = authCallback(tc)
 
 	return err == nil
