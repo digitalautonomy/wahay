@@ -110,10 +110,15 @@ deploy_production:
   only:
     - master
   script:
-   - 'ssh -p2387 tonio@tonio.app rm -f /home/tonio/tmp/*'
-   - 'cd bin'
-   - 'BINARY_NAME=$(ls tonio* )'
+   - 'export DEPLOY_DIR=/home/tonio/tmp/deploy_binaries'
+   - 'export DO_SSH="ssh -p2387 tonio@tonio.app "'
+   - '$DO_SSH mkdir -p $DEPLOY_DIR'
+   - '$DO_SSH rm -rf $DEPLOY_DIR/*'
+   - 'BINARY_NAME=$(find bin -name "tonio*" | head -1)'
+   - 'echo $BINARY_NAME'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
-   - 'gpg --detach-sign --armor  $BINARY_NAME.sha256sum'
-   - 'scp -P2387 $BINARY_NAME* tonio@tonio.app:/home/tonio/tmp/'
-   - 'ssh -p 2387 tonio@tonio.app bin/update-downloads.sh'
+   - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
+   - 'scp -P2387 $BINARY_NAME* tonio@tonio.app:$DEPLOY_DIR/'
+   - 'scp -P2387 deployment/*sh tonio@tonio.app:bin/'
+   - '$DO_SSH chmod +x bin/*sh'
+   - '$DO_SSH bin/publish-downloads.sh'
