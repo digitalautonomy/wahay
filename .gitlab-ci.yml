@@ -104,7 +104,6 @@ deploy_production:
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[tonio.app]:2387,[185.108.76.87]:2387 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD7qdL4lFlIQwRU2h2fV6oIMBZl1ifd6bbcajd8iRYaFQfVvj7qxGvorfaBETyquGe+lk0xw3NrcJCfK1LvT2Wo=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
-  - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
   environment:
     name: production
     url: https://tonio.app
