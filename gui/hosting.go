@@ -196,11 +196,13 @@ func (h *hostData) createNewConferenceRoom(complete chan bool) {
 	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort), h.meetingPassword)
 	if e != nil {
 		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+		complete <- true
 		return
 	}
 	e = server.Start()
 	if e != nil {
 		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+		complete <- true
 		return
 	}
 
