@@ -91,7 +91,7 @@ deploy_staging:
    - 'scp -P2326 deployment/*sh tonio@staging.tonio.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
-   - '$DO_SSH bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'
+   - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html"'
 
 deploy_production:
   image: olabini/ssh_rsync:0.1
@@ -104,6 +104,7 @@ deploy_production:
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[tonio.app]:2387,[185.108.76.87]:2387 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD7qdL4lFlIQwRU2h2fV6oIMBZl1ifd6bbcajd8iRYaFQfVvj7qxGvorfaBETyquGe+lk0xw3NrcJCfK1LvT2Wo=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
+  - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
   environment:
     name: production
     url: https://tonio.app
@@ -123,4 +124,4 @@ deploy_production:
    - 'scp -P2387 deployment/*sh tonio@tonio.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
-   - '$DO_SSH bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'
+   - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html"'
