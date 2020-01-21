@@ -8,6 +8,11 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
+func (u *gtkUI) joinMeeting() {
+	u.currentWindow.Hide()
+	u.openJoinWindow()
+}
+
 func (u *gtkUI) openMainWindow() {
 	u.currentWindow.Hide()
 	u.currentWindow = u.mainWindow

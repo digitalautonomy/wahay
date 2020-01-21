@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"log"
 	"os"
 	"runtime"
 	"time"
@@ -162,16 +161,6 @@ func (u *gtkUI) Loop() {
 	u.app.Run([]string{})
 }
 
-/*
-Event handler functions for main window buttons
-TODO: Move to another file and remove from here.
-*/
-
-func (u *gtkUI) joinMeeting() {
-	u.currentWindow.Hide()
-	u.openJoinWindow()
-}
-
 func (u *gtkUI) switchToMainWindow() {
 	u.switchToWindow(u.mainWindow)
 }
@@ -199,40 +188,8 @@ func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
 	label.SetVisible(false)
 }
 
-func (u *gtkUI) loadConfig(configFile string) {
-	u.config.WhenLoaded(u.configLoaded)
-
-	var conf *config.ApplicationConfig
-	var err error
-	conf, err = config.LoadOrCreate(configFile)
-
-	u.config = conf
-
-	if err != nil {
-		u.doInUIThread(u.initialSetupWindow)
-		return
-	}
-}
-
-func (u *gtkUI) configLoaded(c *config.ApplicationConfig) {
-	// TODO: do stuffs when config loaded
-}
-
 func (u *gtkUI) initialSetupWindow() {
 	u.saveConfigOnly()
-}
-
-func (u *gtkUI) saveConfigOnlyInternal() error {
-	return u.config.Save()
-}
-
-func (u *gtkUI) saveConfigOnly() {
-	go func() {
-		err := u.saveConfigOnlyInternal()
-		if err != nil {
-			log.Println("Failed to save config file:", err.Error())
-		}
-	}()
 }
 
 func (u *gtkUI) cleanUp() {

@@ -91,3 +91,8 @@ func Dir() string {
 func SystemConfigDir() string {
 	return XdgConfigHome()
 }
+
+// RemoveAll removes a directory and it's children
+func RemoveAll(dir string) error {
+	return os.RemoveAll(dir)
+}
