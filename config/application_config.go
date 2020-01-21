@@ -14,6 +14,7 @@ type ApplicationConfig struct {
 	afterSave []func()
 
 	AutoJoin              bool
+	PersistConfigFile     bool
 	UniqueConfigurationID string
 }
 
@@ -117,12 +118,22 @@ func (a *ApplicationConfig) serialize() ([]byte, error) {
 	return json.MarshalIndent(a, "", "\t")
 }
 
-// GetAutoJoin returns the setting value for autojoin
+// GetAutoJoin returns the setting value to autojoin
 func (a *ApplicationConfig) GetAutoJoin() bool {
 	return a.AutoJoin
 }
 
-// SetAutoJoin sets the specified value for autojoin
+// SetAutoJoin sets the specified value to autojoin
 func (a *ApplicationConfig) SetAutoJoin(v bool) {
 	a.AutoJoin = v
+}
+
+// GetPersistentConfiguration returns the setting value to persist the configuration file in the device
+func (a *ApplicationConfig) GetPersistentConfiguration() bool {
+	return a.PersistConfigFile
+}
+
+// SetPersistentConfiguration sets the specified value to persist the configuration file in the device
+func (a *ApplicationConfig) SetPersistentConfiguration(v bool) {
+	a.PersistConfigFile = v
 }

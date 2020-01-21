@@ -410,7 +410,6 @@ func (h *hostData) showMeetingConfiguration() {
 		"on_chkAutoJoin_toggled": func() {
 			h.autoJoin = chk.GetActive()
 			h.u.config.SetAutoJoin(h.autoJoin)
-			h.u.saveConfigOnly()
 			h.changeStartButtonText(btnStart)
 		},
 	})

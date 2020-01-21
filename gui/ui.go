@@ -101,6 +101,9 @@ func (u *gtkUI) createMainWindow(startupSuccess bool) {
 		"on_close_window_signal": u.quit,
 		"on_host_meeting":        u.hostMeetingHandler,
 		"on_join_meeting":        u.joinMeeting,
+		"on_open_settings": func() {
+			u.openSettingsWindow()
+		},
 		"on_show_errors": func() {
 			u.showStatusErrorsWindow(builder)
 		},

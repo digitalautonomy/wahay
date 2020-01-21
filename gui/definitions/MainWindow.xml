@@ -43,7 +43,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_settings_click" swapped="no"/>
+                <signal name="clicked" handler="on_open_settings" swapped="no"/>
                 <style>
                   <class name="main-window-btn-settings"/>
                 </style>

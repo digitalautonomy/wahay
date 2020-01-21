@@ -60,7 +60,7 @@ dialog {
     box-shadow: 0 2px 3px rgba(27, 31, 35, 0.2); }
 
 .btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
-  padding: 8px 20px;
+  padding: 12px 20px;
   font-size: 14px;
   font-weight: 400;
   background-repeat: repeat-x;
