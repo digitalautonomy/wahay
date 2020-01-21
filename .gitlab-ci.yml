@@ -91,6 +91,7 @@ deploy_staging:
    - 'scp -P2326 deployment/*sh tonio@staging.tonio.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
+   - '$DO_SSH bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'
 
 deploy_production:
   image: olabini/ssh_rsync:0.1
@@ -123,3 +124,4 @@ deploy_production:
    - 'scp -P2387 deployment/*sh tonio@tonio.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
+   - '$DO_SSH bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html'

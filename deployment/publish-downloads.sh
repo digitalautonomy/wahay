@@ -67,6 +67,3 @@ else
 
 
 fi
-
-#Generate website
-~/bin/generate-downloads-html.sh $DOWNLOADS_DIR > $WEBSITE_DOCUMENT_ROOT/downloads.html
