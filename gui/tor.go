@@ -8,16 +8,13 @@ import (
 )
 
 func (u *gtkUI) ensureTonioNetwork(cb func(bool)) {
-	ch := make(chan bool)
-	go u.ensureTorNetwork(ch, cb)
-	<-ch
+	u.ensureTorNetwork(cb)
 	u.hideLoadingWindow()
 }
 
 // TODO: we should also check that either Torify or Torsocks are available
-func (u *gtkUI) ensureTorNetwork(ch chan bool, cb func(bool)) {
+func (u *gtkUI) ensureTorNetwork(cb func(bool)) {
 	instance, err := tor.GetSystem()
-	ch <- true
 	if instance != nil && err == nil {
 		u.tor = instance
 		cb(true)

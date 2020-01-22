@@ -86,16 +86,25 @@ func (c *connectivity) checkTorControlPortExists() bool {
 	return err == nil
 }
 
-func (c *connectivity) checkTorControlAuth() bool {
-	tc, err := torgo.NewController(net.JoinHostPort(c.host, strconv.Itoa(c.controlPort)))
-	if err != nil {
-		return false
+func withNewTorgoController(where string, a authenticationMethod) authenticationMethod {
+	return func(torgoController) error {
+		tc, err := torgo.NewController(where)
+		if err != nil {
+			return err
+		}
+		return a(tc)
 	}
+}
 
-	authCallback := authenticateAny(authenticateNone, authenticateCookie, authenticatePassword(c.password))
-	err = authCallback(tc)
+func (c *connectivity) checkTorControlAuth() bool {
+	where := net.JoinHostPort(c.host, strconv.Itoa(c.controlPort))
 
-	return err == nil
+	authCallback := authenticateAny(
+		withNewTorgoController(where, authenticateNone),
+		withNewTorgoController(where, authenticateCookie),
+		withNewTorgoController(where, authenticatePassword(c.password)))
+
+	return authCallback(nil) == nil
 }
 
 type checkTorResult struct {

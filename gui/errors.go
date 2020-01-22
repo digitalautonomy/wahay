@@ -2,17 +2,21 @@ package gui
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
 func (u *gtkUI) reportError(message string) {
+	// TODO: this should only be logged as debug
+	log.Printf("reportError(%s)", message)
+
 	builder := u.g.uiBuilderFor("GeneralError")
 	dlg := builder.get("dialog").(gtki.MessageDialog)
 
 	err := dlg.SetProperty("text", message)
 	if err != nil {
-		u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
+		panic(fmt.Sprintf("Programmer error #1: %s", err.Error()))
 	}
 
 	dlg.SetTransientFor(u.currentWindow)

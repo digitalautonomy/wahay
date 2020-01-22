@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -78,6 +79,8 @@ func GetSystem() (Instance, error) {
 	return i, nil
 }
 
+const torStartupTimeout = 2 * time.Minute
+
 func getOurInstance() (Instance, error) {
 	i, _ := NewInstance()
 
@@ -92,15 +95,16 @@ func getOurInstance() (Instance, error) {
 
 	checker := NewChecker(false, h, s, c, "")
 
-	timeout := time.Now().Add(10 * time.Second)
+	timeout := time.Now().Add(torStartupTimeout)
 	for {
+		time.Sleep(3 * time.Second)
 		total, partial := checker.Check()
 		if total != nil {
 			return nil, errors.New("error: we can't check our instance")
 		}
 
 		if time.Now().After(timeout) {
-			return nil, errors.New("error: we can't start our instance")
+			return nil, errors.New("error: we can't start our instance because timeout")
 		}
 
 		if partial == nil {
@@ -120,6 +124,7 @@ func NewInstance() (Instance, error) {
 
 // Start our Tor Control Port
 func (i *instance) Start() error {
+	log.Printf("Using custom Tor configuration file at: %s", i.configFile)
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, "tor", "-f", i.configFile)
 	if err := cmd.Start(); err != nil {

@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
+	"sync"
 
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
@@ -25,6 +26,8 @@ const (
 	definitionsDir = "definitions"
 	cssDir         = "styles"
 )
+
+var builderMutex sync.Mutex
 
 type uiBuilder struct {
 	gtki.Builder
@@ -95,6 +98,9 @@ func getDefinitionWithFileFallback(uiName string) string {
 func (g *Graphics) loadCSSFor(cssFile string) gtki.CssProvider {
 	cssData := getCSSFileWithFallback(cssFile)
 
+	builderMutex.Lock()
+	defer builderMutex.Unlock()
+
 	cssProvider, err := g.gtk.CssProviderNew()
 	if err != nil {
 		fatal(err)
@@ -111,6 +117,9 @@ func (g *Graphics) loadCSSFor(cssFile string) gtki.CssProvider {
 // This must be called from the UI thread - otherwise bad things will happen sooner or later
 func (g *Graphics) builderForDefinition(uiName string) gtki.Builder {
 	template := getDefinitionWithFileFallback(uiName)
+
+	builderMutex.Lock()
+	defer builderMutex.Unlock()
 
 	builder, err := g.gtk.BuilderNew()
 	if err != nil {
