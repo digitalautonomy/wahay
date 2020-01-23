@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,6 +9,8 @@ import (
 
 const (
 	fileExtensionJSON = ".json"
+	//FileName is the default name of the config file
+	FileName = "config" + fileExtensionJSON
 )
 
 // TODO: Implements configuration file encryption
@@ -50,7 +51,7 @@ func FindFile(file string, filename string) string {
 }
 
 func findConfigFile(filename string) string {
-	return FindFile(fmt.Sprintf("config%s", fileExtensionJSON), filename)
+	return FindFile(FileName, filename)
 }
 
 const tmpExtension = ".000~"

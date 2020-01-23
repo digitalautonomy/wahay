@@ -2,6 +2,7 @@ package gui
 
 import (
 	"log"
+	"path/filepath"
 
 	"autonomia.digital/tonio/app/config"
 	"github.com/coyim/gotk3adapter/gtki"
@@ -64,25 +65,26 @@ func (u *gtkUI) openSettingsWindow() {
 	s.dialog.Show()
 }
 
-func (u *gtkUI) loadConfig(configFile string) {
-	u.config.WhenLoaded(u.configLoaded)
+func (u *gtkUI) loadConfig() {
+	//u.config.WhenLoaded(u.configLoaded)
 
-	conf := config.CreateDefaultConfig()
-
+	filename := filepath.Join(config.Dir(), config.FileName)
+	var conf *config.ApplicationConfig
 	var err error
-	if conf.GetPersistentConfiguration() {
-		conf, err = config.LoadOrCreate(configFile)
-		if err != nil {
-			log.Fatal("We cann't load the config file")
-		}
+	if config.FileExists(filename) {
+		conf, err = config.LoadOrCreate(filename)
+		conf.SetPersistentConfiguration(true)
+	} else {
+		conf = config.CreateDefaultConfig()
+		conf.SetPersistentConfiguration(false)
+	}
+
+	if err != nil {
+		log.Fatal("We can't load the config file")
 	}
 
 	u.config = conf
 	u.doInUIThread(u.initialSetupWindow)
-}
-
-func (u *gtkUI) configLoaded(c *config.ApplicationConfig) {
-	// TODO: do stuffs when config loaded
 }
 
 func (u *gtkUI) saveConfigOnlyInternal() error {

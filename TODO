@@ -6,7 +6,7 @@
 
    from GUI:
       class tor.Bla
-      
+
       at start:
          torInstance = tor.GetSystemBla()
          while true {
@@ -57,9 +57,9 @@ Precondition:
    - Thus, this configuration should never be written to file in the first place
 
 Tonio starts first time:
- - see if a config file exists
-   - if exists: load it, set persistent mode to ON
-   - if not: load default configuration in memory, but NOT put anything on disk, 
+ *- see if a config file exists
+   *- if exists: load it, set persistent mode to ON
+   *- if not: load default configuration in memory, but NOT put anything on disk,
         set persistent mode to OFF
 
 A user changes a config value (but not the persistent mode):

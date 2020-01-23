@@ -10,12 +10,12 @@ import (
 
 // ApplicationConfig contains the configuration for the application.
 type ApplicationConfig struct {
-	filename  string
-	ioLock    sync.Mutex
-	afterSave []func()
+	filename       string
+	ioLock         sync.Mutex
+	afterSave      []func()
+	persistentMode bool
 
 	AutoJoin              bool
-	PersistConfigFile     bool
 	UniqueConfigurationID string
 }
 
@@ -26,8 +26,7 @@ var loadEntryLock = sync.Mutex{}
 // with default values for each entry
 func CreateDefaultConfig() *ApplicationConfig {
 	c := &ApplicationConfig{
-		AutoJoin:          true,
-		PersistConfigFile: false,
+		AutoJoin: true,
 	}
 
 	return c
@@ -55,6 +54,18 @@ func LoadOrCreate(configFile string) (a *ApplicationConfig, e error) {
 	defer a.ioLock.Unlock()
 
 	a.filename = findConfigFile(configFile)
+	e = a.tryLoad()
+
+	return a, e
+}
+
+//
+func Load(configFile string) (a *ApplicationConfig, e error) {
+	a = new(ApplicationConfig)
+	a.ioLock.Lock()
+	defer a.ioLock.Unlock()
+
+	a.filename = configFile
 	e = a.tryLoad()
 
 	return a, e
@@ -151,10 +162,10 @@ func (a *ApplicationConfig) SetAutoJoin(v bool) {
 
 // GetPersistentConfiguration returns the setting value to persist the configuration file in the device
 func (a *ApplicationConfig) GetPersistentConfiguration() bool {
-	return a.PersistConfigFile
+	return a.persistentMode
 }
 
 // SetPersistentConfiguration sets the specified value to persist the configuration file in the device
 func (a *ApplicationConfig) SetPersistentConfiguration(v bool) {
-	a.PersistConfigFile = v
+	a.persistentMode = v
 }

@@ -80,7 +80,7 @@ func NewGTK(gx Graphics) UI {
 func (u *gtkUI) onActivate() {
 	u.setGlobalStyles()
 	u.displayLoadingWindow()
-	go u.loadConfig("")
+	go u.loadConfig()
 	go u.ensureTonioNetwork(func(startupSuccess bool) {
 		u.doInUIThread(func() {
 			u.createMainWindow(startupSuccess)
