@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"errors"
 	"net"
+	"net/http"
+	"net/url"
 	"os/exec"
 	"regexp"
 	"strconv"
 
 	"autonomia.digital/tonio/app/config"
 	"github.com/wybiral/torgo"
+	"golang.org/x/net/proxy"
 )
 
 // Connectivity is used to check whether Tor can connect in different ways
@@ -112,15 +115,28 @@ type checkTorResult struct {
 }
 
 func (c *connectivity) checkConnectionOverTor() bool {
-	p := strconv.Itoa(c.routePort)
-	cmd := exec.Command("torsocks", "-P", p, "curl", "https://check.torproject.org/api/ip")
-	output, err := cmd.Output()
+	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(c.host, strconv.Itoa(c.routePort)))
 	if err != nil {
 		return false
 	}
 
-	v := checkTorResult{}
-	err = json.Unmarshal(output, &v)
+	dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
+	if err != nil {
+		return false
+	}
+
+	t := &http.Transport{Dial: dialer.Dial}
+	client := &http.Client{Transport: t}
+
+	resp, err := client.Get("https://check.torproject.org/api/ip")
+	if err != nil {
+		return false
+	}
+
+	defer resp.Body.Close()
+
+	var v checkTorResult
+	err = json.NewDecoder(resp.Body).Decode(&v)
 	if err != nil {
 		return false
 	}
