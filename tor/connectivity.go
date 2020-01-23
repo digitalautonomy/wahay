@@ -3,6 +3,7 @@ package tor
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net"
 	"net/http"
 	"net/url"
@@ -15,9 +16,13 @@ import (
 	"golang.org/x/net/proxy"
 )
 
+const UsrBinPath = "/usr/bin/tor"
+const UsrLocalBinPath = "/usr/local/bin/tor"
+
 // Connectivity is used to check whether Tor can connect in different ways
 type Connectivity interface {
 	Check() (total error, partial error)
+	GetTorPath() string
 }
 
 type connectivity struct {
@@ -26,6 +31,7 @@ type connectivity struct {
 	routePort   int
 	controlPort int
 	password    string
+	pathBinTor  string
 }
 
 // NewDefaultChecker will test whether the default ports can
@@ -48,7 +54,27 @@ func NewChecker(checkBinary bool, host string, routePort, controlPort int, passw
 }
 
 func (c *connectivity) checkTorBinaryExists() bool {
-	cmd := exec.Command("tor", "--version")
+	if c.findTorBinary(UsrBinPath) {
+		c.pathBinTor = UsrBinPath
+		return true
+	}
+
+	if c.findTorBinary(UsrLocalBinPath) {
+		c.pathBinTor = UsrLocalBinPath
+		return true
+	}
+
+	localPathTor := fmt.Sprintf("%s/%s", config.TorDir(), "tor")
+	if c.findTorBinary(localPathTor) {
+		c.pathBinTor = localPathTor
+		return true
+	}
+
+	return false
+}
+
+func (c *connectivity) findTorBinary(torBinPath string) bool {
+	cmd := exec.Command(torBinPath, "--version")
 	err := cmd.Run()
 	return err == nil
 }
@@ -69,7 +95,8 @@ func (c *connectivity) checkTorBinaryCompatibility() bool {
 }
 
 func (c *connectivity) checkTorVersionCompatibility() bool {
-	cmd := exec.Command("tor", "--version")
+	p := c.pathBinTor
+	cmd := exec.Command(p, "--version")
 	output, err := cmd.Output()
 	if output == nil || err != nil {
 		return false
@@ -173,4 +200,8 @@ func (c *connectivity) Check() (total error, partial error) {
 	}
 
 	return nil, nil
+}
+
+func (c *connectivity) GetTorPath() string {
+	return c.pathBinTor
 }

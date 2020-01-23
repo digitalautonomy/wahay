@@ -88,6 +88,10 @@ func Dir() string {
 	return filepath.Join(SystemConfigDir(), "tonio")
 }
 
+func TorDir() string {
+	return filepath.Join(Dir(), "tor")
+}
+
 // SystemConfigDir returns the application data directory, valid on both windows and posix systems
 func SystemConfigDir() string {
 	return XdgConfigHome()

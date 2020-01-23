@@ -27,7 +27,7 @@ var systemTorRoutePort = *config.TorRoutePort
 
 // Instance contains functions to work with Tor instance
 type Instance interface {
-	Start() error
+	Start(string) error
 	Destroy()
 	GetController() Control
 	GetHost() string
@@ -65,13 +65,14 @@ func GetSystem() (Instance, error) {
 
 	conn := NewDefaultChecker()
 	total, partial := conn.Check()
+	fmt.Printf("type: %s\n", conn.GetTorPath())
 
 	if total != nil {
 		return nil, errors.New("error: Tor is not available or supported in your system")
 	}
 
 	if partial != nil {
-		return getOurInstance()
+		return getOurInstance(conn.GetTorPath())
 	}
 
 	// TODO: We should check the local instance again?
@@ -82,10 +83,10 @@ func GetSystem() (Instance, error) {
 
 const torStartupTimeout = 2 * time.Minute
 
-func getOurInstance() (Instance, error) {
+func getOurInstance(pathBinTor string) (Instance, error) {
 	i, _ := NewInstance()
 
-	err := i.Start()
+	err := i.Start(pathBinTor)
 	if err != nil {
 		return nil, errors.New("error: we can't start our instance")
 	}
@@ -124,10 +125,10 @@ func NewInstance() (Instance, error) {
 }
 
 // Start our Tor Control Port
-func (i *instance) Start() error {
+func (i *instance) Start(pathBinTor string) error {
 	log.Printf("Using custom Tor configuration file at: %s", i.configFile)
 	ctx, cancelFunc := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, "tor", "-f", i.configFile)
+	cmd := exec.CommandContext(ctx, pathBinTor, "-f", i.configFile)
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
 		return err
