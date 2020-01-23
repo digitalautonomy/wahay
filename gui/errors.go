@@ -19,7 +19,10 @@ func (u *gtkUI) reportError(message string) {
 		panic(fmt.Sprintf("Programmer error #1: %s", err.Error()))
 	}
 
-	dlg.SetTransientFor(u.currentWindow)
+	if u.currentWindow != nil {
+		dlg.SetTransientFor(u.currentWindow)
+	}
+
 	u.doInUIThread(func() {
 		dlg.Run()
 		dlg.Destroy()

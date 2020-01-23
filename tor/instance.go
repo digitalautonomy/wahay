@@ -307,9 +307,6 @@ func (i *instance) getConfigFileContents() []byte {
 ## Tell Tor to open a SOCKS proxy on port %d
 SOCKSPort %d
 
-## Entry policies to allow/deny SOCKS requests based on IP address.
-SOCKSPolicy reject *
-
 ## The port on which Tor will listen for local connections from Tor
 ## controller applications, as documented in control-spec.txt.
 ControlPort %d

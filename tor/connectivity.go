@@ -3,7 +3,6 @@ package tor
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net"
 	"os/exec"
 	"regexp"
@@ -113,8 +112,7 @@ type checkTorResult struct {
 }
 
 func (c *connectivity) checkConnectionOverTor() bool {
-	p := fmt.Sprintf("%d", c.routePort)
-	cmd := exec.Command("torsocks", "curl", "https://check.torproject.org/api/ip", "-P", p)
+	cmd := exec.Command("torsocks", "-P", strconv.Itoa(c.routePort), "curl", "https://check.torproject.org/api/ip")
 	output, err := cmd.Output()
 	if err != nil {
 		return false
