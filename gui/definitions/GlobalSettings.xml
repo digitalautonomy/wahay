@@ -10,6 +10,7 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
+    <property name="default_width">500</property>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -42,6 +43,8 @@
                         <property name="focus_on_click">False</property>
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Allow the host to autojoin a meeting when creates new one</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_toggle_option" swapped="no"/>
                       </object>
@@ -91,6 +94,8 @@
                         <property name="focus_on_click">False</property>
                         <property name="receives_default">False</property>
                         <property name="tooltip_text" translatable="yes">Allow the host to autojoin a meeting when creates new one</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
                         <property name="draw_indicator">True</property>
                         <signal name="toggled" handler="on_toggle_option" swapped="no"/>
                       </object>
@@ -98,6 +103,26 @@
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="width_request">100</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_top">10</property>
+                        <property name="label" translatable="yes">When this option is checked, the set configuration values will be permanently stored in the device.</property>
+                        <property name="wrap">True</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <style>
+                          <class name="control-help"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
@@ -182,6 +207,32 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="lblMessage">
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Configuration settings will be lost in the next session</property>
+                <style>
+                  <class name="label-settings-warning"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
@@ -238,7 +289,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

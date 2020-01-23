@@ -14,6 +14,7 @@ type settings struct {
 	dialog                     gtki.Window
 	chkAutojoin                gtki.CheckButton
 	chkPersistentConfiguration gtki.CheckButton
+	lblMessage                 gtki.Label
 }
 
 func createSettings(u *gtkUI) *settings {
@@ -29,6 +30,7 @@ func createSettings(u *gtkUI) *settings {
 	s.b.getItems(
 		"chkAutojoin", &s.chkAutojoin,
 		"chkPersistentConfiguration", &s.chkPersistentConfiguration,
+		"lblMessage", &s.lblMessage,
 	)
 
 	return s
@@ -40,17 +42,22 @@ func (u *gtkUI) openSettingsWindow() {
 	autoJoinOriginalValue := u.config.GetAutoJoin()
 	s.chkAutojoin.SetActive(autoJoinOriginalValue)
 
-	persisConfigFileOriginalValue := u.config.GetPersistentConfiguration()
-	s.chkPersistentConfiguration.SetActive(persisConfigFileOriginalValue)
+	persistConfigFileOriginalValue := u.config.GetPersistentConfiguration()
+	s.chkPersistentConfiguration.SetActive(persistConfigFileOriginalValue)
+
+	s.lblMessage.SetVisible(!persistConfigFileOriginalValue)
 
 	s.b.ConnectSignals(map[string]interface{}{
 		"on_toggle_option": func() {
 			if s.chkAutojoin.GetActive() != autoJoinOriginalValue {
 				u.config.SetAutoJoin(!autoJoinOriginalValue)
+				autoJoinOriginalValue = !autoJoinOriginalValue
 			}
 
-			if s.chkPersistentConfiguration.GetActive() != persisConfigFileOriginalValue {
-				u.config.SetPersistentConfiguration(!persisConfigFileOriginalValue)
+			if s.chkPersistentConfiguration.GetActive() != persistConfigFileOriginalValue {
+				s.lblMessage.SetVisible(persistConfigFileOriginalValue)
+				u.config.SetPersistentConfiguration(!persistConfigFileOriginalValue)
+				persistConfigFileOriginalValue = !persistConfigFileOriginalValue
 			}
 		},
 		"on_save": func() {

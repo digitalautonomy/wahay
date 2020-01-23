@@ -1,0 +1,5 @@
+.label-settings-warning {
+    padding: 10px $spacing;
+
+    @extend .label-warning;
+}

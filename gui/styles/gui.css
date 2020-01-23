@@ -331,6 +331,9 @@ label.control-label {
   color: #1b1f23;
   font-weight: 600;
 }
+label.control-help {
+  color: #6a737d;
+}
 label.label-success {
   font-size: 16px;
   color: #735c0f;
@@ -339,6 +342,11 @@ label.label-success {
 }
 label.label-text {
   font-size: 16px;
+}
+
+.label-warning {
+  background-color: #fdaeb7;
+  color: #86181d;
 }
 
 .main-window-top-bar {

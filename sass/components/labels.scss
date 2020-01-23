@@ -4,6 +4,10 @@ label {
     font-weight: $font-weight-bold;
   }
 
+  &.control-help {
+    color: $gray;
+  }
+
   &.label-success {
     font-size: $font-size-medium;
     color: $yellow-900;
@@ -14,4 +18,9 @@ label {
   &.label-text {
     font-size: $font-size-medium;
   }
+}
+
+.label-warning {
+  background-color: $red-200;
+  color: $red-900;
 }
