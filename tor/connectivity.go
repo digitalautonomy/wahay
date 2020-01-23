@@ -112,7 +112,8 @@ type checkTorResult struct {
 }
 
 func (c *connectivity) checkConnectionOverTor() bool {
-	cmd := exec.Command("torsocks", "-P", strconv.Itoa(c.routePort), "curl", "https://check.torproject.org/api/ip")
+	p := strconv.Itoa(c.routePort)
+	cmd := exec.Command("torsocks", "-P", p, "curl", "https://check.torproject.org/api/ip")
 	output, err := cmd.Output()
 	if err != nil {
 		return false
