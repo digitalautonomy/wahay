@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"os"
 	"sync"
 )
 
@@ -127,18 +128,9 @@ func (a *ApplicationConfig) Save() error {
 	return SafeWrite(a.filename, contents, 0600)
 }
 
-// DeleteFileIfExists delete the config file if exists
+// DeleteFileIfExists deletes the config file if exists
 func (a *ApplicationConfig) DeleteFileIfExists() {
-	dirs := []string{
-		Dir(),
-	}
-
-	// Remove all possible directories
-	for index := range dirs {
-		if FileExists(dirs[index]) {
-			_ = RemoveAll(dirs[index])
-		}
-	}
+	_ = os.RemoveAll(Dir())
 }
 
 //TODO: This is where we generate a new JSON representation and serialize it.
