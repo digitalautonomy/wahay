@@ -119,7 +119,7 @@ Primary key fingerprint: 0124 2FFA B8CE 1EC0 C8F5  4456 A885 4162 D28F 171E<br>
      Subkey fingerprint: A5DA 0791 073C 1374 BB2A  98B3 A5AB BD2E 8E62 3464<br>
 </div>
 <br><br>
-If you see the message: “gpg: Good signature from "CAD Signing Key - testing (This is just a test key) <admin@autonomia.digital>"”, that means that the signature is valid. However you would get the following warning: “This key is not certified with a trusted signature!”. That is because the key is not trusted. At the moment don’t trust in this key, when we have the final CAD signing key we would explain how to trust it. 
+If you see the message: "gpg: Good signature from "CAD Signing Key - testing (This is just a test key) <admin@autonomia.digital>", that means that the signature is valid. However you would get the following warning: "This key is not certified with a trusted signature!". That is because the key is not trusted. At the moment don't trust in this key, when we have the final CAD signing key we would explain how to trust it.
 </p>
 
 </div>
