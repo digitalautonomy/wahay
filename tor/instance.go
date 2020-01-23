@@ -44,6 +44,7 @@ type instance struct {
 	controlPort   int
 	dataDirectory string
 	password      string
+	useCookie     bool
 	controller    Control
 	isLocal       bool
 	runningTor    *runningTor
@@ -152,7 +153,15 @@ func (i *instance) Start() error {
 // GetController returns a controller for the instance `i`
 func (i *instance) GetController() Control {
 	if i.controller == nil {
-		i.controller = CreateController(i.controlHost, i.controlPort, i.password)
+		i.controller = CreateController(i.controlHost, i.controlPort)
+
+		if len(i.password) != 0 {
+			i.controller.SetPassword(i.password)
+		}
+
+		if i.useCookie {
+			i.controller.UseCookieAuth()
+		}
 	}
 	return i.controller
 }
@@ -252,6 +261,7 @@ func createOurInstance() *instance {
 		socksPort:     routePort,
 		dataDirectory: filepath.Join(d, torConfigData),
 		password:      "", // our instance don't use authentication with password
+		useCookie:     true,
 		isLocal:       false,
 		controller:    nil,
 	}
@@ -301,6 +311,11 @@ func (i *instance) getConfigFileContents() []byte {
 	noticeLog := filepath.Join(filepath.Dir(i.configFile), "notice.log")
 	logFile := filepath.Join(filepath.Dir(i.configFile), "debug.log")
 
+	cookieFile := 1
+	if !i.useCookie {
+		cookieFile = 0
+	}
+
 	content := fmt.Sprintf(
 		`## Configuration file for a typical Tor user
 
@@ -328,7 +343,7 @@ Log debug file %s`,
 		i.socksPort,
 		i.controlPort,
 		i.dataDirectory,
-		0,
+		cookieFile,
 		noticeLog,
 		noticeLog,
 		logFile,

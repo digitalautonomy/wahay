@@ -13,6 +13,8 @@ import (
 
 // Control is the interface for controlling the Tor instance on this system
 type Control interface {
+	SetPassword(string)
+	UseCookieAuth()
 	CreateNewOnionService(destinationHost string, destinationPort int, port int) (serviceID string, err error)
 	DeleteOnionService(serviceID string) error
 	DeleteOnionServices()
@@ -31,26 +33,33 @@ var onions = []string{}
 
 // CreateController takes the Tor information given
 // and returns a controlling interface
-func CreateController(torHost string, torPort int, password string) Control {
+func CreateController(torHost string, torPort int) Control {
 	f := func(v string) (torgoController, error) {
 		return torgo.NewController(v)
 	}
 
 	var a authenticationMethod = authenticateNone
-	// If password is provided, then our `authType` should
-	// be `authenticatePassword` as the default value
-	if len(password) > 0 {
-		a = authenticatePassword(password)
-	}
 
 	return &controller{
 		torHost:  torHost,
 		torPort:  torPort,
-		password: password,
 		authType: &a,
 		tc:       f,
 		c:        nil,
 	}
+}
+
+func (cntrl *controller) SetPassword(p string) {
+	cntrl.password = p
+	if len(p) > 0 {
+		var a authenticationMethod = authenticatePassword(p)
+		cntrl.authType = &a
+	}
+}
+
+func (cntrl *controller) UseCookieAuth() {
+	var a authenticationMethod = authenticateCookie
+	cntrl.authType = &a
 }
 
 func (cntrl *controller) CreateNewOnionService(destinationHost string, destinationPort int,
