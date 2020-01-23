@@ -46,7 +46,7 @@
 
 .btn-sm {
   border-radius: 0.1em;
-  padding: 3px 10px;
+  padding: 8px 18px;
   font-size: $font-size-small;
 }
 
@@ -63,6 +63,7 @@
   color: $text-blue;
   background: none;
   border-width: 0;
+  border-color: transparent;
   box-shadow: none;
 
   &:hover,

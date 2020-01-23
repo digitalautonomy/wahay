@@ -14,9 +14,14 @@ func (u *gtkUI) reportError(message string) {
 	builder := u.g.uiBuilderFor("GeneralError")
 	dlg := builder.get("dialog").(gtki.MessageDialog)
 
-	err := dlg.SetProperty("text", message)
+	err := dlg.SetProperty("text", "Error")
 	if err != nil {
 		panic(fmt.Sprintf("Programmer error #1: %s", err.Error()))
+	}
+
+	err = dlg.SetProperty("secondary-text", message)
+	if err != nil {
+		panic(fmt.Sprintf("Programmer error #2: %s", err.Error()))
 	}
 
 	if u.currentWindow != nil {
@@ -25,6 +30,7 @@ func (u *gtkUI) reportError(message string) {
 
 	u.doInUIThread(func() {
 		dlg.Run()
+		dlg.Present()
 		dlg.Destroy()
 	})
 }

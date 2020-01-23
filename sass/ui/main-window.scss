@@ -2,7 +2,10 @@
   padding: $spacing;
 
   .main-window-btn-settings {
+    border-radius: 10em;
+
     @extend .btn;
+    @extend .btn-sm;
   }
 }
 

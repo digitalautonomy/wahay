@@ -1,4 +1,6 @@
 label {
+  font-size: $font-size-medium;
+
   &.control-label {
     color: $text-black;
     font-weight: $font-weight-bold;
@@ -6,13 +8,7 @@ label {
 
   &.control-help {
     color: $gray;
-  }
-
-  &.label-success {
-    font-size: $font-size-medium;
-    color: $yellow-900;
-    background-color: $yellow-200;
-    padding: $spacing/1.5 $spacing;
+    font-size: $font-size-normal;
   }
 
   &.label-text {
@@ -20,7 +16,21 @@ label {
   }
 }
 
+.label {
+  font-size: $font-size-medium;
+  padding: $spacing/1.5 $spacing;
+}
+
+.label-success {
+  color: $yellow-900;
+  background-color: $yellow-200;
+
+  @extend .label;
+}
+
 .label-warning {
-  background-color: $red-200;
   color: $red-900;
+  background-color: $red-100;
+
+  @extend .label;
 }

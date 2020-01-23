@@ -41,15 +41,19 @@ func (u *gtkUI) realHostMeetingHandler() {
 		next:            func() {},
 	}
 
-	ch := make(chan bool)
+	finish := make(chan string)
+	go h.createOnionService(finish)
 
-	go h.createOnionService(ch)
-
-	<-ch
+	err := <-finish
 
 	u.doInUIThread(func() {
 		u.hideLoadingWindow()
-		h.showMeetingConfiguration()
+		if len(err) > 0 {
+			u.switchToMainWindow()
+			h.u.reportError(fmt.Sprintf("Something went wrong: %s", err))
+		} else {
+			h.showMeetingConfiguration()
+		}
 	})
 }
 
@@ -172,7 +176,7 @@ func (u *gtkUI) ensureServerCollection() {
 	}
 }
 
-func (h *hostData) createOnionService(ch chan bool) {
+func (h *hostData) createOnionService(finish chan string) {
 	if h.u.tor != nil {
 		h.u.ensureServerCollection()
 
@@ -181,7 +185,7 @@ func (h *hostData) createOnionService(ch chan bool) {
 		controller := h.u.tor.GetController()
 		serviceID, e := controller.CreateNewOnionService("127.0.0.1", port, 64738)
 		if e != nil {
-			h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+			finish <- e.Error()
 			return
 		}
 
@@ -189,7 +193,7 @@ func (h *hostData) createOnionService(ch chan bool) {
 		h.serviceID = serviceID
 	}
 
-	ch <- true
+	finish <- ""
 }
 
 func (h *hostData) createNewConferenceRoom(complete chan bool) {
