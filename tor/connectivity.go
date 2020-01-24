@@ -3,12 +3,9 @@ package tor
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net"
 	"net/http"
 	"net/url"
-	"os/exec"
-	"regexp"
 	"strconv"
 
 	"autonomia.digital/tonio/app/config"
@@ -22,7 +19,6 @@ const UsrLocalBinPath = "/usr/local/bin/tor"
 // Connectivity is used to check whether Tor can connect in different ways
 type Connectivity interface {
 	Check() (total error, partial error)
-	GetTorPath() string
 }
 
 type connectivity struct {
@@ -31,7 +27,6 @@ type connectivity struct {
 	routePort   int
 	controlPort int
 	password    string
-	pathBinTor  string
 }
 
 // NewDefaultChecker will test whether the default ports can
@@ -51,63 +46,6 @@ func NewChecker(checkBinary bool, host string, routePort, controlPort int, passw
 		controlPort: controlPort,
 		password:    password,
 	}
-}
-
-func (c *connectivity) checkTorBinaryExists() bool {
-	if c.findTorBinary(UsrBinPath) {
-		c.pathBinTor = UsrBinPath
-		return true
-	}
-
-	if c.findTorBinary(UsrLocalBinPath) {
-		c.pathBinTor = UsrLocalBinPath
-		return true
-	}
-
-	localPathTor := fmt.Sprintf("%s/%s", config.TorDir(), "tor")
-	if c.findTorBinary(localPathTor) {
-		c.pathBinTor = localPathTor
-		return true
-	}
-
-	return false
-}
-
-func (c *connectivity) findTorBinary(torBinPath string) bool {
-	cmd := exec.Command(torBinPath, "--version")
-	err := cmd.Run()
-	return err == nil
-}
-
-func extractVersionFrom(s []byte) string {
-	r := regexp.MustCompile(`(\d+\.)(\d+\.)(\d+\.)(\d)`)
-	result := r.FindStringSubmatch(string(s))
-
-	if len(result) == 0 {
-		return ""
-	}
-
-	return result[0]
-}
-
-func (c *connectivity) checkTorBinaryCompatibility() bool {
-	return c.checkTorVersionCompatibility()
-}
-
-func (c *connectivity) checkTorVersionCompatibility() bool {
-	p := c.pathBinTor
-	cmd := exec.Command(p, "--version")
-	output, err := cmd.Output()
-	if output == nil || err != nil {
-		return false
-	}
-
-	diff, err := compareVersions(extractVersionFrom(output), MinSupportedVersion)
-	if err != nil {
-		return false
-	}
-
-	return diff >= 0
 }
 
 func (c *connectivity) checkTorControlPortExists() bool {
@@ -172,13 +110,11 @@ func (c *connectivity) checkConnectionOverTor() bool {
 }
 
 func (c *connectivity) Check() (total error, partial error) {
-	if c.checkBinary {
-		if !c.checkTorBinaryExists() {
-			return errors.New("no Tor binary installed"), nil
-		}
-		if !c.checkTorBinaryCompatibility() {
-			return errors.New("version of Tor installed too old"), nil
-		}
+	b := GetTorBinary(nil)
+
+	err := b.Check()
+	if err != nil {
+		return err, nil
 	}
 
 	if !c.checkTorControlPortExists() {
@@ -189,10 +125,9 @@ func (c *connectivity) Check() (total error, partial error) {
 		return nil, errors.New("no Tor Control Port valid authentication")
 	}
 
-	if !c.checkBinary {
-		if !c.checkTorVersionCompatibility() {
-			return errors.New("version of Tor installed too old"), nil
-		}
+	err = b.Check()
+	if err != nil {
+		return err, nil
 	}
 
 	if !c.checkConnectionOverTor() {
@@ -200,8 +135,4 @@ func (c *connectivity) Check() (total error, partial error) {
 	}
 
 	return nil, nil
-}
-
-func (c *connectivity) GetTorPath() string {
-	return c.pathBinTor
 }
