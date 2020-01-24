@@ -2,19 +2,14 @@ package config
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 )
 
 const (
 	fileExtensionJSON = ".json"
-	//FileName is the default name of the config file
-	FileName = "config" + fileExtensionJSON
+	appConfigFile     = "config" + fileExtensionJSON
 )
-
-// TODO: Implements configuration file encryption
-const encryptedFileEnding = ".enc"
 
 // FileExists check if a specific file exists
 func FileExists(filename string) bool {
@@ -27,31 +22,6 @@ func EnsureDir(dirname string, perm os.FileMode) {
 	if !FileExists(dirname) {
 		_ = os.MkdirAll(dirname, perm)
 	}
-}
-
-// FindFile search for a specific file in the config directory
-func FindFile(file string, filename string) string {
-	if len(filename) == 0 {
-		if len(file) == 0 {
-			log.Fatal("the filename is required")
-		}
-		dir := Dir()
-		EnsureDir(dir, 0700)
-		basePath := filepath.Join(dir, file)
-		switch {
-		case FileExists(basePath + encryptedFileEnding):
-			return basePath + encryptedFileEnding
-		case FileExists(basePath + encryptedFileEnding + tmpExtension):
-			return basePath + encryptedFileEnding
-		}
-		return basePath
-	}
-	EnsureDir(filepath.Dir(filename), 0700)
-	return filename
-}
-
-func findConfigFile(filename string) string {
-	return FindFile(FileName, filename)
 }
 
 const tmpExtension = ".000~"

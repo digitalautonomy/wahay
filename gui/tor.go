@@ -2,34 +2,28 @@ package gui
 
 import (
 	"errors"
+	"sync"
 
 	"autonomia.digital/tonio/app/tor"
-	"github.com/coyim/gotk3adapter/gtki"
 )
 
-func (u *gtkUI) ensureTonioNetwork(cb func(bool)) {
-	u.ensureTorNetwork(cb)
-	u.hideLoadingWindow()
-}
-
 // TODO: we should also check that either Torify or Torsocks are available
-func (u *gtkUI) ensureTorNetwork(cb func(bool)) {
-	instance, err := tor.GetSystem()
-	if instance != nil && err == nil {
-		u.tor = instance
-		cb(true)
-	} else {
-		cb(false)
-		u.displayStartupError(err)
-	}
-}
+func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
+	defer wg.Done()
 
-func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
-	win := builder.get("mainWindowErrors").(gtki.Dialog)
-	txt := builder.get("textContent").(gtki.Label)
-	txt.SetMarkup("Show the startup or Tor-related errors")
-	u.currentWindow = win
-	win.Show()
+	instance, e := tor.GetSystem()
+	if e != nil {
+		addNewStartupError(e)
+		return
+	}
+
+	if instance == nil {
+		// TODO: implement a proper way to show errors for the final user
+		addNewStartupError(errors.New("tor can't be used"))
+		return
+	}
+
+	u.tor = instance
 }
 
 func (u *gtkUI) throughTor(command string, args []string) (*tor.RunningCommand, error) {

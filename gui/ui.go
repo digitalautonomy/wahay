@@ -53,8 +53,8 @@ type gtkUI struct {
 	currentWindow    gtki.ApplicationWindow
 	loadingWindow    gtki.ApplicationWindow
 	g                Graphics
-	serverCollection hosting.Servers
 	tor              tor.Instance
+	serverCollection hosting.Servers
 	config           *config.ApplicationConfig
 }
 
@@ -71,7 +71,6 @@ func NewGTK(gx Graphics) UI {
 	ret := &gtkUI{
 		app: app,
 		g:   gx,
-		tor: nil,
 	}
 
 	return ret
@@ -79,16 +78,20 @@ func NewGTK(gx Graphics) UI {
 
 func (u *gtkUI) onActivate() {
 	u.setGlobalStyles()
+	u.loadConfig()
+}
+
+func (u *gtkUI) configLoaded(c *config.ApplicationConfig) {
 	u.displayLoadingWindow()
-	go u.loadConfig()
-	go u.ensureTonioNetwork(func(startupSuccess bool) {
+
+	go u.ensureDependencies(func(success bool) {
 		u.doInUIThread(func() {
-			u.createMainWindow(startupSuccess)
+			u.createMainWindow(success)
 		})
 	})
 }
 
-func (u *gtkUI) createMainWindow(startupSuccess bool) {
+func (u *gtkUI) createMainWindow(success bool) {
 	builder := u.g.uiBuilderFor("MainWindow")
 	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	u.currentWindow = win
@@ -111,7 +114,7 @@ func (u *gtkUI) createMainWindow(startupSuccess bool) {
 		},
 	})
 
-	if !startupSuccess {
+	if !success {
 		u.updateStatusBar(builder)
 		u.disableControls(builder)
 	}

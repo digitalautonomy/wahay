@@ -3,9 +3,22 @@ package gui
 import (
 	"fmt"
 	"log"
+	"sync"
 
 	"github.com/coyim/gotk3adapter/gtki"
 )
+
+var (
+	startupErrors      []string
+	startupErrorsIlock sync.Mutex
+)
+
+func addNewStartupError(err error) {
+	startupErrorsIlock.Lock()
+	defer startupErrorsIlock.Unlock()
+
+	startupErrors = append(startupErrors, err.Error())
+}
 
 func (u *gtkUI) reportError(message string) {
 	// TODO: this should only be logged as debug
@@ -37,6 +50,14 @@ func (u *gtkUI) reportError(message string) {
 
 func (u *gtkUI) displayStartupError(err error) {
 	u.reportError(err.Error())
+}
+
+func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
+	win := builder.get("mainWindowErrors").(gtki.Dialog)
+	txt := builder.get("textContent").(gtki.Label)
+	txt.SetMarkup("Show application critic errors")
+	u.currentWindow = win
+	win.Show()
 }
 
 func fatal(v interface{}) {

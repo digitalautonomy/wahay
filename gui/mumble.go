@@ -4,28 +4,19 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
+	"sync"
 
+	"autonomia.digital/tonio/app/client"
 	"autonomia.digital/tonio/app/hosting"
 )
 
-type runningMumble struct {
-	cmd               *exec.Cmd
-	ctx               context.Context
-	cancelFunc        context.CancelFunc
-	finished          bool
-	finishedWithError error
-	finishChannel     chan bool
-}
+func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
+	defer wg.Done()
 
-func (r *runningMumble) close() {
-	r.cancelFunc()
-}
-
-func (r *runningMumble) waitForFinish() {
-	e := r.cmd.Wait()
-	r.finished = true
-	r.finishedWithError = e
-	r.finishChannel <- true
+	_, e := client.InitSystem()
+	if e != nil {
+		addNewStartupError(e)
+	}
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
@@ -61,4 +52,24 @@ func (u *gtkUI) switchContextWhenMumbleFinish(state *runningMumble) {
 			u.openMainWindow()
 		})
 	}()
+}
+
+type runningMumble struct {
+	cmd               *exec.Cmd
+	ctx               context.Context
+	cancelFunc        context.CancelFunc
+	finished          bool
+	finishedWithError error
+	finishChannel     chan bool
+}
+
+func (r *runningMumble) close() {
+	r.cancelFunc()
+}
+
+func (r *runningMumble) waitForFinish() {
+	e := r.cmd.Wait()
+	r.finished = true
+	r.finishedWithError = e
+	r.finishChannel <- true
 }
