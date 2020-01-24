@@ -19,7 +19,6 @@ import (
 const (
 	xmlExtension = ".xml"
 	cssExtension = ".css"
-	// imagesFolder = "images/"
 )
 
 const (
@@ -162,47 +161,3 @@ func (b *uiBuilder) get(name string) glibi.Object {
 	}
 	return obj
 }
-
-// func mustGetImageBytes(filename string) []byte {
-// 	bs, err := FSByte(false, imagesFolder+filename)
-// 	if err != nil {
-// 		panic("Developer error: getting the image " + filename + " but it does not exist")
-// 	}
-// 	return bs
-// }
-
-// getPixbufFromBytes returns the pixbuff from a byte array.
-// func (u *gtkUI) getPixbufFromBytes(bstream []byte) gdki.Pixbuf {
-// 	pl, err := u.g.gdk.PixbufLoaderNew()
-// 	if err != nil {
-// 		panic("Developer error: setting the image from >>>>>>>>")
-// 	}
-
-// 	var w sync.WaitGroup
-// 	w.Add(1)
-// 	pl.Connect("area-prepared", w.Done)
-
-// 	if _, err := pl.Write(bstream); err != nil {
-// 		log.Println(">> WARN - cannot write to PixbufLoader: " + err.Error())
-// 		return nil
-// 	}
-// 	if err := pl.Close(); err != nil {
-// 		log.Println(">> WARN - cannot close PixbufLoader: " + err.Error())
-// 		return nil
-// 	}
-
-// 	w.Wait() //Waiting for Pixbuf to load before using it
-
-// 	pb, err := pl.GetPixbuf()
-// 	if err != nil {
-// 		log.Println(">> WARN - cannot write to PixbufLoader: " + err.Error())
-// 		return nil
-// 	}
-// 	return pb
-// }
-
-// setImageFromFile sets an image from a file name.
-// func (u *gtkUI) setImageFromFile(i gtki.Image, filename string) {
-// 	pb := u.getPixbufFromBytes(mustGetImageBytes(filename))
-// 	i.SetFromPixbuf(pb)
-// }
