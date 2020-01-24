@@ -137,11 +137,11 @@ func (u *gtkUI) updateMainWindowStatusBar(builder *uiBuilder) {
 
 	box := builder.get("boxApplicationStatus").(gtki.Widget)
 	cntx, err := box.GetStyleContext()
-	if err == nil {
-		cntx.AddClass("error")
-	}
 
-	if u.tor == nil {
+	if weHaveStartupErrors() {
+		if err == nil {
+			cntx.AddClass("error")
+		}
 		lblAppStatus.SetLabel("We've found errors")
 		btnStatusShow.SetVisible(true)
 	}
