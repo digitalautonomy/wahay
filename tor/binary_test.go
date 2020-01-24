@@ -43,5 +43,4 @@ func (s *TonioTorBinarySuite) Test_ValidTorPath(c *C) {
 	b := GetTorBinary(torBinaryPaths)
 	err := b.Check()
 	c.Assert(err, IsNil)
-}
-*/
+}*/
