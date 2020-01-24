@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"errors"
 	"log"
 	"sync"
 )
@@ -31,7 +30,6 @@ func (u *gtkUI) ensureDependencies(cb func(bool)) {
 	if len(startupErrors) != 0 {
 		// TODO: show startup errors and give feedback to the user
 		success = false
-		u.displayStartupError(errors.New("something happened"))
 	}
 
 	cb(success)

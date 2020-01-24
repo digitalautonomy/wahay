@@ -54,10 +54,10 @@
     }
 
     &:disabled {
-      color: rgba($color, 0.75);
+      color: rgba($white, 0.65);
       background-color: mix($bg2, $white, 50%);
       background-image: none;
-      border-color: $border-color-button;
+      border-color: transparent;
       box-shadow: none;
     }
   }

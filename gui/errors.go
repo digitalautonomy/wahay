@@ -48,10 +48,6 @@ func (u *gtkUI) reportError(message string) {
 	})
 }
 
-func (u *gtkUI) displayStartupError(err error) {
-	u.reportError(err.Error())
-}
-
 func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
 	win := builder.get("mainWindowErrors").(gtki.Dialog)
 	txt := builder.get("textContent").(gtki.Label)
