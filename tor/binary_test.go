@@ -36,6 +36,7 @@ func (s *TonioTorBinarySuite) Test_InvalidTorPath(c *C) {
 	c.Assert(b.Check(), ErrorMatches, "no Tor binary found")
 }
 
+/*
 func (s *TonioTorBinarySuite) Test_ValidTorPath(c *C) {
 	var torBinaryPaths = []string{"/usr/bin/tor"}
 	torBinary = nil
@@ -43,3 +44,4 @@ func (s *TonioTorBinarySuite) Test_ValidTorPath(c *C) {
 	err := b.Check()
 	c.Assert(err, IsNil)
 }
+*/
