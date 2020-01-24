@@ -3,12 +3,10 @@ package gui
 import (
 	"os"
 	"runtime"
-	"time"
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
 	"autonomia.digital/tonio/app/tor"
-	"github.com/atotto/clipboard"
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
@@ -76,6 +74,17 @@ func NewGTK(gx Graphics) UI {
 	return ret
 }
 
+func (u *gtkUI) Loop() {
+	// This Connect call returns a signal handle, but that's not useful
+	// for us, so we ignore it.
+	_, err := u.app.Connect("activate", u.onActivate)
+	if err != nil {
+		fatalf("Couldn't activate application: %v", err)
+	}
+
+	u.app.Run([]string{})
+}
+
 func (u *gtkUI) onActivate() {
 	u.setGlobalStyles()
 	u.loadConfig()
@@ -115,14 +124,14 @@ func (u *gtkUI) createMainWindow(success bool) {
 	})
 
 	if !success {
-		u.updateStatusBar(builder)
-		u.disableControls(builder)
+		u.updateMainWindowStatusBar(builder)
+		u.disableMainWindowControls(builder)
 	}
 
 	win.Show()
 }
 
-func (u *gtkUI) updateStatusBar(builder *uiBuilder) {
+func (u *gtkUI) updateMainWindowStatusBar(builder *uiBuilder) {
 	lblAppStatus := builder.get("lblApplicationStatus").(gtki.Label)
 	btnStatusShow := builder.get("btnStatusShowErrors").(gtki.Button)
 
@@ -132,7 +141,7 @@ func (u *gtkUI) updateStatusBar(builder *uiBuilder) {
 	}
 }
 
-func (u *gtkUI) disableControls(builder *uiBuilder) {
+func (u *gtkUI) disableMainWindowControls(builder *uiBuilder) {
 	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
 	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
 
@@ -148,47 +157,10 @@ func (u *gtkUI) setGlobalStyles() {
 	if u.g.gdk == nil {
 		return
 	}
+
 	prov := u.g.cssFor("gui")
 	screen, _ := u.g.gdk.ScreenGetDefault()
 	u.g.gtk.AddProviderForScreen(screen, prov, uint(gtki.STYLE_PROVIDER_PRIORITY_APPLICATION))
-}
-
-func (u *gtkUI) Loop() {
-	// This Connect call returns a signal handle, but that's not useful
-	// for us, so we ignore it.
-	_, err := u.app.Connect("activate", u.onActivate)
-	if err != nil {
-		fatalf("Couldn't activate application: %v", err)
-	}
-
-	u.app.Run([]string{})
-}
-
-func (u *gtkUI) switchToMainWindow() {
-	u.switchToWindow(u.mainWindow)
-}
-
-func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
-	u.currentWindow = win
-	win.SetApplication(u.app)
-	u.doInUIThread(win.Show)
-}
-
-func (u *gtkUI) quit() {
-	u.cleanUp()
-	u.app.Quit()
-}
-
-func (u *gtkUI) copyToClipboard(text string) error {
-	return clipboard.WriteAll(text)
-}
-
-func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
-	label.SetVisible(true)
-	label.SetText(message)
-	time.Sleep(time.Duration(seconds) * time.Second)
-	label.SetText("")
-	label.SetVisible(false)
 }
 
 func (u *gtkUI) initialSetupWindow() {
@@ -202,4 +174,9 @@ func (u *gtkUI) cleanUp() {
 
 	// TODO: delete our onion service if created
 	// TODO: close our mumble service if running
+}
+
+func (u *gtkUI) quit() {
+	u.cleanUp()
+	u.app.Quit()
 }
