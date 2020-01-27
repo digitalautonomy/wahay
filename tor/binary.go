@@ -2,87 +2,145 @@ package tor
 
 import (
 	"errors"
-	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
+	"strings"
 
 	"autonomia.digital/tonio/app/config"
 )
 
-var localPathTor = fmt.Sprintf("%s/%s", config.TorDir(), "tor")
-var torBinaryPaths = []string{"/usr/bin/tor", "/usr/local/bin/tor", localPathTor}
+var PathTorBinary string
 
-// Binary contains functions to work with binary
-type Binary interface {
-	Check() error
-	GetPaths() []string
-	GetPathBinTor() string
-	executeCmd(args []string) ([]byte, error)
+func Initialize(configPath string) string {
+	return findTorBinary(configPath)
 }
 
-type binary struct {
-	paths      []string
-	pathBinTor string
-}
-
-var torBinary *binary
-
-// GetTorBinary returns the binary for working with it
-func GetTorBinary(p []string) Binary {
-	if torBinary == nil {
-		initializeBinary(p)
-	}
-	return torBinary
-}
-
-// Check returned an error when no one binary were found
-func (b *binary) Check() error {
-	err := b.checkInPaths()
-	if err != nil {
-		return errors.New("no Tor binary found")
+func findTorBinary(configPath string) string {
+	pathTorFound := checkInConfiguredPath(configPath)
+	if len(pathTorFound) > 0 {
+		return pathTorFound
 	}
 
-	return nil
-}
-
-func initializeBinary(p []string) {
-	torBinary = &binary{}
-	if len(p) == 0 {
-		torBinary.paths = torBinaryPaths
-	} else {
-		torBinary.paths = p
+	pathTorFound = checkInTonioDataDirectory()
+	if len(pathTorFound) > 0 {
+		return pathTorFound
 	}
-}
 
-func (b *binary) checkInPaths() error {
-	for _, pathTor := range b.paths {
-		b.pathBinTor = pathTor
+	pathCWD, err := os.Getwd()
+	if err == nil {
+		pathTorFound = checkInLocalDirectory(pathCWD)
+		if len(pathTorFound) > 0 {
+			return pathTorFound
+		}
 
-		cmd := exec.Command(pathTor, "--version")
-		err := cmd.Run()
-		if err == nil {
-			if torBinary.checkTorVersionCompatibility() {
-				return nil
-			}
+		pathTorFound = checkInExecutableDirectory(pathCWD)
+		if len(pathTorFound) > 0 {
+			return pathTorFound
 		}
 	}
 
-	b.pathBinTor = ""
-	return errors.New("no Tor binary installed")
+	pathTorFound = checkInCurrentWorkingDirectory()
+	if len(pathTorFound) > 0 {
+		return pathTorFound
+	}
+
+	pathTorFound = checkInTonioBinary()
+	if len(pathTorFound) > 0 {
+		return pathTorFound
+	}
+
+	pathTorFound = checkInHomeExecutableDirectory()
+	if len(pathTorFound) > 0 {
+		return pathTorFound
+	}
+
+	pathTorFound = checkWithWhich()
+	if len(pathTorFound) > 0 {
+		return pathTorFound
+	}
+
+	return ""
 }
 
-// GetPathBinTor return the path to Tor binary
-func (b *binary) GetPathBinTor() string {
-	return b.pathBinTor
+func checkInConfiguredPath(configuredPath string) string {
+	if isThereConfiguredTorBinary(configuredPath) {
+		return configuredPath
+	}
+	return ""
 }
 
-func (b *binary) GetPaths() []string {
-	return b.paths
+func checkInTonioDataDirectory() string {
+	pathToFind := filepath.Join(config.XdgDataHome(), "tonio/tor")
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return ""
 }
 
-func (b *binary) executeCmd(args []string) ([]byte, error) {
-	p := torBinary.pathBinTor
-	cmd := exec.Command(p, args...)
+func checkInLocalDirectory(pathCWD string) string {
+	pathToFind := filepath.Join(pathCWD, "/tor")
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return ""
+}
+
+func checkInExecutableDirectory(pathCWD string) string {
+	pathToFind := filepath.Join(pathCWD, "/bin/tor")
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return ""
+}
+
+func checkInCurrentWorkingDirectory() string {
+	pathToFind := filepath.Join(config.XdgDataHome(), "/tor")
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return ""
+}
+
+func checkInTonioBinary() string {
+	pathToFind := filepath.Join(config.XdgDataHome(), "/bin/tonio/tor/tor")
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return ""
+}
+
+func checkInHomeExecutableDirectory() string {
+	pathToFind := filepath.Join(config.XdgDataHome(), "/bin/tonio/tor")
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return ""
+}
+
+func checkWithWhich() string {
+	outputWhich, err := executeCmd("which", []string{"tor"})
+	if outputWhich == nil || err != nil {
+		return ""
+	}
+
+	pathToFind := strings.TrimSpace(string(outputWhich))
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return ""
+}
+
+func isThereConfiguredTorBinary(path string) bool {
+	if path != "" {
+		return checkTorVersionCompatibility(path)
+	}
+	return false
+}
+
+func executeCmd(path string, args []string) ([]byte, error) {
+	cmd := exec.Command(path, args...)
 	output, err := cmd.Output()
 	if output == nil || err != nil {
 		return nil, errors.New("invalid command")
@@ -90,8 +148,8 @@ func (b *binary) executeCmd(args []string) ([]byte, error) {
 	return output, nil
 }
 
-func (b *binary) checkTorVersionCompatibility() bool {
-	output, err := torBinary.executeCmd([]string{"--version"})
+func checkTorVersionCompatibility(path string) bool {
+	output, err := executeCmd(path, []string{"--version"})
 	if output == nil || err != nil {
 		return false
 	}

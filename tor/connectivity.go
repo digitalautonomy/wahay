@@ -13,8 +13,8 @@ import (
 	"golang.org/x/net/proxy"
 )
 
-const UsrBinPath = "/usr/bin/tor"
-const UsrLocalBinPath = "/usr/local/bin/tor"
+/*const UsrBinPath = "/usr/bin/tor"
+const UsrLocalBinPath = "/usr/local/bin/tor"*/
 
 // Connectivity is used to check whether Tor can connect in different ways
 type Connectivity interface {
@@ -110,24 +110,12 @@ func (c *connectivity) checkConnectionOverTor() bool {
 }
 
 func (c *connectivity) Check() (total error, partial error) {
-	b := GetTorBinary(nil)
-
-	err := b.Check()
-	if err != nil {
-		return err, nil
-	}
-
 	if !c.checkTorControlPortExists() {
 		return nil, errors.New("no Tor Control Port found")
 	}
 
 	if !c.checkTorControlAuth() {
 		return nil, errors.New("no Tor Control Port valid authentication")
-	}
-
-	err = b.Check()
-	if err != nil {
-		return err, nil
 	}
 
 	if !c.checkConnectionOverTor() {

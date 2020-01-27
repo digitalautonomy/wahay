@@ -24,6 +24,7 @@ type ApplicationConfig struct {
 	// The fields to save as the JSON representation of the configuration
 	AutoJoin              bool
 	UniqueConfigurationID string
+	PathTor               string
 }
 
 var (
@@ -281,6 +282,14 @@ func (a *ApplicationConfig) GetPersistentConfiguration() bool {
 // SetPersistentConfiguration sets the specified value to persist the configuration file in the device
 func (a *ApplicationConfig) SetPersistentConfiguration(v bool) {
 	a.persistentMode = v
+}
+
+func (a *ApplicationConfig) GetPathTor() string {
+	return a.PathTor
+}
+
+func (a *ApplicationConfig) SetPathTor(p string) {
+	a.PathTor = p
 }
 
 // ShouldEncrypt returns a boolean indicating the configuration

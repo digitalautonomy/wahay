@@ -11,7 +11,7 @@ import (
 func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	instance, e := tor.GetSystem()
+	instance, e := tor.GetSystem(u.config)
 	if e != nil {
 		addNewStartupError(e)
 		return
@@ -30,6 +30,5 @@ func (u *gtkUI) throughTor(command string, args []string) (*tor.RunningCommand, 
 	if u.tor == nil {
 		return nil, errors.New("no configured Tor found in the system")
 	}
-
 	return u.tor.Exec(command, args)
 }

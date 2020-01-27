@@ -21,9 +21,9 @@ const defaultSocksPort = 9950
 const defaultControlPort = 9951
 const defaultControlHost = "127.0.0.1"
 
-var systemTorControlHost = *config.TorHost
-var systemTorControlPort = *config.TorPort
-var systemTorRoutePort = *config.TorRoutePort
+//var systemTorControlHost = *config.TorHost
+//var systemTorControlPort = *config.TorPort
+//var systemTorRoutePort = *config.TorRoutePort
 
 // Instance contains functions to work with Tor instance
 type Instance interface {
@@ -34,6 +34,8 @@ type Instance interface {
 	GetControlPort() int
 	GetRoutePort() int
 	Exec(command string, args []string) (*RunningCommand, error)
+	GetPathBinary() string
+	SetPathBinary(path string)
 }
 
 type instance struct {
@@ -48,6 +50,7 @@ type instance struct {
 	controller    Control
 	isLocal       bool
 	runningTor    *runningTor
+	pathBinary    string
 }
 
 type runningTor struct {
@@ -60,30 +63,26 @@ type runningTor struct {
 }
 
 // GetSystem returns the Instance for working with Tor
-func GetSystem() (Instance, error) {
+func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 	ensureTonioDataDir()
 
-	conn := NewDefaultChecker()
-	total, partial := conn.Check()
-
-	if total != nil {
-		return nil, errors.New("error: Tor is not available or supported in your system")
+	binaryPath := Initialize(conf.GetPathTor())
+	if len(binaryPath) == 0 {
+		return nil, errors.New("error: Tor path binary error")
 	}
 
-	if partial != nil {
-		return getOurInstance()
+	i, err := getOurInstance(binaryPath)
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	// TODO: We should check the local instance again?
-	i := createSystemInstance()
 
 	return i, nil
 }
 
 const torStartupTimeout = 2 * time.Minute
 
-func getOurInstance() (Instance, error) {
-	i, _ := NewInstance()
+func getOurInstance(binaryPath string) (Instance, error) {
+	i, _ := NewInstance(binaryPath)
 
 	err := i.Start()
 	if err != nil {
@@ -94,7 +93,7 @@ func getOurInstance() (Instance, error) {
 	s := i.GetRoutePort()
 	c := i.GetControlPort()
 
-	checker := NewChecker(false, h, s, c, "")
+	checker := NewChecker(true, h, s, c, "")
 
 	timeout := time.Now().Add(torStartupTimeout)
 	for {
@@ -115,8 +114,8 @@ func getOurInstance() (Instance, error) {
 }
 
 // NewInstance initialized our Tor Control Port instance
-func NewInstance() (Instance, error) {
-	i := createOurInstance()
+func NewInstance(pathBinary string) (Instance, error) {
+	i := createOurInstance(pathBinary)
 
 	err := i.createConfigFile()
 
@@ -125,10 +124,8 @@ func NewInstance() (Instance, error) {
 
 // Start our Tor Control Port
 func (i *instance) Start() error {
-	pathBinTor := GetTorBinary(nil).GetPathBinTor()
-	log.Printf("Using custom Tor configuration file at: %s", i.configFile)
 	ctx, cancelFunc := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, pathBinTor, "-f", i.configFile)
+	cmd := exec.CommandContext(ctx, i.pathBinary, "-f", i.configFile)
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
 		return err
@@ -197,6 +194,16 @@ func (i *instance) Destroy() {
 	}
 }
 
+// GetPathBinary return the value of the property pathBinary
+func (i *instance) GetPathBinary() string {
+	return i.pathBinary
+}
+
+// SetPathBinary set the value for the property pathBinary
+func (i *instance) SetPathBinary(path string) {
+	i.pathBinary = path
+}
+
 // RunningCommand is a representation of a torify command
 type RunningCommand struct {
 	Ctx        context.Context
@@ -250,7 +257,7 @@ func ensureTonioDataDir() {
 	_ = os.MkdirAll(tonioDataDir, 0700)
 }
 
-func createOurInstance() *instance {
+func createOurInstance(pathBinary string) *instance {
 	d, _ := ioutil.TempDir(tonioDataDir, "tor")
 	controlPort, routePort := findAvailableTorPorts()
 
@@ -265,24 +272,7 @@ func createOurInstance() *instance {
 		useCookie:     true,
 		isLocal:       false,
 		controller:    nil,
-	}
-
-	return i
-}
-
-func createSystemInstance() *instance {
-	d, _ := ioutil.TempDir(tonioDataDir, "tor")
-
-	i := &instance{
-		started:       false,
-		configFile:    filepath.Join(d, torConfigName),
-		socksPort:     systemTorRoutePort,
-		controlHost:   systemTorControlHost,
-		controlPort:   systemTorControlPort,
-		dataDirectory: filepath.Join(d, torConfigData),
-		password:      *config.TorControlPassword,
-		isLocal:       true,
-		controller:    nil,
+		pathBinary:    pathBinary,
 	}
 
 	return i
