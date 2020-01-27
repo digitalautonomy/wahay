@@ -99,11 +99,7 @@ func (u *gtkUI) loadConfig() {
 
 	conf := config.New()
 
-	conf.WhenLoaded(func(c *config.ApplicationConfig) {
-		u.config = c
-		u.doInUIThread(u.initialSetupWindow)
-		u.configLoaded()
-	})
+	conf.WhenLoaded(u.configLoaded)
 
 	configFile, err := conf.Init()
 	if err != nil {
@@ -118,6 +114,9 @@ func (u *gtkUI) loadConfig() {
 			u.keySupplier.LastAttemptFailed()
 		}
 	}
+
+	u.config = conf
+	u.doInUIThread(u.initialSetupWindow)
 }
 
 func (u *gtkUI) saveConfigOnlyInternal() error {

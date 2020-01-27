@@ -97,7 +97,7 @@ func (u *gtkUI) onActivate() {
 	go u.loadConfig()
 }
 
-func (u *gtkUI) configLoaded() {
+func (u *gtkUI) configLoaded(c *config.ApplicationConfig) {
 	u.displayLoadingWindow()
 
 	go u.ensureDependencies(func(success bool) {
