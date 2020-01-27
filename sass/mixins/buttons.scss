@@ -24,6 +24,13 @@
       box-shadow: $btn-active-shadow;
     }
 
+    &:checked {
+      background-color: darken(desaturate($bg, 10%), 6%);
+      background-image: none;
+      border-color: rgba($black, 0.35); // repeat to avoid shift on click-drag off of button
+      box-shadow: $btn-checked-shadow;
+    }
+
     &:disabled {
       color: rgba($color, 0.4);
       background-color: $bg2;

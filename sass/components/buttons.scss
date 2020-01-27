@@ -7,6 +7,12 @@
   box-shadow: none;
   border-radius: 0.25em;
 
+  &.append {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-width: 0;
+  }
+
   &:hover {
     background-repeat: repeat-x;
   }
