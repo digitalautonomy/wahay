@@ -15,6 +15,10 @@ type settings struct {
 	chkPersistentConfiguration gtki.CheckButton
 	chkEncryptFile             gtki.CheckButton
 	lblMessage                 gtki.Label
+
+	autoJoinOriginalValue          bool
+	persistConfigFileOriginalValue bool
+	encryptFileOriginalValue       bool
 }
 
 func createSettings(u *gtkUI) *settings {
@@ -34,47 +38,72 @@ func createSettings(u *gtkUI) *settings {
 		"lblMessage", &s.lblMessage,
 	)
 
+	s.init(u.config)
+
 	return s
+}
+
+func (s *settings) init(conf *config.ApplicationConfig) {
+	s.autoJoinOriginalValue = conf.GetAutoJoin()
+	s.chkAutojoin.SetActive(s.autoJoinOriginalValue)
+
+	s.persistConfigFileOriginalValue = conf.GetPersistentConfiguration()
+	s.chkPersistentConfiguration.SetActive(s.persistConfigFileOriginalValue)
+	s.lblMessage.SetVisible(!s.persistConfigFileOriginalValue)
+
+	s.encryptFileOriginalValue = conf.ShouldEncrypt()
+	s.chkEncryptFile.SetActive(s.encryptFileOriginalValue)
+	s.chkEncryptFile.SetSensitive(s.persistConfigFileOriginalValue)
+}
+
+var (
+	decryptUncheckConfirmText = "If you disable this option, anyone could read your configuration settings"
+)
+
+func (u *gtkUI) onSettingsToggleOption(s *settings) {
+	if s.chkAutojoin.GetActive() != s.autoJoinOriginalValue {
+		u.config.SetAutoJoin(!s.autoJoinOriginalValue)
+		s.autoJoinOriginalValue = !s.autoJoinOriginalValue
+	}
+
+	if s.chkPersistentConfiguration.GetActive() != s.persistConfigFileOriginalValue {
+		s.lblMessage.SetVisible(s.persistConfigFileOriginalValue)
+		u.config.SetPersistentConfiguration(!s.persistConfigFileOriginalValue)
+		s.persistConfigFileOriginalValue = !s.persistConfigFileOriginalValue
+		s.chkEncryptFile.SetSensitive(s.persistConfigFileOriginalValue)
+	}
+
+	if s.chkEncryptFile.GetActive() != s.encryptFileOriginalValue {
+		if s.encryptFileOriginalValue {
+			u.showConfirmation(func(op bool) {
+				if op {
+					s.encryptFileOriginalValue = false
+					u.config.SetShouldEncrypt(false)
+					s.chkEncryptFile.SetActive(false)
+				} else {
+					// We keep the checkbutton checked. Nothing else change.
+					s.chkEncryptFile.SetActive(true)
+				}
+			}, decryptUncheckConfirmText)
+		} else {
+			u.captureMasterPassword(func() {
+				s.encryptFileOriginalValue = true
+				u.config.SetShouldEncrypt(true)
+				u.saveConfigOnly()
+			}, func() {
+				s.chkEncryptFile.SetActive(false)
+				u.config.SetShouldEncrypt(false)
+			})
+		}
+	}
 }
 
 func (u *gtkUI) openSettingsWindow() {
 	s := createSettings(u)
 
-	autoJoinOriginalValue := u.config.GetAutoJoin()
-	s.chkAutojoin.SetActive(autoJoinOriginalValue)
-
-	persistConfigFileOriginalValue := u.config.GetPersistentConfiguration()
-	s.chkPersistentConfiguration.SetActive(persistConfigFileOriginalValue)
-	s.lblMessage.SetVisible(!persistConfigFileOriginalValue)
-
-	encryptFileOriginalValue := u.config.ShouldEncrypt()
-	s.chkEncryptFile.SetActive(encryptFileOriginalValue)
-	s.chkEncryptFile.SetSensitive(persistConfigFileOriginalValue)
-
 	s.b.ConnectSignals(map[string]interface{}{
 		"on_toggle_option": func() {
-			if s.chkAutojoin.GetActive() != autoJoinOriginalValue {
-				u.config.SetAutoJoin(!autoJoinOriginalValue)
-				autoJoinOriginalValue = !autoJoinOriginalValue
-			}
-
-			if s.chkPersistentConfiguration.GetActive() != persistConfigFileOriginalValue {
-				s.lblMessage.SetVisible(persistConfigFileOriginalValue)
-				u.config.SetPersistentConfiguration(!persistConfigFileOriginalValue)
-				persistConfigFileOriginalValue = !persistConfigFileOriginalValue
-				s.chkEncryptFile.SetSensitive(persistConfigFileOriginalValue)
-			}
-
-			if s.chkEncryptFile.GetActive() != encryptFileOriginalValue {
-				encryptFileOriginalValue = !encryptFileOriginalValue
-				u.config.SetShouldEncrypt(encryptFileOriginalValue)
-				if encryptFileOriginalValue {
-					u.captureMasterPassword(u.saveConfigOnly, func() {
-						s.chkEncryptFile.SetActive(false)
-						u.config.SetShouldEncrypt(false)
-					})
-				}
-			}
+			u.onSettingsToggleOption(s)
 		},
 		"on_save": func() {
 			u.saveConfigOnly()
