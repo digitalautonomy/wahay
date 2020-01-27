@@ -16,11 +16,19 @@ type onetimeSavedPassword struct {
 
 func (o *onetimeSavedPassword) GenerateKey(p config.EncryptionParameters) config.EncryptionResult {
 	// We should check the password is checked only ONE time
-	if len(o.savedPassword) != 0 {
+	if len(o.savedPassword) > 0 {
 		password := o.savedPassword
 		o.savedPassword = ""
-		return config.GenerateKeysBasedOnPassw(password, p)
+
+		// Before returning the result, we update the data for the
+		// real key supplier so we remove the plain password from memory
+		// but we keep the password key during this session
+		r := config.GenerateKeysBasedOnPassw(password, p)
+		_ = o.realKeySuplier.CacheFromResult(r)
+
+		return r
 	}
+
 	return o.realKeySuplier.GenerateKey(p)
 }
 
@@ -32,6 +40,12 @@ func (o *onetimeSavedPassword) LastAttemptFailed() {
 	o.realKeySuplier.LastAttemptFailed()
 }
 
+func (o *onetimeSavedPassword) CacheFromResult(r config.EncryptionResult) error {
+	return o.realKeySuplier.CacheFromResult(r)
+}
+
+// This function should be only called on startup, never call this function
+// or should not be called during the execution of this app
 func (u *gtkUI) getMasterPassword(p config.EncryptionParameters) config.EncryptionResult {
 	u.hideLoadingWindow()
 

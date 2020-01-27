@@ -49,6 +49,7 @@ func (r *EncryptionResult) setValid(v bool) {
 // KeySupplier is a function that can be used to get key data from the user
 type KeySupplier interface {
 	GenerateKey(p EncryptionParameters) EncryptionResult
+	CacheFromResult(r EncryptionResult) error
 	Invalidate()
 	LastAttemptFailed()
 }
@@ -103,6 +104,18 @@ func (k *keySupplierWrap) Invalidate() {
 
 func (k *keySupplierWrap) LastAttemptFailed() {
 	k.lastAttemptFailed = true
+}
+
+func (k *keySupplierWrap) CacheFromResult(r EncryptionResult) error {
+	if !r.isValid() {
+		return errors.New("invalid encryption result source")
+	}
+
+	k.setKey(r.getKey())
+	k.setMacKey(r.getMacKey())
+	k.haveKeys = true
+
+	return nil
 }
 
 func (k *keySupplierWrap) getKey() []byte {
