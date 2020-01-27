@@ -1,13 +1,10 @@
 package gui
 
 import (
-	"log"
 	"sync"
 )
 
 func (u *gtkUI) ensureDependencies(cb func(bool)) {
-	log.Println("Checking application dependencies")
-
 	success := true
 	var wg sync.WaitGroup
 
@@ -22,8 +19,6 @@ func (u *gtkUI) ensureDependencies(cb func(bool)) {
 	go u.ensureMumble(&wg)
 
 	wg.Wait()
-
-	log.Println("Finishing dependencies checking")
 
 	u.hideLoadingWindow()
 
