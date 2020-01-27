@@ -163,7 +163,7 @@ func (p *EncryptionParameters) unserialize() (err error) {
 
 func (p *EncryptionParameters) check() bool {
 	err := p.unserialize()
-	return err != nil
+	return err == nil
 }
 
 type encryptedData struct {
