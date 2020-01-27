@@ -121,11 +121,6 @@ func (k *keySupplierWrap) setMacKey(mac []byte) {
 	k.mac = mac
 }
 
-type internalEncryptionParameters struct {
-	nonceInternal []byte
-	saltInternal  []byte
-}
-
 // EncryptionParameters contains the parameters used for scrypting
 // the password and encrypting the configuration file
 type EncryptionParameters struct {
@@ -138,7 +133,8 @@ type EncryptionParameters struct {
 	// Similarly to ApplicationConfig, EncryptionParameters should
 	// be just a JSON representation of whatever we use internally
 	// to represent application configuration.
-	internalEncryptionParameters
+	nonceInternal []byte
+	saltInternal  []byte
 }
 
 // TODO: Similarly to ApplicationConfig, this should be where we generate a new JSON representation and serialize it.
@@ -167,11 +163,7 @@ func (p *EncryptionParameters) unserialize() (err error) {
 
 func (p *EncryptionParameters) check() bool {
 	err := p.unserialize()
-	if err != nil {
-		return false
-	}
-
-	return true
+	return err != nil
 }
 
 type encryptedData struct {
@@ -223,7 +215,7 @@ func (p *EncryptionParameters) regenerateNonce() {
 
 func genRand(size int) []byte {
 	buf := make([]byte, size)
-	if _, err := rand.Reader.Read(buf[:]); err != nil {
+	if _, err := rand.Reader.Read(buf); err != nil {
 		panic("Failed to read random bytes: " + err.Error())
 	}
 	return buf

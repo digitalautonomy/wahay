@@ -95,14 +95,12 @@ func (u *gtkUI) openSettingsWindow() {
 }
 
 func (u *gtkUI) loadConfig() {
-	var err error
-
 	conf := config.New()
 
 	conf.WhenLoaded(func(c *config.ApplicationConfig) {
 		u.config = c
 		u.doInUIThread(u.initialSetupWindow)
-		u.configLoaded(c)
+		u.configLoaded()
 	})
 
 	configFile, err := conf.Init()
@@ -114,13 +112,17 @@ func (u *gtkUI) loadConfig() {
 		repeat := true
 		for repeat {
 			repeat, err = conf.Load(configFile, u.keySupplier)
+			if err != nil {
+				log.Println(err)
+			}
+
 			if repeat {
 				u.keySupplier.Invalidate()
 				u.keySupplier.LastAttemptFailed()
 			}
 		}
 	} else {
-		_, err := conf.Load(configFile, u.keySupplier)
+		_, err = conf.Load(configFile, u.keySupplier)
 		if err != nil {
 			log.Fatal(err)
 		}

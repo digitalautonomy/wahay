@@ -38,11 +38,7 @@ func New() *ApplicationConfig {
 
 // Init initializes the application config
 func (a *ApplicationConfig) Init() (string, error) {
-	filename, err := a.getRealConfigFile()
-	if err != nil {
-		return filename, err
-	}
-
+	filename := a.getRealConfigFile()
 	if len(filename) != 0 {
 		a.SetPersistentConfiguration(true)
 	} else {
@@ -82,20 +78,20 @@ func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, error) {
 	return repeat, err
 }
 
-func (a *ApplicationConfig) getRealConfigFile() (string, error) {
+func (a *ApplicationConfig) getRealConfigFile() string {
 	dir := Dir()
 	encryptedFile := filepath.Join(dir, appEncryptedConfigFile)
 	if FileExists(encryptedFile) {
 		a.SetShouldEncrypt(true)
-		return encryptedFile, nil
+		return encryptedFile
 	}
 
 	nonEncryptedFile := filepath.Join(dir, appConfigFile)
 	if FileExists(nonEncryptedFile) {
-		return nonEncryptedFile, nil
+		return nonEncryptedFile
 	}
 
-	return "", nil
+	return ""
 }
 
 // loadFromFile will try to load the configuration from the given configuration file.
