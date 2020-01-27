@@ -53,6 +53,7 @@ type gtkUI struct {
 	g                Graphics
 	tor              tor.Instance
 	serverCollection hosting.Servers
+	keySupplier      config.KeySupplier
 	config           *config.ApplicationConfig
 }
 
@@ -71,6 +72,10 @@ func NewGTK(gx Graphics) UI {
 		g:   gx,
 	}
 
+	// Creates the encryption key suplier for all the crypto-related
+	// functionalities of the configuration package
+	ret.keySupplier = config.CreateKeySupplier(ret.getMasterPassword)
+
 	return ret
 }
 
@@ -86,11 +91,13 @@ func (u *gtkUI) Loop() {
 }
 
 func (u *gtkUI) onActivate() {
-	u.setGlobalStyles()
-	u.loadConfig()
+	u.displayLoadingWindow()
+
+	go u.setGlobalStyles()
+	go u.loadConfig()
 }
 
-func (u *gtkUI) configLoaded(c *config.ApplicationConfig) {
+func (u *gtkUI) configLoaded() {
 	u.displayLoadingWindow()
 
 	go u.ensureDependencies(func(success bool) {
@@ -180,6 +187,10 @@ func (u *gtkUI) cleanUp() {
 
 	// TODO: delete our onion service if created
 	// TODO: close our mumble service if running
+}
+
+func (u *gtkUI) closeApplication() {
+	u.quit()
 }
 
 func (u *gtkUI) quit() {

@@ -7,8 +7,10 @@ import (
 )
 
 const (
-	fileExtensionJSON = ".json"
-	appConfigFile     = "config" + fileExtensionJSON
+	fileExtensionJSON       = ".json"
+	encrytptedFileExtension = ".axx"
+	appConfigFile           = "config" + fileExtensionJSON
+	appEncryptedConfigFile  = "config" + encrytptedFileExtension
 )
 
 // FileExists check if a specific file exists

@@ -4,21 +4,24 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"fmt"
-	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
 // ApplicationConfig contains the configuration for the application.
 type ApplicationConfig struct {
-	filename       string
-	ioLock         sync.Mutex
-	afterSave      []func()
-	afterLoad      []func(*ApplicationConfig)
-	persistentMode bool
+	initialized      bool
+	filename         string
+	ioLock           sync.Mutex
+	afterSave        []func()
+	afterLoad        []func(*ApplicationConfig)
+	persistentMode   bool
+	encryptedFile    bool
+	encryptionParams *EncryptionParameters
 
+	// The fields to save as the JSON representation of the configuration
 	AutoJoin              bool
 	UniqueConfigurationID string
 }
@@ -34,41 +37,68 @@ func New() *ApplicationConfig {
 }
 
 // Init initializes the application config
-func (a *ApplicationConfig) Init() error {
-	var err error
+func (a *ApplicationConfig) Init() (string, error) {
+	filename, err := a.getRealConfigFile()
+	if err != nil {
+		return filename, err
+	}
 
-	defer a.onAfterLoad()
-
-	f := filepath.Join(Dir(), appConfigFile)
-	if FileExists(f) {
-		err = a.loadFromFile(f)
-		if err != nil {
-			log.Println(err)
-			return fmt.Errorf("the configuration settings can't be loaded: %s", err)
-		}
+	if len(filename) != 0 {
 		a.SetPersistentConfiguration(true)
 	} else {
-		log.Println("Initializing default configuration")
 		a.InitDefault()
 		a.SetPersistentConfiguration(false)
 	}
 
-	return nil
+	a.initialized = true
+
+	return filename, nil
+}
+
+// Load initialies the application once initialized.
+// This function should be called after config.Init function.
+func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, error) {
+	if len(filename) == 0 || !a.initialized {
+		return false, errors.New("no configuration file supplied")
+	}
+
+	err := a.loadFromFile(filename, k)
+
+	repeat := err != nil && (err == errorEncryptionNoPassword ||
+		err == errorEncryptionDecryptFailed)
+
+	if err == nil {
+		a.onAfterLoad()
+	}
+
+	return repeat, err
+}
+
+func (a *ApplicationConfig) getRealConfigFile() (string, error) {
+	dir := Dir()
+	encryptedFile := filepath.Join(dir, appEncryptedConfigFile)
+	if FileExists(encryptedFile) {
+		a.SetShouldEncrypt(true)
+		return encryptedFile, nil
+	}
+
+	nonEncryptedFile := filepath.Join(dir, appConfigFile)
+	if FileExists(nonEncryptedFile) {
+		return nonEncryptedFile, nil
+	}
+
+	return "", nil
 }
 
 // loadFromFile will try to load the configuration from the given configuration file.
 // If no file exists or it is malformed, or it could not be decrypted, an error will be returned.
-func (a *ApplicationConfig) loadFromFile(configFile string) error {
+func (a *ApplicationConfig) loadFromFile(configFile string, k KeySupplier) error {
 	a.ioLock.Lock()
 	defer a.ioLock.Unlock()
 
 	a.filename = configFile
-	err := a.tryLoad()
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return a.tryLoad(k)
 }
 
 // InitDefault initializes a basic application configuration
@@ -119,13 +149,24 @@ func (a *ApplicationConfig) onBeforeSave() {
 	}
 }
 
-func (a *ApplicationConfig) tryLoad() error {
+func (a *ApplicationConfig) tryLoad(k KeySupplier) error {
 	var contents []byte
 	var err error
 
 	contents, err = ReadFileOrTemporaryBackup(a.filename)
 	if err != nil {
 		return errInvalidConfigFile
+	}
+
+	isEncrypted := isDataEncrypted(contents)
+
+	if a.ShouldEncrypt() && isEncrypted {
+		contents, a.encryptionParams, err = decryptConfigContent(contents, k)
+		if err != nil {
+			return err
+		}
+	} else if isEncrypted {
+		a.SetShouldEncrypt(false)
 	}
 
 	if err = json.Unmarshal(contents, a); err != nil {
@@ -136,7 +177,7 @@ func (a *ApplicationConfig) tryLoad() error {
 }
 
 // Save will save the application configuration
-func (a *ApplicationConfig) Save() error {
+func (a *ApplicationConfig) Save(k KeySupplier) error {
 	// Important: Do not save the configuration into a file
 	// if we are in a non-persistent config mode
 	if !a.GetPersistentConfiguration() {
@@ -156,22 +197,60 @@ func (a *ApplicationConfig) Save() error {
 		return err
 	}
 
+	if a.ShouldEncrypt() {
+		if a.encryptionParams == nil {
+			p := newEncryptionParameters()
+			a.encryptionParams = &p
+		} else {
+			// We should re-generate the nonce value every time as possible
+			a.encryptionParams.regenerateNonce()
+		}
+
+		contents, err = encryptConfigContent(string(contents), a.encryptionParams, k)
+		if err != nil {
+			return err
+		}
+	}
+
 	return SafeWrite(a.filename, contents, 0600)
 }
 
 // EnsureDestination check the destination for copying the configuration file
 func (a *ApplicationConfig) EnsureDestination() {
+	dir := Dir()
+	EnsureDir(dir, 0700)
+
 	if len(a.filename) == 0 {
-		dir := Dir()
-		EnsureDir(dir, 0700)
-		filename := filepath.Join(dir, appConfigFile)
-		a.filename = filename
+		if a.ShouldEncrypt() {
+			a.filename = filepath.Join(dir, appEncryptedConfigFile)
+		} else {
+			a.filename = filepath.Join(dir, appConfigFile)
+		}
+	} else {
+		if a.ShouldEncrypt() && !strings.HasSuffix(a.filename, encrytptedFileExtension) {
+			a.filename = filepath.Join(dir, appEncryptedConfigFile)
+		}
 	}
 }
 
 // DeleteFileIfExists deletes the config file if exists
 func (a *ApplicationConfig) DeleteFileIfExists() {
 	_ = os.RemoveAll(Dir())
+}
+
+func (a *ApplicationConfig) removeOldFileOnNextSave() {
+	oldFilename := a.filename
+
+	a.doAfterSave(func() {
+		if FileExists(oldFilename) && a.filename != oldFilename {
+			// TODO: Remove the file securely
+			os.Remove(oldFilename)
+		}
+	})
+}
+
+func (a *ApplicationConfig) doAfterSave(f func()) {
+	a.afterSave = append(a.afterSave, f)
 }
 
 //TODO: This is where we generate a new JSON representation and serialize it.
@@ -198,4 +277,24 @@ func (a *ApplicationConfig) GetPersistentConfiguration() bool {
 // SetPersistentConfiguration sets the specified value to persist the configuration file in the device
 func (a *ApplicationConfig) SetPersistentConfiguration(v bool) {
 	a.persistentMode = v
+}
+
+// ShouldEncrypt returns a boolean indicating the configuration
+// file is encrypted
+func (a *ApplicationConfig) ShouldEncrypt() bool {
+	return a.encryptedFile
+}
+
+// SetShouldEncrypt sets the encryption option to true or false
+func (a *ApplicationConfig) SetShouldEncrypt(v bool) {
+	if a.encryptedFile == v {
+		return
+	}
+
+	a.encryptedFile = v
+	if a.encryptedFile {
+		a.turnOnEncryption()
+	} else {
+		a.turnOffEncryption()
+	}
 }

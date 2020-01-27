@@ -34,6 +34,14 @@ func randomString(dest []byte) error {
 	return nil
 }
 
+func randomBytes(size int) []byte {
+	buf := make([]byte, size)
+	if _, err := rand.Reader.Read(buf[:]); err != nil {
+		panic("Failed to read random bytes: " + err.Error())
+	}
+	return buf
+}
+
 // WithHome returns the given relative file/dir with the $HOME prepended
 func WithHome(file string) string {
 	return filepath.Join(os.Getenv("HOME"), file)

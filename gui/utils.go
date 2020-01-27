@@ -34,3 +34,11 @@ func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
 	label.SetText("")
 	label.SetVisible(false)
 }
+
+func (u *gtkUI) enableWindow(win gtki.Window) {
+	win.SetSensitive(true)
+}
+
+func (u *gtkUI) disableWindow(win gtki.Window) {
+	win.SetSensitive(false)
+}

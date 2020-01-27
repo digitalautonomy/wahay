@@ -13,6 +13,7 @@ type settings struct {
 	dialog                     gtki.Window
 	chkAutojoin                gtki.CheckButton
 	chkPersistentConfiguration gtki.CheckButton
+	chkEncryptFile             gtki.CheckButton
 	lblMessage                 gtki.Label
 }
 
@@ -29,6 +30,7 @@ func createSettings(u *gtkUI) *settings {
 	s.b.getItems(
 		"chkAutojoin", &s.chkAutojoin,
 		"chkPersistentConfiguration", &s.chkPersistentConfiguration,
+		"chkEncryptFile", &s.chkEncryptFile,
 		"lblMessage", &s.lblMessage,
 	)
 
@@ -43,8 +45,11 @@ func (u *gtkUI) openSettingsWindow() {
 
 	persistConfigFileOriginalValue := u.config.GetPersistentConfiguration()
 	s.chkPersistentConfiguration.SetActive(persistConfigFileOriginalValue)
-
 	s.lblMessage.SetVisible(!persistConfigFileOriginalValue)
+
+	encryptFileOriginalValue := u.config.ShouldEncrypt()
+	s.chkEncryptFile.SetActive(encryptFileOriginalValue)
+	s.chkEncryptFile.SetSensitive(persistConfigFileOriginalValue)
 
 	s.b.ConnectSignals(map[string]interface{}{
 		"on_toggle_option": func() {
@@ -57,6 +62,18 @@ func (u *gtkUI) openSettingsWindow() {
 				s.lblMessage.SetVisible(persistConfigFileOriginalValue)
 				u.config.SetPersistentConfiguration(!persistConfigFileOriginalValue)
 				persistConfigFileOriginalValue = !persistConfigFileOriginalValue
+				s.chkEncryptFile.SetSensitive(persistConfigFileOriginalValue)
+			}
+
+			if s.chkEncryptFile.GetActive() != encryptFileOriginalValue {
+				encryptFileOriginalValue = !encryptFileOriginalValue
+				u.config.SetShouldEncrypt(encryptFileOriginalValue)
+				if encryptFileOriginalValue {
+					u.captureMasterPassword(u.saveConfigOnly, func() {
+						s.chkEncryptFile.SetActive(false)
+						u.config.SetShouldEncrypt(false)
+					})
+				}
 			}
 		},
 		"on_save": func() {
@@ -64,29 +81,47 @@ func (u *gtkUI) openSettingsWindow() {
 			s.dialog.Destroy()
 		},
 		"on_close_window": func() {
+			u.enableWindow(u.mainWindow)
 			s.dialog.Destroy()
+		},
+		"on_destroy": func() {
+			u.enableWindow(u.mainWindow)
 		},
 	})
 
-	s.dialog.Show()
+	s.dialog.SetTransientFor(u.mainWindow)
+	u.disableWindow(u.mainWindow)
+	u.switchToWindow(s.dialog)
 }
 
 func (u *gtkUI) loadConfig() {
+	var err error
+
 	conf := config.New()
 
-	conf.WhenLoaded(u.configLoaded)
+	conf.WhenLoaded(func(c *config.ApplicationConfig) {
+		u.config = c
+		u.doInUIThread(u.initialSetupWindow)
+		u.configLoaded()
+	})
 
-	err := conf.Init()
+	configFile, err := conf.Init()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("the configuration file can't be initialized")
 	}
 
-	u.config = conf
-	u.doInUIThread(u.initialSetupWindow)
+	repeat := true
+	for repeat {
+		repeat, err = conf.Load(configFile, u.keySupplier)
+		if repeat {
+			u.keySupplier.Invalidate()
+			u.keySupplier.LastAttemptFailed()
+		}
+	}
 }
 
 func (u *gtkUI) saveConfigOnlyInternal() error {
-	return u.config.Save()
+	return u.config.Save(u.keySupplier)
 }
 
 func (u *gtkUI) saveConfigOnly() {

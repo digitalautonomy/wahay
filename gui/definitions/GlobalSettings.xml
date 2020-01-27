@@ -7,11 +7,15 @@
     <property name="height_request">300</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Settings</property>
+    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">550</property>
     <property name="default_height">350</property>
+    <property name="type_hint">dialog</property>
     <property name="urgency_hint">True</property>
+    <property name="gravity">north-east</property>
+    <signal name="destroy" handler="on_destroy" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -103,6 +107,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="margin_bottom">20</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkCheckButton" id="chkPersistentConfiguration">
@@ -154,6 +159,40 @@
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkCheckButton" id="chkEncryptFile">
+                        <property name="label" translatable="yes">Encrypt the configuration file</property>
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="focus_on_click">False</property>
+                        <property name="receives_default">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0.5</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_toggle_option" swapped="no"/>
+                        <style>
+                          <class name="label-checkbox"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <style>
