@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="dialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Confirmation</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="default_width">440</property>
+    <property name="urgency_hint">True</property>
+    <signal name="remove" handler="on_cancel" swapped="no"/>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">20</property>
+                <property name="margin_right">20</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">20</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="lblTitle">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_bottom">10</property>
+                    <property name="label" translatable="yes">Are you sure you want to do this action?</property>
+                    <property name="wrap">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <style>
+                      <class name="label-title"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lblText">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">This action cannot be undone</property>
+                    <property name="wrap">True</property>
+                    <property name="xalign">0</property>
+                    <property name="yalign">0</property>
+                    <style>
+                      <class name="label-text"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <style>
+              <class name="window-content"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <child>
+                  <object class="GtkButton" id="btnCancel">
+                    <property name="label" translatable="yes">Cancel</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <signal name="clicked" handler="on_cancel" swapped="no"/>
+                    <style>
+                      <class name="btn"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="btnConfirm">
+                    <property name="label" translatable="yes">Yes, confirm</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="margin_left">20</property>
+                    <signal name="clicked" handler="on_confirm" swapped="no"/>
+                    <style>
+                      <class name="btn"/>
+                      <class name="btn-danger"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <style>
+              <class name="window-actions"/>
+              <class name="bordered"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

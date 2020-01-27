@@ -180,6 +180,40 @@ func (u *gtkUI) initialSetupWindow() {
 	u.saveConfigOnly()
 }
 
+func (u *gtkUI) showConfirmation(onConfirm func(bool), text string) {
+	u.disableCurrentWindow()
+
+	builder := u.g.uiBuilderFor("Confirm")
+	dialog := builder.get("dialog").(gtki.Window)
+
+	if u.currentWindow != nil {
+		dialog.SetTransientFor(u.currentWindow)
+	}
+
+	if len(text) > 0 {
+		lbl, _ := builder.get("lblText").(gtki.Label)
+		lbl.SetText(text)
+	}
+
+	clean := func(op bool) {
+		dialog.Destroy()
+		u.enableCurrentWindow()
+		onConfirm(op)
+	}
+
+	builder.ConnectSignals(map[string]interface{}{
+		"on_cancel": func() {
+			clean(false)
+		},
+		"on_confirm": func() {
+			clean(true)
+		},
+	})
+
+	dialog.Present()
+	dialog.Show()
+}
+
 func (u *gtkUI) cleanUp() {
 	if u.tor != nil {
 		u.tor.Destroy()
