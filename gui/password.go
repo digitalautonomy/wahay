@@ -54,12 +54,18 @@ func (u *gtkUI) getMasterPassword(p config.EncryptionParameters) config.Encrypti
 	builder := u.g.uiBuilderFor("MasterPasswordWindow")
 	win := builder.get("masterPasswordWindow").(gtki.Window)
 	txtPassword := builder.get("entryPassword").(gtki.Entry)
+	btnTogglePassword := builder.get("btnTogglePassword").(gtki.CheckButton)
 
 	win.SetApplication(u.app)
 
 	hadSubmission := false
+	togglePassword := btnTogglePassword.GetActive()
 
 	builder.ConnectSignals(map[string]interface{}{
+		"on_toggle_password": func() {
+			togglePassword = !togglePassword
+			txtPassword.SetVisibility(togglePassword)
+		},
 		"on_cancel": func() {
 			if !hadSubmission {
 				hadSubmission = true
