@@ -106,15 +106,17 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2d0679d664dd905f42b805215f8e45d1678139b0b0991279fba9d1937263bc3c"
+  digest = "1:ebe29104de94140a8aa6b90ed625c5023e0c90ce9a988fde6c043612e61213e6"
   name = "golang.org/x/crypto"
   packages = [
     "ed25519",
     "ed25519/internal/edwards25519",
     "internal/subtle",
     "nacl/secretbox",
+    "pbkdf2",
     "poly1305",
     "salsa20/salsa",
+    "scrypt",
     "sha3",
   ]
   pruneopts = "UT"
@@ -163,6 +165,8 @@
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/wybiral/torgo",
+    "golang.org/x/crypto/scrypt",
+    "golang.org/x/net/proxy",
     "gopkg.in/check.v1",
   ]
   solver-name = "gps-cdcl"
