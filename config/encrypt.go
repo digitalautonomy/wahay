@@ -58,12 +58,12 @@ type keySupplierWrap struct {
 	sync.Mutex
 	haveKeys          bool
 	key, mac          []byte
-	getKeys           func(p EncryptionParameters) EncryptionResult
+	getKeys           func(p EncryptionParameters, lastAttemptFailed bool) EncryptionResult
 	lastAttemptFailed bool
 }
 
 // CreateKeySupplier wraps a function for returning the encryption key
-func CreateKeySupplier(getKeys func(p EncryptionParameters) EncryptionResult) KeySupplier {
+func CreateKeySupplier(getKeys func(p EncryptionParameters, lastAttemptFailed bool) EncryptionResult) KeySupplier {
 	return &keySupplierWrap{
 		getKeys: getKeys,
 	}
@@ -76,7 +76,7 @@ func (k *keySupplierWrap) GenerateKey(p EncryptionParameters) EncryptionResult {
 	defer k.Unlock()
 
 	if !k.haveKeys {
-		r := k.getKeys(p)
+		r := k.getKeys(p, k.lastAttemptFailed)
 		if !r.isValid() {
 			return result
 		}

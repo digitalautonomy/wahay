@@ -46,7 +46,7 @@ func (o *onetimeSavedPassword) CacheFromResult(r config.EncryptionResult) error 
 
 // This function should be only called on startup, never call this function
 // or should not be called during the execution of this app
-func (u *gtkUI) getMasterPassword(p config.EncryptionParameters) config.EncryptionResult {
+func (u *gtkUI) getMasterPassword(p config.EncryptionParameters, lastAttemptFailed bool) config.EncryptionResult {
 	u.hideLoadingWindow()
 
 	passwordResultCh := make(chan string)
@@ -57,6 +57,9 @@ func (u *gtkUI) getMasterPassword(p config.EncryptionParameters) config.Encrypti
 	btnTogglePassword := builder.get("btnTogglePassword").(gtki.CheckButton)
 
 	win.SetApplication(u.app)
+
+	lblError := builder.get("lblError").(gtki.Label)
+	lblError.SetVisible(lastAttemptFailed)
 
 	hadSubmission := false
 	togglePassword := btnTogglePassword.GetActive()
