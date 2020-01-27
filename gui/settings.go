@@ -99,24 +99,32 @@ func (u *gtkUI) loadConfig() {
 
 	conf := config.New()
 
-	conf.WhenLoaded(u.configLoaded)
+	conf.WhenLoaded(func(c *config.ApplicationConfig) {
+		u.config = c
+		u.doInUIThread(u.initialSetupWindow)
+		u.configLoaded(c)
+	})
 
 	configFile, err := conf.Init()
 	if err != nil {
 		log.Fatal("the configuration file can't be initialized")
 	}
 
-	repeat := true
-	for repeat {
-		repeat, err = conf.Load(configFile, u.keySupplier)
-		if repeat {
-			u.keySupplier.Invalidate()
-			u.keySupplier.LastAttemptFailed()
+	if conf.GetPersistentConfiguration() {
+		repeat := true
+		for repeat {
+			repeat, err = conf.Load(configFile, u.keySupplier)
+			if repeat {
+				u.keySupplier.Invalidate()
+				u.keySupplier.LastAttemptFailed()
+			}
+		}
+	} else {
+		_, err := conf.Load(configFile, u.keySupplier)
+		if err != nil {
+			log.Fatal(err)
 		}
 	}
-
-	u.config = conf
-	u.doInUIThread(u.initialSetupWindow)
 }
 
 func (u *gtkUI) saveConfigOnlyInternal() error {

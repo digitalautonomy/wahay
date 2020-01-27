@@ -58,14 +58,22 @@ func (a *ApplicationConfig) Init() (string, error) {
 // Load initialies the application once initialized.
 // This function should be called after config.Init function.
 func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, error) {
-	if len(filename) == 0 || !a.initialized {
-		return false, errors.New("no configuration file supplied")
+	if !a.initialized {
+		return false, errors.New("required configuration-init not executed")
 	}
 
-	err := a.loadFromFile(filename, k)
+	var err error
+	var repeat bool
 
-	repeat := err != nil && (err == errorEncryptionNoPassword ||
-		err == errorEncryptionDecryptFailed)
+	if a.GetPersistentConfiguration() {
+		err = a.loadFromFile(filename, k)
+
+		repeat = err != nil && (err == errorEncryptionNoPassword ||
+			err == errorEncryptionDecryptFailed)
+	} else {
+		// We are working with the default configuration
+		repeat = false
+	}
 
 	if err == nil {
 		a.onAfterLoad()
