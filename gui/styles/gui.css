@@ -267,20 +267,27 @@ dialog {
   padding-left: 0;
   padding-right: 0; }
 
-label {
+label, .label, .label-success, .label-warning, .label-settings-warning {
   font-size: 16px; }
-  label.control-label {
-    color: #1b1f23;
-    font-weight: 600; }
-  label.control-help {
-    color: #6a737d;
-    font-size: 14px; }
-  label.label-text {
-    font-size: 16px; }
+
+label.control-label {
+  color: #1b1f23;
+  font-weight: 600; }
+label.control-help {
+  color: #6a737d;
+  font-size: 14px; }
+label.label-text {
+  font-size: 16px; }
 
 .label, .label-success, .label-warning, .label-settings-warning {
-  font-size: 16px;
   padding: 13.3333333333px 20px; }
+
+.label-title {
+  font-size: 18px;
+  font-weight: 600; }
+
+.label-text {
+  font-size: 16px; }
 
 .label-success {
   color: #735c0f;
