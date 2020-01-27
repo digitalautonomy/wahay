@@ -42,3 +42,15 @@ func (u *gtkUI) enableWindow(win gtki.Window) {
 func (u *gtkUI) disableWindow(win gtki.Window) {
 	win.SetSensitive(false)
 }
+
+func (u *gtkUI) disableCurrentWindow() {
+	if u.currentWindow != nil {
+		u.disableWindow(u.currentWindow)
+	}
+}
+
+func (u *gtkUI) enableCurrentWindow() {
+	if u.currentWindow != nil {
+		u.enableWindow(u.currentWindow)
+	}
+}
