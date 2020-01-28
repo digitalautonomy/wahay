@@ -296,7 +296,7 @@ func findAvailableTorPorts() (controlPort, routePort int) {
 
 func (i *instance) createConfigFile() error {
 	config.EnsureDir(i.dataDirectory, 0700)
-	fmt.Printf("Saving the config file to: %s\n", i.configFile)
+	log.Printf("Saving the config file to: %s\n", i.configFile)
 	return i.writeToFile()
 }
 

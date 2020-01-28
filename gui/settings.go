@@ -101,26 +101,34 @@ func (u *gtkUI) onSettingsToggleOption(s *settings) {
 func (u *gtkUI) openSettingsWindow() {
 	s := createSettings(u)
 
+	cleannup := func() {
+		if u.mainWindow != nil {
+			u.enableWindow(u.mainWindow)
+		}
+		s.dialog.Destroy()
+		u.currentWindow = nil
+	}
+
 	s.b.ConnectSignals(map[string]interface{}{
 		"on_toggle_option": func() {
 			u.onSettingsToggleOption(s)
 		},
 		"on_save": func() {
 			u.saveConfigOnly()
-			s.dialog.Destroy()
+			cleannup()
 		},
 		"on_close_window": func() {
-			u.enableWindow(u.mainWindow)
-			s.dialog.Destroy()
-		},
-		"on_destroy": func() {
-			u.enableWindow(u.mainWindow)
+			cleannup()
 		},
 	})
 
-	s.dialog.SetTransientFor(u.mainWindow)
-	u.disableWindow(u.mainWindow)
-	u.switchToWindow(s.dialog)
+	if u.mainWindow != nil {
+		s.dialog.SetTransientFor(u.mainWindow)
+		u.disableWindow(u.mainWindow)
+	}
+
+	u.currentWindow = s.dialog
+	u.doInUIThread(u.currentWindow.Show)
 }
 
 func (u *gtkUI) loadConfig() {

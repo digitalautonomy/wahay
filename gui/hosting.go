@@ -30,7 +30,9 @@ func (u *gtkUI) hostMeetingHandler() {
 
 func (u *gtkUI) realHostMeetingHandler() {
 	u.doInUIThread(func() {
-		u.currentWindow.Hide()
+		if u.mainWindow != nil {
+			u.mainWindow.Hide()
+		}
 		u.displayLoadingWindow()
 	})
 
@@ -400,7 +402,6 @@ func (h *hostData) showMeetingConfiguration() {
 		},
 		"on_cancel": func() {
 			h.deleteOnionService()
-			h.u.currentWindow.Hide()
 			h.u.switchToMainWindow()
 		},
 		"on_start_meeting": func() {

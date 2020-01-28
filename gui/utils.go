@@ -14,6 +14,9 @@ const (
 )
 
 func (u *gtkUI) switchToMainWindow() {
+	if u.currentWindow != nil {
+		u.currentWindow.Hide()
+	}
 	u.switchToWindow(u.mainWindow)
 }
 

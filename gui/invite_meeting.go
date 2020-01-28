@@ -9,14 +9,17 @@ import (
 )
 
 func (u *gtkUI) joinMeeting() {
-	u.currentWindow.Hide()
+	if u.mainWindow != nil {
+		u.mainWindow.Hide()
+	}
 	u.openJoinWindow()
 }
 
 func (u *gtkUI) openMainWindow() {
-	u.currentWindow.Hide()
-	u.currentWindow = u.mainWindow
-	u.currentWindow.Show()
+	if u.mainWindow != nil {
+		u.currentWindow = nil
+		u.mainWindow.Show()
+	}
 }
 
 func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
@@ -78,6 +81,11 @@ func (u *gtkUI) openJoinWindow() {
 	entScreenName, _ := builder.get("entScreenName").(gtki.Entry)
 	entMeetingPassword, _ := builder.get("entMeetingPassword").(gtki.Entry)
 
+	onclose := func() {
+		win.Destroy()
+		u.openMainWindow()
+	}
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
 			meetingID, _ := entMeetingID.GetText()
@@ -89,14 +97,14 @@ func (u *gtkUI) openJoinWindow() {
 				Username:  username,
 				Password:  password,
 			}
+
 			u.joinMeetingHandler(data)
 		},
 		"on_cancel": func() {
-			win.Hide()
-			u.openMainWindow()
+			onclose()
 		},
 		"on_close": func() {
-			u.openMainWindow()
+			onclose()
 		},
 	})
 
