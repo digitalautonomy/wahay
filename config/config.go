@@ -54,9 +54,9 @@ func (a *ApplicationConfig) Init() (string, error) {
 
 // Load initialies the application once initialized.
 // This function should be called after config.Init function.
-func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, error) {
+func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, bool, error) {
 	if !a.initialized {
-		return false, errors.New("required configuration-init not executed")
+		return false, false, errors.New("required configuration-init not executed")
 	}
 
 	var err error
@@ -64,11 +64,15 @@ func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, error) {
 
 	if a.GetPersistentConfiguration() {
 		err = a.loadFromFile(filename, k)
+		if err == errorEncryptionBadFile || err == errInvalidConfigFile {
+			return false, true, err
+		}
 
+		// Can we ask again for the key?
 		repeat = err != nil && (err == errorEncryptionNoPassword ||
 			err == errorEncryptionDecryptFailed)
 	} else {
-		// We are working with the default configuration
+		// We are going to work with the default configuration
 		repeat = false
 	}
 
@@ -76,7 +80,7 @@ func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, error) {
 		a.onAfterLoad()
 	}
 
-	return repeat, err
+	return repeat, false, err
 }
 
 func (a *ApplicationConfig) getRealConfigFile() string {
@@ -164,14 +168,16 @@ func (a *ApplicationConfig) tryLoad(k KeySupplier) error {
 	}
 
 	isEncrypted := isDataEncrypted(contents)
-
-	if a.ShouldEncrypt() && isEncrypted {
+	if isEncrypted {
+		a.SetShouldEncrypt(true)
 		contents, a.encryptionParams, err = decryptConfigContent(contents, k)
 		if err != nil {
 			return err
 		}
-	} else if isEncrypted {
-		a.SetShouldEncrypt(false)
+	} else if strings.HasSuffix(a.filename, encrytptedFileExtension) {
+		// The file has been corrupted or manually updated
+		// TODO: we should remove it?
+		return errorEncryptionBadFile
 	}
 
 	if err = json.Unmarshal(contents, a); err != nil {

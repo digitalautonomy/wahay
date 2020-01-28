@@ -138,24 +138,71 @@ func (u *gtkUI) loadConfig() {
 	}
 
 	if conf.GetPersistentConfiguration() {
-		repeat := true
-		for repeat {
-			repeat, err = conf.Load(configFile, u.keySupplier)
-			if err != nil {
-				log.Println(err)
+		var repeat bool
+		var isCorrupted bool
+		var err error
+
+		for {
+			repeat, isCorrupted, err = conf.Load(configFile, u.keySupplier)
+
+			// If the configuration file is corrupted (encrypted or not encrypted)
+			// ask the user if wants to delete and create a new one
+			if isCorrupted {
+				confirmationChannel := make(chan bool)
+				u.askForRemovingConfigFile(confirmationChannel)
+				op := <-confirmationChannel
+				if op {
+					conf.DeleteFileIfExists()
+				}
+				conf.InitDefault()
+				conf.SetPersistentConfiguration(false)
+				conf.SetShouldEncrypt(false)
+				continue
 			}
 
 			if repeat {
 				u.keySupplier.Invalidate()
 				u.keySupplier.LastAttemptFailed()
+				continue
 			}
+
+			// A fatal error we can't recover from occurred
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			break
 		}
 	} else {
-		_, err = conf.Load(configFile, u.keySupplier)
+		_, _, err = conf.Load(configFile, u.keySupplier)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
+}
+
+func (u *gtkUI) askForRemovingConfigFile(selectionChannel chan bool) {
+	u.hideLoadingWindow()
+
+	builder := u.g.uiBuilderFor("GlobalSettings")
+	dialog := builder.get("winDeleteConfigFileConfirm").(gtki.Window)
+
+	clean := func(op bool) {
+		dialog.Destroy()
+		u.enableCurrentWindow()
+		selectionChannel <- op
+	}
+
+	builder.ConnectSignals(map[string]interface{}{
+		"on_cancel": func() {
+			clean(false)
+		},
+		"on_delete": func() {
+			clean(true)
+		},
+	})
+
+	u.doInUIThread(dialog.Show)
 }
 
 func (u *gtkUI) saveConfigOnlyInternal() error {

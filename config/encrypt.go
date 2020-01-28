@@ -255,6 +255,7 @@ func encryptConfigContent(content string, p *EncryptionParameters, k KeySupplier
 
 var (
 	errorEncryptionDecryptFailed = errors.New("decryption failed")
+	errorEncryptionBadFile       = errors.New("invalid or corrupted file")
 	errorEncryptionNoEncrypted   = errors.New("the configuration file data is not encrypted")
 	errorEncryptionNoPassword    = errors.New("no password supplied to decrypt the config file")
 )
@@ -268,7 +269,7 @@ func encryptData(key, macKey, nonce []byte, plain string) []byte {
 func decryptConfigContent(content []byte, k KeySupplier) ([]byte, *EncryptionParameters, error) {
 	data, err := parseEncryptedData(content)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, errorEncryptionNoEncrypted
 	}
 
 	r := k.GenerateKey(data.Params)
@@ -278,7 +279,7 @@ func decryptConfigContent(content []byte, k KeySupplier) ([]byte, *EncryptionPar
 
 	cypherText, err := hex.DecodeString(data.Data)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, errorEncryptionDecryptFailed
 	}
 
 	res, err := decryptData(r.getKey(), r.getMacKey(), data.Params.nonceInternal, cypherText)
@@ -289,10 +290,11 @@ func decryptConfigContent(content []byte, k KeySupplier) ([]byte, *EncryptionPar
 func decryptData(key, macKey, nonce, cipherText []byte) ([]byte, error) {
 	c, _ := aes.NewCipher(key)
 	block, _ := cipher.NewGCM(c)
-	res, e := block.Open(nil, nonce, cipherText, macKey)
-	if e != nil {
+	res, err := block.Open(nil, nonce, cipherText, macKey)
+	if err != nil {
 		return nil, errorEncryptionDecryptFailed
 	}
+
 	return res, nil
 }
 
