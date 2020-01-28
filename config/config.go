@@ -25,6 +25,7 @@ type ApplicationConfig struct {
 	AutoJoin              bool
 	UniqueConfigurationID string
 	PathTor               string
+	PathTorsocks          string
 }
 
 var (
@@ -296,6 +297,14 @@ func (a *ApplicationConfig) GetPathTor() string {
 
 func (a *ApplicationConfig) SetPathTor(p string) {
 	a.PathTor = p
+}
+
+func (a *ApplicationConfig) GetPathTorSocks() string {
+	return a.PathTorsocks
+}
+
+func (a *ApplicationConfig) SetPathTorSocks(ps string) {
+	a.PathTorsocks = ps
 }
 
 // ShouldEncrypt returns a boolean indicating the configuration
