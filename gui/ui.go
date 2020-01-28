@@ -4,6 +4,7 @@ import (
 	"os"
 	"runtime"
 
+	"autonomia.digital/tonio/app/client"
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
 	"autonomia.digital/tonio/app/tor"
@@ -52,6 +53,7 @@ type gtkUI struct {
 	loadingWindow    gtki.ApplicationWindow
 	g                Graphics
 	tor              tor.Instance
+	client           client.Instance
 	serverCollection hosting.Servers
 	keySupplier      config.KeySupplier
 	config           *config.ApplicationConfig

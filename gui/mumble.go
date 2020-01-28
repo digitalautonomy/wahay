@@ -13,14 +13,22 @@ import (
 func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	_, e := client.InitSystem()
+	c, e := client.InitSystem()
 	if e != nil {
 		addNewStartupError(e)
+		return
 	}
+
+	if !c.CanBeUsed() {
+		addNewStartupError(fmt.Errorf("the client can not be used because: %s", c.GetLastError()))
+		return
+	}
+
+	u.client = c
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
-	rc, err := u.throughTor("mumble", []string{
+	rc, err := u.throughTor(u.client.GetBinary(), []string{
 		hosting.GenerateURL(data),
 	})
 	if err != nil {
