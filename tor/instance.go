@@ -68,8 +68,10 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 
 	binaryPath := Initialize(conf.GetPathTor())
 	if len(binaryPath) == 0 {
-		return nil, errors.New("error: Tor path binary error")
+		return nil, errors.New("error: there is no valid or available Tor binary")
 	}
+
+	log.Printf("Using Tor binary found in: %s", binaryPath)
 
 	i, err := getOurInstance(binaryPath)
 	if err != nil {

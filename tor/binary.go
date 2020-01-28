@@ -11,64 +11,65 @@ import (
 	"autonomia.digital/tonio/app/config"
 )
 
-var PathTorBinary string
+const noPath = ""
 
+// Initialize find a Tor binary that can be used by Tonio
 func Initialize(configPath string) string {
 	return findTorBinary(configPath)
 }
 
 func findTorBinary(configPath string) string {
 	pathTorFound := checkInConfiguredPath(configPath)
-	if len(pathTorFound) > 0 {
+	if pathTorFound != noPath {
 		return pathTorFound
 	}
 
 	pathTorFound = checkInTonioDataDirectory()
-	if len(pathTorFound) > 0 {
+	if pathTorFound != noPath {
 		return pathTorFound
 	}
 
 	pathCWD, err := os.Getwd()
 	if err == nil {
 		pathTorFound = checkInLocalDirectory(pathCWD)
-		if len(pathTorFound) > 0 {
+		if pathTorFound != noPath {
 			return pathTorFound
 		}
 
 		pathTorFound = checkInExecutableDirectory(pathCWD)
-		if len(pathTorFound) > 0 {
+		if pathTorFound != noPath {
 			return pathTorFound
 		}
 	}
 
 	pathTorFound = checkInCurrentWorkingDirectory()
-	if len(pathTorFound) > 0 {
+	if pathTorFound != noPath {
 		return pathTorFound
 	}
 
 	pathTorFound = checkInTonioBinary()
-	if len(pathTorFound) > 0 {
+	if pathTorFound != noPath {
 		return pathTorFound
 	}
 
 	pathTorFound = checkInHomeExecutableDirectory()
-	if len(pathTorFound) > 0 {
+	if pathTorFound != noPath {
 		return pathTorFound
 	}
 
 	pathTorFound = checkWithWhich()
-	if len(pathTorFound) > 0 {
+	if pathTorFound != noPath {
 		return pathTorFound
 	}
 
-	return ""
+	return noPath
 }
 
 func checkInConfiguredPath(configuredPath string) string {
 	if isThereConfiguredTorBinary(configuredPath) {
 		return configuredPath
 	}
-	return ""
+	return noPath
 }
 
 func checkInTonioDataDirectory() string {
@@ -76,7 +77,7 @@ func checkInTonioDataDirectory() string {
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
-	return ""
+	return noPath
 }
 
 func checkInLocalDirectory(pathCWD string) string {
@@ -84,7 +85,7 @@ func checkInLocalDirectory(pathCWD string) string {
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
-	return ""
+	return noPath
 }
 
 func checkInExecutableDirectory(pathCWD string) string {
@@ -92,7 +93,7 @@ func checkInExecutableDirectory(pathCWD string) string {
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
-	return ""
+	return noPath
 }
 
 func checkInCurrentWorkingDirectory() string {
@@ -100,7 +101,7 @@ func checkInCurrentWorkingDirectory() string {
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
-	return ""
+	return noPath
 }
 
 func checkInTonioBinary() string {
@@ -108,7 +109,7 @@ func checkInTonioBinary() string {
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
-	return ""
+	return noPath
 }
 
 func checkInHomeExecutableDirectory() string {
@@ -116,24 +117,24 @@ func checkInHomeExecutableDirectory() string {
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
-	return ""
+	return noPath
 }
 
 func checkWithWhich() string {
 	outputWhich, err := executeCmd("which", []string{"tor"})
 	if outputWhich == nil || err != nil {
-		return ""
+		return noPath
 	}
 
 	pathToFind := strings.TrimSpace(string(outputWhich))
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
-	return ""
+	return noPath
 }
 
 func isThereConfiguredTorBinary(path string) bool {
-	if path != "" {
+	if path != noPath {
 		return checkTorVersionCompatibility(path)
 	}
 	return false
