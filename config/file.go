@@ -91,7 +91,7 @@ func allLibDirs() []string {
 	return result
 }
 
-// FindByName returns a file by name if exists (libtorsocks.so)
+// FindByName returns the path of a file if it exist
 func FindFileByName(fileName string) (string, error) {
 	for _, ld := range allLibDirs() {
 		fn := filepath.Join(ld, fileName)
@@ -101,4 +101,14 @@ func FindFileByName(fileName string) (string, error) {
 	}
 
 	return "", fmt.Errorf("file not found %s", fileName)
+}
+
+// FindFileByNameInPath returns the path of a file if it exist (using their path and name)
+func FindFileByNameInPath(filePath string, fileName string) (string, error) {
+	f := filepath.Join(filePath, fileName)
+	if FileExists(f) {
+		return f, nil
+	}
+
+	return FindFileByName(fileName)
 }

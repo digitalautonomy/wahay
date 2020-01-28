@@ -22,7 +22,8 @@ func ParseYes(input string) bool {
 	return false
 }
 
-func randomString(dest []byte) error {
+// RandomString returns a string randomly generated
+func RandomString(dest []byte) error {
 	src := make([]byte, len(dest))
 
 	if _, err := io.ReadFull(rand.Reader, src); err != nil {

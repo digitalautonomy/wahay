@@ -21,10 +21,6 @@ const defaultSocksPort = 9950
 const defaultControlPort = 9951
 const defaultControlHost = "127.0.0.1"
 
-//var systemTorControlHost = *config.TorHost
-//var systemTorControlPort = *config.TorPort
-//var systemTorRoutePort = *config.TorRoutePort
-
 // Instance contains functions to work with Tor instance
 type Instance interface {
 	Start() error
@@ -51,6 +47,7 @@ type instance struct {
 	isLocal       bool
 	runningTor    *runningTor
 	pathBinary    string
+	pathTorsocks  string
 }
 
 type runningTor struct {
@@ -73,7 +70,8 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 
 	log.Printf("Using Tor binary found in: %s", binaryPath)
 
-	i, err := getOurInstance(binaryPath)
+	torsocksPath := Initialize(conf.GetPathTorSocks())
+	i, err := getOurInstance(binaryPath, torsocksPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -83,8 +81,8 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 
 const torStartupTimeout = 2 * time.Minute
 
-func getOurInstance(binaryPath string) (Instance, error) {
-	i, _ := NewInstance(binaryPath)
+func getOurInstance(binaryPath string, torsocksPath string) (Instance, error) {
+	i, _ := NewInstance(binaryPath, torsocksPath)
 
 	err := i.Start()
 	if err != nil {
@@ -116,8 +114,8 @@ func getOurInstance(binaryPath string) (Instance, error) {
 }
 
 // NewInstance initialized our Tor Control Port instance
-func NewInstance(pathBinary string) (Instance, error) {
-	i := createOurInstance(pathBinary)
+func NewInstance(pathBinary string, torsocksPath string) (Instance, error) {
+	i := createOurInstance(pathBinary, torsocksPath)
 
 	err := i.createConfigFile()
 
@@ -217,27 +215,51 @@ func (i *instance) Exec(command string, args []string) (*RunningCommand, error) 
 	if i.isLocal {
 		return i.torify(command, args)
 	}
-	return i.torsocks(command, args)
+	return i.mumble(command, args)
 }
 
 func (i *instance) torify(command string, args []string) (*RunningCommand, error) {
 	arguments := append([]string{command}, args...)
-	return i.exec("torify", arguments)
+	return i.exec("torify", arguments, false)
 }
 
+/* Commented until finish the refactor
 func (i *instance) torsocks(command string, args []string) (*RunningCommand, error) {
 	arguments := append([]string{command}, args...)
 	arguments = append(arguments, []string{
 		"--address", i.controlHost,
 		"--port", strconv.Itoa(i.socksPort),
 	}...)
+	return i.exec("torsocks", arguments, false)
+}*/
 
-	return i.exec("torsocks", arguments)
+func (i *instance) mumble(command string, args []string) (*RunningCommand, error) {
+	arguments := append(args, []string{
+		"--address", i.controlHost,
+		"--port", strconv.Itoa(i.socksPort),
+	}...)
+	return i.exec(command, arguments, true)
 }
 
-func (i *instance) exec(command string, args []string) (*RunningCommand, error) {
+func (i *instance) exec(command string, args []string, libtorsocks bool) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, command, args...)
+	if libtorsocks {
+		pathTorsocks, err := config.FindFileByNameInPath(i.pathTorsocks, "libtorsocks.so")
+		if err != nil {
+			cancelFunc()
+			return nil, errors.New("error: libtorsocks.so was not found")
+		}
+
+		pwd := [32]byte{}
+		_ = config.RandomString(pwd[:])
+
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
+		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
+		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
+		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
+	}
 
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
@@ -259,7 +281,7 @@ func ensureTonioDataDir() {
 	_ = os.MkdirAll(tonioDataDir, 0700)
 }
 
-func createOurInstance(pathBinary string) *instance {
+func createOurInstance(pathBinary string, torsocksPath string) *instance {
 	d, _ := ioutil.TempDir(tonioDataDir, "tor")
 	controlPort, routePort := findAvailableTorPorts()
 
@@ -275,6 +297,7 @@ func createOurInstance(pathBinary string) *instance {
 		isLocal:       false,
 		controller:    nil,
 		pathBinary:    pathBinary,
+		pathTorsocks:  torsocksPath,
 	}
 
 	return i
