@@ -237,6 +237,7 @@
                     <property name="margin_left">20</property>
                     <signal name="clicked" handler="on_join" swapped="no"/>
                     <style>
+                      <class name="btn"/>
                       <class name="btn-orange"/>
                     </style>
                   </object>

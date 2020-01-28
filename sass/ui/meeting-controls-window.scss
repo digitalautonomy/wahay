@@ -7,16 +7,17 @@ window {
       font-size: 21px;
       font-weight: $font-weight-bold;
       border-radius: 6px;
+      border-width: 0;
     }
 
     .control-leave-call {
       @extend %meeting-control;
-      @include btn-solid($text-white, $orange-600, darken($orange-600, 2%));
+      @include btn-solid($text-white, $orange-600, $orange-800);
     }
 
     .control-finish-call {
       @extend %meeting-control;
-      @include btn-solid($text-white, $red-600, darken($red-600, 2%));
+      @include btn-solid($text-white, $red-600, $red-800);
     }
   }
 }
