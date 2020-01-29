@@ -12,6 +12,11 @@ import (
 )
 
 const noPath = ""
+const libTorsocks = "libtorsocks.so"
+
+var libDirs = []string{"/lib", "/lib64", "/lib/x86_64-linux-gnu", "/lib64/x86_64-linux-gnu"}
+var libPrefixes = []string{"", "/usr", "/usr/local"}
+var libSuffixes = []string{"", "/torsocks"}
 
 // Initialize find a Tor binary that can be used by Tonio
 func Initialize(configPath string) string {
@@ -172,4 +177,33 @@ func extractVersionFrom(s []byte) string {
 	}
 
 	return result[0]
+}
+
+func allLibDirs() []string {
+	result := make([]string, 0)
+	for _, l := range libDirs {
+		for _, lp := range libPrefixes {
+			for _, ls := range libSuffixes {
+				result = append(result, filepath.Join(lp, l, ls))
+			}
+		}
+	}
+	return result
+}
+
+// FindLibTorsocks returns the path of libtorsocks it exist
+func FindLibTorsocks(filePath string) (string, error) {
+	f := filepath.Join(filePath, libTorsocks)
+	if config.FileExists(f) {
+		return f, nil
+	}
+
+	for _, ld := range allLibDirs() {
+		fn := filepath.Join(ld, libTorsocks)
+		if config.FileExists(fn) {
+			return fn, nil
+		}
+	}
+
+	return "", errors.New("libtorsocks not found")
 }

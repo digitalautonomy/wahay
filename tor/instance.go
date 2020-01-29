@@ -245,7 +245,7 @@ func (i *instance) exec(command string, args []string, libtorsocks bool) (*Runni
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, command, args...)
 	if libtorsocks {
-		pathTorsocks, err := config.FindFileByNameInPath(i.pathTorsocks, "libtorsocks.so")
+		pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
 		if err != nil {
 			cancelFunc()
 			return nil, errors.New("error: libtorsocks.so was not found")

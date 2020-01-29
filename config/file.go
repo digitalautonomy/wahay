@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -73,42 +72,4 @@ func SystemConfigDir() string {
 // RemoveAll removes a directory and it's children
 func RemoveAll(dir string) error {
 	return os.RemoveAll(dir)
-}
-
-var libDirs = []string{"/lib", "/lib64", "/lib/x86_64-linux-gnu", "/lib64/x86_64-linux-gnu"}
-var libPrefixes = []string{"", "/usr", "/usr/local"}
-var libSuffixes = []string{"", "/torsocks"}
-
-func allLibDirs() []string {
-	result := make([]string, 0)
-	for _, l := range libDirs {
-		for _, lp := range libPrefixes {
-			for _, ls := range libSuffixes {
-				result = append(result, filepath.Join(lp, l, ls))
-			}
-		}
-	}
-	return result
-}
-
-// FindByName returns the path of a file if it exist
-func FindFileByName(fileName string) (string, error) {
-	for _, ld := range allLibDirs() {
-		fn := filepath.Join(ld, fileName)
-		if FileExists(fn) {
-			return fn, nil
-		}
-	}
-
-	return "", fmt.Errorf("file not found %s", fileName)
-}
-
-// FindFileByNameInPath returns the path of a file if it exist (using their path and name)
-func FindFileByNameInPath(filePath string, fileName string) (string, error) {
-	f := filepath.Join(filePath, fileName)
-	if FileExists(f) {
-		return f, nil
-	}
-
-	return FindFileByName(fileName)
 }
