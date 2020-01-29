@@ -19,55 +19,55 @@ var libPrefixes = []string{"", "/usr", "/usr/local"}
 var libSuffixes = []string{"", "/torsocks"}
 
 // Initialize find a Tor binary that can be used by Tonio
-func Initialize(configPath string) string {
+func Initialize(configPath string) (pathOfTorBinary string, foundInBundle bool) {
 	return findTorBinary(configPath)
 }
 
-func findTorBinary(configPath string) string {
+func findTorBinary(configPath string) (pathOfTorBinary string, foundInBundle bool) {
 	pathTorFound := checkInConfiguredPath(configPath)
 	if pathTorFound != noPath {
-		return pathTorFound
+		return pathTorFound, false
 	}
 
 	pathTorFound = checkInTonioDataDirectory()
 	if pathTorFound != noPath {
-		return pathTorFound
+		return pathTorFound, false
 	}
 
 	pathCWD, err := os.Getwd()
 	if err == nil {
 		pathTorFound = checkInLocalDirectory(pathCWD)
 		if pathTorFound != noPath {
-			return pathTorFound
+			return pathTorFound, true
 		}
 
 		pathTorFound = checkInExecutableDirectory(pathCWD)
 		if pathTorFound != noPath {
-			return pathTorFound
+			return pathTorFound, true
 		}
 	}
 
 	pathTorFound = checkInCurrentWorkingDirectory()
 	if pathTorFound != noPath {
-		return pathTorFound
+		return pathTorFound, false
 	}
 
 	pathTorFound = checkInTonioBinary()
 	if pathTorFound != noPath {
-		return pathTorFound
+		return pathTorFound, false
 	}
 
 	pathTorFound = checkInHomeExecutableDirectory()
 	if pathTorFound != noPath {
-		return pathTorFound
+		return pathTorFound, false
 	}
 
 	pathTorFound = checkWithWhich()
 	if pathTorFound != noPath {
-		return pathTorFound
+		return pathTorFound, false
 	}
 
-	return noPath
+	return noPath, false
 }
 
 func checkInConfiguredPath(configuredPath string) string {
@@ -193,15 +193,26 @@ func allLibDirs() []string {
 
 // FindLibTorsocks returns the path of libtorsocks it exist
 func FindLibTorsocks(filePath string) (string, error) {
+	//Search in user config path
 	f := filepath.Join(filePath, libTorsocks)
 	if config.FileExists(f) {
 		return f, nil
 	}
 
+	//Search in local directories
 	for _, ld := range allLibDirs() {
-		fn := filepath.Join(ld, libTorsocks)
-		if config.FileExists(fn) {
-			return fn, nil
+		f = filepath.Join(ld, libTorsocks)
+		if config.FileExists(f) {
+			return f, nil
+		}
+	}
+
+	//Search in bundle path
+	pathCWD, err := os.Getwd()
+	if err == nil {
+		f = filepath.Join(pathCWD, libTorsocks)
+		if config.FileExists(f) {
+			return f, nil
 		}
 	}
 

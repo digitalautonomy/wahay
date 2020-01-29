@@ -32,6 +32,8 @@ type Instance interface {
 	Exec(command string, args []string) (*RunningCommand, error)
 	GetPathBinary() string
 	SetPathBinary(path string)
+	GetBundled() bool
+	SetBundled(bool)
 }
 
 type instance struct {
@@ -48,6 +50,7 @@ type instance struct {
 	runningTor    *runningTor
 	pathBinary    string
 	pathTorsocks  string
+	isBundled     bool
 }
 
 type runningTor struct {
@@ -63,15 +66,14 @@ type runningTor struct {
 func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 	ensureTonioDataDir()
 
-	binaryPath := Initialize(conf.GetPathTor())
+	binaryPath, isBundled := Initialize(conf.GetPathTor())
 	if len(binaryPath) == 0 {
 		return nil, errors.New("error: there is no valid or available Tor binary")
 	}
 
 	log.Printf("Using Tor binary found in: %s", binaryPath)
 
-	torsocksPath := Initialize(conf.GetPathTorSocks())
-	i, err := getOurInstance(binaryPath, torsocksPath)
+	i, err := getOurInstance(binaryPath, conf.GetPathTorSocks(), isBundled)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -81,8 +83,9 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 
 const torStartupTimeout = 2 * time.Minute
 
-func getOurInstance(binaryPath string, torsocksPath string) (Instance, error) {
+func getOurInstance(binaryPath string, torsocksPath string, isBundled bool) (Instance, error) {
 	i, _ := NewInstance(binaryPath, torsocksPath)
+	i.SetBundled(isBundled)
 
 	err := i.Start()
 	if err != nil {
@@ -126,6 +129,13 @@ func NewInstance(pathBinary string, torsocksPath string) (Instance, error) {
 func (i *instance) Start() error {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, i.pathBinary, "-f", i.configFile)
+
+	if i.isBundled {
+		log.Println("Tor isBundled..")
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, "LD_LIBRARY_PATH=.")
+	}
+
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
 		return err
@@ -202,6 +212,14 @@ func (i *instance) GetPathBinary() string {
 // SetPathBinary set the value for the property pathBinary
 func (i *instance) SetPathBinary(path string) {
 	i.pathBinary = path
+}
+
+func (i *instance) GetBundled() bool {
+	return i.isBundled
+}
+
+func (i *instance) SetBundled(bundled bool) {
+	i.isBundled = bundled
 }
 
 // RunningCommand is a representation of a torify command
