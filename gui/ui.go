@@ -129,7 +129,9 @@ func (u *gtkUI) createMainWindow(success bool) {
 		"on_show_errors": func() {
 			u.showStatusErrorsWindow(builder)
 		},
-		"on_close_window_errors": u.currentWindow.Hide,
+		"on_close_window_errors": func() {
+			u.closeStatusErrorsWindow()
+		},
 	})
 
 	if !success {
@@ -160,12 +162,8 @@ func (u *gtkUI) disableMainWindowControls(builder *uiBuilder) {
 	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
 	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
 
-	if u.tor == nil {
-		btnHostMeeting.SetSensitive(false)
-		btnJoinMeeting.SetSensitive(false)
-		btnHostMeeting.SetTooltipText("You can't host a meeting without Tor")
-		btnJoinMeeting.SetTooltipText("You can't join a meeting without Tor")
-	}
+	btnHostMeeting.SetSensitive(false)
+	btnJoinMeeting.SetSensitive(false)
 }
 
 func (u *gtkUI) setGlobalStyles() {
