@@ -22,10 +22,12 @@ type ApplicationConfig struct {
 	encryptionParams *EncryptionParameters
 
 	// The fields to save as the JSON representation of the configuration
-	AutoJoin              bool
 	UniqueConfigurationID string
+	AutoJoin              bool
 	PathTor               string
 	PathTorsocks          string
+	LogsEnabled           bool
+	RawLogFile            string
 }
 
 var (
@@ -38,8 +40,8 @@ func New() *ApplicationConfig {
 	return a
 }
 
-// Init initializes the application config
-func (a *ApplicationConfig) Init() (string, error) {
+// DetectPersistence initializes the application config
+func (a *ApplicationConfig) DetectPersistence() (string, error) {
 	filename := a.getRealConfigFile()
 	if len(filename) != 0 {
 		a.SetPersistentConfiguration(true)
@@ -63,7 +65,7 @@ func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, bool, er
 	var err error
 	var repeat bool
 
-	if a.GetPersistentConfiguration() {
+	if a.IsPersistentConfiguration() {
 		err = a.loadFromFile(filename, k)
 		if err == errorEncryptionBadFile || err == errInvalidConfigFile {
 			return false, true, err
@@ -115,6 +117,8 @@ func (a *ApplicationConfig) loadFromFile(configFile string, k KeySupplier) error
 // with default values for each entry
 func (a *ApplicationConfig) InitDefault() {
 	a.AutoJoin = true
+	a.LogsEnabled = false
+	a.RawLogFile = GetDefaultLogFile()
 }
 
 // WhenLoaded will ensure that the function f is not called until the configuration has been loaded
@@ -192,7 +196,7 @@ func (a *ApplicationConfig) tryLoad(k KeySupplier) error {
 func (a *ApplicationConfig) Save(k KeySupplier) error {
 	// Important: Do not save the configuration into a file
 	// if we are in a non-persistent config mode
-	if !a.GetPersistentConfiguration() {
+	if !a.IsPersistentConfiguration() {
 		return errors.New("the configuration settings can't be saved in a non-persistent mode")
 	}
 
@@ -281,8 +285,8 @@ func (a *ApplicationConfig) SetAutoJoin(v bool) {
 	a.AutoJoin = v
 }
 
-// GetPersistentConfiguration returns the setting value to persist the configuration file in the device
-func (a *ApplicationConfig) GetPersistentConfiguration() bool {
+// IsPersistentConfiguration returns the setting value to persist the configuration file in the device
+func (a *ApplicationConfig) IsPersistentConfiguration() bool {
 	return a.persistentMode
 }
 
@@ -291,18 +295,22 @@ func (a *ApplicationConfig) SetPersistentConfiguration(v bool) {
 	a.persistentMode = v
 }
 
+// GetPathTor returns the configured path to Tor binary
 func (a *ApplicationConfig) GetPathTor() string {
 	return a.PathTor
 }
 
+// SetPathTor set the configuration value for the Tor binary path
 func (a *ApplicationConfig) SetPathTor(p string) {
 	a.PathTor = p
 }
 
+// GetPathTorSocks returns the configured path to Torsocks library
 func (a *ApplicationConfig) GetPathTorSocks() string {
 	return a.PathTorsocks
 }
 
+// SetPathTorSocks sets the configuration value for the path of Torsocks library
 func (a *ApplicationConfig) SetPathTorSocks(ps string) {
 	a.PathTorsocks = ps
 }
@@ -325,4 +333,34 @@ func (a *ApplicationConfig) SetShouldEncrypt(v bool) {
 	} else {
 		a.turnOffEncryption()
 	}
+}
+
+// IsLogsEnabled returns the current configured value for saving logs
+func (a *ApplicationConfig) IsLogsEnabled() bool {
+	return a.LogsEnabled
+}
+
+// EnableLogs sets the value for enabling or disabling logs
+func (a *ApplicationConfig) EnableLogs(v bool) {
+	a.LogsEnabled = v
+}
+
+// GetRawLogFile returns the configured value for the file to write logs
+func (a *ApplicationConfig) GetRawLogFile() string {
+	return a.RawLogFile
+}
+
+// SetCustomLogFile sets the value for the raw log file
+func (a *ApplicationConfig) SetCustomLogFile(v string) {
+	a.RawLogFile = v
+}
+
+// GetDefaultLogFile returns the default path for the log file
+func GetDefaultLogFile() string {
+	return filepath.Join(Dir(), GetDefaultLogFileName())
+}
+
+// GetDefaultLogFileName returns the default filename for the log file
+func GetDefaultLogFileName() string {
+	return appLogFile
 }

@@ -8,9 +8,11 @@ import (
 
 const (
 	fileExtensionJSON       = ".json"
+	fileExtensionLOG        = ".log"
 	encrytptedFileExtension = ".axx"
 	appConfigFile           = "config" + fileExtensionJSON
 	appEncryptedConfigFile  = "config" + encrytptedFileExtension
+	appLogFile              = "tonio" + fileExtensionLOG
 )
 
 // FileExists check if a specific file exists

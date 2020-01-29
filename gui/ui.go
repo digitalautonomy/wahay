@@ -102,7 +102,11 @@ func (u *gtkUI) onActivate() {
 func (u *gtkUI) configLoaded() {
 	u.displayLoadingWindow()
 
+	go u.initLogs()
+
 	go u.ensureDependencies(func(success bool) {
+		u.hideLoadingWindow()
+
 		u.doInUIThread(func() {
 			u.createMainWindow(success)
 		})

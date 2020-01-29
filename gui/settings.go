@@ -15,11 +15,19 @@ type settings struct {
 	chkPersistentConfiguration gtki.CheckButton
 	chkEncryptFile             gtki.CheckButton
 	lblMessage                 gtki.Label
+	chkEnableLogging           gtki.CheckButton
+	rawLogFile                 gtki.Entry
 
 	autoJoinOriginalValue          bool
 	persistConfigFileOriginalValue bool
 	encryptFileOriginalValue       bool
+	logOriginalValue               bool
+	rawLogFileOriginalValue        string
 }
+
+var (
+	decryptUncheckConfirmText = "If you disable this option, anyone could read your configuration settings"
+)
 
 func createSettings(u *gtkUI) *settings {
 	builder := u.g.uiBuilderFor("GlobalSettings")
@@ -36,49 +44,65 @@ func createSettings(u *gtkUI) *settings {
 		"chkPersistentConfiguration", &s.chkPersistentConfiguration,
 		"chkEncryptFile", &s.chkEncryptFile,
 		"lblMessage", &s.lblMessage,
+		"chkEnableLogging", &s.chkEnableLogging,
+		"rawLogFile", &s.rawLogFile,
 	)
 
-	s.init(u.config)
+	s.init()
 
 	return s
 }
 
-func (s *settings) init(conf *config.ApplicationConfig) {
+func (s *settings) init() {
+	conf := s.u.config
+
 	s.autoJoinOriginalValue = conf.GetAutoJoin()
 	s.chkAutojoin.SetActive(s.autoJoinOriginalValue)
 
-	s.persistConfigFileOriginalValue = conf.GetPersistentConfiguration()
+	s.persistConfigFileOriginalValue = conf.IsPersistentConfiguration()
 	s.chkPersistentConfiguration.SetActive(s.persistConfigFileOriginalValue)
 	s.lblMessage.SetVisible(!s.persistConfigFileOriginalValue)
 
 	s.encryptFileOriginalValue = conf.ShouldEncrypt()
 	s.chkEncryptFile.SetActive(s.encryptFileOriginalValue)
 	s.chkEncryptFile.SetSensitive(s.persistConfigFileOriginalValue)
+
+	s.logOriginalValue = conf.IsLogsEnabled()
+	s.chkEnableLogging.SetActive(s.logOriginalValue)
+	s.rawLogFileOriginalValue = conf.GetRawLogFile()
+	s.rawLogFile.SetText(s.rawLogFileOriginalValue)
+	s.rawLogFile.SetSensitive(s.logOriginalValue)
 }
 
-var (
-	decryptUncheckConfirmText = "If you disable this option, anyone could read your configuration settings"
-)
+func (s *settings) processAutojoinOption() {
+	conf := s.u.config
 
-func (u *gtkUI) onSettingsToggleOption(s *settings) {
 	if s.chkAutojoin.GetActive() != s.autoJoinOriginalValue {
-		u.config.SetAutoJoin(!s.autoJoinOriginalValue)
+		conf.SetAutoJoin(!s.autoJoinOriginalValue)
 		s.autoJoinOriginalValue = !s.autoJoinOriginalValue
 	}
+}
+
+func (s *settings) processPersistentConfigOption() {
+	conf := s.u.config
 
 	if s.chkPersistentConfiguration.GetActive() != s.persistConfigFileOriginalValue {
 		s.lblMessage.SetVisible(s.persistConfigFileOriginalValue)
-		u.config.SetPersistentConfiguration(!s.persistConfigFileOriginalValue)
+		conf.SetPersistentConfiguration(!s.persistConfigFileOriginalValue)
 		s.persistConfigFileOriginalValue = !s.persistConfigFileOriginalValue
 		s.chkEncryptFile.SetSensitive(s.persistConfigFileOriginalValue)
 	}
+}
+
+func (s *settings) processEncryptFileOption() {
+	conf := s.u.config
 
 	if s.chkEncryptFile.GetActive() != s.encryptFileOriginalValue {
 		if s.encryptFileOriginalValue {
-			u.showConfirmation(func(op bool) {
+			s.u.showConfirmation(func(op bool) {
 				if op {
 					s.encryptFileOriginalValue = false
-					u.config.SetShouldEncrypt(false)
+					conf.SetShouldEncrypt(false)
 					s.chkEncryptFile.SetActive(false)
 				} else {
 					// We keep the checkbutton checked. Nothing else change.
@@ -86,22 +110,39 @@ func (u *gtkUI) onSettingsToggleOption(s *settings) {
 				}
 			}, decryptUncheckConfirmText)
 		} else {
-			u.captureMasterPassword(func() {
+			s.u.captureMasterPassword(func() {
 				s.encryptFileOriginalValue = true
-				u.config.SetShouldEncrypt(true)
-				u.saveConfigOnly()
+				conf.SetShouldEncrypt(true)
+				s.u.saveConfigOnly()
 			}, func() {
 				s.chkEncryptFile.SetActive(false)
-				u.config.SetShouldEncrypt(false)
+				conf.SetShouldEncrypt(false)
 			})
 		}
 	}
 }
 
+func (s *settings) processLogsOption() {
+	conf := s.u.config
+
+	if s.chkEnableLogging.GetActive() != s.logOriginalValue {
+		s.logOriginalValue = !s.logOriginalValue
+		s.rawLogFile.SetSensitive(s.logOriginalValue)
+		conf.EnableLogs(s.logOriginalValue)
+	}
+}
+
+func (u *gtkUI) onSettingsToggleOption(s *settings) {
+	s.processAutojoinOption()
+	s.processPersistentConfigOption()
+	s.processEncryptFileOption()
+	s.processLogsOption()
+}
+
 func (u *gtkUI) openSettingsWindow() {
 	s := createSettings(u)
 
-	cleannup := func() {
+	cleanup := func() {
 		if u.mainWindow != nil {
 			u.enableWindow(u.mainWindow)
 		}
@@ -115,10 +156,12 @@ func (u *gtkUI) openSettingsWindow() {
 		},
 		"on_save": func() {
 			u.saveConfigOnly()
-			cleannup()
+			cleanup()
 		},
+		"on_rawLogFile_icon_press_event": s.setCustomLogFile,
+		"on_rawLogFile_focus_in_event":   s.setCustomLogFile,
 		"on_close_window": func() {
-			cleannup()
+			cleanup()
 		},
 	})
 
@@ -131,6 +174,64 @@ func (u *gtkUI) openSettingsWindow() {
 	u.doInUIThread(u.currentWindow.Show)
 }
 
+func (s *settings) setCustomLogFile() {
+	go func() {
+		filename := s.getCustomFileForLogs()
+
+		if s.rawLogFileOriginalValue != filename {
+			s.u.config.SetCustomLogFile(filename)
+			s.u.doInUIThread(func() {
+				s.rawLogFile.SetText(filename)
+			})
+		}
+	}()
+}
+
+func (s *settings) getCustomFileForLogs() string {
+	done := make(chan string)
+
+	s.u.doInUIThread(func() {
+		var selectedFile string
+
+		builder := s.u.g.uiBuilderFor("GlobalSettings")
+		fileChooserDialog := builder.get("rawFileLogChooser").(gtki.FileChooserDialog)
+		btnUseFile := builder.get("btnUseFile").(gtki.Button)
+
+		if s.u.currentWindow != nil {
+			fileChooserDialog.SetTransientFor(s.u.currentWindow)
+		}
+
+		btnUseFile.SetSensitive(false)
+
+		close := func() {
+			s.u.enableCurrentWindow()
+			fileChooserDialog.Destroy()
+		}
+
+		builder.ConnectSignals(map[string]interface{}{
+			"on_close": close,
+			"on_use_selected_file": func() {
+				if len(selectedFile) > 0 {
+					done <- selectedFile
+				}
+				close()
+			},
+			"on_selection_changed": func() {
+				if len(fileChooserDialog.GetFilename()) > 0 {
+					selectedFile = fileChooserDialog.GetFilename()
+					btnUseFile.SetSensitive(true)
+				}
+			},
+		})
+
+		s.u.disableCurrentWindow()
+		fileChooserDialog.Present()
+		fileChooserDialog.Show()
+	})
+
+	return <-done
+}
+
 func (u *gtkUI) loadConfig() {
 	conf := config.New()
 
@@ -140,12 +241,12 @@ func (u *gtkUI) loadConfig() {
 		u.configLoaded()
 	})
 
-	configFile, err := conf.Init()
+	configFile, err := conf.DetectPersistence()
 	if err != nil {
 		log.Fatal("the configuration file can't be initialized")
 	}
 
-	if conf.GetPersistentConfiguration() {
+	if conf.IsPersistentConfiguration() {
 		var repeat bool
 		var isCorrupted bool
 		var err error
@@ -158,10 +259,12 @@ func (u *gtkUI) loadConfig() {
 			if isCorrupted {
 				confirmationChannel := make(chan bool)
 				u.askForRemovingConfigFile(confirmationChannel)
-				op := <-confirmationChannel
-				if op {
+
+				if <-confirmationChannel {
 					conf.DeleteFileIfExists()
 				}
+
+				// TODO: These three lines are a bit weird. Needs more thinking
 				conf.InitDefault()
 				conf.SetPersistentConfiguration(false)
 				conf.SetShouldEncrypt(false)
@@ -219,7 +322,7 @@ func (u *gtkUI) saveConfigOnlyInternal() error {
 
 func (u *gtkUI) saveConfigOnly() {
 	// Don't save the configuration file if the user doesn't want it
-	if !u.config.GetPersistentConfiguration() {
+	if !u.config.IsPersistentConfiguration() {
 		u.config.DeleteFileIfExists()
 		return
 	}
