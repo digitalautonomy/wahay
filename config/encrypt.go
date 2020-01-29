@@ -241,16 +241,16 @@ func encryptConfigContent(content string, p *EncryptionParameters, k KeySupplier
 		return nil, errors.New("invalid password, aborting")
 	}
 
-	cypherText := encryptData(r.getKey(), r.getMacKey(), p.nonceInternal, content)
+	cipherText := encryptData(r.getKey(), r.getMacKey(), p.nonceInternal, content)
 
 	p.serialize()
 
-	cypherContent := encryptedData{
+	cipherContent := encryptedData{
 		Params: *p,
-		Data:   hex.EncodeToString(cypherText),
+		Data:   hex.EncodeToString(cipherText),
 	}
 
-	return json.MarshalIndent(cypherContent, "", "\t")
+	return json.MarshalIndent(cipherContent, "", "\t")
 }
 
 var (
@@ -326,9 +326,9 @@ func parseEncryptedData(content []byte) (d *encryptedData, err error) {
 	return
 }
 
-// GenerateKeysBasedOnPassw takes a password and encryption parameters and
+// GenerateKeysBasedOnPassword takes a password and encryption parameters and
 // generates an AES key and a MAC key using SCrypt
-func GenerateKeysBasedOnPassw(password string, params EncryptionParameters) EncryptionResult {
+func GenerateKeysBasedOnPassword(password string, params EncryptionParameters) EncryptionResult {
 	r := EncryptionResult{valid: true}
 	res, err := scrypt.Key([]byte(password), params.saltInternal, params.N, params.R, params.P, aesKeyLen+macKeyLen)
 	if err != nil {

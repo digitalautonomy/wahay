@@ -23,7 +23,7 @@ func (o *onetimeSavedPassword) GenerateKey(p config.EncryptionParameters) config
 		// Before returning the result, we update the data for the
 		// real key supplier so we remove the plain password from memory
 		// but we keep the password key during this session
-		r := config.GenerateKeysBasedOnPassw(password, p)
+		r := config.GenerateKeysBasedOnPassword(password, p)
 		_ = o.realKeySuplier.CacheFromResult(r)
 
 		return r
@@ -105,7 +105,7 @@ func (u *gtkUI) getMasterPassword(p config.EncryptionParameters, lastAttemptFail
 		return config.EncryptionResult{}
 	}
 
-	return config.GenerateKeysBasedOnPassw(password, p)
+	return config.GenerateKeysBasedOnPassword(password, p)
 }
 
 func (u *gtkUI) captureMasterPassword(onSuccess func(), onCancel func()) {

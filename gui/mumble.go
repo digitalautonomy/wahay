@@ -11,20 +11,23 @@ import (
 )
 
 func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
-	defer wg.Done()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
 
-	c, e := client.InitSystem()
-	if e != nil {
-		addNewStartupError(e)
-		return
-	}
+		c, e := client.InitSystem()
+		if e != nil {
+			addNewStartupError(e)
+			return
+		}
 
-	if !c.CanBeUsed() {
-		addNewStartupError(fmt.Errorf("the client can not be used because: %s", c.GetLastError()))
-		return
-	}
+		if !c.CanBeUsed() {
+			addNewStartupError(fmt.Errorf("the client can not be used because: %s", c.GetLastError()))
+			return
+		}
 
-	u.client = c
+		u.client = c
+	}()
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
