@@ -58,13 +58,16 @@ func ensureLogFileDirectory(rawLogFile string) (string, error) {
 }
 
 func getLogFileInfo(rawLogFile string, defaultFile string) (os.FileInfo, error) {
-	file, err := os.Stat(rawLogFile)
-
-	if err != nil {
-		if rawLogFile != defaultFile {
-			file, err = os.Stat(defaultFile)
-		}
+	if len(rawLogFile) == 0 {
+		rawLogFile = defaultFile
 	}
+
+	file, err := os.Stat(rawLogFile)
+	if err != nil {
+		_, err = os.Create(rawLogFile)
+	}
+
+	file, err = os.Stat(rawLogFile)
 
 	return file, err
 }

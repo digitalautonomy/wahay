@@ -291,6 +291,9 @@ label.control-help {
 label.label-text {
   font-size: 16px; }
 
+.label-checkbox {
+  color: #1b1f23; }
+
 .label, .label-success, .label-warning, .label-settings-warning {
   padding: 13.3333333333px 20px; }
 

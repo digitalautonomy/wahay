@@ -12,7 +12,7 @@ const (
 	encrytptedFileExtension = ".axx"
 	appConfigFile           = "config" + fileExtensionJSON
 	appEncryptedConfigFile  = "config" + encrytptedFileExtension
-	appLogFile              = "tonio" + fileExtensionLOG
+	appLogFile              = "application" + fileExtensionLOG
 )
 
 // FileExists check if a specific file exists

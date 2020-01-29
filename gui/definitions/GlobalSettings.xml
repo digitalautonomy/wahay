@@ -13,16 +13,14 @@
   <object class="GtkWindow" id="settingsWindow">
     <property name="width_request">300</property>
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Settings</property>
-    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
+    <property name="default_width">200</property>
     <property name="icon_name">preferences-system</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="urgency_hint">True</property>
     <property name="deletable">False</property>
-    <property name="has_resize_grip">True</property>
     <signal name="destroy" handler="on_destroy" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
@@ -240,6 +238,7 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel">
+                            <property name="width_request">100</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.</property>
@@ -346,13 +345,72 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="rawLogFile">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
+                            <property name="can_focus">False</property>
                             <property name="margin_bottom">10</property>
-                            <property name="secondary_icon_stock">gtk-file</property>
-                            <signal name="focus-in-event" handler="on_rawLogFile_focus_in_event" swapped="no"/>
-                            <signal name="icon-press" handler="on_rawLogFile_icon_press_event" swapped="no"/>
+                            <child>
+                              <object class="GtkEntry" id="rawLogFile">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="secondary_icon_stock">gtk-file</property>
+                                <signal name="icon-press" handler="on_rawLogFile_icon_press_event" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="margin_left">10</property>
+                                <signal name="clicked" handler="on_rawLogFile_button_clicked_event" swapped="no"/>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <child>
+                                      <object class="GtkImage">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="margin_right">5</property>
+                                        <property name="stock">gtk-find</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Browse</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                                <style>
+                                  <class name="btn"/>
+                                  <class name="btn-sm"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -522,15 +580,16 @@
     <property name="window_position">center</property>
     <property name="default_width">400</property>
     <property name="default_height">360</property>
+    <property name="icon_name">system-search</property>
     <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
     <property name="urgency_hint">True</property>
     <property name="deletable">False</property>
     <property name="transient_for">settingsWindow</property>
     <property name="action">save</property>
     <property name="do_overwrite_confirmation">True</property>
     <property name="filter">rawLogFileFilter</property>
+    <property name="preview_widget_active">False</property>
+    <property name="use_preview_label">False</property>
     <signal name="selection-changed" handler="on_selection_changed" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox">

@@ -7,7 +7,7 @@ func (u *gtkUI) ensureDependencies(cb func(bool)) {
 
 	// TODO: better error handling for startup checking
 
-	u.ensureTor(&wg)
+	//u.ensureTor(&wg)
 	u.ensureMumble(&wg)
 
 	wg.Wait()

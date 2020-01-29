@@ -158,8 +158,8 @@ func (u *gtkUI) openSettingsWindow() {
 			u.saveConfigOnly()
 			cleanup()
 		},
-		"on_rawLogFile_icon_press_event": s.setCustomLogFile,
-		"on_rawLogFile_focus_in_event":   s.setCustomLogFile,
+		"on_rawLogFile_icon_press_event":     s.setCustomLogFile,
+		"on_rawLogFile_button_clicked_event": s.setCustomLogFile,
 		"on_close_window": func() {
 			cleanup()
 		},
