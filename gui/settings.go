@@ -252,7 +252,7 @@ func (u *gtkUI) loadConfig() {
 		var err error
 
 		for {
-			repeat, isCorrupted, err = conf.Load(configFile, u.keySupplier)
+			repeat, isCorrupted, err = conf.LoadFromFile(configFile, u.keySupplier)
 
 			// If the configuration file is corrupted (encrypted or not encrypted)
 			// ask the user if wants to delete and create a new one
@@ -284,12 +284,9 @@ func (u *gtkUI) loadConfig() {
 
 			break
 		}
-	} else {
-		_, _, err = conf.Load(configFile, u.keySupplier)
-		if err != nil {
-			log.Fatal(err)
-		}
 	}
+
+	conf.OnAfterLoad()
 }
 
 func (u *gtkUI) askForRemovingConfigFile(selectionChannel chan bool) {

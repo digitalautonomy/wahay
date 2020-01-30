@@ -62,12 +62,13 @@ func getLogFileInfo(rawLogFile string, defaultFile string) (os.FileInfo, error) 
 		rawLogFile = defaultFile
 	}
 
-	file, err := os.Stat(rawLogFile)
-	if err != nil {
-		_, err = os.Create(rawLogFile)
+	fileInfo, err := os.Stat(rawLogFile)
+	if fileInfo == nil || err != nil {
+		_, err := os.Create(rawLogFile)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	file, err = os.Stat(rawLogFile)
-
-	return file, err
+	return os.Stat(rawLogFile)
 }

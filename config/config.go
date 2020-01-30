@@ -55,15 +55,15 @@ func (a *ApplicationConfig) DetectPersistence() (string, error) {
 	return filename, nil
 }
 
-// Load initialies the application once initialized.
-// This function should be called after config.Init function.
-func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, bool, error) {
+// LoadFromFile loads the content of a specific file and import it
+// into the configuration instance.
+func (a *ApplicationConfig) LoadFromFile(filename string, k KeySupplier) (bool, bool, error) {
 	if !a.initialized {
 		return false, false, errors.New("required configuration-init not executed")
 	}
 
 	var err error
-	var repeat bool
+	repeat := false
 
 	if a.IsPersistentConfiguration() {
 		err = a.loadFromFile(filename, k)
@@ -77,10 +77,6 @@ func (a *ApplicationConfig) Load(filename string, k KeySupplier) (bool, bool, er
 	} else {
 		// We are going to work with the default configuration
 		repeat = false
-	}
-
-	if err == nil {
-		a.onAfterLoad()
 	}
 
 	return repeat, false, err
@@ -126,7 +122,8 @@ func (a *ApplicationConfig) WhenLoaded(f func(*ApplicationConfig)) {
 	a.afterLoad = append(a.afterLoad, f)
 }
 
-func (a *ApplicationConfig) onAfterLoad() {
+// OnAfterLoad executes multiple callbacks when the configuration is ready
+func (a *ApplicationConfig) OnAfterLoad() {
 	afterLoads := a.afterLoad
 	a.afterLoad = nil
 	for _, f := range afterLoads {
