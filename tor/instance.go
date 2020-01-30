@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	"autonomia.digital/tonio/app/config"
@@ -29,7 +28,7 @@ type Instance interface {
 	GetHost() string
 	GetControlPort() int
 	GetRoutePort() int
-	Exec(command string, args []string) (*RunningCommand, error)
+	Exec(command string, args []string, env []string) (*RunningCommand, error)
 	GetPathBinary() string
 	SetPathBinary(path string)
 	GetBundled() bool
@@ -229,36 +228,38 @@ type RunningCommand struct {
 	CancelFunc context.CancelFunc
 }
 
-func (i *instance) Exec(command string, args []string) (*RunningCommand, error) {
-	return i.runOurTorsocks(command, args)
+func (i *instance) Exec(command string, args []string, env []string) (*RunningCommand, error) {
+	return i.runOurTorsocks(command, args, env)
 }
 
-func (i *instance) runOurTorsocks(command string, args []string) (*RunningCommand, error) {
-	arguments := append(args, []string{
-		"--address", i.controlHost,
-		"--port", strconv.Itoa(i.socksPort),
-	}...)
-	return i.exec(command, arguments)
+func (i *instance) runOurTorsocks(command string, args []string, env []string) (*RunningCommand, error) {
+	return i.exec(command, args, i.isBundled, env)
 }
 
-func (i *instance) exec(command string, args []string) (*RunningCommand, error) {
+func (i *instance) exec(command string, args []string, libtorsocks bool, env []string) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, command, args...)
 
-	pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
-	if err != nil {
-		cancelFunc()
-		return nil, errors.New("error: libtorsocks.so was not found")
+	if libtorsocks {
+		pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
+		if err != nil {
+			cancelFunc()
+			return nil, errors.New("error: libtorsocks.so was not found")
+		}
+
+		pwd := [32]byte{}
+		_ = config.RandomString(pwd[:])
+
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
+		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
+		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
+		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
 	}
 
-	pwd := [32]byte{}
-	_ = config.RandomString(pwd[:])
-
-	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
-	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
-	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
-	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
+	if len(env) > 0 {
+		cmd.Env = append(cmd.Env, env...)
+	}
 
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
