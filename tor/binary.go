@@ -154,7 +154,7 @@ func checkWithWhich() string {
 	}
 
 	pathToFind := strings.TrimSpace(string(outputWhich))
-	log.Printf("checkWithWhich... %s\n",pathToFind)
+	log.Printf("checkWithWhich... %s\n", pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
