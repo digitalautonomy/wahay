@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"autonomia.digital/tonio/app/config"
@@ -16,19 +17,27 @@ type Instance interface {
 	GetBinary() string
 	CanBeUsed() bool
 	GetLastError() error
+	GetBinaryEnv() []string
 }
 
 type client struct {
 	sync.Mutex
 	binary     string
 	binaryPath string
+	env        []string
 	isValid    bool
 	lastError  error
 	configFile string
 }
 
 func (c *client) GetBinary() string {
-	return c.binary
+	env := c.GetBinaryEnv()
+
+	if len(env) == 0 {
+		return c.binary
+	}
+
+	return strings.Join(env, c.binary)
 }
 
 func (c *client) CanBeUsed() bool {
@@ -39,6 +48,10 @@ func (c *client) GetLastError() error {
 	return c.lastError
 }
 
+func (c *client) GetBinaryEnv() []string {
+	return c.env
+}
+
 const (
 	configFileName = "mumble.ini"
 	configDataName = ".mumble.sqlite"
@@ -46,10 +59,19 @@ const (
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
-func InitSystem() (Instance, error) {
-	binary := getMumbleBinary([]string{
+func InitSystem(conf *config.ApplicationConfig) (Instance, error) {
+	dirs := []string{
+		conf.GetMumbleBinaryPath(),
 		getDestinationFile(),
-	})
+		"/usr/bin/mumble",
+	}
+
+	localDir, err := os.Getwd()
+	if err == nil {
+		dirs = append(dirs, filepath.Join(localDir, "mumble/mumble"))
+	}
+
+	binary, env := findMumbleBinary(dirs)
 
 	if len(binary) == 0 {
 		return nil, errors.New("client not found")
@@ -57,13 +79,14 @@ func InitSystem() (Instance, error) {
 
 	c := &client{
 		binary:  binary,
+		env:     env,
 		isValid: true,
 	}
 
 	// If any valid binary is found, then we need to copy it
 	// to a specific directory so we can use it with a custom
 	// configuration for that Mumble client
-	err := c.prepareToUseInOurDir()
+	err = c.prepareToUseInOurDir()
 	if err != nil {
 		log.Printf("Client error: %s\n", err.Error())
 		c.isValid = false

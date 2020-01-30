@@ -15,14 +15,14 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	go func() {
 		defer wg.Done()
 
-		c, e := client.InitSystem()
+		c, e := client.InitSystem(u.config)
 		if e != nil {
 			addNewStartupError(e)
 			return
 		}
 
 		if !c.CanBeUsed() {
-			addNewStartupError(fmt.Errorf("the client can not be used because: %s", c.GetLastError()))
+			addNewStartupError(fmt.Errorf("the Mumble client can not be used because: %s", c.GetLastError()))
 			return
 		}
 
@@ -33,9 +33,8 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
 	rc, err := u.throughTor(u.client.GetBinary(), []string{
 		hosting.GenerateURL(data),
-	})
+	}, u.client.GetBinaryEnv())
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
 

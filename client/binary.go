@@ -2,8 +2,10 @@ package client
 
 import (
 	"errors"
-	"log"
+	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -12,38 +14,43 @@ const noMumbleBinary = ""
 
 var errInvalidCommand = errors.New("invalid command")
 
-var commonDirs = []string{
-	"/usr/bin/mumble",
-}
-
-func getMumbleBinary(primaryDirs []string) string {
-	dirsToLook := append(primaryDirs, commonDirs...)
-
+func findMumbleBinary(dirsToLook []string) (string, []string) {
 	var err error
+	var env []string
+
 	for index := range dirsToLook {
-		err = isAnAvailableMumbleBinaryIn(dirsToLook[index])
+		env, err = isAnAvailableMumbleBinaryIn(dirsToLook[index])
 		if err == nil {
-			return dirsToLook[index]
+			return dirsToLook[index], env
 		}
 	}
 
-	return noMumbleBinary
+	return noMumbleBinary, nil
 }
 
-func isAnAvailableMumbleBinaryIn(path string) error {
-	command := exec.Command(path, "-h")
+func isAnAvailableMumbleBinaryIn(binaryPath string) ([]string, error) {
+	env := []string{}
+
+	command := exec.Command(binaryPath, "-h")
+
+	libDir := filepath.Join(filepath.Dir(binaryPath), "lib")
+	if _, err := os.Stat(libDir); !os.IsNotExist(err) {
+		command.Env = os.Environ()
+		envLibPath := fmt.Sprintf("export LD_LIBRARY_PATH=%s", libDir)
+		command.Env = append(command.Env, libDir)
+		env = append(env, envLibPath)
+	}
 
 	output, err := command.Output()
 	if output == nil && err != nil {
-		log.Println(err)
-		return errInvalidCommand
+		return env, errInvalidCommand
 	}
 
 	re := regexp.MustCompile(`^Usage:\smumble\s\[options\]\s\[<url>\]`)
 	found := re.FindString(strings.TrimSpace(string(output)))
 	if len(found) == 0 {
-		return errInvalidCommand
+		return env, errInvalidCommand
 	}
 
-	return nil
+	return env, nil
 }
