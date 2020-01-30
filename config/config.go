@@ -4,6 +4,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -57,29 +59,25 @@ func (a *ApplicationConfig) DetectPersistence() (string, error) {
 
 // LoadFromFile loads the content of a specific file and import it
 // into the configuration instance.
-func (a *ApplicationConfig) LoadFromFile(filename string, k KeySupplier) (bool, bool, error) {
+func (a *ApplicationConfig) LoadFromFile(filename string, k KeySupplier) (invalid bool, repeat bool, err error) {
 	if !a.initialized {
 		return false, false, errors.New("required configuration-init not executed")
 	}
 
-	var err error
-	repeat := false
-
 	if a.IsPersistentConfiguration() {
 		err = a.loadFromFile(filename, k)
 		if err == errorEncryptionBadFile || err == errInvalidConfigFile {
-			return false, true, err
+			invalid = true
+			return
 		}
 
-		// Can we ask again for the key?
 		repeat = err != nil && (err == errorEncryptionNoPassword ||
 			err == errorEncryptionDecryptFailed)
 	} else {
-		// We are going to work with the default configuration
 		repeat = false
 	}
 
-	return repeat, false, err
+	return
 }
 
 func (a *ApplicationConfig) getRealConfigFile() string {
@@ -250,6 +248,27 @@ func (a *ApplicationConfig) EnsureDestination() {
 func (a *ApplicationConfig) DeleteFileIfExists() {
 	if FileExists(a.filename) {
 		_ = os.Remove(a.filename)
+	}
+}
+
+// CreateBackup creates a backup of the current configuration file
+func (a *ApplicationConfig) CreateBackup() {
+	if FileExists(a.filename) {
+		data, err := ReadFileOrTemporaryBackup(a.filename)
+		if err != nil {
+			log.Println("Configuration file backup failed")
+			return
+		}
+
+		backupFile := filepath.Join(filepath.Dir(a.filename), appConfigFileBackup)
+		if FileExists(backupFile) {
+			os.Remove(backupFile)
+		}
+
+		err = ioutil.WriteFile(backupFile, data, 0600)
+		if err != nil {
+			log.Println("Configuration file backup failed")
+		}
 	}
 }
 

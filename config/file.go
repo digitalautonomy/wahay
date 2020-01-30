@@ -9,9 +9,11 @@ import (
 const (
 	fileExtensionJSON       = ".json"
 	fileExtensionLOG        = ".log"
+	fileExtensionBACKUP     = ".bak"
 	encrytptedFileExtension = ".axx"
 	appConfigFile           = "config" + fileExtensionJSON
 	appEncryptedConfigFile  = "config" + encrytptedFileExtension
+	appConfigFileBackup     = "config" + fileExtensionBACKUP
 	appLogFile              = "application" + fileExtensionLOG
 )
 

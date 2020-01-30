@@ -233,84 +233,125 @@ func (s *settings) getCustomFileForLogs() string {
 }
 
 func (u *gtkUI) loadConfig() {
-	conf := config.New()
+	u.config = config.New()
 
-	conf.WhenLoaded(func(c *config.ApplicationConfig) {
+	u.config.WhenLoaded(func(c *config.ApplicationConfig) {
 		u.config = c
 		u.doInUIThread(u.initialSetupWindow)
 		u.configLoaded()
 	})
 
-	configFile, err := conf.DetectPersistence()
+	configFile, err := u.config.DetectPersistence()
 	if err != nil {
 		log.Fatal("the configuration file can't be initialized")
 	}
 
-	if conf.IsPersistentConfiguration() {
-		var repeat bool
-		var isCorrupted bool
-		var err error
-
-		for {
-			repeat, isCorrupted, err = conf.LoadFromFile(configFile, u.keySupplier)
-
-			// If the configuration file is corrupted (encrypted or not encrypted)
-			// ask the user if wants to delete and create a new one
-			if isCorrupted {
-				confirmationChannel := make(chan bool)
-				u.askForRemovingConfigFile(confirmationChannel)
-
-				if <-confirmationChannel {
-					conf.DeleteFileIfExists()
-				}
-
-				// TODO: These three lines are a bit weird. Needs more thinking
-				conf.InitDefault()
-				conf.SetPersistentConfiguration(false)
-				conf.SetShouldEncrypt(false)
-				continue
-			}
-
-			if repeat {
-				u.keySupplier.Invalidate()
-				u.keySupplier.LastAttemptFailed()
-				continue
-			}
-
-			// A fatal error we can't recover from occurred
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			break
-		}
+	if !u.ensureConfig(configFile) {
+		u.config.OnAfterLoad()
+	} else {
+		u.closeApplication()
 	}
-
-	conf.OnAfterLoad()
 }
 
-func (u *gtkUI) askForRemovingConfigFile(selectionChannel chan bool) {
-	u.hideLoadingWindow()
-
-	builder := u.g.uiBuilderFor("GlobalSettings")
-	dialog := builder.get("winDeleteConfigFileConfirm").(gtki.Window)
-
-	clean := func(op bool) {
-		dialog.Destroy()
-		u.enableCurrentWindow()
-		selectionChannel <- op
+func (u *gtkUI) ensureConfig(configFile string) bool {
+	if !u.config.IsPersistentConfiguration() {
+		return false
 	}
 
-	builder.ConnectSignals(map[string]interface{}{
-		"on_cancel": func() {
-			clean(false)
-		},
-		"on_delete": func() {
-			clean(true)
-		},
+	for {
+		isCorrupted, repeatIfFails, err := u.config.LoadFromFile(configFile, u.keySupplier)
+
+		if isCorrupted {
+			return u.processCorruptedConfigFileOrExit()
+		}
+
+		if repeatIfFails {
+			u.keySupplier.Invalidate()
+			u.keySupplier.LastAttemptFailed()
+			continue
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		break
+	}
+
+	return false
+}
+
+func (u *gtkUI) processCorruptedConfigFileOrExit() bool {
+	if u.regenerateSettingsIfRequiredOrCancel() ||
+		u.regenerateEncryptionKeyIfRequiredOrCancel() {
+		return true
+	}
+
+	u.saveConfigOnly()
+
+	return false
+}
+
+func (u *gtkUI) regenerateSettingsIfRequiredOrCancel() bool {
+	confirmationChannel := make(chan bool)
+	u.askToResetInvalidConfigFile(confirmationChannel)
+
+	if <-confirmationChannel {
+		u.config.CreateBackup()
+		u.config.DeleteFileIfExists()
+		u.config.InitDefault()
+
+		return false
+	}
+
+	return true
+}
+
+func (u *gtkUI) regenerateEncryptionKeyIfRequiredOrCancel() bool {
+	if !u.config.IsFileEncrypted() {
+		return false
+	}
+
+	passwordChannel := make(chan bool)
+
+	u.captureMasterPassword(func() {
+		u.config.SetShouldEncrypt(true)
+		passwordChannel <- true
+	}, func() {
+		u.config.SetShouldEncrypt(false)
+		passwordChannel <- false
 	})
 
-	u.doInUIThread(dialog.Show)
+	selectedOption := <-passwordChannel
+	u.config.SetShouldEncrypt(selectedOption)
+
+	return !selectedOption
+}
+
+func (u *gtkUI) askToResetInvalidConfigFile(selectionChannel chan bool) {
+	u.hideLoadingWindow()
+
+	u.doInUIThread(func() {
+		builder := u.g.uiBuilderFor("GlobalSettings")
+		dialog := builder.get("winDeleteConfigFileConfirm").(gtki.Window)
+
+		clean := func(op bool) {
+			dialog.Destroy()
+			u.enableCurrentWindow()
+			selectionChannel <- op
+		}
+
+		builder.ConnectSignals(map[string]interface{}{
+			"on_cancel": func() {
+				clean(false)
+			},
+			"on_delete": func() {
+				clean(true)
+			},
+		})
+
+		dialog.Show()
+	})
 }
 
 func (u *gtkUI) saveConfigOnlyInternal() error {

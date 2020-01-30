@@ -191,6 +191,12 @@ const (
 	saltLen   = 16
 )
 
+// IsFileEncrypted returns a boolean indicating if the configuration
+// file is apparently encrypted
+func (a *ApplicationConfig) IsFileEncrypted() bool {
+	return strings.HasSuffix(a.filename, encrytptedFileExtension)
+}
+
 func (a *ApplicationConfig) turnOnEncryption() {
 	a.ioLock.Lock()
 	defer a.ioLock.Unlock()
