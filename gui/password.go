@@ -98,7 +98,6 @@ func (u *gtkUI) getMasterPassword(p config.EncryptionParameters, lastAttemptFail
 
 	u.doInUIThread(win.Destroy)
 
-	// Show the loading window while checking entered the password
 	u.displayLoadingWindow()
 
 	if len(password) == 0 {
@@ -119,6 +118,15 @@ func (u *gtkUI) captureMasterPassword(onSuccess func(), onCancel func()) {
 	lblValidation.SetVisible(false)
 
 	isValidPassword := false
+	cleanup := func() {
+		u.doInUIThread(func() {
+			passwordWindow.Destroy()
+			u.enableWindow(u.currentWindow)
+		})
+		if !isValidPassword {
+			onCancel()
+		}
+	}
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_save": func() {
@@ -149,26 +157,16 @@ func (u *gtkUI) captureMasterPassword(onSuccess func(), onCancel func()) {
 				onSuccess()
 			}
 		},
-		"on_cancel": func() {
-			passwordWindow.Destroy()
-			u.enableWindow(u.currentWindow)
-			if !isValidPassword {
-				onCancel()
-			}
-		},
-		"on_close": func() {
-			passwordWindow.Destroy()
-			u.enableWindow(u.currentWindow)
-			if !isValidPassword {
-				onCancel()
-			}
-		},
+		"on_cancel": cleanup,
+		"on_close":  cleanup,
 	})
 
-	// u.currentWindow should be the settings window
-	u.disableWindow(u.currentWindow)
-	passwordWindow.SetTransientFor(u.currentWindow)
-	passwordWindow.Show()
+	if u.currentWindow != nil {
+		u.disableWindow(u.currentWindow)
+		passwordWindow.SetTransientFor(u.currentWindow)
+	}
+
+	u.doInUIThread(passwordWindow.Show)
 }
 
 func validatePasswords(pass1, pass2 string) error {
