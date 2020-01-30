@@ -230,33 +230,15 @@ type RunningCommand struct {
 }
 
 func (i *instance) Exec(command string, args []string) (*RunningCommand, error) {
-	if i.isLocal {
-		return i.torify(command, args)
-	}
-	return i.mumble(command, args)
+	return i.runOurTorsocks(command, args)
 }
 
-func (i *instance) torify(command string, args []string) (*RunningCommand, error) {
-	arguments := append([]string{command}, args...)
-	return i.exec("torify", arguments, false)
-}
-
-/* Commented until finish the refactor
-func (i *instance) torsocks(command string, args []string) (*RunningCommand, error) {
-	arguments := append([]string{command}, args...)
-	arguments = append(arguments, []string{
-		"--address", i.controlHost,
-		"--port", strconv.Itoa(i.socksPort),
-	}...)
-	return i.exec("torsocks", arguments, false)
-}*/
-
-func (i *instance) mumble(command string, args []string) (*RunningCommand, error) {
+func (i *instance) runOurTorsocks(command string, args []string) (*RunningCommand, error) {
 	arguments := append(args, []string{
 		"--address", i.controlHost,
 		"--port", strconv.Itoa(i.socksPort),
 	}...)
-	return i.exec(command, arguments, true)
+	return i.exec(command, arguments, i.isBundled)
 }
 
 func (i *instance) exec(command string, args []string, libtorsocks bool) (*RunningCommand, error) {
