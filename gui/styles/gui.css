@@ -65,6 +65,19 @@ dialog {
     border-color: rgba(27, 31, 35, 0.4);
     box-shadow: 0 2px 3px rgba(27, 31, 35, 0.2); }
 
+.form-legend {
+  margin-bottom: 20px; }
+
+.form-legend-title {
+  color: #1b1f23;
+  font-size: 18px;
+  font-weight: 600; }
+
+.form-legend-content {
+  border-top: 1px solid #eaecef;
+  margin-top: 10px;
+  padding-top: 10px; }
+
 .btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
   padding: 12px 20px;
   font-size: 14px;
@@ -284,7 +297,8 @@ label, .label, .label-success, .label-warning, .label-settings-warning {
 
 label.control-label {
   color: #1b1f23;
-  font-weight: 600; }
+  font-weight: 400;
+  margin-bottom: 10px; }
 label.control-help {
   color: #6a737d;
   font-size: 14px; }

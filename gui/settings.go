@@ -8,21 +8,25 @@ import (
 )
 
 type settings struct {
-	u                          *gtkUI
-	b                          *uiBuilder
-	dialog                     gtki.Window
+	u      *gtkUI
+	b      *uiBuilder
+	dialog gtki.Window
+
 	chkAutojoin                gtki.CheckButton
 	chkPersistentConfiguration gtki.CheckButton
 	chkEncryptFile             gtki.CheckButton
 	lblMessage                 gtki.Label
 	chkEnableLogging           gtki.CheckButton
 	rawLogFile                 gtki.Entry
+	btnRawLogFile              gtki.Button
+	mumbleBinaryLocation       gtki.Entry
 
 	autoJoinOriginalValue          bool
 	persistConfigFileOriginalValue bool
 	encryptFileOriginalValue       bool
 	logOriginalValue               bool
 	rawLogFileOriginalValue        string
+	mumbleBinaryOriginalValue      string
 }
 
 var (
@@ -46,6 +50,8 @@ func createSettings(u *gtkUI) *settings {
 		"lblMessage", &s.lblMessage,
 		"chkEnableLogging", &s.chkEnableLogging,
 		"rawLogFile", &s.rawLogFile,
+		"btnRawLogFile", &s.btnRawLogFile,
+		"mumbleBinaryLocation", &s.mumbleBinaryLocation,
 	)
 
 	s.init()
@@ -72,6 +78,10 @@ func (s *settings) init() {
 	s.rawLogFileOriginalValue = conf.GetRawLogFile()
 	s.rawLogFile.SetText(s.rawLogFileOriginalValue)
 	s.rawLogFile.SetSensitive(s.logOriginalValue)
+	s.btnRawLogFile.SetSensitive(s.logOriginalValue)
+
+	s.mumbleBinaryOriginalValue = conf.GetMumbleBinaryPath()
+	s.mumbleBinaryLocation.SetText(s.mumbleBinaryOriginalValue)
 }
 
 func (s *settings) processAutojoinOption() {
@@ -128,6 +138,7 @@ func (s *settings) processLogsOption() {
 	if s.chkEnableLogging.GetActive() != s.logOriginalValue {
 		s.logOriginalValue = !s.logOriginalValue
 		s.rawLogFile.SetSensitive(s.logOriginalValue)
+		s.btnRawLogFile.SetSensitive(s.logOriginalValue)
 		conf.EnableLogs(s.logOriginalValue)
 	}
 }
@@ -158,11 +169,13 @@ func (u *gtkUI) openSettingsWindow() {
 			u.saveConfigOnly()
 			cleanup()
 		},
-		"on_rawLogFile_icon_press_event":     s.setCustomLogFile,
-		"on_rawLogFile_button_clicked_event": s.setCustomLogFile,
 		"on_close_window": func() {
 			cleanup()
 		},
+		"on_rawLogFile_icon_press_event":        s.setCustomLogFile,
+		"on_rawLogFile_button_clicked_event":    s.setCustomLogFile,
+		"on_mumbleBinaryLocation_icon_press":    s.setCustomPathForMumble,
+		"on_mumbleBinaryLocation_clicked_event": s.setCustomPathForMumble,
 	})
 
 	if u.mainWindow != nil {
@@ -175,61 +188,15 @@ func (u *gtkUI) openSettingsWindow() {
 }
 
 func (s *settings) setCustomLogFile() {
-	go func() {
-		filename := s.getCustomFileForLogs()
-
-		if s.rawLogFileOriginalValue != filename {
-			s.u.config.SetCustomLogFile(filename)
-			s.u.doInUIThread(func() {
-				s.rawLogFile.SetText(filename)
-			})
-		}
-	}()
+	s.u.setCustomFilePathFor(s.rawLogFile, s.rawLogFileOriginalValue, func(f string) {
+		s.u.config.SetCustomLogFile(f)
+	})
 }
 
-func (s *settings) getCustomFileForLogs() string {
-	done := make(chan string)
-
-	s.u.doInUIThread(func() {
-		var selectedFile string
-
-		builder := s.u.g.uiBuilderFor("GlobalSettings")
-		fileChooserDialog := builder.get("rawFileLogChooser").(gtki.FileChooserDialog)
-		btnUseFile := builder.get("btnUseFile").(gtki.Button)
-
-		if s.u.currentWindow != nil {
-			fileChooserDialog.SetTransientFor(s.u.currentWindow)
-		}
-
-		btnUseFile.SetSensitive(false)
-
-		close := func() {
-			s.u.enableCurrentWindow()
-			fileChooserDialog.Destroy()
-		}
-
-		builder.ConnectSignals(map[string]interface{}{
-			"on_close": close,
-			"on_use_selected_file": func() {
-				if len(selectedFile) > 0 {
-					done <- selectedFile
-				}
-				close()
-			},
-			"on_selection_changed": func() {
-				if len(fileChooserDialog.GetFilename()) > 0 {
-					selectedFile = fileChooserDialog.GetFilename()
-					btnUseFile.SetSensitive(true)
-				}
-			},
-		})
-
-		s.u.disableCurrentWindow()
-		fileChooserDialog.Present()
-		fileChooserDialog.Show()
+func (s *settings) setCustomPathForMumble() {
+	s.u.setCustomFilePathFor(s.mumbleBinaryLocation, s.mumbleBinaryOriginalValue, func(f string) {
+		s.u.config.SetMumbleBinaryPath(f)
 	})
-
-	return <-done
 }
 
 func (u *gtkUI) loadConfig() {

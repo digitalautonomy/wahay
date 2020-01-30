@@ -23,3 +23,19 @@
     }
   }
 }
+
+.form-legend {
+  margin-bottom: $spacing;
+}
+
+.form-legend-title {
+  color: $text-black;
+  font-size: $font-size-large;
+  font-weight: $font-weight-bold;
+}
+
+.form-legend-content {
+  border-top: 1px solid $border-gray-light;
+  margin-top: $spacing/2;
+  padding-top: $spacing/2;
+}
