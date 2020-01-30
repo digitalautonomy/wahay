@@ -9,7 +9,11 @@
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">440</property>
+    <property name="icon_name">dialog-warning</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
     <property name="urgency_hint">True</property>
+    <property name="deletable">False</property>
     <signal name="remove" handler="on_cancel" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
@@ -100,7 +104,8 @@
                   <object class="GtkButton" id="btnCancel">
                     <property name="label" translatable="yes">Cancel</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
@@ -119,7 +124,8 @@
                   <object class="GtkButton" id="btnConfirm">
                     <property name="label" translatable="yes">Yes, confirm</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
