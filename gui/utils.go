@@ -39,16 +39,26 @@ func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
 }
 
 func (u *gtkUI) enableWindow(win gtki.Window) {
-	win.SetSensitive(true)
+	if win != nil {
+		u.doInUIThread(func() {
+			win.SetSensitive(true)
+		})
+	}
 }
 
 func (u *gtkUI) disableWindow(win gtki.Window) {
-	win.SetSensitive(false)
+	if win != nil {
+		u.doInUIThread(func() {
+			win.SetSensitive(false)
+		})
+	}
 }
 
 func (u *gtkUI) disableMainWindow() {
 	if u.mainWindow != nil {
-		u.disableWindow(u.mainWindow)
+		u.doInUIThread(func() {
+			u.disableWindow(u.mainWindow)
+		})
 	}
 }
 
