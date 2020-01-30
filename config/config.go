@@ -248,7 +248,9 @@ func (a *ApplicationConfig) EnsureDestination() {
 
 // DeleteFileIfExists deletes the config file if exists
 func (a *ApplicationConfig) DeleteFileIfExists() {
-	_ = os.RemoveAll(Dir())
+	if FileExists(a.filename) {
+		_ = os.Remove(a.filename)
+	}
 }
 
 func (a *ApplicationConfig) removeOldFileOnNextSave() {
