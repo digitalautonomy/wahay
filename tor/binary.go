@@ -13,7 +13,7 @@ import (
 )
 
 const noPath = ""
-const libTorsocks = "libtorsocks.so"
+const libTorsocks = "libtorsocks.so.0.0.0"
 
 var libDirs = []string{"/lib", "/lib64", "/lib/x86_64-linux-gnu", "/lib64/x86_64-linux-gnu"}
 var libPrefixes = []string{"", "/usr", "/usr/local"}
@@ -46,14 +46,14 @@ func findTorBinary(configPath string) (pathOfTorBinary string, foundInBundle boo
 		if pathTorFound != noPath {
 			return pathTorFound, true
 		}
+
+		pathTorFound = checkInExecutableDirectoryTor(pathCWD)
+		if pathTorFound != noPath {
+			return pathTorFound, true
+		}
 	}
 
 	pathTorFound = checkInCurrentWorkingDirectory()
-	if pathTorFound != noPath {
-		return pathTorFound, false
-	}
-
-	pathTorFound = checkInExecutableDirectoryTor(pathCWD)
 	if pathTorFound != noPath {
 		return pathTorFound, false
 	}
@@ -233,7 +233,8 @@ func FindLibTorsocks(filePath string) (string, error) {
 	//Search in bundle path
 	pathCWD, err := os.Getwd()
 	if err == nil {
-		f = filepath.Join(pathCWD, libTorsocks)
+		c := filepath.Join(pathCWD, "tor/")
+		f = filepath.Join(c, libTorsocks)
 		if config.FileExists(f) {
 			return f, nil
 		}

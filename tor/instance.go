@@ -238,28 +238,27 @@ func (i *instance) runOurTorsocks(command string, args []string) (*RunningComman
 		"--address", i.controlHost,
 		"--port", strconv.Itoa(i.socksPort),
 	}...)
-	return i.exec(command, arguments, i.isBundled)
+	return i.exec(command, arguments)
 }
 
-func (i *instance) exec(command string, args []string, libtorsocks bool) (*RunningCommand, error) {
+func (i *instance) exec(command string, args []string) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, command, args...)
-	if libtorsocks {
-		pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
-		if err != nil {
-			cancelFunc()
-			return nil, errors.New("error: libtorsocks.so was not found")
-		}
 
-		pwd := [32]byte{}
-		_ = config.RandomString(pwd[:])
-
-		cmd.Env = os.Environ()
-		cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
+	pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
+	if err != nil {
+		cancelFunc()
+		return nil, errors.New("error: libtorsocks.so was not found")
 	}
+
+	pwd := [32]byte{}
+	_ = config.RandomString(pwd[:])
+
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
 
 	if err := cmd.Start(); err != nil {
 		cancelFunc()
