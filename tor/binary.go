@@ -2,6 +2,7 @@ package tor
 
 import (
 	"errors"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -52,6 +53,11 @@ func findTorBinary(configPath string) (pathOfTorBinary string, foundInBundle boo
 		return pathTorFound, false
 	}
 
+	pathTorFound = checkInExecutableDirectoryTor(pathCWD)
+	if pathTorFound != noPath {
+		return pathTorFound, false
+	}
+
 	pathTorFound = checkInTonioBinary()
 	if pathTorFound != noPath {
 		return pathTorFound, false
@@ -71,6 +77,7 @@ func findTorBinary(configPath string) (pathOfTorBinary string, foundInBundle boo
 }
 
 func checkInConfiguredPath(configuredPath string) string {
+	log.Printf("checkInConfiguredPath... %s\n", configuredPath)
 	if isThereConfiguredTorBinary(configuredPath) {
 		return configuredPath
 	}
@@ -79,6 +86,7 @@ func checkInConfiguredPath(configuredPath string) string {
 
 func checkInTonioDataDirectory() string {
 	pathToFind := filepath.Join(config.XdgDataHome(), "tonio/tor")
+	log.Printf("checkInTonioDataDirectory... %s\n", pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
@@ -87,6 +95,7 @@ func checkInTonioDataDirectory() string {
 
 func checkInLocalDirectory(pathCWD string) string {
 	pathToFind := filepath.Join(pathCWD, "/tor")
+	log.Printf("checkInLocalDirectory... %s\n", pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
@@ -95,6 +104,7 @@ func checkInLocalDirectory(pathCWD string) string {
 
 func checkInExecutableDirectory(pathCWD string) string {
 	pathToFind := filepath.Join(pathCWD, "/bin/tor")
+	log.Printf("checkInExecutableDirectory... %s\n", pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
@@ -103,6 +113,16 @@ func checkInExecutableDirectory(pathCWD string) string {
 
 func checkInCurrentWorkingDirectory() string {
 	pathToFind := filepath.Join(config.XdgDataHome(), "/tor")
+	log.Printf("checkInCurrentWorkingDirectory... %s\n", pathToFind)
+	if isThereConfiguredTorBinary(pathToFind) {
+		return pathToFind
+	}
+	return noPath
+}
+
+func checkInExecutableDirectoryTor(pathCWD string) string {
+	pathToFind := filepath.Join(pathCWD, "/tor/tor")
+	log.Printf("checkInExecutableDirectoryTor... %s\n", pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
@@ -111,6 +131,7 @@ func checkInCurrentWorkingDirectory() string {
 
 func checkInTonioBinary() string {
 	pathToFind := filepath.Join(config.XdgDataHome(), "/bin/tonio/tor/tor")
+	log.Printf("checkInTonioBinary... %s\n", pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
@@ -119,6 +140,7 @@ func checkInTonioBinary() string {
 
 func checkInHomeExecutableDirectory() string {
 	pathToFind := filepath.Join(config.XdgDataHome(), "/bin/tonio/tor")
+	log.Printf("checkInHomeExecutableDirectory... %s", pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
@@ -132,6 +154,7 @@ func checkWithWhich() string {
 	}
 
 	pathToFind := strings.TrimSpace(string(outputWhich))
+	log.Printf("checkWithWhich... %s\n",pathToFind)
 	if isThereConfiguredTorBinary(pathToFind) {
 		return pathToFind
 	}
