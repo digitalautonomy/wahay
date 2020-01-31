@@ -1,7 +1,7 @@
 package gui
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
 	"github.com/coyim/gotk3adapter/gtki"

@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"text/template"
+
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"

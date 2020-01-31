@@ -2,9 +2,10 @@ package gui
 
 import (
 	"io"
-	"log"
 	"os"
 	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
 )

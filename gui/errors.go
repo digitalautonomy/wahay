@@ -2,9 +2,10 @@ package gui
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/coyim/gotk3adapter/gtki"
 )

@@ -3,11 +3,12 @@ package client
 import (
 	"errors"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
 )

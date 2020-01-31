@@ -2,12 +2,13 @@ package tor
 
 import (
 	"errors"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
 )

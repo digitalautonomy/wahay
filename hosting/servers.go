@@ -3,11 +3,12 @@ package hosting
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
 	"os"
 	"path"
 	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/digitalautonomy/grumble/pkg/logtarget"
 	grumbleServer "github.com/digitalautonomy/grumble/server"
@@ -85,7 +86,9 @@ func (s *servers) initializeLogging() error {
 		return err
 	}
 
-	s.log = log.New(&logtarget.Target, "[G] ", log.LstdFlags|log.Lmicroseconds)
+	l := log.New()
+	l.SetOutput(&logtarget.Target)
+	s.log = l
 	s.log.Printf("Grumble")
 	s.log.Printf("Using data directory: %s", s.dataDir)
 

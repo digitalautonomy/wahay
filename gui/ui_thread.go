@@ -1,6 +1,6 @@
 package gui
 
-import "log"
+import log "github.com/sirupsen/logrus"
 
 //GTK process events in glib event loop (see [1]). In order to keep the UI
 //responsive, it is a good practice to not block long running tasks in a signal's

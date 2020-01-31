@@ -3,9 +3,10 @@ package gui
 import (
 	"context"
 	"fmt"
-	"log"
 	"os/exec"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/client"
 	"autonomia.digital/tonio/app/hosting"

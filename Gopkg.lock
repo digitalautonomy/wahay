@@ -81,6 +81,14 @@
   revision = "d3629b451bb5ab5b5f7b5adeebe965b767eff08a"
 
 [[projects]]
+  digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
+  version = "v1.0.2"
+
+[[projects]]
   digest = "1:4cc7748b74453830951f95ddc3fd980387e7c13f77cc33d7cba54cd6b96dad26"
   name = "github.com/kr/pretty"
   packages = ["."]
@@ -95,6 +103,14 @@
   pruneopts = "UT"
   revision = "e2ffdb16a802fe2bb95e2e35ff34f0e53aeef34f"
   version = "v0.1.0"
+
+[[projects]]
+  digest = "1:04457f9f6f3ffc5fea48e71d62f2ca256637dee0a04d710288e27e05c8b41976"
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "839c75faf7f98a33d445d181f3018b5c3409a45e"
+  version = "v1.4.2"
 
 [[projects]]
   branch = "master"
@@ -135,9 +151,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2620d7efbd6e99521e224cbc08b57e4fb928def72e7d9f138cde3a3c568a71c7"
+  digest = "1:2390cc9215d5adf71b9d76564dd3795e692e5b4602d777190b33fda90c21f213"
   name = "golang.org/x/sys"
-  packages = ["cpu"]
+  packages = [
+    "cpu",
+    "unix",
+  ]
   pruneopts = "UT"
   revision = "548cf772de5052aa878ccb47cdeb7d262b75c8ec"
 
@@ -164,6 +183,7 @@
     "github.com/coyim/gotk3adapter/gtki",
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
+    "github.com/sirupsen/logrus",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",
     "golang.org/x/net/proxy",
