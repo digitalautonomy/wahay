@@ -49,7 +49,7 @@ func InitSystem(conf *config.ApplicationConfig) (c Instance) {
 	var err error
 
 	c = newMumbleClient()
-	binary := getMumbleBinary(conf.GetMumbleBinaryPath())
+	binary := getMumbleBinary(conf.GetPathMumble())
 
 	if binary == nil {
 		c.Invalidate(errors.New("a valid binary of Mumble is no available in your system"))

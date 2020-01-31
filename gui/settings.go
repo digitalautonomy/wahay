@@ -83,9 +83,9 @@ func (s *settings) init() {
 	s.rawLogFile.SetSensitive(s.logOriginalValue)
 	s.btnRawLogFile.SetSensitive(s.logOriginalValue)
 
-	s.mumbleBinaryOriginalValue = conf.GetMumbleBinaryPath()
+	s.mumbleBinaryOriginalValue = conf.GetPathMumble()
 	s.mumbleBinaryLocation.SetText(s.mumbleBinaryOriginalValue)
-	s.mumblePortOriginalValue = conf.GetMumblePort()
+	s.mumblePortOriginalValue = conf.GetPortMumble()
 	s.mumblePort.SetText(s.mumblePortOriginalValue)
 }
 
@@ -151,7 +151,7 @@ func (s *settings) processLogsOption() {
 func (s *settings) processMumblePort() {
 	conf := s.u.config
 	v, _ := s.mumblePort.GetText()
-	conf.SetMumblePort(v)
+	conf.SetPortMumble(v)
 }
 
 func (u *gtkUI) onSettingsToggleOption(s *settings) {
@@ -207,7 +207,7 @@ func (s *settings) setCustomLogFile() {
 
 func (s *settings) setCustomPathForMumble() {
 	s.u.setCustomFilePathFor(s.mumbleBinaryLocation, s.mumbleBinaryOriginalValue, func(f string) {
-		s.u.config.SetMumbleBinaryPath(f)
+		s.u.config.SetPathMumble(f)
 	})
 }
 

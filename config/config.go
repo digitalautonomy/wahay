@@ -31,8 +31,8 @@ type ApplicationConfig struct {
 	PathTorsocks          string
 	LogsEnabled           bool
 	RawLogFile            string
-	MumbleBinaryPath      string
-	MumblePort            string
+	PathMumble            string
+	PortMumble            string
 }
 
 var (
@@ -376,24 +376,24 @@ func (a *ApplicationConfig) SetCustomLogFile(v string) {
 	a.RawLogFile = v
 }
 
-// SetMumbleBinaryPath sets the value for the Mumble binary path
-func (a *ApplicationConfig) SetMumbleBinaryPath(v string) {
-	a.MumbleBinaryPath = v
+// SetPathMumble sets the value for the Mumble binary path
+func (a *ApplicationConfig) SetPathMumble(v string) {
+	a.PathMumble = v
 }
 
-// GetMumbleBinaryPath returns the custom path to find the Mumble binary
-func (a *ApplicationConfig) GetMumbleBinaryPath() string {
-	return a.MumbleBinaryPath
+// GetPathMumble returns the custom path to find the Mumble binary
+func (a *ApplicationConfig) GetPathMumble() string {
+	return a.PathMumble
 }
 
-// SetMumblePort sets the value for the Mumble port
-func (a *ApplicationConfig) SetMumblePort(v string) {
-	a.MumblePort = v
+// SetPortMumble sets the value for the port for Mumble
+func (a *ApplicationConfig) SetPortMumble(v string) {
+	a.PortMumble = v
 }
 
-// GetMumblePort returns the custom value for the Mumble port
-func (a *ApplicationConfig) GetMumblePort() string {
-	return a.MumblePort
+// GetPortMumble returns the custom value of the Mumble port
+func (a *ApplicationConfig) GetPortMumble() string {
+	return a.PortMumble
 }
 
 // GetDefaultLogFile returns the default path for the log file
