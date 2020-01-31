@@ -292,7 +292,9 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
 
-	pre(cmd)
+	if pre != nil {
+		pre(cmd)
+	}
 
 	if *config.Debug {
 		cmd.Stdout = os.Stdout
