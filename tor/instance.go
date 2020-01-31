@@ -29,7 +29,7 @@ type Instance interface {
 	GetHost() string
 	GetControlPort() int
 	GetRoutePort() int
-	Exec(command string, args []string, env []string) (*RunningCommand, error)
+	Exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error)
 	GetPathBinary() string
 	SetPathBinary(path string)
 	GetBundled() bool
@@ -262,37 +262,41 @@ type RunningCommand struct {
 	CancelFunc context.CancelFunc
 }
 
-func (i *instance) Exec(command string, args []string, env []string) (*RunningCommand, error) {
-	return i.runOurTorsocks(command, args, env)
+func (i *instance) Exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error) {
+	return i.runOurTorsocks(command, args, pre)
 }
 
-func (i *instance) runOurTorsocks(command string, args []string, env []string) (*RunningCommand, error) {
-	return i.exec(command, args, i.isBundled, env)
+func (i *instance) runOurTorsocks(command string, args []string, pre ModifyCommand) (*RunningCommand, error) {
+	return i.exec(command, args, pre)
 }
 
-func (i *instance) exec(command string, args []string, libtorsocks bool, env []string) (*RunningCommand, error) {
+// ModifyCommand is a function that will potentially modify a command
+type ModifyCommand func(*exec.Cmd)
+
+func (i *instance) exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, command, args...)
 
-	if libtorsocks {
-		pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
-		if err != nil {
-			cancelFunc()
-			return nil, errors.New("error: libtorsocks.so was not found")
-		}
-
-		pwd := [32]byte{}
-		_ = config.RandomString(pwd[:])
-
-		cmd.Env = os.Environ()
-		cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
+	pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
+	if err != nil {
+		cancelFunc()
+		return nil, errors.New("error: libtorsocks.so was not found")
 	}
 
-	if len(env) > 0 {
-		cmd.Env = append(cmd.Env, env...)
+	pwd := [32]byte{}
+	_ = config.RandomString(pwd[:])
+
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_PORT=%d", i.socksPort))
+
+	pre(cmd)
+
+	if *config.Debug {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
 	}
 
 	if err := cmd.Start(); err != nil {
