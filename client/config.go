@@ -3,6 +3,7 @@ package client
 import (
 	"errors"
 	"log"
+	"os"
 	"path/filepath"
 
 	"autonomia.digital/tonio/app/config"
@@ -43,10 +44,17 @@ func (c *client) EnsureConfiguration() error {
 
 	err = createFile(filepath.Join(binaryDir, configDataName))
 	if err != nil {
+		log.Println("The Mumble data file could not be created")
+	}
+
+	filename := filepath.Join(binaryDir, configFileName)
+
+	err = createFile(filename)
+	if err != nil {
 		return errInvalidDataFile
 	}
 
-	err = c.writeConfigToFile(binaryDir)
+	err = c.writeConfigToFile(filename)
 	if err != nil {
 		return errInvalidConfig
 	}
@@ -87,7 +95,7 @@ const (
 
 func (c *client) writeConfigToFile(path string) error {
 	if len(c.configFile) > 0 && fileExists(c.configFile) {
-		return nil
+		_ = os.Remove(c.configFile)
 	}
 
 	var configFile string
@@ -97,8 +105,11 @@ func (c *client) writeConfigToFile(path string) error {
 		configFile = filepath.Join(filepath.Dir(path), configFileName)
 	}
 
-	if isAFile(configFile) || fileExists(configFile) {
-		return nil
+	if !isAFile(configFile) || !fileExists(configFile) {
+		err := createFile(configFile)
+		if err != nil {
+			return errInvalidDataFile
+		}
 	}
 
 	err := config.SafeWrite(configFile, []byte(mumbleInitialConfig), 0600)

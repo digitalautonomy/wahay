@@ -21,6 +21,7 @@ type Instance interface {
 	Validate() error
 	EnsureConfiguration() error
 	GetTorCommandModifier() tor.ModifyCommand
+	Destroy()
 }
 
 type client struct {
@@ -154,6 +155,12 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 	}
 
 	return c.torCommandModifier
+}
+
+func (c *client) Destroy() {
+	if c.binary.ShouldBeRemoved() {
+		c.binary.Remove()
+	}
 }
 
 func getTemporaryDestinationForMumble() string {

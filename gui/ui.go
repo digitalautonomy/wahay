@@ -216,11 +216,15 @@ func (u *gtkUI) showConfirmation(onConfirm func(bool), text string) {
 
 func (u *gtkUI) cleanUp() {
 	if u.tor != nil {
+		// TODO: delete any created Onion Service
 		u.tor.Destroy()
 	}
 
-	// TODO: delete our onion service if created
-	// TODO: close our mumble service if running
+	if u.client != nil {
+		// TODO: we should remove any Mumble command running
+		// and we should close the Grumble service if it's running
+		u.client.Destroy()
+	}
 }
 
 func (u *gtkUI) closeApplication() {

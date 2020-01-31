@@ -8,8 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
-	"strings"
 	"sync"
 )
 
@@ -34,6 +32,8 @@ type Binary interface {
 	CopyTo(path string) error
 	BinaryExists() bool
 	IsValid() bool
+	ShouldBeRemoved() bool
+	Remove()
 }
 
 type binary struct {
@@ -43,6 +43,7 @@ type binary struct {
 	isValid        bool
 	isBundle       bool
 	lastError      error
+	isTemporary    bool
 	shouldBeCopied bool
 }
 
@@ -83,15 +84,38 @@ func (b *binary) CopyTo(path string) error {
 		return errDestinationIsNotADirectory
 	}
 
-	if fileExists(filepath.Join(path, "mumble")) {
+	mumbleCopyFile := filepath.Join(path, "mumble")
+
+	if fileExists(mumbleCopyFile) {
 		return errBinaryAlreadyExists
 	}
 
-	return b.copyBinaryToDir(path)
+	err := b.copyBinaryToDir(mumbleCopyFile)
+	if err != nil {
+		return errInvalidBinaryFile
+	}
+
+	b.path = filepath.Join(mumbleCopyFile)
+	b.isTemporary = true
+
+	return nil
 }
 
 func (b *binary) IsValid() bool {
 	return b.isValid
+}
+
+func (b *binary) ShouldBeRemoved() bool {
+	return b.isTemporary
+}
+
+func (b *binary) Remove() {
+	if b.ShouldBeRemoved() {
+		err := os.RemoveAll(filepath.Dir(b.path))
+		if err != nil {
+			log.Printf("An error ocurred while removing Mumble temp directory: %s", err.Error())
+		}
+	}
 }
 
 func (b *binary) copyBinaryToDir(destination string) error {
@@ -132,6 +156,7 @@ func newMumbleBinary(path string) *binary {
 		env:            []string{},
 		lastError:      nil,
 		shouldBeCopied: false,
+		isTemporary:    false,
 	}
 
 	return b
@@ -147,11 +172,17 @@ func getMumbleBinary(userConfiguredPath string) Binary {
 	for _, getBinary := range binaries {
 		b := getBinary()
 
-		if b.lastError == nil {
-			return b
+		if b == nil {
+			log.Printf("Mumble binary error: Not found")
+			continue
 		}
 
-		log.Printf("Mumble binary error: %s", b.lastError)
+		if b.lastError != nil {
+			log.Printf("Mumble binary error: %s", b.lastError)
+			continue
+		}
+
+		return b
 	}
 
 	return nil
@@ -173,16 +204,7 @@ func getMumbleBinaryInLocal() *binary {
 }
 
 func getMumbleBinaryInSystem() *binary {
-	b := isAnAvailableMumbleBinary(mumbleSystemPath)
-	if b.lastError != nil {
-		return b
-	}
-
-	return copyBinaryToOurDirectory(mumbleSystemPath)
-}
-
-func copyBinaryToOurDirectory(path string) *binary {
-	return nil
+	return isAnAvailableMumbleBinary(mumbleSystemPath)
 }
 
 func isAnAvailableMumbleBinary(path string) *binary {
@@ -190,8 +212,8 @@ func isAnAvailableMumbleBinary(path string) *binary {
 
 	b := newMumbleBinary(path)
 
-	if len(path) == 0 {
-		b.lastError = fmt.Errorf("the Mumble binary path is empty")
+	if len(path) == 0 || !fileExists(path) {
+		b.lastError = fmt.Errorf("the Mumble binary path is invalid or do not exists")
 		return b
 	}
 
@@ -207,14 +229,7 @@ func isAnAvailableMumbleBinary(path string) *binary {
 	b.shouldBeCopied = !isBundle
 
 	output, err := command.Output()
-	if output == nil && err != nil {
-		b.lastError = errInvalidCommand
-		return b
-	}
-
-	re := regexp.MustCompile(`^Usage:\smumble\s\[options\]\s\[<url>\]`)
-	found := re.FindString(strings.TrimSpace(string(output)))
-	if len(found) == 0 {
+	if len(output) == 0 && err != nil {
 		b.lastError = errInvalidCommand
 		return b
 	}
