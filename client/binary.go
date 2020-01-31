@@ -9,6 +9,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sync"
+
+	"autonomia.digital/tonio/app/config"
 )
 
 var (
@@ -164,7 +166,8 @@ func newMumbleBinary(path string) *binary {
 func getMumbleBinary(userConfiguredPath string) Binary {
 	binaries := []func() *binary{
 		getMumbleBinaryInConf(userConfiguredPath),
-		getMumbleBinaryInLocal,
+		getMumbleBinaryInLocalDir,
+		getMumbleBinaryInDataDir,
 		getMumbleBinaryInSystem,
 	}
 
@@ -193,13 +196,17 @@ func getMumbleBinaryInConf(path string) func() *binary {
 	}
 }
 
-func getMumbleBinaryInLocal() *binary {
+func getMumbleBinaryInLocalDir() *binary {
 	localDir, err := os.Getwd()
 	if err != nil {
 		return nil
 	}
 
 	return isAnAvailableMumbleBinary(filepath.Join(localDir, mumbleBundlePath))
+}
+
+func getMumbleBinaryInDataDir() *binary {
+	return isAnAvailableMumbleBinary(filepath.Join(config.Dir(), mumbleBundlePath))
 }
 
 func getMumbleBinaryInSystem() *binary {
