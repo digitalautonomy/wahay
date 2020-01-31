@@ -2,6 +2,7 @@ package gui
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os/exec"
 	"sync"
@@ -31,9 +32,15 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
-	rc, err := u.throughTor(u.client.GetBinaryPath(), []string{
-		hosting.GenerateURL(data),
-	}, u.client.GetTorCommandModifier())
+	if u.client == nil || !u.client.CanBeUsed() {
+		return nil, errors.New("a valid Mumble client could not be found in the system")
+	}
+
+	bin := u.client.GetBinaryPath()
+	args := []string{hosting.GenerateURL(data)}
+	cm := u.client.GetTorCommandModifier()
+
+	rc, err := u.throughTor(bin, args, cm)
 	if err != nil {
 		return nil, err
 	}
@@ -56,9 +63,12 @@ func (u *gtkUI) switchContextWhenMumbleFinish(state *runningMumble) {
 	go func() {
 		<-state.finishChannel
 
-		// TODO: here, we  could check if the Mumble instance
-		// failed with an error and report this
+		if state.finishedWithError != nil {
+			u.reportError(state.finishedWithError.Error())
+		}
+
 		u.doInUIThread(func() {
+			u.hideCurrentWindow()
 			u.openMainWindow()
 		})
 	}()

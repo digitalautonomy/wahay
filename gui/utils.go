@@ -21,8 +21,8 @@ func (u *gtkUI) switchToMainWindow() {
 }
 
 func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
-	u.currentWindow = win
 	win.SetApplication(u.app)
+	u.setCurrentWindow(win)
 	u.doInUIThread(win.Show)
 }
 
@@ -77,5 +77,17 @@ func (u *gtkUI) disableCurrentWindow() {
 func (u *gtkUI) enableCurrentWindow() {
 	if u.currentWindow != nil {
 		u.enableWindow(u.currentWindow)
+	}
+}
+
+func (u *gtkUI) setCurrentWindow(win gtki.Window) {
+	if u.currentWindow != win {
+		u.currentWindow = win
+	}
+}
+
+func (u *gtkUI) hideCurrentWindow() {
+	if u.currentWindow != nil {
+		u.doInUIThread(u.currentWindow.Hide)
 	}
 }
