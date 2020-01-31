@@ -114,7 +114,7 @@ func (b *binary) Remove() {
 	if b.ShouldBeRemoved() {
 		err := os.RemoveAll(filepath.Dir(b.path))
 		if err != nil {
-			log.Printf("An error ocurred while removing Mumble temp directory: %s", err.Error())
+			log.Printf("An error occurred while removing Mumble temp directory: %s", err.Error())
 		}
 	}
 }
