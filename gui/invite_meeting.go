@@ -31,9 +31,11 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
 }
 
 func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
-	u.doInUIThread(func() {
-		u.currentWindow.Hide()
-	})
+	if state.finished {
+		u.reportError("The Mumble process is down")
+	}
+
+	u.hideCurrentWindow()
 
 	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
 	win := builder.get("currentMeetingWindow").(gtki.ApplicationWindow)
@@ -63,10 +65,9 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 		return
 	}
 
-	u.switchContextWhenMumbleFinish(state)
-
-	u.currentWindow.Hide()
 	u.openCurrentMeetingWindow(state)
+
+	u.switchContextWhenMumbleFinish(state)
 }
 
 // Test Onion that can be used:
@@ -75,13 +76,11 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 func (u *gtkUI) openJoinWindow() {
 	win, builder := u.getInviteCodeEntities()
 
-	u.currentWindow = win
-
 	entMeetingID, _ := builder.get("entMeetingID").(gtki.Entry)
 	entScreenName, _ := builder.get("entScreenName").(gtki.Entry)
 	entMeetingPassword, _ := builder.get("entMeetingPassword").(gtki.Entry)
 
-	onclose := func() {
+	cleanup := func() {
 		win.Destroy()
 		u.openMainWindow()
 	}
@@ -101,14 +100,15 @@ func (u *gtkUI) openJoinWindow() {
 			u.joinMeetingHandler(data)
 		},
 		"on_cancel": func() {
-			onclose()
+			cleanup()
 		},
 		"on_close": func() {
-			onclose()
+			cleanup()
 		},
 	})
 
 	win.Show()
+	u.setCurrentWindow(win)
 }
 
 func (u *gtkUI) openMumble(data hosting.MeetingData) (*runningMumble, error) {

@@ -67,6 +67,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 func (h *hostData) showMeetingControls() {
 	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": h.u.quit,
 		"on_finish_meeting": func() {
@@ -107,7 +108,8 @@ func (h *hostData) showMeetingControls() {
 }
 
 func (h *hostData) joinMeetingHost() {
-	loaded := make(chan bool)
+	var err error
+	validOpChannel := make(chan bool)
 
 	go func() {
 		data := hosting.MeetingData{
@@ -115,19 +117,28 @@ func (h *hostData) joinMeetingHost() {
 			Password:  h.meetingPassword,
 			Username:  h.meetingUsername,
 		}
+
 		state, err := h.u.launchMumbleClient(data)
+
 		if err != nil {
-			h.u.reportError(fmt.Sprintf("Programmer error #1: %s", err.Error()))
-			return
+			validOpChannel <- false
+		} else {
+			h.runningState = state
+			validOpChannel <- true
 		}
-		h.runningState = state
-		loaded <- true
 	}()
 
-	go func() {
-		<-loaded
+	if <-validOpChannel {
 		h.openHostJoinMeetingWindow()
-	}()
+		return
+	}
+
+	if err == nil {
+		err = errors.New("we could'nt start the meeting")
+	}
+
+	h.u.reportError(err.Error())
+	h.u.switchToMainWindow()
 }
 
 func (h *hostData) openHostJoinMeetingWindow() {
@@ -219,6 +230,7 @@ func (h *hostData) createNewConferenceRoom(complete chan bool) {
 		complete <- true
 		return
 	}
+
 	e = server.Start()
 	if e != nil {
 		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
@@ -423,7 +435,7 @@ func (h *hostData) showMeetingConfiguration() {
 			password := builder.get("inpMeetingPassword").(gtki.Entry)
 			h.meetingUsername, _ = username.GetText()
 			h.meetingPassword, _ = password.GetText()
-			go h.startMeetingHandler()
+			h.startMeetingHandler()
 		},
 		"on_invite_others": h.onInviteParticipants,
 		"on_chkAutoJoin_toggled": func() {
@@ -457,19 +469,23 @@ func (h *hostData) changeStartButtonText(btn gtki.Button) {
 }
 
 func (h *hostData) startMeetingHandler() {
-	h.u.currentWindow.Hide()
+	h.u.hideCurrentWindow()
+	h.u.displayLoadingWindow()
+	go h.startMeetingRoutine()
+}
 
+func (h *hostData) startMeetingRoutine() {
 	complete := make(chan bool)
-	h.createNewConferenceRoom(complete)
+	go h.createNewConferenceRoom(complete)
 	<-complete
 
-	h.u.doInUIThread(func() {
-		if h.autoJoin {
-			h.joinMeetingHost()
-		} else {
-			h.showMeetingControls()
-		}
-	})
+	h.u.hideLoadingWindow()
+
+	if h.autoJoin {
+		h.joinMeetingHost()
+	} else {
+		h.showMeetingControls()
+	}
 }
 
 func (h *hostData) onInviteParticipants() {
