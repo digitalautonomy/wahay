@@ -5,12 +5,16 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strconv"
 	"text/template"
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
 	"github.com/coyim/gotk3adapter/gtki"
 )
+
+// defaultMumblePort contains the default port used in mumble
+const defaultMumblePort = 64738
 
 type hostData struct {
 	u               *gtkUI
@@ -184,8 +188,17 @@ func (h *hostData) createOnionService(finish chan string) {
 
 		port := config.GetRandomPort()
 
+		var err error
+		mumblePort := defaultMumblePort
+		if h.u.config.GetMumblePort() != "" {
+			mumblePort, err = strconv.Atoi(h.u.config.GetMumblePort())
+			if err != nil {
+				mumblePort = defaultMumblePort
+			}
+		}
+
 		controller := h.u.tor.GetController()
-		serviceID, e := controller.CreateNewOnionService("127.0.0.1", port, 64738)
+		serviceID, e := controller.CreateNewOnionService("127.0.0.1", port, mumblePort)
 		if e != nil {
 			finish <- e.Error()
 			return
