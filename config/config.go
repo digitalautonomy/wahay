@@ -31,6 +31,7 @@ type ApplicationConfig struct {
 	LogsEnabled           bool
 	RawLogFile            string
 	MumbleBinaryPath      string
+	MumblePort            string
 }
 
 var (
@@ -382,6 +383,16 @@ func (a *ApplicationConfig) SetMumbleBinaryPath(v string) {
 // GetMumbleBinaryPath returns the custom path to find the Mumble binary
 func (a *ApplicationConfig) GetMumbleBinaryPath() string {
 	return a.MumbleBinaryPath
+}
+
+// SetMumblePort sets the value for the Mumble port
+func (a *ApplicationConfig) SetMumblePort(v string) {
+	a.MumblePort = v
+}
+
+// GetMumblePort returns the custom value for the Mumble port
+func (a *ApplicationConfig) GetMumblePort() string {
+	return a.MumblePort
 }
 
 // GetDefaultLogFile returns the default path for the log file

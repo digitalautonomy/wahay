@@ -20,6 +20,7 @@ type settings struct {
 	rawLogFile                 gtki.Entry
 	btnRawLogFile              gtki.Button
 	mumbleBinaryLocation       gtki.Entry
+	mumblePort                 gtki.Entry
 
 	autoJoinOriginalValue          bool
 	persistConfigFileOriginalValue bool
@@ -27,6 +28,7 @@ type settings struct {
 	logOriginalValue               bool
 	rawLogFileOriginalValue        string
 	mumbleBinaryOriginalValue      string
+	mumblePortOriginalValue        string
 }
 
 var (
@@ -52,6 +54,7 @@ func createSettings(u *gtkUI) *settings {
 		"rawLogFile", &s.rawLogFile,
 		"btnRawLogFile", &s.btnRawLogFile,
 		"mumbleBinaryLocation", &s.mumbleBinaryLocation,
+		"mumblePort", &s.mumblePort,
 	)
 
 	s.init()
@@ -82,6 +85,8 @@ func (s *settings) init() {
 
 	s.mumbleBinaryOriginalValue = conf.GetMumbleBinaryPath()
 	s.mumbleBinaryLocation.SetText(s.mumbleBinaryOriginalValue)
+	s.mumblePortOriginalValue = conf.GetMumblePort()
+	s.mumblePort.SetText(s.mumblePortOriginalValue)
 }
 
 func (s *settings) processAutojoinOption() {
@@ -143,6 +148,12 @@ func (s *settings) processLogsOption() {
 	}
 }
 
+func (s *settings) processMumblePort() {
+	conf := s.u.config
+	v, _ := s.mumblePort.GetText()
+	conf.SetMumblePort(v)
+}
+
 func (u *gtkUI) onSettingsToggleOption(s *settings) {
 	s.processAutojoinOption()
 	s.processPersistentConfigOption()
@@ -166,6 +177,7 @@ func (u *gtkUI) openSettingsWindow() {
 			u.onSettingsToggleOption(s)
 		},
 		"on_save": func() {
+			s.processMumblePort()
 			u.saveConfigOnly()
 			cleanup()
 		},
