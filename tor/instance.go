@@ -63,6 +63,11 @@ type runningTor struct {
 
 // GetSystem returns the Instance for working with Tor
 func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
+	i, err := getSystemInstance()
+	if err == nil {
+		return i, nil
+	}
+
 	ensureTonioDataDir()
 
 	binaryPath, isBundled := Initialize(conf.GetPathTor())
@@ -72,7 +77,7 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 
 	log.Printf("Using Tor binary found in: %s", binaryPath)
 
-	i, err := getOurInstance(binaryPath, conf.GetPathTorSocks(), isBundled)
+	i, err = getOurInstance(binaryPath, conf.GetPathTorSocks(), isBundled)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -81,6 +86,30 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 }
 
 const torStartupTimeout = 2 * time.Minute
+
+func getSystemInstance() (Instance, error) {
+	checker := NewDefaultChecker()
+
+	total, partial := checker.Check()
+
+	if total != nil || partial != nil {
+		return nil, errors.New("error: we can't use the system instance")
+	}
+
+	i := &instance{
+		started:     true,
+		controlHost: *config.TorHost,
+		controlPort: *config.TorPort,
+		socksPort:   *config.TorRoutePort,
+		password:    *config.TorControlPassword,
+		isLocal:     true,
+		isBundled:   false,
+		controller:  nil,
+		pathBinary:  "tor",
+	}
+
+	return i, nil
+}
 
 func getOurInstance(binaryPath string, torsocksPath string, isBundled bool) (Instance, error) {
 	i, _ := NewInstance(binaryPath, torsocksPath)
