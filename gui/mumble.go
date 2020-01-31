@@ -3,6 +3,7 @@ package gui
 import (
 	"context"
 	"fmt"
+	"log"
 	"os/exec"
 	"sync"
 
@@ -27,6 +28,9 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 		}
 
 		u.client = c
+
+		log.Printf("Using Mumble located at: %s\n", u.client.GetBinary())
+		log.Printf("Using Mumble environment variables: %s\n", u.client.GetBinaryEnv())
 	}()
 }
 

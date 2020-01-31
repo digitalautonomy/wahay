@@ -92,7 +92,6 @@ func InitSystem(conf *config.ApplicationConfig) (Instance, error) {
 		c.isValid = false
 		c.lastError = err
 	} else {
-		log.Printf("Using Mumble client at: %s\n", c.binary)
 		c.binary = getDestinationFile()
 		c.binaryPath = getDestinationDir()
 		c.lastError = c.ensureDirectory()
