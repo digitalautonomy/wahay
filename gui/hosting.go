@@ -446,11 +446,7 @@ func (h *hostData) startMeetingHandler() {
 	h.u.currentWindow.Hide()
 
 	complete := make(chan bool)
-
-	go func() {
-		h.createNewConferenceRoom(complete)
-	}()
-
+	h.createNewConferenceRoom(complete)
 	<-complete
 
 	h.u.doInUIThread(func() {
