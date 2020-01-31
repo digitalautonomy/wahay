@@ -88,6 +88,10 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 const torStartupTimeout = 2 * time.Minute
 
 func getSystemInstance() (Instance, error) {
+	if !isThereConfiguredTorBinary("tor") {
+		return nil, errors.New("error: the system Tor is not compatible")
+	}
+
 	checker := NewDefaultChecker()
 
 	total, partial := checker.Check()
