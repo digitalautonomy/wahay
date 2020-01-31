@@ -17,12 +17,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	go func() {
 		defer wg.Done()
 
-		c, e := client.InitSystem(u.config)
-		if e != nil {
-			addNewStartupError(e)
-			return
-		}
-
+		c := client.InitSystem(u.config)
 		if !c.CanBeUsed() {
 			addNewStartupError(fmt.Errorf("the Mumble client can not be used because: %s", c.GetLastError()))
 			return
@@ -30,15 +25,15 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 
 		u.client = c
 
-		log.Printf("Using Mumble located at: %s\n", u.client.GetBinary())
+		log.Printf("Using Mumble located at: %s\n", u.client.GetBinaryPath())
 		log.Printf("Using Mumble environment variables: %s\n", u.client.GetBinaryEnv())
 	}()
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
-	rc, err := u.throughTor(u.client.GetBinary(), []string{
+	rc, err := u.throughTor(u.client.GetBinaryPath(), []string{
 		hosting.GenerateURL(data),
-	}, u.client.GetBinaryEnv())
+	}, u.client.GetTorCommandModifier())
 	if err != nil {
 		return nil, err
 	}

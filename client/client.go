@@ -2,232 +2,165 @@ package client
 
 import (
 	"errors"
-	"io"
-	"os"
-	"path/filepath"
-	"strings"
+	"io/ioutil"
+	"os/exec"
 	"sync"
 
-	log "github.com/sirupsen/logrus"
-
 	"autonomia.digital/tonio/app/config"
+	"autonomia.digital/tonio/app/tor"
 )
 
 // Instance is a representation of the Mumble client for Tonio
 type Instance interface {
-	GetBinary() string
+	Invalidate(err error)
 	CanBeUsed() bool
-	GetLastError() error
-	// TODO[OB]: this is exposing too much information. It would be better that both
-	//  tor and mumble have some kind of decorators for managing the commands
+	GetBinaryPath() string
 	GetBinaryEnv() []string
+	GetLastError() error
+	SetBinary(Binary) error
+	Validate() error
+	EnsureConfiguration() error
+	GetTorCommandModifier() tor.ModifyCommand
 }
 
 type client struct {
 	sync.Mutex
-	binary     string
-	binaryPath string
-	env        []string
-	isValid    bool
-	lastError  error
-	configFile string
+	binary             Binary
+	isValid            bool
+	configFile         string
+	err                error
+	torCommandModifier tor.ModifyCommand
 }
 
-// TODO[OB]: this is very strange to me.
-func (c *client) GetBinary() string {
-	env := c.GetBinaryEnv()
-
-	if len(env) == 0 {
-		return c.binary
+func newMumbleClient() *client {
+	c := &client{
+		binary:  nil,
+		isValid: false,
+		err:     nil,
 	}
 
-	return strings.Join(env, c.binary)
+	return c
 }
-
-func (c *client) CanBeUsed() bool {
-	return c.isValid
-}
-
-func (c *client) GetLastError() error {
-	return c.lastError
-}
-
-func (c *client) GetBinaryEnv() []string {
-	return c.env
-}
-
-const (
-	configFileName = "mumble.ini"
-	configDataName = ".mumble.sqlite"
-)
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
-func InitSystem(conf *config.ApplicationConfig) (Instance, error) {
-	dirs := []string{
-		conf.GetMumbleBinaryPath(),
-		getDestinationFile(),
-		// TODO[OB]: why hard code it here? What if it's on the $PATH somewhere else in the system???
-		"/usr/bin/mumble",
-	}
-
-	// TODO[OB]: this puts the bundled mumble at the end of the possibilities. Not what we decided
-	localDir, err := os.Getwd()
-	if err == nil {
-		dirs = append(dirs, filepath.Join(localDir, "mumble/mumble"))
-	}
-
-	binary, env := findMumbleBinary(dirs)
-
-	if len(binary) == 0 {
-		return nil, errors.New("client not found")
-	}
-
-	c := &client{
-		binary:  binary,
-		env:     env,
-		isValid: true,
-	}
-
-	// If any valid binary is found, then we need to copy it
-	// to a specific directory so we can use it with a custom
-	// configuration for that Mumble client
-	err = c.prepareToUseInOurDir()
-	if err != nil {
-		log.Printf("Client error: %s\n", err.Error())
-		c.isValid = false
-		c.lastError = err
-	} else {
-		c.binary = getDestinationFile()
-		c.binaryPath = getDestinationDir()
-		c.lastError = c.ensureDirectory()
-	}
-
-	return c, c.lastError
-}
-
-var (
-	errClientBinaryNotFound    = errors.New("client binary not found")
-	errClientBinaryInvalidCopy = errors.New("client invalid copying")
-)
-
-func getDestinationDir() string {
-	dir := filepath.Join(config.Dir(), "client")
-	config.EnsureDir(dir, 0700)
-	return dir
-}
-
-func getDestinationFile() string {
-	return filepath.Join(getDestinationDir(), "mumble")
-}
-
-func (c *client) prepareToUseInOurDir() error {
-	c.Lock()
-	defer c.Unlock()
-
-	if !config.FileExists(c.binary) {
-		return errClientBinaryNotFound
-	}
-
-	if c.binary == getDestinationFile() {
-		return nil
-	}
-
-	err := copyBinToDir(c.binary, getDestinationFile())
-	if err != nil {
-		return errClientBinaryInvalidCopy
-	}
-
-	return nil
-}
-
-func copyBinToDir(source, destination string) error {
+func InitSystem(conf *config.ApplicationConfig) (c Instance) {
 	var err error
-	var srcfd *os.File
-	var dstfd *os.File
-	var srcinfo os.FileInfo
 
-	if srcfd, err = os.Open(source); err != nil {
-		return err
-	}
-	defer srcfd.Close()
+	c = newMumbleClient()
+	binary := getMumbleBinary(conf.GetMumbleBinaryPath())
 
-	if dstfd, err = os.Create(destination); err != nil {
-		return err
-	}
-	defer dstfd.Close()
-
-	if _, err = io.Copy(dstfd, srcfd); err != nil {
-		return err
+	if binary == nil {
+		c.Invalidate(errors.New("a valid binary of Mumble is no available in your system"))
+		return
 	}
 
-	if srcinfo, err = os.Stat(source); err != nil {
-		return err
+	if binary.ShouldBeCopied() {
+		err = binary.CopyTo(getTemporaryDestinationForMumble())
+		if err != nil {
+			c.Invalidate(err)
+			return
+		}
 	}
 
-	return os.Chmod(destination, srcinfo.Mode())
+	err = c.SetBinary(binary)
+	if err != nil {
+		c.Invalidate(err)
+		return
+	}
+
+	err = c.EnsureConfiguration()
+	if err != nil {
+		c.Invalidate(err)
+		return
+	}
+
+	return c
 }
 
-// TODO[OB]: we should probably put this outside, using ext to manage it, like the css and other things
-const mumbleInitConfig = `
-[General]
-lastupdate=2
+func (c *client) Invalidate(err error) {
+	c.isValid = false
+	c.err = err
+}
 
-[net]
-tcponly=true
+var errInvalidBinary = errors.New("invalid client binary")
 
-[overlay]
-enable=false
-version=1.3.0
+func (c *client) Validate() error {
+	c.isValid = false
 
-[privacy]
-hideos=true
-
-[shortcuts]
-size=0
-
-[ui]
-WindowLayout=1
-alwaysontop=1
-askonquit=false
-drag=1
-language=es
-usage=false
-`
-
-func (c *client) ensureDirectory() error {
-	config.EnsureDir(c.binaryPath, 0700)
-	config.EnsureDir(filepath.Join(c.binaryPath, "Overlay"), 0700)
-	config.EnsureDir(filepath.Join(c.binaryPath, "Plugins"), 0700)
-	config.EnsureDir(filepath.Join(c.binaryPath, "Themes"), 0700)
-
-	if !config.FileExists(filepath.Join(c.binaryPath, configDataName)) {
-		f, err := os.Create(filepath.Join(c.binaryPath, configDataName))
-		if err != nil {
-			return err
-		}
-		f.Close()
+	if c.binary == nil {
+		c.err = errInvalidBinary
+		return c.err
 	}
 
-	err := c.writeConfigToFile()
-	if err != nil {
-		return err
+	if !c.binary.IsValid() {
+		c.err = errInvalidBinary
+		return c.err
 	}
+
+	c.err = nil
+	c.isValid = true
 
 	return nil
 }
 
-func (c *client) writeConfigToFile() error {
-	if len(c.configFile) == 0 {
-		c.configFile = filepath.Join(c.binaryPath, configFileName)
+func (c *client) CanBeUsed() bool {
+	return c.isValid && c.err == nil
+}
+
+func (c *client) GetBinaryPath() string {
+	if c.isValid && c.binary != nil {
+		return c.binary.GetPath()
+	}
+	return ""
+}
+
+func (c *client) GetBinaryEnv() []string {
+	if c.isValid && c.binary != nil {
+		return c.binary.GetEnv()
+	}
+	return nil
+}
+
+func (c *client) GetLastError() error {
+	return c.err
+}
+
+func (c *client) SetBinary(b Binary) error {
+	if !b.IsValid() {
+		return errors.New("the provided binary is not valid")
 	}
 
-	if config.FileExists(c.configFile) {
+	c.binary = b
+	return c.Validate()
+}
+
+func (c *client) GetTorCommandModifier() tor.ModifyCommand {
+	if !c.CanBeUsed() {
 		return nil
 	}
 
-	c.Lock()
-	defer c.Unlock()
+	if c.torCommandModifier != nil {
+		return c.torCommandModifier
+	}
 
-	return config.SafeWrite(c.configFile, []byte(mumbleInitConfig), 0600)
+	env := c.GetBinaryEnv()
+	if len(env) == 0 {
+		return nil
+	}
+
+	c.torCommandModifier = func(command *exec.Cmd) {
+		command.Env = append(command.Env, env...)
+	}
+
+	return c.torCommandModifier
+}
+
+func getTemporaryDestinationForMumble() string {
+	dir, err := ioutil.TempDir(config.Dir(), "mumble")
+	if err != nil {
+		return ""
+	}
+
+	return dir
 }
