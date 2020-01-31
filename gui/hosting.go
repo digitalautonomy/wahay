@@ -15,7 +15,7 @@ import (
 )
 
 // defaultMumblePort contains the default port used in mumble
-const defaultMumblePort = 64738
+const defaultPortMumble = 64738
 
 type hostData struct {
 	u               *gtkUI
@@ -201,16 +201,16 @@ func (h *hostData) createOnionService(finish chan string) {
 		port := config.GetRandomPort()
 
 		var err error
-		mumblePort := defaultMumblePort
+		portMumble := defaultPortMumble
 		if h.u.config.GetMumblePort() != "" {
-			mumblePort, err = strconv.Atoi(h.u.config.GetMumblePort())
+			portMumble, err = strconv.Atoi(h.u.config.GetMumblePort())
 			if err != nil {
-				mumblePort = defaultMumblePort
+				h.u.reportError(fmt.Sprintf("Configured port mumble is invalid: %s", h.u.config.GetMumblePort()))
 			}
 		}
 
 		controller := h.u.tor.GetController()
-		serviceID, e := controller.CreateNewOnionService("127.0.0.1", port, mumblePort)
+		serviceID, e := controller.CreateNewOnionService("127.0.0.1", port, portMumble)
 		if e != nil {
 			finish <- e.Error()
 			return
