@@ -21,7 +21,6 @@ var (
 const (
 	mumbleBundleLibsDir = "lib"
 	mumbleBundlePath    = "mumble/mumble"
-	mumbleSystemPath    = "/usr/bin/mumble"
 )
 
 // Binary is a representation of the Mumble binary
@@ -204,7 +203,12 @@ func getMumbleBinaryInLocal() *binary {
 }
 
 func getMumbleBinaryInSystem() *binary {
-	return isAnAvailableMumbleBinary(mumbleSystemPath)
+	path, err := exec.LookPath("mumble")
+	if err != nil {
+		return nil
+	}
+
+	return isAnAvailableMumbleBinary(path)
 }
 
 func isAnAvailableMumbleBinary(path string) *binary {
