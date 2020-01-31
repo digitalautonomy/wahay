@@ -18,6 +18,8 @@ type Instance interface {
 	GetBinary() string
 	CanBeUsed() bool
 	GetLastError() error
+	// TODO[OB]: this is exposing too much information. It would be better that both
+	//  tor and mumble have some kind of decorators for managing the commands
 	GetBinaryEnv() []string
 }
 
@@ -31,6 +33,7 @@ type client struct {
 	configFile string
 }
 
+// TODO[OB]: this is very strange to me.
 func (c *client) GetBinary() string {
 	env := c.GetBinaryEnv()
 
@@ -64,9 +67,11 @@ func InitSystem(conf *config.ApplicationConfig) (Instance, error) {
 	dirs := []string{
 		conf.GetMumbleBinaryPath(),
 		getDestinationFile(),
+		// TODO[OB]: why hard code it here? What if it's on the $PATH somewhere else in the system???
 		"/usr/bin/mumble",
 	}
 
+	// TODO[OB]: this puts the bundled mumble at the end of the possibilities. Not what we decided
 	localDir, err := os.Getwd()
 	if err == nil {
 		dirs = append(dirs, filepath.Join(localDir, "mumble/mumble"))
@@ -163,6 +168,7 @@ func copyBinToDir(source, destination string) error {
 	return os.Chmod(destination, srcinfo.Mode())
 }
 
+// TODO[OB]: we should probably put this outside, using ext to manage it, like the css and other things
 const mumbleInitConfig = `
 [General]
 lastupdate=2
