@@ -120,11 +120,11 @@ func getOurInstance(binaryPath string, torsocksPath string, isBundled bool) (Ins
 		return nil, errors.New("error: we can't start our instance")
 	}
 
-	h := i.GetHost()
-	s := i.GetRoutePort()
-	c := i.GetControlPort()
+	host := i.GetHost()
+	routePort := i.GetRoutePort()
+	controlPort := i.GetControlPort()
 
-	checker := NewChecker(true, h, s, c, "")
+	checker := NewCustomChecker(host, routePort, controlPort)
 
 	timeout := time.Now().Add(torStartupTimeout)
 	for {

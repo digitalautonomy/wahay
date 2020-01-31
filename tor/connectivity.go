@@ -23,7 +23,6 @@ type Connectivity interface {
 
 type connectivity struct {
 	host        string
-	checkBinary bool
 	routePort   int
 	controlPort int
 	password    string
@@ -33,15 +32,19 @@ type connectivity struct {
 // be reached and are appropriate for our use
 func NewDefaultChecker() Connectivity {
 	// This checks everything, including binaries against the default ports
-	return NewChecker(true, *config.TorHost, *config.TorRoutePort, *config.TorPort, *config.TorControlPassword)
+	return NewChecker(*config.TorHost, *config.TorRoutePort, *config.TorPort, *config.TorControlPassword)
+}
+
+// NewCustomChecker returns a Tor checker for our custom Tor instance
+func NewCustomChecker(host string, routePort, controlPort int) Connectivity {
+	return NewChecker(host, routePort, controlPort, "")
 }
 
 // NewChecker can check connectivity on custom ports, and optionally
 // avoid checking for binary compatibility
-func NewChecker(checkBinary bool, host string, routePort, controlPort int, password string) Connectivity {
+func NewChecker(host string, routePort, controlPort int, password string) Connectivity {
 	return &connectivity{
 		host:        host,
-		checkBinary: checkBinary,
 		routePort:   routePort,
 		controlPort: controlPort,
 		password:    password,
