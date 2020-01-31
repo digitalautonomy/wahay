@@ -22,6 +22,8 @@ var (
 	TorRoutePort = flag.Int("tor-route-port", DefaultRoutePort, "the route port for Tor")
 	// TorControlPassword contains the command line argument given for the Tor control port password
 	TorControlPassword = flag.String("tor-password", "", "the password for controlling Tor - can not be empty")
+	// Debug contains the command line argument given for debugging
+	Debug = flag.Bool("debug", false, "start Tonio in debugging mode")
 )
 
 // ProcessCommandLineArguments will parse the command line, check that
