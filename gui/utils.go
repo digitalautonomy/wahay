@@ -86,6 +86,18 @@ func (u *gtkUI) setCurrentWindow(win gtki.Window) {
 	}
 }
 
+func (u *gtkUI) hideMainWindow() {
+	if u.mainWindow != nil {
+		u.doInUIThread(u.mainWindow.Hide)
+	}
+}
+
+func (u *gtkUI) showMainWindow() {
+	if u.mainWindow != nil {
+		u.doInUIThread(u.mainWindow.Show)
+	}
+}
+
 func (u *gtkUI) hideCurrentWindow() {
 	if u.currentWindow != nil {
 		u.doInUIThread(u.currentWindow.Hide)
