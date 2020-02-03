@@ -1,6 +1,8 @@
 package gui
 
 import (
+	"strconv"
+
 	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
@@ -188,6 +190,7 @@ func (u *gtkUI) openSettingsWindow() {
 		"on_rawLogFile_button_clicked_event":    s.setCustomLogFile,
 		"on_mumbleBinaryLocation_icon_press":    s.setCustomPathForMumble,
 		"on_mumbleBinaryLocation_clicked_event": s.setCustomPathForMumble,
+		"on_portMumble_insert_text":             s.validatePortMumble,
 	})
 
 	if u.mainWindow != nil {
@@ -197,6 +200,18 @@ func (u *gtkUI) openSettingsWindow() {
 
 	u.currentWindow = s.dialog
 	u.doInUIThread(u.currentWindow.Show)
+}
+
+func (s *settings) validatePortMumble(e gtki.Entry, nt string) {
+	t, _ := e.GetText()
+
+	if _, err := strconv.Atoi(nt); err != nil {
+		s.u.doInUIThread(func() {
+			e.SetText(t)
+			e.SetPosition(len(t))
+		})
+	}
+
 }
 
 func (s *settings) setCustomLogFile() {

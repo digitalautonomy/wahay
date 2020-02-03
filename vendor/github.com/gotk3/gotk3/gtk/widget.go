@@ -259,11 +259,13 @@ func (v *Widget) Activate() bool {
 	return gobool(C.gtk_widget_activate(v.native()))
 }
 
-// TODO(jrick) GdkRectangle
-/*
-func (v *Widget) Intersect() {
+// Intersect is a wrapper around gtk_widget_intersect().
+func (v *Widget) Intersect(area gdk.Rectangle) (*gdk.Rectangle, bool) {
+	var cRect *C.GdkRectangle
+	hadIntersection := C.gtk_widget_intersect(v.native(), nativeGdkRectangle(area), cRect)
+	intersection := gdk.WrapRectangle(uintptr(unsafe.Pointer(cRect)))
+	return intersection, gobool(hadIntersection)
 }
-*/
 
 // IsFocus() is a wrapper around gtk_widget_is_focus().
 func (v *Widget) IsFocus() bool {
@@ -468,6 +470,24 @@ func (v *Widget) GetToplevel() (*Widget, error) {
 		return nil, nilPtrErr
 	}
 	return wrapWidget(glib.Take(unsafe.Pointer(c))), nil
+}
+
+// GetTooltipMarkup is a wrapper around gtk_widget_get_tooltip_markup().
+// A non-nil error is returned in the case that gtk_widget_get_tooltip_markup
+// returns NULL to differentiate between NULL and an empty string.
+func (v *Widget) GetTooltipMarkup() (string, error) {
+	c := C.gtk_widget_get_tooltip_markup(v.native())
+	if c == nil {
+		return "", nilPtrErr
+	}
+	return C.GoString((*C.char)(c)), nil
+}
+
+// SetTooltipMarkup is a wrapper around gtk_widget_set_tooltip_markup().
+func (v *Widget) SetTooltipMarkup(text string) {
+	cstr := C.CString(text)
+	defer C.free(unsafe.Pointer(cstr))
+	C.gtk_widget_set_tooltip_markup(v.native(), (*C.gchar)(cstr))
 }
 
 // GetTooltipText is a wrapper around gtk_widget_get_tooltip_text().

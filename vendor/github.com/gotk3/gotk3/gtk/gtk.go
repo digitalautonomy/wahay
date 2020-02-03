@@ -1685,6 +1685,20 @@ func ColorButtonNewWithRGBA(gdkColor *gdk.RGBA) (*ColorButton, error) {
 	return wrapColorButton(glib.Take(unsafe.Pointer(c))), nil
 }
 
+// SetTitle is a wrapper around gtk_color_button_set_title().
+func (v *ColorButton) SetTitle(title string) {
+	cstr := C.CString(title)
+	defer C.free(unsafe.Pointer(cstr))
+	C.gtk_color_button_set_title(v.native(), (*C.gchar)(cstr))
+}
+
+// GetTitle is a wrapper around gtk_color_button_get_title().
+func (v *ColorButton) GetTitle() string {
+	c := C.gtk_color_button_get_title(v.native())
+	defer C.free(unsafe.Pointer(c))
+	return goString(c)
+}
+
 /*
  * GtkBox
  */
@@ -3214,11 +3228,13 @@ func (v *Entry) GetTextLength() uint16 {
 	return uint16(c)
 }
 
-// TODO(jrick) GdkRectangle
-/*
-func (v *Entry) GetTextArea() {
+// GetTextArea is a wrapper around gtk_entry_get_text_area().
+func (v *Entry) GetTextArea() *gdk.Rectangle {
+	var cRect *C.GdkRectangle
+	C.gtk_entry_get_text_area(v.native(), cRect)
+	textArea := gdk.WrapRectangle(uintptr(unsafe.Pointer(cRect)))
+	return textArea
 }
-*/
 
 // SetVisibility() is a wrapper around gtk_entry_set_visibility().
 func (v *Entry) SetVisibility(visible bool) {
@@ -3577,18 +3593,19 @@ func (v *Entry) SetIconDragSource() {
 }
 */
 
-// GetCurrentIconDragSource() is a wrapper around
-// gtk_entry_get_current_icon_drag_source().
+// GetCurrentIconDragSource() is a wrapper around gtk_entry_get_current_icon_drag_source().
 func (v *Entry) GetCurrentIconDragSource() int {
 	c := C.gtk_entry_get_current_icon_drag_source(v.native())
 	return int(c)
 }
 
-// TODO(jrick) GdkRectangle
-/*
-func (v *Entry) GetIconArea() {
+// GetIconArea is a wrapper around gtk_entry_get_icon_area().
+func (v *Entry) GetIconArea(iconPos EntryIconPosition) *gdk.Rectangle {
+	var cRect *C.GdkRectangle
+	C.gtk_entry_get_icon_area(v.native(), C.GtkEntryIconPosition(iconPos), cRect)
+	iconArea := gdk.WrapRectangle(uintptr(unsafe.Pointer(cRect)))
+	return iconArea
 }
-*/
 
 // SetInputPurpose() is a wrapper around gtk_entry_set_input_purpose().
 func (v *Entry) SetInputPurpose(purpose InputPurpose) {
@@ -4016,6 +4033,31 @@ func (v *FileChooser) GetFilename() string {
 	return s
 }
 
+// SelectFilename is a wrapper around gtk_file_chooser_select_filename().
+func (v *FileChooser) SelectFilename(filename string) bool {
+	cstr := C.CString(filename)
+	defer C.free(unsafe.Pointer(cstr))
+	c := C.gtk_file_chooser_select_filename(v.native(), cstr)
+	return gobool(c)
+}
+
+// UnselectFilename is a wrapper around gtk_file_chooser_unselect_filename().
+func (v *FileChooser) UnselectFilename(filename string) {
+	cstr := C.CString(filename)
+	defer C.free(unsafe.Pointer(cstr))
+	C.gtk_file_chooser_unselect_filename(v.native(), cstr)
+}
+
+// SelectAll is a wrapper around gtk_file_chooser_select_all().
+func (v *FileChooser) SelectAll() {
+	C.gtk_file_chooser_select_all(v.native())
+}
+
+// UnselectAll is a wrapper around gtk_file_chooser_unselect_all().
+func (v *FileChooser) UnselectAll() {
+	C.gtk_file_chooser_unselect_all(v.native())
+}
+
 // GetFilenames is a wrapper around gtk_file_chooser_get_filenames().
 func (v *FileChooser) GetFilenames() (*glib.SList, error) {
 	c := C.gtk_file_chooser_get_filenames(v.native())
@@ -4236,12 +4278,18 @@ func FileChooserDialogNewWith1Button(
 	action FileChooserAction,
 	first_button_text string,
 	first_button_id ResponseType) (*FileChooserDialog, error) {
+
+	var w *C.GtkWindow = nil
+	if parent != nil {
+		w = parent.toWindow()
+	}
+
 	c_title := C.CString(title)
 	defer C.free(unsafe.Pointer(c_title))
 	c_first_button_text := C.CString(first_button_text)
 	defer C.free(unsafe.Pointer(c_first_button_text))
 	c := C.gtk_file_chooser_dialog_new_1(
-		(*C.gchar)(c_title), parent.toWindow(), C.GtkFileChooserAction(action),
+		(*C.gchar)(c_title), w, C.GtkFileChooserAction(action),
 		(*C.gchar)(c_first_button_text), C.int(first_button_id))
 	if c == nil {
 		return nil, nilPtrErr
@@ -4259,6 +4307,12 @@ func FileChooserDialogNewWith2Buttons(
 	first_button_id ResponseType,
 	second_button_text string,
 	second_button_id ResponseType) (*FileChooserDialog, error) {
+
+	var w *C.GtkWindow = nil
+	if parent != nil {
+		w = parent.toWindow()
+	}
+
 	c_title := C.CString(title)
 	defer C.free(unsafe.Pointer(c_title))
 	c_first_button_text := C.CString(first_button_text)
@@ -4266,7 +4320,7 @@ func FileChooserDialogNewWith2Buttons(
 	c_second_button_text := C.CString(second_button_text)
 	defer C.free(unsafe.Pointer(c_second_button_text))
 	c := C.gtk_file_chooser_dialog_new_2(
-		(*C.gchar)(c_title), parent.toWindow(), C.GtkFileChooserAction(action),
+		(*C.gchar)(c_title), w, C.GtkFileChooserAction(action),
 		(*C.gchar)(c_first_button_text), C.int(first_button_id),
 		(*C.gchar)(c_second_button_text), C.int(second_button_id))
 	if c == nil {
@@ -4361,6 +4415,13 @@ func (v *FileFilter) SetName(name string) {
 	cstr := C.CString(name)
 	defer C.free(unsafe.Pointer(cstr))
 	C.gtk_file_filter_set_name(v.native(), (*C.gchar)(cstr))
+}
+
+// AddMimeType is a wrapper around gtk_file_filter_add_mime_type().
+func (v *FileFilter) AddMimeType(mimeType string) {
+	cstr := C.CString(mimeType)
+	defer C.free(unsafe.Pointer(cstr))
+	C.gtk_file_filter_add_mime_type(v.native(), (*C.gchar)(cstr))
 }
 
 // AddPattern is a wrapper around gtk_file_filter_add_pattern().
@@ -5037,6 +5098,17 @@ func (v *LinkButton) GetUri() string {
 func (v *LinkButton) SetUri(uri string) {
 	cstr := C.CString(uri)
 	C.gtk_link_button_set_uri(v.native(), (*C.gchar)(cstr))
+}
+
+// GetVisited is a wrapper around gtk_link_button_get_visited().
+func (v *LinkButton) GetVisited() bool {
+	c := C.gtk_link_button_get_visited(v.native())
+	return gobool(c)
+}
+
+// SetVisited is a wrapper around gtk_link_button_set_visited().
+func (v *LinkButton) SetVisited(visited bool) {
+	C.gtk_link_button_set_visited(v.native(), gbool(visited))
 }
 
 /*
@@ -6298,8 +6370,7 @@ func RadioButtonNew(group *glib.SList) (*RadioButton, error) {
 	return wrapRadioButton(glib.Take(unsafe.Pointer(c))), nil
 }
 
-// RadioButtonNewFromWidget is a wrapper around
-// gtk_radio_button_new_from_widget().
+// RadioButtonNewFromWidget is a wrapper around gtk_radio_button_new_from_widget().
 func RadioButtonNewFromWidget(radioGroupMember *RadioButton) (*RadioButton, error) {
 	c := C.gtk_radio_button_new_from_widget(radioGroupMember.native())
 	if c == nil {
@@ -6308,8 +6379,7 @@ func RadioButtonNewFromWidget(radioGroupMember *RadioButton) (*RadioButton, erro
 	return wrapRadioButton(glib.Take(unsafe.Pointer(c))), nil
 }
 
-// RadioButtonNewWithLabel is a wrapper around
-// gtk_radio_button_new_with_label().
+// RadioButtonNewWithLabel is a wrapper around gtk_radio_button_new_with_label().
 func RadioButtonNewWithLabel(group *glib.SList, label string) (*RadioButton, error) {
 	cstr := C.CString(label)
 	defer C.free(unsafe.Pointer(cstr))
@@ -6320,8 +6390,7 @@ func RadioButtonNewWithLabel(group *glib.SList, label string) (*RadioButton, err
 	return wrapRadioButton(glib.Take(unsafe.Pointer(c))), nil
 }
 
-// RadioButtonNewWithLabelFromWidget is a wrapper around
-// gtk_radio_button_new_with_label_from_widget().
+// RadioButtonNewWithLabelFromWidget is a wrapper around gtk_radio_button_new_with_label_from_widget().
 func RadioButtonNewWithLabelFromWidget(radioGroupMember *RadioButton, label string) (*RadioButton, error) {
 	cstr := C.CString(label)
 	defer C.free(unsafe.Pointer(cstr))
@@ -6336,8 +6405,7 @@ func RadioButtonNewWithLabelFromWidget(radioGroupMember *RadioButton, label stri
 	return wrapRadioButton(glib.Take(unsafe.Pointer(c))), nil
 }
 
-// RadioButtonNewWithMnemonic is a wrapper around
-// gtk_radio_button_new_with_mnemonic()
+// RadioButtonNewWithMnemonic is a wrapper around gtk_radio_button_new_with_mnemonic().
 func RadioButtonNewWithMnemonic(group *glib.SList, label string) (*RadioButton, error) {
 	cstr := C.CString(label)
 	defer C.free(unsafe.Pointer(cstr))
@@ -6348,8 +6416,7 @@ func RadioButtonNewWithMnemonic(group *glib.SList, label string) (*RadioButton, 
 	return wrapRadioButton(glib.Take(unsafe.Pointer(c))), nil
 }
 
-// RadioButtonNewWithMnemonicFromWidget is a wrapper around
-// gtk_radio_button_new_with_mnemonic_from_widget().
+// RadioButtonNewWithMnemonicFromWidget is a wrapper around gtk_radio_button_new_with_mnemonic_from_widget().
 func RadioButtonNewWithMnemonicFromWidget(radioGroupMember *RadioButton, label string) (*RadioButton, error) {
 	cstr := C.CString(label)
 	defer C.free(unsafe.Pointer(cstr))
@@ -8199,6 +8266,22 @@ func (v *ToggleButton) SetMode(drawIndicator bool) {
 	C.gtk_toggle_button_set_mode(v.native(), gbool(drawIndicator))
 }
 
+// Toggled is a wrapper around gtk_toggle_button_toggled().
+func (v *ToggleButton) Toggled() {
+	C.gtk_toggle_button_toggled(v.native())
+}
+
+// GetInconsistent gtk_toggle_button_get_inconsistent().
+func (v *ToggleButton) GetInconsistent() bool {
+	c := C.gtk_toggle_button_get_inconsistent(v.native())
+	return gobool(c)
+}
+
+// SetInconsistent gtk_toggle_button_set_inconsistent().
+func (v *ToggleButton) SetInconsistent(setting bool) {
+	C.gtk_toggle_button_set_inconsistent(v.native(), gbool(setting))
+}
+
 /*
  * GtkToolbar
  */
@@ -9322,7 +9405,6 @@ func (v *TreeSelection) UnselectRange(start, end *TreePath) {
 
 // PathIsSelected() is a wrapper around gtk_tree_selection_path_is_selected().
 func (v *TreeSelection) PathIsSelected(path *TreePath) bool {
-	
 	return gobool(C.gtk_tree_selection_path_is_selected(v.native(), path.native()))
 }
 
@@ -9733,7 +9815,7 @@ func wrapVolumeButton(obj *glib.Object) *VolumeButton {
 	return &VolumeButton{ScaleButton{Button{Bin{Container{Widget{glib.InitiallyUnowned{obj}}}}, actionable}}}
 }
 
-// VolumeButtonNew() is a wrapper around gtk_button_new().
+// VolumeButtonNew is a wrapper around gtk_volume_button_new().
 func VolumeButtonNew() (*VolumeButton, error) {
 	c := C.gtk_volume_button_new()
 	if c == nil {

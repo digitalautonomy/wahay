@@ -11,7 +11,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a94f7fcd4ef6fed67918427d7003ed6b479479053a59309a8209ff8939a72b74"
+  digest = "1:b0d6c11025d1d6ad9e19c01a3e992310eb42ed70652bdf078de3a418af096999"
   name = "github.com/coyim/gotk3adapter"
   packages = [
     "gdka",
@@ -24,7 +24,7 @@
     "gtki",
   ]
   pruneopts = "UT"
-  revision = "4674d183fa9172c0ae456b8204766d51624c9b93"
+  revision = "0a7e66c99a7ad369596818e126313756c5fc2a88"
 
 [[projects]]
   branch = "master"
@@ -51,12 +51,12 @@
   revision = "c109af8d88b4b9cb77afe1f18572c66027cf8c0b"
 
 [[projects]]
-  digest = "1:573ca21d3669500ff845bdebee890eb7fc7f0f50c59f2132f2a0c6b03d85086a"
+  digest = "1:d1e35b720b5f5156502ffdd174000c81295919293735342da78582e4dc7a8bcd"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   pruneopts = "UT"
-  revision = "6c65a5562fc06764971b7c5d05c76c75e84bdbf7"
-  version = "v1.3.2"
+  revision = "d23c5127dc24889085f8ccea5c9d560a57a879d8"
+  version = "v1.3.3"
 
 [[projects]]
   digest = "1:e62657cca9badaa308d86e7716083e4c5933bb78e30a17743fc67f50be26f6f4"
@@ -68,7 +68,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4b76d9d6e0ed67b8a61bfef967786e5aca1160995a0081b45e308452c74128e3"
+  digest = "1:d73a7c75e41cc7f723939374b92eb5be1fca38be826255d6af366d759134e7e9"
   name = "github.com/gotk3/gotk3"
   packages = [
     "cairo",
@@ -78,7 +78,7 @@
     "pango",
   ]
   pruneopts = "UT"
-  revision = "d3629b451bb5ab5b5f7b5adeebe965b767eff08a"
+  revision = "69caac910e503eb4c7d2de1c82f36de61dca361a"
 
 [[projects]]
   digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
@@ -136,7 +136,7 @@
     "sha3",
   ]
   pruneopts = "UT"
-  revision = "61a87790db17894570dfb32dbaa0a4af9ce60cb4"
+  revision = "69ecbb4d6d5dab05e49161c6e77ea40a030884e1"
 
 [[projects]]
   branch = "master"
@@ -147,18 +147,18 @@
     "proxy",
   ]
   pruneopts = "UT"
-  revision = "c0dbc17a35534bf2e581d7a942408dc936316da4"
+  revision = "16171245cfb220d5317888b716d69c1fb4e7992b"
 
 [[projects]]
   branch = "master"
-  digest = "1:2390cc9215d5adf71b9d76564dd3795e692e5b4602d777190b33fda90c21f213"
+  digest = "1:d1d5dd1405c1445d9d854bf196dea331fb60aa801ad0b7b3fc7cf69a34a0cf7b"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
   ]
   pruneopts = "UT"
-  revision = "548cf772de5052aa878ccb47cdeb7d262b75c8ec"
+  revision = "d101bd2416d505c0448a6ce8a282482678040a89"
 
 [[projects]]
   branch = "v1"

@@ -422,6 +422,13 @@ func PopoverNew(relative IWidget) (*Popover, error) {
 	return wrapPopover(glib.Take(unsafe.Pointer(c))), nil
 }
 
+// BindModel is a wrapper around gtk_popover_bind_model().
+func (v *Popover) BindModel(menuModel *glib.MenuModel, actionNamespace string) {
+	cstr := C.CString(actionNamespace)
+	defer C.free(unsafe.Pointer(cstr))
+	C.gtk_popover_bind_model(v.native(), C.toGMenuModel(unsafe.Pointer(menuModel.Native())), (*C.gchar)(cstr))
+}
+
 // SetRelativeTo is a wrapper around gtk_popover_set_relative_to().
 func (v *Popover) SetRelativeTo(relative IWidget) {
 	C.gtk_popover_set_relative_to(v.native(), relative.toWidget())
@@ -442,11 +449,11 @@ func (v *Popover) SetPointingTo(rect gdk.Rectangle) {
 }
 
 // GetPointingTo is a wrapper around gtk_popover_get_pointing_to().
-func (v *Popover) GetPointingTo(rect *gdk.Rectangle) bool {
-	var crect C.GdkRectangle
-	isSet := C.gtk_popover_get_pointing_to(v.native(), &crect)
-	*rect = *gdk.WrapRectangle(uintptr(unsafe.Pointer(&crect)))
-	return gobool(isSet)
+func (v *Popover) GetPointingTo() (*gdk.Rectangle, bool) {
+	var cRect *C.GdkRectangle
+	isSet := C.gtk_popover_get_pointing_to(v.native(), cRect)
+	rect := gdk.WrapRectangle(uintptr(unsafe.Pointer(cRect)))
+	return rect, gobool(isSet)
 }
 
 // SetPosition is a wrapper around gtk_popover_set_position().
