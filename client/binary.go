@@ -9,8 +9,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sync"
-
-	"autonomia.digital/tonio/app/config"
 )
 
 var (
@@ -206,7 +204,7 @@ func getMumbleBinaryInLocalDir() *binary {
 }
 
 func getMumbleBinaryInDataDir() *binary {
-	return isAnAvailableMumbleBinary(filepath.Join(config.Dir(), mumbleBundlePath))
+	return isAnAvailableMumbleBinary(filepath.Join(dataHomeDir(), mumbleBundlePath))
 }
 
 func getMumbleBinaryInSystem() *binary {
