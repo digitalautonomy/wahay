@@ -164,7 +164,7 @@ func (c *client) Destroy() {
 }
 
 func getTemporaryDestinationForMumble() string {
-	dir, err := ioutil.TempDir(config.Dir(), "mumble")
+	dir, err := ioutil.TempDir("", "mumble")
 	if err != nil {
 		return ""
 	}
