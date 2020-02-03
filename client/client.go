@@ -3,6 +3,7 @@ package client
 import (
 	"errors"
 	"io/ioutil"
+	"log"
 	"os/exec"
 	"sync"
 
@@ -12,21 +13,18 @@ import (
 
 // Instance is a representation of the Mumble client for Tonio
 type Instance interface {
-	Invalidate(err error)
 	CanBeUsed() bool
 	GetBinaryPath() string
-	GetBinaryEnv() []string
 	GetLastError() error
-	SetBinary(Binary) error
-	Validate() error
 	EnsureConfiguration() error
 	GetTorCommandModifier() tor.ModifyCommand
+	Log()
 	Destroy()
 }
 
 type client struct {
 	sync.Mutex
-	binary             Binary
+	binary             *binary
 	isValid            bool
 	configFile         string
 	err                error
@@ -45,48 +43,47 @@ func newMumbleClient() *client {
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
-func InitSystem(conf *config.ApplicationConfig) (c Instance) {
+func InitSystem(conf *config.ApplicationConfig) Instance {
 	var err error
 
-	c = newMumbleClient()
-	binary := getMumbleBinary(conf.GetPathMumble())
+	c := newMumbleClient()
+	b := getMumbleBinary(conf.GetPathMumble())
 
-	if binary == nil {
-		c.Invalidate(errors.New("a valid binary of Mumble is no available in your system"))
-		return
+	if b == nil {
+		c.invalidate(errors.New("a valid binary of Mumble is no available in your system"))
+		return c
 	}
 
-	if binary.ShouldBeCopied() {
-		err = binary.CopyTo(getTemporaryDestinationForMumble())
+	if b.shouldBeCopied {
+		err = b.copyTo(getTemporaryDestinationForMumble())
 		if err != nil {
-			c.Invalidate(err)
-			return
+			c.invalidate(err)
+			return c
 		}
 	}
 
-	err = c.SetBinary(binary)
+	err = c.setBinary(b)
 	if err != nil {
-		c.Invalidate(err)
-		return
+		c.invalidate(err)
+		return c
 	}
 
 	err = c.EnsureConfiguration()
 	if err != nil {
-		c.Invalidate(err)
-		return
+		c.invalidate(err)
 	}
 
 	return c
 }
 
-func (c *client) Invalidate(err error) {
+func (c *client) invalidate(err error) {
 	c.isValid = false
 	c.err = err
 }
 
 var errInvalidBinary = errors.New("invalid client binary")
 
-func (c *client) Validate() error {
+func (c *client) validate() error {
 	c.isValid = false
 
 	if c.binary == nil {
@@ -94,7 +91,7 @@ func (c *client) Validate() error {
 		return c.err
 	}
 
-	if !c.binary.IsValid() {
+	if !c.binary.isValid {
 		c.err = errInvalidBinary
 		return c.err
 	}
@@ -111,14 +108,14 @@ func (c *client) CanBeUsed() bool {
 
 func (c *client) GetBinaryPath() string {
 	if c.isValid && c.binary != nil {
-		return c.binary.GetPath()
+		return c.binary.getPath()
 	}
 	return ""
 }
 
-func (c *client) GetBinaryEnv() []string {
+func (c *client) getBinaryEnv() []string {
 	if c.isValid && c.binary != nil {
-		return c.binary.GetEnv()
+		return c.binary.getEnv()
 	}
 	return nil
 }
@@ -127,13 +124,13 @@ func (c *client) GetLastError() error {
 	return c.err
 }
 
-func (c *client) SetBinary(b Binary) error {
-	if !b.IsValid() {
+func (c *client) setBinary(b *binary) error {
+	if !b.isValid {
 		return errors.New("the provided binary is not valid")
 	}
 
 	c.binary = b
-	return c.Validate()
+	return c.validate()
 }
 
 func (c *client) GetTorCommandModifier() tor.ModifyCommand {
@@ -145,7 +142,7 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 		return c.torCommandModifier
 	}
 
-	env := c.GetBinaryEnv()
+	env := c.getBinaryEnv()
 	if len(env) == 0 {
 		return nil
 	}
@@ -157,8 +154,13 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 	return c.torCommandModifier
 }
 
+func (c *client) Log() {
+	log.Printf("Using Mumble located at: %s\n", c.GetBinaryPath())
+	log.Printf("Using Mumble environment variables: %s\n", c.getBinaryEnv())
+}
+
 func (c *client) Destroy() {
-	c.binary.Cleanup()
+	c.binary.cleanup()
 }
 
 func getTemporaryDestinationForMumble() string {

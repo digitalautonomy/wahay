@@ -7,8 +7,6 @@ import (
 	"os/exec"
 	"sync"
 
-	log "github.com/sirupsen/logrus"
-
 	"autonomia.digital/tonio/app/client"
 	"autonomia.digital/tonio/app/hosting"
 )
@@ -26,8 +24,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 
 		u.client = c
 
-		log.Printf("Using Mumble located at: %s\n", u.client.GetBinaryPath())
-		log.Printf("Using Mumble environment variables: %s\n", u.client.GetBinaryEnv())
+		u.client.Log()
 	}()
 }
 

@@ -23,17 +23,6 @@ const (
 	mumbleBundlePath    = "mumble/mumble"
 )
 
-// Binary is a representation of the Mumble binary
-type Binary interface {
-	GetPath() string
-	GetEnv() []string
-	ShouldBeCopied() bool
-	CopyTo(path string) error
-	BinaryExists() bool
-	IsValid() bool
-	Cleanup()
-}
-
 type binary struct {
 	sync.Mutex
 	path           string
@@ -45,11 +34,11 @@ type binary struct {
 	shouldBeCopied bool
 }
 
-func (b *binary) GetPath() string {
+func (b *binary) getPath() string {
 	return b.path
 }
 
-func (b *binary) GetEnv() []string {
+func (b *binary) getEnv() []string {
 	if !b.isBundle {
 		return nil
 	}
@@ -65,16 +54,12 @@ func (b *binary) GetEnv() []string {
 	return b.env
 }
 
-func (b *binary) ShouldBeCopied() bool {
-	return b.shouldBeCopied
-}
-
-func (b *binary) BinaryExists() bool {
+func (b *binary) binaryExists() bool {
 	return fileExists(b.path)
 }
 
-func (b *binary) CopyTo(path string) error {
-	if !b.isValid || !b.BinaryExists() {
+func (b *binary) copyTo(path string) error {
+	if !b.isValid || !b.binaryExists() {
 		return errInvalidBinaryFile
 	}
 
@@ -99,11 +84,7 @@ func (b *binary) CopyTo(path string) error {
 	return nil
 }
 
-func (b *binary) IsValid() bool {
-	return b.isValid
-}
-
-func (b *binary) Cleanup() {
+func (b *binary) cleanup() {
 	b.remove()
 }
 
@@ -164,7 +145,7 @@ func newMumbleBinary(path string) *binary {
 	return b
 }
 
-func getMumbleBinary(userConfiguredPath string) Binary {
+func getMumbleBinary(userConfiguredPath string) *binary {
 	binaries := []func() *binary{
 		getMumbleBinaryInConf(userConfiguredPath),
 		getMumbleBinaryInLocalDir,
