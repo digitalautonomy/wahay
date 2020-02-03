@@ -179,7 +179,7 @@ func getMumbleBinaryInConf(path string) func() *binary {
 }
 
 func getMumbleBinaryInLocalDir() *binary {
-	localDir, err := os.Getwd()
+	localDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return nil
 	}
