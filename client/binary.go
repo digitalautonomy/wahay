@@ -31,8 +31,7 @@ type Binary interface {
 	CopyTo(path string) error
 	BinaryExists() bool
 	IsValid() bool
-	ShouldBeRemoved() bool
-	Remove()
+	Cleanup()
 }
 
 type binary struct {
@@ -104,12 +103,16 @@ func (b *binary) IsValid() bool {
 	return b.isValid
 }
 
-func (b *binary) ShouldBeRemoved() bool {
+func (b *binary) Cleanup() {
+	b.remove()
+}
+
+func (b *binary) shouldBeRemoved() bool {
 	return b.isTemporary
 }
 
-func (b *binary) Remove() {
-	if b.ShouldBeRemoved() {
+func (b *binary) remove() {
+	if b.shouldBeRemoved() {
 		err := os.RemoveAll(filepath.Dir(b.path))
 		if err != nil {
 			log.Printf("An error occurred while removing Mumble temp directory: %s", err.Error())

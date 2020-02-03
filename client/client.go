@@ -158,9 +158,7 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 }
 
 func (c *client) Destroy() {
-	if c.binary.ShouldBeRemoved() {
-		c.binary.Remove()
-	}
+	c.binary.Cleanup()
 }
 
 func getTemporaryDestinationForMumble() string {
