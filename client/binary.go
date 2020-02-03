@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"sync"
 )
 
 var (
@@ -24,7 +23,6 @@ const (
 )
 
 type binary struct {
-	sync.Mutex
 	path           string
 	env            []string
 	isValid        bool
@@ -106,9 +104,6 @@ func (b *binary) copyBinaryToDir(destination string) error {
 	var srcfd *os.File
 	var dstfd *os.File
 	var srcinfo os.FileInfo
-
-	b.Lock()
-	defer b.Unlock()
 
 	if srcfd, err = os.Open(b.path); err != nil {
 		return err
