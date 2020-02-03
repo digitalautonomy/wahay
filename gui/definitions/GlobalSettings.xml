@@ -644,13 +644,32 @@
                           <object class="GtkEntry" id="mumblePort">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="margin_left">10</property>
+                            <property name="margin_right">10</property>
                             <property name="input_purpose">digits</property>
                             <signal name="insert-text" handler="on_portMumble_insert_text" swapped="no"/>
+                            <style>
+                              <class name="form-control"/>
+                            </style>
                           </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="lblPortMumbleMessage">
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Port out of range</property>
+                            <style>
+                              <class name="label-settings-warning"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </object>
@@ -661,7 +680,21 @@
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin_top">10</property>
+                        <property name="label" translatable="yes">The range of valid ports are between 1 and 65535</property>
+                        <style>
+                          <class name="control-help"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
                     </child>
                   </object>
                   <packing>

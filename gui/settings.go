@@ -1,6 +1,7 @@
 package gui
 
 import (
+	"fmt"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -23,6 +24,7 @@ type settings struct {
 	btnRawLogFile              gtki.Button
 	mumbleBinaryLocation       gtki.Entry
 	mumblePort                 gtki.Entry
+	lblPortMumbleMessage       gtki.Label
 
 	autoJoinOriginalValue          bool
 	persistConfigFileOriginalValue bool
@@ -57,6 +59,7 @@ func createSettings(u *gtkUI) *settings {
 		"btnRawLogFile", &s.btnRawLogFile,
 		"mumbleBinaryLocation", &s.mumbleBinaryLocation,
 		"mumblePort", &s.mumblePort,
+		"lblPortMumbleMessage", &s.lblPortMumbleMessage,
 	)
 
 	s.init()
@@ -204,11 +207,22 @@ func (u *gtkUI) openSettingsWindow() {
 
 func (s *settings) validatePortMumble(e gtki.Entry, nt string) {
 	t, _ := e.GetText()
+	c := fmt.Sprintf("%s%s", t, nt)
+
+	if c == "" {
+		s.lblPortMumbleMessage.SetVisible(false)
+		return
+	}
 
 	if _, err := strconv.Atoi(nt); err != nil {
 		s.u.doInUIThread(func() {
 			e.SetText(t)
 			e.SetPosition(len(t))
+		})
+	} else {
+		s.u.doInUIThread(func() {
+			tn, _ := strconv.Atoi(c)
+			s.lblPortMumbleMessage.SetVisible(!config.CheckPort(tn))
 		})
 	}
 }

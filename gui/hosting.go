@@ -14,7 +14,7 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-// defaultMumblePort contains the default port used in mumble
+// defaultPortMumble contains the default port used in mumble
 const defaultPortMumble = 64738
 
 type hostData struct {
@@ -198,25 +198,25 @@ func (h *hostData) createOnionService(finish chan string) {
 	if h.u.tor != nil {
 		h.u.ensureServerCollection()
 
-		port := config.GetRandomPort()
+		rp := config.GetRandomPort()
 
 		var err error
-		portMumble := defaultPortMumble
+		pm := defaultPortMumble
 		if h.u.config.GetPortMumble() != "" {
-			portMumble, err = strconv.Atoi(h.u.config.GetPortMumble())
+			pm, err = strconv.Atoi(h.u.config.GetPortMumble())
 			if err != nil {
 				h.u.reportError(fmt.Sprintf("Configured port mumble is invalid: %s", h.u.config.GetPortMumble()))
 			}
 		}
 
 		controller := h.u.tor.GetController()
-		serviceID, e := controller.CreateNewOnionService("127.0.0.1", port, portMumble)
+		serviceID, e := controller.CreateNewOnionService("127.0.0.1", rp, pm)
 		if e != nil {
 			finish <- e.Error()
 			return
 		}
 
-		h.serverPort = port
+		h.serverPort = rp
 		h.serviceID = serviceID
 	}
 
