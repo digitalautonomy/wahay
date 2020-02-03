@@ -211,7 +211,6 @@ func (s *settings) validatePortMumble(e gtki.Entry, nt string) {
 			e.SetPosition(len(t))
 		})
 	}
-
 }
 
 func (s *settings) setCustomLogFile() {

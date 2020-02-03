@@ -232,7 +232,7 @@ func FindLibTorsocks(filePath string) (string, error) {
 	}
 
 	//Search in bundle path
-	pathCWD, err := os.Getwd()
+	pathCWD, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err == nil {
 		c := filepath.Join(pathCWD, "tor/")
 		f = filepath.Join(c, libTorsocks)
