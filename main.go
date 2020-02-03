@@ -9,15 +9,15 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const debug = false
-const debugLogSource = false
-
 func initializeLogging() {
 	log.SetLevel(log.InfoLevel)
-	if debug {
+	if *config.Debug {
 		log.SetLevel(log.DebugLevel)
 	}
-	log.SetReportCaller(debugLogSource)
+	if *config.Trace {
+		log.SetLevel(log.TraceLevel)
+	}
+	log.SetReportCaller(*config.DebugFunctionCalls)
 }
 
 func main() {

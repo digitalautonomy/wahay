@@ -24,6 +24,10 @@ var (
 	TorControlPassword = flag.String("tor-password", "", "the password for controlling Tor - can not be empty")
 	// Debug contains the command line argument given for debugging
 	Debug = flag.Bool("debug", false, "start Tonio in debugging mode")
+	// Trace contains the command line argument given for debugging
+	Trace = flag.Bool("trace", false, "start Tonio in tracing mode")
+	// DebugFunctionCalls contains the command line argument given for debugging
+	DebugFunctionCalls = flag.Bool("debug-function-calls", false, "trace function calls in logging")
 )
 
 // ProcessCommandLineArguments will parse the command line, check that
