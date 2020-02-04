@@ -187,6 +187,8 @@ func (h *hostData) createOnionService(finish chan string) {
 			pm, err = strconv.Atoi(h.u.config.GetPortMumble())
 			if err != nil {
 				h.u.reportError(fmt.Sprintf("Configured port mumble is invalid: %s", h.u.config.GetPortMumble()))
+				finish <- err.Error()
+				return
 			}
 		}
 
