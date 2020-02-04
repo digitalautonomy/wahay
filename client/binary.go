@@ -128,8 +128,7 @@ func (b *binary) copyBinaryToDir(destination string) error {
 
 func newMumbleBinary(path string) *binary {
 	b := &binary{
-		path:           path,
-		isValid:        false,
+		isValid:        true,
 		isBundle:       false,
 		env:            []string{},
 		lastError:      nil,
@@ -137,13 +136,40 @@ func newMumbleBinary(path string) *binary {
 		isTemporary:    false,
 	}
 
+	p, err := getRealMumbleBinaryPath(path)
+	if len(p) == 0 || err != nil {
+		b.isValid = false
+		return b
+	}
+
+	b.path = p
+
 	return b
+}
+
+func getRealMumbleBinaryPath(path string) (string, error) {
+	if len(path) == 0 {
+		return "", errors.New("invalid binary path")
+	}
+
+	if isADirectory(path) {
+		// TODO: should we find all the Mumble binary possibilities inside the directory?
+		// Examples:
+		// 	 - mumble
+		//   - mumble-0.1.0.4
+		//   - mumble-beta
+		//   - mumble-bin
+		return filepath.Join(path, mumbleBundlePath), nil
+	}
+
+	return path, nil
 }
 
 func getMumbleBinary(userConfiguredPath string) *binary {
 	binaries := []func() *binary{
 		getMumbleBinaryInConf(userConfiguredPath),
 		getMumbleBinaryInLocalDir,
+		getMumbleBinaryInCurrentWorkingDir,
 		getMumbleBinaryInDataDir,
 		getMumbleBinaryInSystem,
 	}
@@ -182,6 +208,15 @@ func getMumbleBinaryInLocalDir() *binary {
 	return isAnAvailableMumbleBinary(filepath.Join(localDir, mumbleBundlePath))
 }
 
+func getMumbleBinaryInCurrentWorkingDir() *binary {
+	cwDir, err := os.Getwd()
+	if err != nil {
+		return nil
+	}
+
+	return isAnAvailableMumbleBinary(filepath.Join(cwDir, mumbleBundlePath))
+}
+
 func getMumbleBinaryInDataDir() *binary {
 	return isAnAvailableMumbleBinary(filepath.Join(dataHomeDir(), mumbleBundlePath))
 }
@@ -199,15 +234,14 @@ func isAnAvailableMumbleBinary(path string) *binary {
 	log.Printf("Checking Mumble binary in: <%s>", path)
 
 	b := newMumbleBinary(path)
-
-	if len(path) == 0 || !fileExists(path) {
-		b.lastError = fmt.Errorf("the Mumble binary path is invalid or do not exists")
+	if !b.isValid {
 		return b
 	}
 
-	command := exec.Command(path, "-h")
+	bin := b.path
+	command := exec.Command(bin, "-h")
 
-	isBundle, env := checkLibsDependenciesInPath(path)
+	isBundle, env := checkLibsDependenciesInPath(b.path)
 	if isBundle && len(env) > 0 {
 		command.Env = append(os.Environ(), env...)
 		b.env = append(b.env, env...)
