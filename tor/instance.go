@@ -28,14 +28,7 @@ type Instance interface {
 	Start() error
 	Destroy()
 	GetController() Control
-	GetHost() string
-	GetControlPort() int
-	GetRoutePort() int
 	Exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error)
-	GetPathBinary() string
-	SetPathBinary(path string)
-	GetBundled() bool
-	SetBundled(bool)
 }
 
 type instance struct {
@@ -47,12 +40,11 @@ type instance struct {
 	dataDirectory string
 	password      string
 	useCookie     bool
-	controller    Control
 	isLocal       bool
-	runningTor    *runningTor
-	pathBinary    string
 	pathTorsocks  string
-	isBundled     bool
+	controller    Control
+	runningTor    *runningTor
+	binary        *binary
 }
 
 type runningTor struct {
@@ -112,21 +104,15 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 const torStartupTimeout = 2 * time.Minute
 
-func getOurInstance(b *binary, conf *config.ApplicationConfig) (Instance, error) {
-	i, _ := NewInstance(b.path, conf.GetPathTorSocks())
-
-	i.SetBundled(b.isBundle)
+func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error) {
+	i, _ := newInstance(b, conf.GetPathTorSocks())
 
 	err := i.Start()
 	if err != nil {
 		return nil, errors.New("error: we can't start our instance")
 	}
 
-	host := i.GetHost()
-	routePort := i.GetRoutePort()
-	controlPort := i.GetControlPort()
-
-	checker := NewCustomChecker(host, routePort, controlPort)
+	checker := NewCustomChecker(i.controlHost, i.socksPort, i.controlPort)
 
 	timeout := time.Now().Add(torStartupTimeout)
 	for {
@@ -146,9 +132,8 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (Instance, error)
 	}
 }
 
-// NewInstance initialized our Tor Control Port instance
-func NewInstance(pathBinary string, torsocksPath string) (Instance, error) {
-	i := createOurInstance(pathBinary, torsocksPath)
+func newInstance(b *binary, torsocksPath string) (*instance, error) {
+	i := createOurInstance(b, torsocksPath)
 
 	err := i.createConfigFile()
 
@@ -158,9 +143,9 @@ func NewInstance(pathBinary string, torsocksPath string) (Instance, error) {
 // Start our Tor Control Port
 func (i *instance) Start() error {
 	ctx, cancelFunc := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, i.pathBinary, "-f", i.configFile)
+	cmd := exec.CommandContext(ctx, i.binary.path, "-f", i.configFile)
 
-	if i.isBundled {
+	if i.binary.isBundle {
 		log.Println("Tor isBundled..")
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, "LD_LIBRARY_PATH=.")
@@ -204,21 +189,6 @@ func (i *instance) GetController() Control {
 	return i.controller
 }
 
-// GetHost returns the instance host name
-func (i *instance) GetHost() string {
-	return i.controlHost
-}
-
-// GetControlPort returns the instance control port
-func (i *instance) GetControlPort() int {
-	return i.controlPort
-}
-
-// GetRoutePort returns the instance socket port
-func (i *instance) GetRoutePort() int {
-	return i.socksPort
-}
-
 // Destroy close our instance running
 func (i *instance) Destroy() {
 	_ = os.RemoveAll(filepath.Dir(i.configFile))
@@ -232,24 +202,6 @@ func (i *instance) Destroy() {
 		i.runningTor.closeTorService()
 		i.runningTor = nil
 	}
-}
-
-// GetPathBinary return the value of the property pathBinary
-func (i *instance) GetPathBinary() string {
-	return i.pathBinary
-}
-
-// SetPathBinary set the value for the property pathBinary
-func (i *instance) SetPathBinary(path string) {
-	i.pathBinary = path
-}
-
-func (i *instance) GetBundled() bool {
-	return i.isBundled
-}
-
-func (i *instance) SetBundled(bundled bool) {
-	i.isBundled = bundled
 }
 
 // RunningCommand is a representation of a torify command
@@ -318,7 +270,7 @@ func ensureTonioDataDir() {
 	_ = os.MkdirAll(tonioDataDir, 0700)
 }
 
-func createOurInstance(pathBinary string, torsocksPath string) *instance {
+func createOurInstance(b *binary, torsocksPath string) *instance {
 	d, _ := ioutil.TempDir(tonioDataDir, "tor")
 	controlPort, routePort := findAvailableTorPorts()
 
@@ -333,8 +285,8 @@ func createOurInstance(pathBinary string, torsocksPath string) *instance {
 		useCookie:     true,
 		isLocal:       false,
 		controller:    nil,
-		pathBinary:    pathBinary,
 		pathTorsocks:  torsocksPath,
+		binary:        b,
 	}
 
 	return i
