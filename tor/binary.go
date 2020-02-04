@@ -53,7 +53,7 @@ func findTorBinaryInConfigPath(conf *config.ApplicationConfig) func() (*binary, 
 	return func() (*binary, bool, error) {
 		path := conf.GetPathTor()
 
-		log.Printf("findTorBinaryInConfigPath(%s)", path)
+		log.Debugf("findTorBinaryInConfigPath(%s)", path)
 
 		// No configured path by the user to find Tor binary
 		if len(path) == 0 {
@@ -78,15 +78,15 @@ func findTorBinaryInConfigPath(conf *config.ApplicationConfig) func() (*binary, 
 
 func findTorBinaryInDataDir() (b *binary, valid bool, err error) {
 	paths := []string{
-		"tor/tor",
-		"tonio/tor/tor",
-		"bin/tonio/tor/tor",
+		"tor",
+		"tonio/tor",
+		"bin/tonio/tor",
 	}
 
 	for _, subdir := range paths {
 		path := filepath.Join(config.XdgDataHome(), subdir)
 
-		log.Printf("findTorBinaryInDataDir(%s)", path)
+		log.Debugf("findTorBinaryInDataDir(%s)", path)
 
 		b, valid, err := isThereConfiguredTorBinary(path)
 		if valid || err != nil {
@@ -98,15 +98,15 @@ func findTorBinaryInDataDir() (b *binary, valid bool, err error) {
 }
 
 func findTorBinaryInCurrentWorkingDir() (b *binary, valid bool, err error) {
-	log.Println("findTorBinaryInCurrentWorkingDir")
+	log.Debugf("findTorBinaryInCurrentWorkingDir")
 	pathCWD, err := os.Getwd()
 	if err != nil {
 		return nil, false, nil
 	}
 
 	paths := []string{
-		"tor/tor",
-		"bin/tor/tor",
+		"tor",
+		"bin/tor",
 	}
 
 	for _, subdir := range paths {
@@ -127,9 +127,9 @@ func findTorBinaryInTonioDir() (b *binary, valid bool, err error) {
 		return nil, false, nil
 	}
 
-	path := filepath.Join(abs, "tor/tor")
+	path := filepath.Join(abs, "tor")
 
-	log.Printf("findTorBinaryInTonioDir(%s)", path)
+	log.Debugf("findTorBinaryInTonioDir(%s)", path)
 
 	return isThereConfiguredTorBinary(path)
 }
@@ -140,7 +140,7 @@ func findTorBinaryInSystem() (b *binary, valid bool, err error) {
 		return nil, false, nil
 	}
 
-	log.Printf("findTorBinaryInSystem(%s)", path)
+	log.Debugf("findTorBinaryInSystem(%s)", path)
 
 	return isThereConfiguredTorBinary(path)
 }
@@ -151,9 +151,25 @@ func isThereConfiguredTorBinary(path string) (b *binary, valid bool, err error) 
 	}
 
 	if isADirectory(path) {
-		path = filepath.Join(path, "tor")
+		list, err := listPossibleTorBinary(path)
+		if err != nil {
+			return nil, false, errors.New("no tor binary found in the directory")
+		}
+
+		for _, p := range list {
+			b, valid, err := isThereConfiguredTorBinaryHelper(p)
+			if valid || err != nil {
+				return b, valid, err
+			}
+		}
+
+		return nil, false, nil
 	}
 
+	return isThereConfiguredTorBinaryHelper(path)
+}
+
+func isThereConfiguredTorBinaryHelper(path string) (b *binary, valid bool, err error) {
 	b = &binary{
 		path:     path,
 		isValid:  false,
@@ -174,8 +190,6 @@ func isThereConfiguredTorBinary(path string) (b *binary, valid bool, err error) 
 }
 
 func checkTorIsABundle(b *binary) bool {
-	log.Println("checkTorIsABundle")
-
 	libs := []string{
 		"libcrypto*.so.*",
 		"libevent*.so.*",
@@ -290,4 +304,29 @@ func isADirectory(path string) bool {
 	}
 
 	return dir.IsDir()
+}
+
+func listPossibleTorBinary(path string) ([]string, error) {
+	result := make([]string, 0)
+
+	matches, _ := filepath.Glob(filepath.Join(path, "tor*"))
+
+	for _, match := range matches {
+		filename := filepath.Base(match)
+
+		if filename == "tor" {
+			result = append(result, match)
+		} else {
+			diff, err := compareVersions(extractVersionFrom([]byte(filename)), MinSupportedVersion)
+			if err == nil && diff >= 0 {
+				result = append(result, match)
+			}
+		}
+	}
+
+	if len(result) == 0 {
+		return nil, errors.New("no binaries found in the directory")
+	}
+
+	return result, nil
 }
