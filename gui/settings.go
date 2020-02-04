@@ -205,24 +205,24 @@ func (u *gtkUI) openSettingsWindow() {
 	u.doInUIThread(u.currentWindow.Show)
 }
 
-func (s *settings) validatePortMumble(e gtki.Entry, nt string) {
-	t, _ := e.GetText()
-	c := fmt.Sprintf("%s%s", t, nt)
+func (s *settings) validatePortMumble(e gtki.Entry, newText string) {
+	lastText, _ := e.GetText()
+	completeText := fmt.Sprintf("%s%s", lastText, newText)
 
-	if c == "" {
+	if completeText == "" {
 		s.lblPortMumbleMessage.SetVisible(false)
 		return
 	}
 
-	if _, err := strconv.Atoi(nt); err != nil {
+	if _, err := strconv.Atoi(newText); err != nil {
 		s.u.doInUIThread(func() {
-			e.SetText(t)
-			e.SetPosition(len(t))
+			e.SetText(lastText)
+			e.SetPosition(len(lastText))
 		})
 	} else {
 		s.u.doInUIThread(func() {
-			tn, _ := strconv.Atoi(c)
-			s.lblPortMumbleMessage.SetVisible(!config.CheckPort(tn))
+			pn, _ := strconv.Atoi(completeText)
+			s.lblPortMumbleMessage.SetVisible(!config.CheckPort(pn))
 		})
 	}
 }
