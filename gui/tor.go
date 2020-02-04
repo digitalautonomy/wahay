@@ -28,11 +28,3 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 		u.tor = instance
 	}()
 }
-
-func (u *gtkUI) throughTor(command string, args []string, pre tor.ModifyCommand) (*tor.RunningCommand, error) {
-	if u.tor == nil {
-		return nil, errors.New("no configured Tor found in the system")
-	}
-
-	return u.tor.Exec(command, args, pre)
-}
