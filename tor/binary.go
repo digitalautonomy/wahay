@@ -13,7 +13,6 @@ import (
 	"autonomia.digital/tonio/app/config"
 )
 
-const noPath = ""
 const libTorsocks = "libtorsocks.so"
 
 var libDirs = []string{"/lib", "/lib64", "/lib/x86_64-linux-gnu", "/lib64/x86_64-linux-gnu"}
@@ -25,11 +24,10 @@ var (
 )
 
 type binary struct {
-	path      string
-	env       []string
-	isValid   bool
-	isBundle  bool
-	lastError error
+	path     string
+	env      []string
+	isValid  bool
+	isBundle bool
 }
 
 func findTorBinary(conf *config.ApplicationConfig) (b *binary, valid bool, err error) {
@@ -225,7 +223,7 @@ func execTorCommand(bin string, args []string, cm ModifyCommand) ([]byte, error)
 
 	output, err := cmd.Output()
 	if len(output) == 0 || err != nil {
-		return nil, errors.New("invalid command")
+		return nil, errInvalidCommand
 	}
 
 	return output, nil
