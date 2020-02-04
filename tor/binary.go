@@ -2,11 +2,11 @@ package tor
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"strings"
 
 	log "github.com/sirupsen/logrus"
 
@@ -20,168 +20,191 @@ var libDirs = []string{"/lib", "/lib64", "/lib/x86_64-linux-gnu", "/lib64/x86_64
 var libPrefixes = []string{"", "/usr", "/usr/local"}
 var libSuffixes = []string{"", "/torsocks"}
 
-// Initialize find a Tor binary that can be used by Tonio
-func Initialize(configPath string) (pathOfTorBinary string, foundInBundle bool) {
-	return findTorBinary(configPath)
+var (
+	errInvalidCommand = errors.New("invalid command")
+)
+
+type binary struct {
+	path      string
+	env       []string
+	isValid   bool
+	isBundle  bool
+	lastError error
 }
 
-func findTorBinary(configPath string) (pathOfTorBinary string, foundInBundle bool) {
-	pathTorFound := checkInConfiguredPath(configPath)
-	if pathTorFound != noPath {
-		return pathTorFound, false
+func findTorBinary(conf *config.ApplicationConfig) (b *binary, valid bool, err error) {
+	functions := []func() (*binary, bool, error){
+		findTorBinaryInConfigPath(conf),
+		findTorBinaryInDataDir,
+		findTorBinaryInCurrentWorkingDir,
+		findTorBinaryInTonioDir,
+		findTorBinaryInSystem,
 	}
 
-	pathTorFound = checkInTonioDataDirectory()
-	if pathTorFound != noPath {
-		return pathTorFound, false
+	for _, cb := range functions {
+		b, valid, err = cb()
+		if valid || err != nil {
+			return
+		}
 	}
 
+	return nil, false, nil
+}
+
+func findTorBinaryInConfigPath(conf *config.ApplicationConfig) func() (*binary, bool, error) {
+	return func() (*binary, bool, error) {
+		path := conf.GetPathTor()
+
+		log.Printf("findTorBinaryInConfigPath(%s)", path)
+
+		// No configured path by the user to find Tor binary
+		if len(path) == 0 {
+			return nil, false, nil
+		}
+
+		// what should this one do?
+		// if no Tor Path is configured, it just returns false
+		// if a Tor path is configured, and it points to a valid Tor, we return it and true
+		// if a Tor path is configured, but it is NOT valid, we will return an error
+		//    This approach is FAIL CLOSED, we will not continue trying other Tors if the
+		//    user has configured a specific Tor to use. This is conservative, and might limit
+		//    functionality in some edge cases, but is significantly more secure
+		b, valid, _ := isThereConfiguredTorBinary(conf.GetPathTor())
+		if !valid {
+			return nil, false, errors.New("tor binary invalid user configured path")
+		}
+
+		return b, valid, nil
+	}
+}
+
+func findTorBinaryInDataDir() (b *binary, valid bool, err error) {
+	paths := []string{
+		"tor",
+		"tonio/tor",
+		"bin/tonio/tor",
+		"bin/tonio/tor/tor",
+	}
+
+	for _, subdir := range paths {
+		path := filepath.Join(config.XdgDataHome(), subdir)
+
+		log.Printf("findTorBinaryInDataDir(%s)", path)
+
+		b, valid, err := isThereConfiguredTorBinary(path)
+		if valid || err != nil {
+			return b, valid, err
+		}
+	}
+
+	return nil, false, nil
+}
+
+func findTorBinaryInCurrentWorkingDir() (b *binary, valid bool, err error) {
 	pathCWD, err := os.Getwd()
-	if err == nil {
-		pathTorFound = checkInLocalDirectory(pathCWD)
-		if pathTorFound != noPath {
-			return pathTorFound, true
+	if err != nil {
+		return nil, false, nil
+	}
+
+	paths := []string{
+		"tor",
+		"bin/tor",
+	}
+
+	for _, subdir := range paths {
+		path := filepath.Join(pathCWD, subdir)
+
+		log.Printf("findTorBinaryInCurrentWorkingDir(%s)", path)
+
+		b, valid, err := isThereConfiguredTorBinary(path)
+		if valid || err != nil {
+			return b, valid, err
+		}
+	}
+
+	return nil, false, nil
+}
+
+func findTorBinaryInTonioDir() (b *binary, valid bool, err error) {
+	abs, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		return nil, false, nil
+	}
+
+	path := filepath.Join(abs, "tor/tor")
+
+	log.Printf("findTorBinaryInTonioDir(%s)", path)
+
+	return isThereConfiguredTorBinary(path)
+}
+
+func findTorBinaryInSystem() (b *binary, valid bool, err error) {
+	path, err := exec.LookPath("tor")
+	if err != nil {
+		return nil, false, nil
+	}
+
+	log.Printf("findTorBinaryInSystem(%s)", path)
+
+	return isThereConfiguredTorBinary(path)
+}
+
+func isThereConfiguredTorBinary(path string) (b *binary, valid bool, err error) {
+	if len(path) == 0 {
+		return nil, false, errors.New("no tor binary path defined")
+	}
+
+	// log.Printf("isThereConfiguredTorBinary(%s)", path)
+
+	b = &binary{
+		path:     path,
+		isValid:  false,
+		isBundle: false,
+		env:      []string{},
+	}
+
+	if checkTorIsABundle(b) {
+		b.isBundle = true
+		b.env = append(b.env, fmt.Sprintf("LD_LIBRARY_PATH=%s", filepath.Dir(path)))
+	}
+
+	if checkTorVersionCompatibility(b) {
+		b.isValid = true
+	}
+
+	return b, b.isValid, nil
+}
+
+func checkTorIsABundle(b *binary) bool {
+	libs := []string{
+		"libcrypto*.so.*",
+		"libevent*.so.*",
+		"libssl*.so.*",
+	}
+
+	found := 0
+	for _, l := range libs {
+		matches, err := filepath.Glob(filepath.Join(filepath.Dir(b.path), l))
+		if err != nil {
+			continue
 		}
 
-		pathTorFound = checkInExecutableDirectory(pathCWD)
-		if pathTorFound != noPath {
-			return pathTorFound, true
-		}
-
-		pathTorFound = checkInExecutableDirectoryTor(pathCWD)
-		if pathTorFound != noPath {
-			return pathTorFound, true
+		if len(matches) != 0 {
+			found++
 		}
 	}
 
-	pathTorFound = checkInCurrentWorkingDirectory()
-	if pathTorFound != noPath {
-		return pathTorFound, false
-	}
-
-	pathTorFound = checkInTonioBinary()
-	if pathTorFound != noPath {
-		return pathTorFound, false
-	}
-
-	pathTorFound = checkInHomeExecutableDirectory()
-	if pathTorFound != noPath {
-		return pathTorFound, false
-	}
-
-	pathTorFound = checkWithLookPath()
-	if pathTorFound != noPath {
-		return pathTorFound, false
-	}
-
-	return noPath, false
+	return found >= len(libs)
 }
 
-func checkInConfiguredPath(configuredPath string) string {
-	log.Debugf("checkInConfiguredPath(%s)", configuredPath)
-	if isThereConfiguredTorBinary(configuredPath) {
-		return configuredPath
-	}
-	return noPath
-}
+func checkTorVersionCompatibility(b *binary) bool {
+	output, err := execTorCommand(b.path, []string{"--version"}, func(cmd *exec.Cmd) {
+		if b.isBundle {
+			cmd.Env = append(cmd.Env, b.env...)
+		}
+	})
 
-func checkInTonioDataDirectory() string {
-	pathToFind := filepath.Join(config.XdgDataHome(), "tonio/tor")
-	log.Debugf("checkInTonioDataDirectory(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func checkInLocalDirectory(pathCWD string) string {
-	pathToFind := filepath.Join(pathCWD, "/tor")
-	log.Debugf("checkInLocalDirectory(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func checkInExecutableDirectory(pathCWD string) string {
-	pathToFind := filepath.Join(pathCWD, "/bin/tor")
-	log.Debugf("checkInExecutableDirectory(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func checkInCurrentWorkingDirectory() string {
-	pathToFind := filepath.Join(config.XdgDataHome(), "/tor")
-	log.Debugf("checkInCurrentWorkingDirectory(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func checkInExecutableDirectoryTor(pathCWD string) string {
-	pathToFind := filepath.Join(pathCWD, "/tor/tor")
-	log.Debugf("checkInExecutableDirectoryTor(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func checkInTonioBinary() string {
-	pathToFind := filepath.Join(config.XdgDataHome(), "/bin/tonio/tor/tor")
-	log.Debugf("checkInTonioBinary(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func checkInHomeExecutableDirectory() string {
-	pathToFind := filepath.Join(config.XdgDataHome(), "/bin/tonio/tor")
-	log.Debugf("checkInHomeExecutableDirectory(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func checkWithLookPath() string {
-	outputWhich, err := exec.LookPath("tor")
-	log.Debugf("checkWithLookPath(%s)", outputWhich)
-	if outputWhich == "" || err != nil {
-		return noPath
-	}
-
-	pathToFind := strings.TrimSpace(outputWhich)
-	log.Debugf("checkWithWhich(%s)", pathToFind)
-	if isThereConfiguredTorBinary(pathToFind) {
-		return pathToFind
-	}
-	return noPath
-}
-
-func isThereConfiguredTorBinary(path string) bool {
-	if path != noPath {
-		return checkTorVersionCompatibility(path)
-	}
-	return false
-}
-
-func executeCmd(path string, args []string) ([]byte, error) {
-	cmd := exec.Command(path, args...)
-	output, err := cmd.Output()
-	if output == nil || err != nil {
-		return nil, errors.New("invalid command")
-	}
-	return output, nil
-}
-
-func checkTorVersionCompatibility(path string) bool {
-	output, err := executeCmd(path, []string{"--version"})
-	if output == nil || err != nil {
+	if len(output) == 0 || err != nil {
 		return false
 	}
 
@@ -191,6 +214,21 @@ func checkTorVersionCompatibility(path string) bool {
 	}
 
 	return diff >= 0
+}
+
+func execTorCommand(bin string, args []string, cm ModifyCommand) ([]byte, error) {
+	cmd := exec.Command(bin, args...)
+
+	if cm != nil {
+		cm(cmd)
+	}
+
+	output, err := cmd.Output()
+	if len(output) == 0 || err != nil {
+		return nil, errors.New("invalid command")
+	}
+
+	return output, nil
 }
 
 func extractVersionFrom(s []byte) string {

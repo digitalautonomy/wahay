@@ -13,7 +13,7 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 	go func() {
 		defer wg.Done()
 
-		instance, e := tor.GetSystem(u.config)
+		instance, e := tor.GetInstance(u.config)
 		if e != nil {
 			addNewStartupError(e)
 			return

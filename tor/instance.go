@@ -66,8 +66,15 @@ type runningTor struct {
 
 var currentInstance Instance
 
-func setGlobalInstance(i Instance) {
+func setSingleInstance(i Instance) {
 	currentInstance = i
+}
+
+func getSingleInstance() (Instance, error) {
+	if currentInstance == nil {
+		return nil, errors.New("no instance initialized")
+	}
+	return currentInstance, nil
 }
 
 // System returns the current Tor instance
@@ -75,67 +82,40 @@ func System() Instance {
 	return currentInstance
 }
 
-// GetSystem returns the Instance for working with Tor
+// GetInstance returns the Instance for working with Tor
 // This function should be called only once during the system initialization
-func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
-	i, err := getSystemInstance()
+func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
+	i, err := getSingleInstance()
 	if err == nil {
-		setGlobalInstance(i)
 		return i, nil
 	}
 
 	ensureTonioDataDir()
 
-	binaryPath, isBundled := Initialize(conf.GetPathTor())
-	if len(binaryPath) == 0 {
+	b, valid, err := findTorBinary(conf)
+	if !valid || err != nil {
 		return nil, errors.New("error: there is no valid or available Tor binary")
 	}
 
-	log.Printf("Using Tor binary found in: %s", binaryPath)
+	log.Printf("Using Tor binary found in: %s", b.path)
 
-	i, err = getOurInstance(binaryPath, conf.GetPathTorSocks(), isBundled)
+	i, err = getOurInstance(b, conf)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("tor.GetInstance() error: %s", err)
+		return nil, errors.New("error: we can't start our Tor instance")
 	}
 
-	setGlobalInstance(i)
+	setSingleInstance(i)
 
 	return i, nil
 }
 
 const torStartupTimeout = 2 * time.Minute
 
-func getSystemInstance() (Instance, error) {
-	if !isThereConfiguredTorBinary("tor") {
-		return nil, errors.New("error: the system Tor is not compatible")
-	}
+func getOurInstance(b *binary, conf *config.ApplicationConfig) (Instance, error) {
+	i, _ := NewInstance(b.path, conf.GetPathTorSocks())
 
-	checker := NewDefaultChecker()
-
-	total, partial := checker.Check()
-
-	if total != nil || partial != nil {
-		return nil, errors.New("error: we can't use the system instance")
-	}
-
-	i := &instance{
-		started:     true,
-		controlHost: *config.TorHost,
-		controlPort: *config.TorPort,
-		socksPort:   *config.TorRoutePort,
-		password:    *config.TorControlPassword,
-		isLocal:     true,
-		isBundled:   false,
-		controller:  nil,
-		pathBinary:  "tor",
-	}
-
-	return i, nil
-}
-
-func getOurInstance(binaryPath string, torsocksPath string, isBundled bool) (Instance, error) {
-	i, _ := NewInstance(binaryPath, torsocksPath)
-	i.SetBundled(isBundled)
+	i.SetBundled(b.isBundle)
 
 	err := i.Start()
 	if err != nil {

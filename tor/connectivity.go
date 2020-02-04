@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"strconv"
 
-	"autonomia.digital/tonio/app/config"
 	"github.com/wybiral/torgo"
 	"golang.org/x/net/proxy"
 )
@@ -26,13 +25,6 @@ type connectivity struct {
 	routePort   int
 	controlPort int
 	password    string
-}
-
-// NewDefaultChecker will test whether the default ports can
-// be reached and are appropriate for our use
-func NewDefaultChecker() Connectivity {
-	// This checks everything, including binaries against the default ports
-	return NewChecker(*config.TorHost, *config.TorRoutePort, *config.TorPort, *config.TorControlPassword)
 }
 
 // NewCustomChecker returns a Tor checker for our custom Tor instance
