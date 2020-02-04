@@ -1,6 +1,7 @@
 package tor
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -329,4 +330,31 @@ func listPossibleTorBinary(path string) ([]string, error) {
 	}
 
 	return result, nil
+}
+
+func (b *binary) start(configFile string) (*runningTor, error) {
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	cmd := exec.CommandContext(ctx, b.path, "-f", configFile)
+
+	if b.isBundle && len(b.env) > 0 {
+		log.Debugf("Tor is bundled with environment variables: %s", b.env)
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, b.env...)
+	}
+
+	if err := cmd.Start(); err != nil {
+		cancelFunc()
+		return nil, err
+	}
+
+	state := &runningTor{
+		cmd:               cmd,
+		ctx:               ctx,
+		cancelFunc:        cancelFunc,
+		finished:          false,
+		finishedWithError: nil,
+		finishChannel:     make(chan bool, 100),
+	}
+
+	return state, nil
 }

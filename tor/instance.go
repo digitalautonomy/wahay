@@ -142,27 +142,13 @@ func newInstance(b *binary, torsocksPath string) (*instance, error) {
 
 // Start our Tor Control Port
 func (i *instance) Start() error {
-	ctx, cancelFunc := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, i.binary.path, "-f", i.configFile)
-
-	if i.binary.isBundle {
-		log.Println("Tor isBundled..")
-		cmd.Env = os.Environ()
-		cmd.Env = append(cmd.Env, "LD_LIBRARY_PATH=.")
+	if i.binary == nil || !i.binary.isValid {
+		return errors.New("we can't start our Tor instance")
 	}
 
-	if err := cmd.Start(); err != nil {
-		cancelFunc()
+	state, err := i.binary.start(i.configFile)
+	if err != nil {
 		return err
-	}
-
-	state := &runningTor{
-		cmd:               cmd,
-		ctx:               ctx,
-		cancelFunc:        cancelFunc,
-		finished:          false,
-		finishedWithError: nil,
-		finishChannel:     make(chan bool, 100),
 	}
 
 	i.started = true
