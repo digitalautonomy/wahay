@@ -41,39 +41,46 @@ func newMumbleClient() *client {
 	return c
 }
 
+var currentInstance *client
+
+// System returns the current Mumble instance
+func System() Instance {
+	return currentInstance
+}
+
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
 func InitSystem(conf *config.ApplicationConfig) Instance {
 	var err error
 
-	c := newMumbleClient()
+	currentInstance = newMumbleClient()
 	b := getMumbleBinary(conf.GetPathMumble())
 
 	if b == nil {
-		c.invalidate(errors.New("a valid binary of Mumble is no available in your system"))
-		return c
+		currentInstance.invalidate(errors.New("a valid binary of Mumble is no available in your system"))
+		return currentInstance
 	}
 
 	if b.shouldBeCopied {
 		err = b.copyTo(getTemporaryDestinationForMumble())
 		if err != nil {
-			c.invalidate(err)
-			return c
+			currentInstance.invalidate(err)
+			return currentInstance
 		}
 	}
 
-	err = c.setBinary(b)
+	err = currentInstance.setBinary(b)
 	if err != nil {
-		c.invalidate(err)
-		return c
+		currentInstance.invalidate(err)
+		return currentInstance
 	}
 
-	err = c.EnsureConfiguration()
+	err = currentInstance.EnsureConfiguration()
 	if err != nil {
-		c.invalidate(err)
+		currentInstance.invalidate(err)
 	}
 
-	return c
+	return currentInstance
 }
 
 func (c *client) invalidate(err error) {
