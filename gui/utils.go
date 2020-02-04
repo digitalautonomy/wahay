@@ -16,8 +16,12 @@ const (
 func (u *gtkUI) switchToMainWindow() {
 	if u.currentWindow != nil {
 		u.currentWindow.Hide()
+		u.currentWindow = nil
 	}
-	u.switchToWindow(u.mainWindow)
+
+	if u.mainWindow != nil {
+		u.switchToWindow(u.mainWindow)
+	}
 }
 
 func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
@@ -89,12 +93,6 @@ func (u *gtkUI) setCurrentWindow(win gtki.Window) {
 func (u *gtkUI) hideMainWindow() {
 	if u.mainWindow != nil {
 		u.doInUIThread(u.mainWindow.Hide)
-	}
-}
-
-func (u *gtkUI) showMainWindow() {
-	if u.mainWindow != nil {
-		u.doInUIThread(u.mainWindow.Show)
 	}
 }
 
