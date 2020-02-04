@@ -15,11 +15,13 @@ import (
 	"autonomia.digital/tonio/app/config"
 )
 
-const torConfigName = "torrc"
-const torConfigData = "data"
-const defaultSocksPort = 9950
-const defaultControlPort = 9951
-const defaultControlHost = "127.0.0.1"
+const (
+	torConfigName      = "torrc"
+	torConfigData      = "data"
+	defaultSocksPort   = 9950
+	defaultControlPort = 9951
+	defaultControlHost = "127.0.0.1"
+)
 
 // Instance contains functions to work with Tor instance
 type Instance interface {
@@ -62,10 +64,23 @@ type runningTor struct {
 	finishChannel     chan bool
 }
 
+var currentInstance Instance
+
+func setGlobalInstance(i Instance) {
+	currentInstance = i
+}
+
+// System returns the current Tor instance
+func System() Instance {
+	return currentInstance
+}
+
 // GetSystem returns the Instance for working with Tor
+// This function should be called only once during the system initialization
 func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 	i, err := getSystemInstance()
 	if err == nil {
+		setGlobalInstance(i)
 		return i, nil
 	}
 
@@ -82,6 +97,8 @@ func GetSystem(conf *config.ApplicationConfig) (Instance, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	setGlobalInstance(i)
 
 	return i, nil
 }
