@@ -78,9 +78,8 @@ func findTorBinaryInConfigPath(conf *config.ApplicationConfig) func() (*binary, 
 
 func findTorBinaryInDataDir() (b *binary, valid bool, err error) {
 	paths := []string{
-		"tor",
-		"tonio/tor",
-		"bin/tonio/tor",
+		"tor/tor",
+		"tonio/tor/tor",
 		"bin/tonio/tor/tor",
 	}
 
@@ -99,20 +98,19 @@ func findTorBinaryInDataDir() (b *binary, valid bool, err error) {
 }
 
 func findTorBinaryInCurrentWorkingDir() (b *binary, valid bool, err error) {
+	log.Println("findTorBinaryInCurrentWorkingDir")
 	pathCWD, err := os.Getwd()
 	if err != nil {
 		return nil, false, nil
 	}
 
 	paths := []string{
-		"tor",
-		"bin/tor",
+		"tor/tor",
+		"bin/tor/tor",
 	}
 
 	for _, subdir := range paths {
 		path := filepath.Join(pathCWD, subdir)
-
-		log.Printf("findTorBinaryInCurrentWorkingDir(%s)", path)
 
 		b, valid, err := isThereConfiguredTorBinary(path)
 		if valid || err != nil {
@@ -152,7 +150,9 @@ func isThereConfiguredTorBinary(path string) (b *binary, valid bool, err error) 
 		return nil, false, errors.New("no tor binary path defined")
 	}
 
-	// log.Printf("isThereConfiguredTorBinary(%s)", path)
+	if isADirectory(path) {
+		path = filepath.Join(path, "tor")
+	}
 
 	b = &binary{
 		path:     path,
@@ -174,6 +174,8 @@ func isThereConfiguredTorBinary(path string) (b *binary, valid bool, err error) 
 }
 
 func checkTorIsABundle(b *binary) bool {
+	log.Println("checkTorIsABundle")
+
 	libs := []string{
 		"libcrypto*.so.*",
 		"libevent*.so.*",
@@ -279,4 +281,13 @@ func FindLibTorsocks(filePath string) (string, error) {
 	}
 
 	return "", errors.New("libtorsocks not found")
+}
+
+func isADirectory(path string) bool {
+	dir, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+
+	return dir.IsDir()
 }
