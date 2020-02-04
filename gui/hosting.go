@@ -116,6 +116,7 @@ func (h *hostData) joinMeetingHost() {
 		mumble, err := h.u.launchMumbleClient(data, h.switchToHostOnFinishMeeting)
 
 		if err != nil {
+			log.Printf("joinMeetingHost() error: %s", err)
 			validOpChannel <- false
 		} else {
 			h.mumble = mumble
