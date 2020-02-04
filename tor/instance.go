@@ -177,7 +177,11 @@ func (i *instance) GetController() Control {
 
 // Destroy close our instance running
 func (i *instance) Destroy() {
-	_ = os.RemoveAll(filepath.Dir(i.configFile))
+	log.Debugf("Removing custom Tor temp dir: %s", filepath.Dir(i.configFile))
+	err := os.RemoveAll(filepath.Dir(i.configFile))
+	if err != nil {
+		log.Debug(err)
+	}
 
 	if i.controller != nil {
 		i.controller.DeleteOnionServices()
