@@ -19,7 +19,7 @@ const defaultPortMumble = 64738
 
 type hostData struct {
 	u               *gtkUI
-	runningState    *runningMumble
+	mumble          mumbleService
 	serverPort      int
 	serverControl   hosting.Server
 	serviceID       string
@@ -34,18 +34,13 @@ func (u *gtkUI) hostMeetingHandler() {
 }
 
 func (u *gtkUI) realHostMeetingHandler() {
-	u.doInUIThread(func() {
-		if u.mainWindow != nil {
-			u.mainWindow.Hide()
-		}
-		u.displayLoadingWindow()
-	})
+	u.hideMainWindow()
+	u.displayLoadingWindow()
 
 	h := &hostData{
-		u:               u,
-		autoJoin:        u.config.GetAutoJoin(),
-		meetingPassword: "",
-		next:            func() {},
+		u:        u,
+		autoJoin: u.config.GetAutoJoin(),
+		next:     func() {},
 	}
 
 	finish := make(chan string)
@@ -118,12 +113,12 @@ func (h *hostData) joinMeetingHost() {
 			Username:  h.meetingUsername,
 		}
 
-		state, err := h.u.launchMumbleClient(data)
+		mumble, err := h.u.launchMumbleClient(data, h.switchToHostOnFinishMeeting)
 
 		if err != nil {
 			validOpChannel <- false
 		} else {
-			h.runningState = state
+			h.mumble = mumble
 			validOpChannel <- true
 		}
 	}()
@@ -138,13 +133,12 @@ func (h *hostData) joinMeetingHost() {
 	}
 
 	h.u.reportError(err.Error())
+
 	h.u.switchToMainWindow()
 }
 
 func (h *hostData) openHostJoinMeetingWindow() {
-	h.u.doInUIThread(func() {
-		h.u.currentWindow.Hide()
-	})
+	h.u.hideCurrentWindow()
 
 	builder := h.u.g.uiBuilderFor("CurrentHostMeetingWindow")
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
@@ -158,7 +152,6 @@ func (h *hostData) openHostJoinMeetingWindow() {
 		"on_finish_meeting": h.finishMeetingMumble,
 	})
 
-	h.switchToHostOnFinishMeeting()
 	h.u.switchToWindow(win)
 }
 
@@ -169,19 +162,6 @@ func (h *hostData) uiActionLeaveMeeting() {
 
 func (h *hostData) uiActionFinishMeeting() {
 	h.finishMeetingReal()
-}
-
-func (h *hostData) switchToHostOnFinishMeeting() {
-	go func() {
-		<-h.runningState.finishChannel
-
-		// TODO: here, we  could check if the Mumble instance
-		// failed with an error and report this
-		h.u.doInUIThread(func() {
-			h.next()
-			h.next = func() {}
-		})
-	}()
 }
 
 func (u *gtkUI) ensureServerCollection() {
@@ -286,7 +266,7 @@ func (h *hostData) finishMeetingMumble() {
 	h.u.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
 			h.next = h.uiActionFinishMeeting
-			go h.runningState.close()
+			go h.mumble.Close()
 		}
 	})
 }
@@ -301,7 +281,7 @@ func (h *hostData) finishMeeting() {
 
 func (h *hostData) leaveHostMeeting() {
 	h.next = h.uiActionLeaveMeeting
-	go h.runningState.close()
+	go h.mumble.Close()
 }
 
 func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {

@@ -16,10 +16,7 @@ func (u *gtkUI) joinMeeting() {
 }
 
 func (u *gtkUI) openMainWindow() {
-	if u.mainWindow != nil {
-		u.currentWindow = nil
-		u.mainWindow.Show()
-	}
+	u.switchToMainWindow()
 }
 
 func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
@@ -30,8 +27,8 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
 	return win, builder
 }
 
-func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
-	if state.finished {
+func (u *gtkUI) openCurrentMeetingWindow(m mumbleService) {
+	if m.IsClosed() {
 		u.reportError("The Mumble process is down")
 	}
 
@@ -42,11 +39,11 @@ func (u *gtkUI) openCurrentMeetingWindow(state *runningMumble) {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
-			u.leaveMeeting(state)
+			u.leaveMeeting(m)
 			u.quit()
 		},
 		"on_leave_meeting": func() {
-			u.leaveMeeting(state)
+			u.leaveMeeting(m)
 		},
 	})
 
@@ -59,20 +56,17 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 		return
 	}
 
-	state, err := u.openMumble(data)
+	mumble, err := u.openMumble(data, u.switchContextWhenMumbleFinish)
 	if err != nil {
 		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
 		return
 	}
 
-	u.openCurrentMeetingWindow(state)
-
-	u.switchContextWhenMumbleFinish(state)
+	u.openCurrentMeetingWindow(mumble)
 }
 
 // Test Onion that can be used:
 // qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
-
 func (u *gtkUI) openJoinWindow() {
 	win, builder := u.getInviteCodeEntities()
 
@@ -111,11 +105,11 @@ func (u *gtkUI) openJoinWindow() {
 	u.setCurrentWindow(win)
 }
 
-func (u *gtkUI) openMumble(data hosting.MeetingData) (*runningMumble, error) {
+func (u *gtkUI) openMumble(data hosting.MeetingData, onFinish func()) (mumbleService, error) {
 	if !isMeetingIDValid(data.MeetingID) {
 		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", data.MeetingID)
 	}
-	return u.launchMumbleClient(data)
+	return u.launchMumbleClient(data, onFinish)
 }
 
 const onionServiceLength = 60
@@ -126,10 +120,10 @@ func isMeetingIDValid(meetingID string) bool {
 	return len(meetingID) > onionServiceLength && strings.HasSuffix(meetingID, ".onion")
 }
 
-func (u *gtkUI) leaveMeeting(state *runningMumble) {
+func (u *gtkUI) leaveMeeting(m mumbleService) {
 	u.wouldYouConfirmLeaveMeeting(func(res bool) {
 		if res {
-			state.cancelFunc()
+			m.Close()
 		}
 	})
 }

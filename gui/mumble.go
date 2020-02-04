@@ -1,10 +1,7 @@
 package gui
 
 import (
-	"context"
-	"errors"
 	"fmt"
-	"os/exec"
 	"sync"
 
 	"autonomia.digital/tonio/app/client"
@@ -28,65 +25,27 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	}()
 }
 
-func (u *gtkUI) launchMumbleClient(data hosting.MeetingData) (*runningMumble, error) {
-	if u.client == nil || !u.client.CanBeUsed() {
-		return nil, errors.New("a valid Mumble client could not be found in the system")
-	}
+type mumbleService interface {
+	client.Service
+}
 
-	bin := u.client.GetBinaryPath()
-	args := []string{hosting.GenerateURL(data)}
-	cm := u.client.GetTorCommandModifier()
-
-	rc, err := u.throughTor(bin, args, cm)
+func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, f func()) (mumbleService, error) {
+	s, err := client.LaunchClient(data, f)
 	if err != nil {
 		return nil, err
 	}
 
-	state := &runningMumble{
-		cmd:               rc.Cmd,
-		ctx:               rc.Ctx,
-		cancelFunc:        rc.CancelFunc,
-		finished:          false,
-		finishedWithError: nil,
-		finishChannel:     make(chan bool, 100),
-	}
-
-	go state.waitForFinish()
-
-	return state, nil
+	return s, nil
 }
 
-func (u *gtkUI) switchContextWhenMumbleFinish(state *runningMumble) {
-	go func() {
-		<-state.finishChannel
-
-		if state.finishedWithError != nil {
-			u.reportError(state.finishedWithError.Error())
-		}
-
-		u.doInUIThread(func() {
-			u.hideCurrentWindow()
-			u.openMainWindow()
-		})
-	}()
+func (h *hostData) switchToHostOnFinishMeeting() {
+	h.u.doInUIThread(func() {
+		h.next()
+		h.next = func() {}
+	})
 }
 
-type runningMumble struct {
-	cmd               *exec.Cmd
-	ctx               context.Context
-	cancelFunc        context.CancelFunc
-	finished          bool
-	finishedWithError error
-	finishChannel     chan bool
-}
-
-func (r *runningMumble) close() {
-	r.cancelFunc()
-}
-
-func (r *runningMumble) waitForFinish() {
-	e := r.cmd.Wait()
-	r.finished = true
-	r.finishedWithError = e
-	r.finishChannel <- true
+func (u *gtkUI) switchContextWhenMumbleFinish() {
+	u.hideCurrentWindow()
+	u.openMainWindow()
 }
