@@ -62,6 +62,7 @@ func (c *client) EnsureConfiguration() error {
 	return nil
 }
 
+// TODO: consider moving this to definitions
 const mumbleInitialConfig = `
 [General]
 lastupdate=2
