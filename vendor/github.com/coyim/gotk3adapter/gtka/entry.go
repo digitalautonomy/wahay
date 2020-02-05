@@ -62,3 +62,7 @@ func (v *entry) SetAlignment(v1 float32) {
 func (v *entry) SetPosition(p int) {
 	v.internal.SetPosition(p)
 }
+
+func (v *entry) GetPosition() int {
+	return v.internal.GetPosition()
+}

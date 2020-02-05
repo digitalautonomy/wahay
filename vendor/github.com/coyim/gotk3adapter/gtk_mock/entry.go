@@ -32,3 +32,7 @@ func (*MockEntry) SetAlignment(v1 float32) {
 
 func (*MockEntry) SetPosition(p int) {
 }
+
+func (*MockEntry) GetPosition() int {
+	return 0
+}

@@ -194,6 +194,7 @@ func (u *gtkUI) openSettingsWindow() {
 		"on_mumbleBinaryLocation_icon_press":    s.setCustomPathForMumble,
 		"on_mumbleBinaryLocation_clicked_event": s.setCustomPathForMumble,
 		"on_portMumble_insert_text":             s.validatePortMumble,
+		"on_portMumble_delete_text":             s.onDeletePortMumble,
 	})
 
 	if u.mainWindow != nil {
@@ -205,9 +206,29 @@ func (u *gtkUI) openSettingsWindow() {
 	u.doInUIThread(u.currentWindow.Show)
 }
 
+func (s *settings) onDeletePortMumble(e gtki.Entry, posi int, pose int) {
+	if pose > -1 {
+		txt, _ := e.GetText()
+		runes := []rune(txt)
+		txtRight := string(runes[pose:len(txt)])
+		txtLeft := string(runes[0:posi])
+		txtDeleted := fmt.Sprintf("%s%s", txtLeft, txtRight)
+
+		if port, err := strconv.Atoi(txtDeleted); err == nil {
+			s.u.doInUIThread(func() {
+				s.lblPortMumbleMessage.SetVisible(!config.CheckPort(port))
+			})
+		}
+	}
+}
+
 func (s *settings) validatePortMumble(e gtki.Entry, newText string) {
 	lastText, _ := e.GetText()
-	completeText := fmt.Sprintf("%s%s", lastText, newText)
+	currentPosition := e.GetPosition()
+	runes := []rune(lastText)
+	txtRight := string(runes[currentPosition:len(lastText)])
+	txtLeft := string(runes[0:currentPosition])
+	completeText := fmt.Sprintf("%s%s%s", txtLeft, newText, txtRight)
 
 	if completeText == "" {
 		s.lblPortMumbleMessage.SetVisible(false)
