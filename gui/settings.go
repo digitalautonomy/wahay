@@ -228,15 +228,23 @@ func (s *settings) validatePortMumble(e gtki.Entry, newText string) {
 }
 
 func (s *settings) setCustomLogFile() {
-	s.u.setCustomFilePathFor(s.rawLogFile, s.rawLogFileOriginalValue, func(f string) {
-		s.u.config.SetCustomLogFile(f)
-	})
+	s.u.setCustomFilePathFor(
+		s.rawLogFile,
+		FileTextPlain,
+		s.rawLogFileOriginalValue,
+		func(f string) {
+			s.u.config.SetCustomLogFile(f)
+		})
 }
 
 func (s *settings) setCustomPathForMumble() {
-	s.u.setCustomFilePathFor(s.mumbleBinaryLocation, s.mumbleBinaryOriginalValue, func(f string) {
-		s.u.config.SetPathMumble(f)
-	})
+	s.u.setCustomFilePathFor(
+		s.mumbleBinaryLocation,
+		FileBinary,
+		s.mumbleBinaryOriginalValue,
+		func(f string) {
+			s.u.config.SetPathMumble(f)
+		})
 }
 
 func (u *gtkUI) loadConfig() {
