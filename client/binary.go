@@ -243,8 +243,8 @@ func getMumbleBinaryInCurrentWorkingDir() (*binary, error) {
 func getMumbleBinaryInDataDir() (*binary, error) {
 	dataDir := config.XdgDataHome()
 	dirs := []string{
-		filepath.Join(dataDir, tonioMumbleBundlePath),
 		filepath.Join(dataDir, mumbleBundlePath),
+		filepath.Join(dataDir, tonioMumbleBundlePath),
 	}
 
 	for _, d := range dirs {
@@ -290,11 +290,10 @@ func isAnAvailableMumbleBinary(path string) *binary {
 
 	output, err := command.Output()
 	if len(output) == 0 && err != nil {
+		b.isValid = false
 		b.lastError = errInvalidCommand
 		return b
 	}
-
-	b.isValid = true
 
 	return b
 }
