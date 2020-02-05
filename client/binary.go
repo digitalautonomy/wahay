@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"autonomia.digital/tonio/app/config"
 )
 
 var (
@@ -15,6 +17,7 @@ var (
 	errInvalidBinaryFile          = errors.New("the defined binary file don't exists")
 	errBinaryAlreadyExists        = errors.New("the binary already exists in the destination directory")
 	errDestinationIsNotADirectory = errors.New("the destination to copy the binary is not a directory")
+	errNoClientInConfiguredPath   = errors.New("no client in the configured path")
 )
 
 const (
@@ -165,17 +168,22 @@ func getRealMumbleBinaryPath(path string) (string, error) {
 	return path, nil
 }
 
-func getMumbleBinary(userConfiguredPath string) *binary {
-	binaries := []func() *binary{
-		getMumbleBinaryInConf(userConfiguredPath),
+func getMumbleBinary(conf *config.ApplicationConfig) *binary {
+	callbacks := []func() (*binary, error){
+		getMumbleBinaryInConf(conf),
 		getMumbleBinaryInLocalDir,
 		getMumbleBinaryInCurrentWorkingDir,
 		getMumbleBinaryInDataDir,
 		getMumbleBinaryInSystem,
 	}
 
-	for _, getBinary := range binaries {
-		b := getBinary()
+	for _, getBinary := range callbacks {
+		b, err := getBinary()
+
+		if err != nil {
+			log.Printf("Mumble binary error: %s", err)
+			break
+		}
 
 		if b == nil {
 			log.Printf("Mumble binary error: Not found")
@@ -187,47 +195,64 @@ func getMumbleBinary(userConfiguredPath string) *binary {
 			continue
 		}
 
+		if !b.isValid {
+			log.Println("Continue with Mumble binary search")
+			continue
+		}
+
 		return b
 	}
 
 	return nil
 }
 
-func getMumbleBinaryInConf(path string) func() *binary {
-	return func() *binary {
-		return isAnAvailableMumbleBinary(path)
+func getMumbleBinaryInConf(conf *config.ApplicationConfig) func() (*binary, error) {
+	return func() (*binary, error) {
+		b := isAnAvailableMumbleBinary(conf.GetPathMumble())
+		if b == nil || b.lastError != nil {
+			return nil, errNoClientInConfiguredPath
+		}
+
+		return b, nil
 	}
 }
 
-func getMumbleBinaryInLocalDir() *binary {
+func getMumbleBinaryInLocalDir() (*binary, error) {
 	localDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		return nil
+		return nil, nil
 	}
 
-	return isAnAvailableMumbleBinary(filepath.Join(localDir, mumbleBundlePath))
+	b := isAnAvailableMumbleBinary(filepath.Join(localDir, mumbleBundlePath))
+
+	return b, nil
 }
 
-func getMumbleBinaryInCurrentWorkingDir() *binary {
+func getMumbleBinaryInCurrentWorkingDir() (*binary, error) {
 	cwDir, err := os.Getwd()
 	if err != nil {
-		return nil
+		return nil, nil
 	}
 
-	return isAnAvailableMumbleBinary(filepath.Join(cwDir, mumbleBundlePath))
+	b := isAnAvailableMumbleBinary(filepath.Join(cwDir, mumbleBundlePath))
+
+	return b, nil
 }
 
-func getMumbleBinaryInDataDir() *binary {
-	return isAnAvailableMumbleBinary(filepath.Join(dataHomeDir(), mumbleBundlePath))
+func getMumbleBinaryInDataDir() (*binary, error) {
+	b := isAnAvailableMumbleBinary(filepath.Join(dataHomeDir(), mumbleBundlePath))
+	return b, nil
 }
 
-func getMumbleBinaryInSystem() *binary {
+func getMumbleBinaryInSystem() (*binary, error) {
 	path, err := exec.LookPath("mumble")
 	if err != nil {
-		return nil
+		return nil, nil
 	}
 
-	return isAnAvailableMumbleBinary(path)
+	b := isAnAvailableMumbleBinary(path)
+
+	return b, nil
 }
 
 func isAnAvailableMumbleBinary(path string) *binary {
