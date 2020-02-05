@@ -21,8 +21,9 @@ var (
 )
 
 const (
-	mumbleBundleLibsDir = "lib"
-	mumbleBundlePath    = "mumble/mumble"
+	mumbleBundleLibsDir   = "lib"
+	mumbleBundlePath      = "mumble/mumble"
+	tonioMumbleBundlePath = "tonio/mumble/mumble"
 )
 
 type binary struct {
@@ -240,8 +241,20 @@ func getMumbleBinaryInCurrentWorkingDir() (*binary, error) {
 }
 
 func getMumbleBinaryInDataDir() (*binary, error) {
-	b := isAnAvailableMumbleBinary(filepath.Join(dataHomeDir(), mumbleBundlePath))
-	return b, nil
+	dataDir := config.XdgDataHome()
+	dirs := []string{
+		filepath.Join(dataDir, tonioMumbleBundlePath),
+		filepath.Join(dataDir, mumbleBundlePath),
+	}
+
+	for _, d := range dirs {
+		b := isAnAvailableMumbleBinary(d)
+		if b != nil && b.isValid {
+			return b, nil
+		}
+	}
+
+	return nil, nil
 }
 
 func getMumbleBinaryInSystem() (*binary, error) {

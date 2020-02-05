@@ -2,9 +2,6 @@ package client
 
 import (
 	"os"
-	"path/filepath"
-
-	"autonomia.digital/tonio/app/config"
 )
 
 func createDir(path string) error {
@@ -55,8 +52,4 @@ func isADirectory(path string) bool {
 
 func isAFile(filename string) bool {
 	return !isADirectory(filename)
-}
-
-func dataHomeDir() string {
-	return filepath.Join(config.XdgDataHome(), "tonio")
 }
