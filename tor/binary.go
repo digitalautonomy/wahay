@@ -269,7 +269,7 @@ func allLibDirs() []string {
 	return result
 }
 
-// FindLibTorsocks returns the path of libtorsocks it exist
+// FindLibTorsocks returns the path of libtorsocks if exist
 func FindLibTorsocks(filePath string) (string, error) {
 	//Search in user config path
 	f := filepath.Join(filePath, libTorsocks)
