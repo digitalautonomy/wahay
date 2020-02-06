@@ -193,7 +193,7 @@ func (u *gtkUI) openSettingsWindow() {
 		"on_rawLogFile_button_clicked_event":    s.setCustomLogFile,
 		"on_mumbleBinaryLocation_icon_press":    s.setCustomPathForMumble,
 		"on_mumbleBinaryLocation_clicked_event": s.setCustomPathForMumble,
-		"on_portMumble_insert_text":             s.validatePortMumble,
+		"on_portMumble_insert_text":             s.onInsertPortMumble,
 		"on_portMumble_delete_text":             s.onDeletePortMumble,
 	})
 
@@ -206,46 +206,56 @@ func (u *gtkUI) openSettingsWindow() {
 	u.doInUIThread(u.currentWindow.Show)
 }
 
-func (s *settings) onDeletePortMumble(e gtki.Entry, posi int, pose int) {
-	if pose > -1 {
-		txt, _ := e.GetText()
-		runes := []rune(txt)
-		txtRight := string(runes[pose:len(txt)])
-		txtLeft := string(runes[0:posi])
-		txtDeleted := fmt.Sprintf("%s%s", txtLeft, txtRight)
-
-		if port, err := strconv.Atoi(txtDeleted); err == nil {
-			s.u.doInUIThread(func() {
-				s.lblPortMumbleMessage.SetVisible(!config.CheckPort(port))
-			})
-		}
-	}
-}
-
-func (s *settings) validatePortMumble(e gtki.Entry, newText string) {
-	lastText, _ := e.GetText()
-	currentPosition := e.GetPosition()
-	runes := []rune(lastText)
-	txtRight := string(runes[currentPosition:len(lastText)])
-	txtLeft := string(runes[0:currentPosition])
-	completeText := fmt.Sprintf("%s%s%s", txtLeft, newText, txtRight)
-
-	if completeText == "" {
+func (s *settings) validatePortMumble(e gtki.Entry, port, original string, replace bool) {
+	if port == "" {
 		s.lblPortMumbleMessage.SetVisible(false)
 		return
 	}
+	pn, err := strconv.Atoi(port)
+	s.u.doInUIThread(func() {
+		if err != nil || !config.CheckPort(pn) {
+			s.lblPortMumbleMessage.SetVisible(true)
+			if replace {
+				e.SetText(original)
+				e.SetPosition(len(original))
+			}
+		} else {
+			s.lblPortMumbleMessage.SetVisible(false)
+		}
+	})
+}
 
-	if _, err := strconv.Atoi(newText); err != nil {
-		s.u.doInUIThread(func() {
-			e.SetText(lastText)
-			e.SetPosition(len(lastText))
-		})
-	} else {
-		s.u.doInUIThread(func() {
-			pn, _ := strconv.Atoi(completeText)
-			s.lblPortMumbleMessage.SetVisible(!config.CheckPort(pn))
-		})
+func removeAt(s string, start, end int) string {
+	l := len(s)
+	if start < 0 || start >= l {
+		return s
 	}
+	if end < 0 || end >= l {
+		return s
+	}
+	if start >= end {
+		return s
+	}
+	return fmt.Sprintf("%s%s", s[:start], s[end:])
+}
+
+func (s *settings) onDeletePortMumble(e gtki.Entry, posi int, pose int) {
+	txt, _ := e.GetText()
+	remaining := removeAt(txt, posi, pose)
+	fmt.Printf("onDeletePortMumble %s - %s\n", txt, remaining)
+
+	s.validatePortMumble(e, remaining, txt, false)
+}
+
+func (s *settings) onInsertPortMumble(e gtki.Entry, newText string) {
+	lastText, _ := e.GetText()
+	currentPosition := e.GetPosition()
+	txtLeft := lastText[:currentPosition]
+	txtRight := lastText[currentPosition:]
+	completeText := fmt.Sprintf("%s%s%s", txtLeft, newText, txtRight)
+
+	fmt.Printf("onInsertPortMumble: %s\n", completeText)
+	s.validatePortMumble(e, completeText, lastText, true)
 }
 
 func (s *settings) setCustomLogFile() {

@@ -646,7 +646,7 @@
                             <property name="can_focus">True</property>
                             <property name="margin_left">10</property>
                             <property name="margin_right">10</property>
-                            <property name="input_purpose">digits</property>
+                            <property name="input_purpose">GTK_INPUT_PURPOSE_DIGITS</property>
                             <signal name="delete-text" handler="on_portMumble_delete_text" swapped="no"/>
                             <signal name="insert-text" handler="on_portMumble_insert_text" swapped="no"/>
                             <style>
