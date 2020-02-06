@@ -7,7 +7,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"autonomia.digital/tonio/app/config"
+	"github.com/digitalautonomy/wahay/config"
 )
 
 func (u *gtkUI) initLogs() {

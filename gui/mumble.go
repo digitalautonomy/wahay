@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sync"
 
-	"autonomia.digital/tonio/app/client"
-	"autonomia.digital/tonio/app/hosting"
-	"autonomia.digital/tonio/app/tor"
+	"github.com/digitalautonomy/wahay/client"
+	"github.com/digitalautonomy/wahay/hosting"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
 func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {

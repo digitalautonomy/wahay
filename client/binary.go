@@ -10,7 +10,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"autonomia.digital/tonio/app/config"
+	"github.com/digitalautonomy/wahay/config"
 )
 
 var (
@@ -24,7 +24,7 @@ var (
 const (
 	mumbleBundleLibsDir   = "lib"
 	mumbleBundlePath      = "mumble/mumble"
-	tonioMumbleBundlePath = "tonio/mumble/mumble"
+	wahayMumbleBundlePath = "wahay/mumble/mumble"
 )
 
 type binary struct {
@@ -244,7 +244,7 @@ func getMumbleBinaryInDataDir() (*binary, error) {
 	dataDir := config.XdgDataHome()
 	dirs := []string{
 		filepath.Join(dataDir, mumbleBundlePath),
-		filepath.Join(dataDir, tonioMumbleBundlePath),
+		filepath.Join(dataDir, wahayMumbleBundlePath),
 	}
 
 	for _, d := range dirs {

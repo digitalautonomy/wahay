@@ -14,9 +14,9 @@ import (
 
 func Test(t *testing.T) { TestingT(t) }
 
-type TonioGUISuite struct{}
+type WahayGUISuite struct{}
 
-var _ = Suite(&TonioGUISuite{})
+var _ = Suite(&WahayGUISuite{})
 
 type testGtkStruct struct {
 	gtk_mock.Mock
@@ -44,7 +44,7 @@ func (t *testGtkStruct) ApplicationNew(a1 string, a2 glibi.ApplicationFlags) (gt
 	return t.applicationNewToReturn1, t.applicationNewToReturn2
 }
 
-func (s *TonioGUISuite) Test_CreateGraphics_createsAGraphicsObjectWithTheArgumentProvided(c *C) {
+func (s *WahayGUISuite) Test_CreateGraphics_createsAGraphicsObjectWithTheArgumentProvided(c *C) {
 	g1 := CreateGraphics(nil, nil, nil)
 	c.Assert(g1.gtk, IsNil)
 	c.Assert(g1.glib, IsNil)
@@ -55,21 +55,21 @@ func (s *TonioGUISuite) Test_CreateGraphics_createsAGraphicsObjectWithTheArgumen
 	c.Assert(g2.glib, IsNil)
 }
 
-func (s *TonioGUISuite) Test_argsWithApplicationName(c *C) {
+func (s *WahayGUISuite) Test_argsWithApplicationName(c *C) {
 	org := os.Args
 	os.Args = []string{"one", "two", "four"}
 	defer func() {
 		os.Args = org
 	}()
 
-	c.Assert(*argsWithApplicationName(), DeepEquals, []string{"Tonio", "two", "four"})
+	c.Assert(*argsWithApplicationName(), DeepEquals, []string{"Wahay", "two", "four"})
 
 	os.Args[2] = "something"
 
-	c.Assert(*argsWithApplicationName(), DeepEquals, []string{"Tonio", "two", "something"})
+	c.Assert(*argsWithApplicationName(), DeepEquals, []string{"Wahay", "two", "something"})
 }
 
-func (s *TonioGUISuite) Test_NewGTK_initializesGTK(c *C) {
+func (s *WahayGUISuite) Test_NewGTK_initializesGTK(c *C) {
 	org := os.Args
 	os.Args = []string{"a", "b", "cee"}
 	defer func() {
@@ -81,20 +81,20 @@ func (s *TonioGUISuite) Test_NewGTK_initializesGTK(c *C) {
 	_ = NewGTK(g1)
 
 	c.Assert(ourGtk.initCalled, Equals, true)
-	c.Assert(*ourGtk.initArgs, DeepEquals, []string{"Tonio", "b", "cee"})
+	c.Assert(*ourGtk.initArgs, DeepEquals, []string{"Wahay", "b", "cee"})
 }
 
-func (s *TonioGUISuite) Test_NewGTK_callsApplicationNewWithAppropriateArguments(c *C) {
+func (s *WahayGUISuite) Test_NewGTK_callsApplicationNewWithAppropriateArguments(c *C) {
 	ourGtk := &testGtkStruct{}
 	g1 := CreateGraphics(ourGtk, nil, nil)
 	_ = NewGTK(g1)
 
 	c.Assert(ourGtk.applicationNewCalled, Equals, true)
-	c.Assert(ourGtk.applicationNewArg1, Equals, "digital.autonomia.Tonio")
+	c.Assert(ourGtk.applicationNewArg1, Equals, "digital.autonomia.Wahay")
 	c.Assert(ourGtk.applicationNewArg2, Equals, glibi.APPLICATION_FLAGS_NONE)
 }
 
-func (s *TonioGUISuite) Test_NewGTK_panicsIfApplicationNewFails(c *C) {
+func (s *WahayGUISuite) Test_NewGTK_panicsIfApplicationNewFails(c *C) {
 	ourGtk := &testGtkStruct{}
 	ourGtk.applicationNewToReturn2 = errors.New("something went wrong")
 	g1 := CreateGraphics(ourGtk, nil, nil)
@@ -102,7 +102,7 @@ func (s *TonioGUISuite) Test_NewGTK_panicsIfApplicationNewFails(c *C) {
 	c.Assert(func() { NewGTK(g1) }, PanicMatches, "Couldn't create application: something went wrong")
 }
 
-func (s *TonioGUISuite) Test_NewGTK_returnsAGTKUIWithProperData(c *C) {
+func (s *WahayGUISuite) Test_NewGTK_returnsAGTKUIWithProperData(c *C) {
 	app := &gtk_mock.MockApplication{}
 	ourGtk := &testGtkStruct{}
 	ourGtk.applicationNewToReturn1 = app
@@ -114,7 +114,7 @@ func (s *TonioGUISuite) Test_NewGTK_returnsAGTKUIWithProperData(c *C) {
 }
 
 // TODO: uncomment this when the code were reviewed
-// func (s *TonioGUISuite) Test_gtkUI_onActivate_createsMainWindow(c *C) {
+// func (s *WahayGUISuite) Test_gtkUI_onActivate_createsMainWindow(c *C) {
 // 	ourGtk := &testGtkWithBuilder{}
 // 	ourGlib := &testGlibStruct{}
 // 	ourBuilder := &testBuilder{}
@@ -161,7 +161,7 @@ type testGlibStruct struct {
 	glib_mock.Mock
 }
 
-func (s *TonioGUISuite) Test_gtkUI_Loop_connectsActivate(c *C) {
+func (s *WahayGUISuite) Test_gtkUI_Loop_connectsActivate(c *C) {
 	app := &testApplication{}
 	ourGtk := &testGtkStruct{}
 	ourGlib := &testGlibStruct{}
@@ -176,7 +176,7 @@ func (s *TonioGUISuite) Test_gtkUI_Loop_connectsActivate(c *C) {
 	c.Assert(app.connectArg2, Not(IsNil))
 }
 
-func (s *TonioGUISuite) Test_gtkUI_Loop_runsTheAppWithArguments(c *C) {
+func (s *WahayGUISuite) Test_gtkUI_Loop_runsTheAppWithArguments(c *C) {
 	app := &testApplication{}
 	ourGtk := &testGtkStruct{}
 	ourGlib := &testGlibStruct{}
@@ -190,7 +190,7 @@ func (s *TonioGUISuite) Test_gtkUI_Loop_runsTheAppWithArguments(c *C) {
 	c.Assert(app.runArg1, DeepEquals, []string{})
 }
 
-func (s *TonioGUISuite) Test_gtkUI_Loop_panicsIfActivateFails(c *C) {
+func (s *WahayGUISuite) Test_gtkUI_Loop_panicsIfActivateFails(c *C) {
 	app := &testApplication{}
 	ourGtk := &testGtkStruct{}
 	ourGlib := &testGlibStruct{}

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"autonomia.digital/tonio/app/config"
+	"github.com/digitalautonomy/wahay/config"
 	"github.com/wybiral/torgo"
 )
 

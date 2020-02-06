@@ -59,9 +59,9 @@ func ReadFileOrTemporaryBackup(name string) (data []byte, e error) {
 	return ioutil.ReadFile(name + tmpExtension)
 }
 
-// Dir returns the default config directory for Tonio
+// Dir returns the default config directory for Wahay
 func Dir() string {
-	return filepath.Join(SystemConfigDir(), "tonio")
+	return filepath.Join(SystemConfigDir(), "wahay")
 }
 
 func TorDir() string {

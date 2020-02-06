@@ -8,11 +8,11 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"autonomia.digital/tonio/app/config"
-	"autonomia.digital/tonio/app/tor"
+	"github.com/digitalautonomy/wahay/config"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
-// Instance is a representation of the Mumble client for Tonio
+// Instance is a representation of the Mumble client for Wahay
 type Instance interface {
 	CanBeUsed() bool
 	GetBinaryPath() string

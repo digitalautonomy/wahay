@@ -1,7 +1,7 @@
-image: rbonifaz/tonio-build:latest
+image: rbonifaz/wahay-build:latest
 
 variables:
-  PACKAGE_PATH: /go/src/autonomia.digital/tonio/app
+  PACKAGE_PATH: /go/src/github.com/digitalautonomy/wahay
   DOCKER_DRIVER: overlay2
 
 stages:
@@ -25,7 +25,7 @@ build:
     - make build-ci
   artifacts:
     paths:
-      - bin/tonio*
+      - bin/wahay*
 
 test:
   stage: check
@@ -64,28 +64,28 @@ deploy_staging:
   - 'eval $(ssh-agent -s)'
   - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
-  - 'echo -e "[staging.tonio.app]:2326,[185.108.76.88]:2326 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
+  - 'echo -e "[staging.wahay.app]:2326,[185.108.76.88]:2326 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
   - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
   environment:
     name: staging
-    url: https://staging.tonio.app
+    url: https://staging.wahay.app
   only:
     - master
   script:
-   - 'export DEPLOY_DIR=/home/tonio/tmp/deploy_binaries'
-   - 'export DO_SSH="ssh -p2326 tonio@staging.tonio.app "'
+   - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
+   - 'export DO_SSH="ssh -p2326 wahay@staging.wahay.app "'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
-   - 'BINARY_NAME=$(find bin -name "tonio*" | head -1)'
+   - 'BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'echo $BINARY_NAME'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
-   - 'scp -P2326 $BINARY_NAME* tonio@staging.tonio.app:$DEPLOY_DIR/'
-   - 'scp -P2326 deployment/*sh tonio@staging.tonio.app:bin/'
+   - 'scp -P2326 $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
+   - 'scp -P2326 deployment/*sh wahay@staging.wahay.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
-   - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html"'
+   - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html"'
 
 deploy_production:
   image: olabini/ssh_rsync:0.1
@@ -96,26 +96,26 @@ deploy_production:
   - "eval $(ssh-agent -s)"
   - 'ssh-add <(echo "$DEPLOY_PRODUCTION_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
-  - 'echo -e "[tonio.app]:2387,[185.108.76.87]:2387 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD7qdL4lFlIQwRU2h2fV6oIMBZl1ifd6bbcajd8iRYaFQfVvj7qxGvorfaBETyquGe+lk0xw3NrcJCfK1LvT2Wo=" >> ~/.ssh/known_hosts'
+  - 'echo -e "[wahay.app]:2387,[185.108.76.87]:2387 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD7qdL4lFlIQwRU2h2fV6oIMBZl1ifd6bbcajd8iRYaFQfVvj7qxGvorfaBETyquGe+lk0xw3NrcJCfK1LvT2Wo=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
   - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
   environment:
     name: production
-    url: https://tonio.app
+    url: https://wahay.app
   when: manual
   only:
     - master
   script:
-   - 'export DEPLOY_DIR=/home/tonio/tmp/deploy_binaries'
-   - 'export DO_SSH="ssh -p2387 tonio@tonio.app "'
+   - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
+   - 'export DO_SSH="ssh -p2387 wahay@wahay.app "'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
-   - 'BINARY_NAME=$(find bin -name "tonio*" | head -1)'
+   - 'BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'echo $BINARY_NAME'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
-   - 'scp -P2387 $BINARY_NAME* tonio@tonio.app:$DEPLOY_DIR/'
-   - 'scp -P2387 deployment/*sh tonio@tonio.app:bin/'
+   - 'scp -P2387 $BINARY_NAME* wahay@wahay.app:$DEPLOY_DIR/'
+   - 'scp -P2387 deployment/*sh wahay@wahay.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
-   - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/tonio/downloads > /usr/local/www/tonio/downloads.html"'
+   - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html"'

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"autonomia.digital/tonio/app/hosting"
-	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
+	"github.com/digitalautonomy/wahay/hosting"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
 func (u *gtkUI) joinMeeting() {

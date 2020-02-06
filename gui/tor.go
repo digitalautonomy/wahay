@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"autonomia.digital/tonio/app/tor"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
 // TODO: we should also check that either Torify or Torsocks are available

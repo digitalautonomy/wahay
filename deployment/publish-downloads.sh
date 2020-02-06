@@ -15,11 +15,11 @@ BINARY_NAME=${SHA256_SUM_FILE%.sha256sum}
 
 SIGNATURE_FILE=$SHA256_SUM_FILE.asc
 
-DOWNLOADS_DIR=/usr/local/www/tonio/downloads
+DOWNLOADS_DIR=/usr/local/www/wahay/downloads
 
-WEBSITE_DOCUMENT_ROOT=/usr/local/www/tonio/
+WEBSITE_DOCUMENT_ROOT=/usr/local/www/wahay/
 
-#Compare NEW_TONIO_BINARY sha256sum with previous
+#Compare NEW_WAHAY_BINARY sha256sum with previous
 #hashes to avoid duplicated binaries if a binary 
 #is duplicated  clean the $TMP_DIR
 grep $BINARY_SHA256_SUM $DOWNLOADS_DIR/*.sha256sum 
@@ -31,7 +31,7 @@ then
 fi
 
 #Move binaries to the download page
-mv $TMP_DIR/tonio* $DOWNLOADS_DIR
+mv $TMP_DIR/wahay* $DOWNLOADS_DIR
 
 #Identified if the file has a date patern, that way we can
 #now that is not a tagged version
@@ -43,27 +43,27 @@ if [ $? -eq 0  ]
 then
         cd $DOWNLOADS_DIR
         
-        if [ -L tonio-latest ] ; then
-                rm tonio-latest*
+        if [ -L wahay-latest ] ; then
+                rm wahay-latest*
         fi
 
-        ln -s $BINARY_NAME tonio-latest
-        ln -s $SHA256_SUM_FILE tonio-latest.sha256sum
-        ln -s $SIGNATURE_FILE tonio-latest.sha256sum.asc
+        ln -s $BINARY_NAME wahay-latest
+        ln -s $SHA256_SUM_FILE wahay-latest.sha256sum
+        ln -s $SIGNATURE_FILE wahay-latest.sha256sum.asc
 else
  
-        #Retrieve TONIO_TAG name        
-        TONIO_TAG_NAME=$(echo ${BINARY_NAME%-*******})
+        #Retrieve WAHAY_TAG name        
+        WAHAY_TAG_NAME=$(echo ${BINARY_NAME%-*******})
 
         cd $DOWNLOADS_DIR
   
-        if [ -L $TONIO_TAG_NAME ] ; then
-                rm $TONIO_TAG_NAME*
+        if [ -L $WAHAY_TAG_NAME ] ; then
+                rm $WAHAY_TAG_NAME*
         fi
     
-        ln -s $BINARY_NAME $TONIO_TAG_NAME
-        ln -s $SHA256_SUM_FILE $TONIO_TAG_NAME.sha256sum
-        ln -s $SIGNATURE_FILE $TONIO_TAG_NAME.sha256sum.asc
+        ln -s $BINARY_NAME $WAHAY_TAG_NAME
+        ln -s $SHA256_SUM_FILE $WAHAY_TAG_NAME.sha256sum
+        ln -s $SIGNATURE_FILE $WAHAY_TAG_NAME.sha256sum.asc
 
 
 fi

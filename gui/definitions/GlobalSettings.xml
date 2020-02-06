@@ -159,7 +159,7 @@
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkCheckButton" id="chkPersistentConfiguration">
-                        <property name="label" translatable="yes">Keep configuration file when Tonio closes</property>
+                        <property name="label" translatable="yes">Keep configuration file when Wahay closes</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="focus_on_click">False</property>

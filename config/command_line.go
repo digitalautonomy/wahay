@@ -23,9 +23,9 @@ var (
 	// TorControlPassword contains the command line argument given for the Tor control port password
 	TorControlPassword = flag.String("tor-password", "", "the password for controlling Tor - can not be empty")
 	// Debug contains the command line argument given for debugging
-	Debug = flag.Bool("debug", false, "start Tonio in debugging mode")
+	Debug = flag.Bool("debug", false, "start Wahay in debugging mode")
 	// Trace contains the command line argument given for debugging
-	Trace = flag.Bool("trace", false, "start Tonio in tracing mode")
+	Trace = flag.Bool("trace", false, "start Wahay in tracing mode")
 	// DebugFunctionCalls contains the command line argument given for debugging
 	DebugFunctionCalls = flag.Bool("debug-function-calls", false, "trace function calls in logging")
 )

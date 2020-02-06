@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"autonomia.digital/tonio/app/config"
+	"github.com/digitalautonomy/wahay/config"
 )
 
 var (

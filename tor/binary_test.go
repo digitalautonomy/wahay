@@ -4,11 +4,11 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type TonioTorBinarySuite struct{}
+type WahayTorBinarySuite struct{}
 
-var _ = Suite(&TonioTorBinarySuite{})
+var _ = Suite(&WahayTorBinarySuite{})
 
-/*func (s *TonioTorBinarySuite) Test_ValidConfiguredPath(c *C) {
+/*func (s *WahayTorBinarySuite) Test_ValidConfiguredPath(c *C) {
 	log.Printf("Test_ValidConfiguredPath")
 
 	var torBinaryPath = "/usr/bin/tor"
@@ -16,7 +16,7 @@ var _ = Suite(&TonioTorBinarySuite{})
 	c.Assert(pathBinTor, Equals, "/usr/bin/tor")
 }*/
 
-/*func (s *TonioTorBinarySuite) Test_WhichConfiguredPath(c *C) {
+/*func (s *WahayTorBinarySuite) Test_WhichConfiguredPath(c *C) {
 	log.Printf("Test_WhichConfiguredPath")
 
 	var torBinaryPath = "/tmp/bin/tor"

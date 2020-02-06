@@ -11,7 +11,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"autonomia.digital/tonio/app/config"
+	"github.com/digitalautonomy/wahay/config"
 )
 
 const libTorsocks = "libtorsocks.so"
@@ -36,7 +36,7 @@ func findTorBinary(conf *config.ApplicationConfig) (b *binary, valid bool, err e
 		findTorBinaryInConfigPath(conf),
 		findTorBinaryInDataDir,
 		findTorBinaryInCurrentWorkingDir,
-		findTorBinaryInTonioDir,
+		findTorBinaryInWahayDir,
 		findTorBinaryInSystem,
 	}
 
@@ -80,8 +80,8 @@ func findTorBinaryInConfigPath(conf *config.ApplicationConfig) func() (*binary, 
 func findTorBinaryInDataDir() (b *binary, valid bool, err error) {
 	paths := []string{
 		"tor",
-		"tonio/tor",
-		"bin/tonio/tor",
+		"wahay/tor",
+		"bin/wahay/tor",
 	}
 
 	for _, subdir := range paths {
@@ -123,7 +123,7 @@ func findTorBinaryInCurrentWorkingDir() (b *binary, valid bool, err error) {
 	return nil, false, nil
 }
 
-func findTorBinaryInTonioDir() (b *binary, valid bool, err error) {
+func findTorBinaryInWahayDir() (b *binary, valid bool, err error) {
 	abs, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return nil, false, nil
@@ -131,7 +131,7 @@ func findTorBinaryInTonioDir() (b *binary, valid bool, err error) {
 
 	path := filepath.Join(abs, "tor")
 
-	log.Debugf("findTorBinaryInTonioDir(%s)", path)
+	log.Debugf("findTorBinaryInWahayDir(%s)", path)
 
 	return isThereConfiguredTorBinary(path)
 }

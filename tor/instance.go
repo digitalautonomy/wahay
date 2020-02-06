@@ -12,7 +12,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"autonomia.digital/tonio/app/config"
+	"github.com/digitalautonomy/wahay/config"
 )
 
 const (
@@ -82,7 +82,7 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 		return i, nil
 	}
 
-	ensureTonioDataDir()
+	ensureWahayDataDir()
 
 	b, valid, err := findTorBinary(conf)
 	if !valid || err != nil {
@@ -254,14 +254,14 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 	return rc, nil
 }
 
-var tonioDataDir = filepath.Join(config.XdgDataHome(), "tonio")
+var wahayDataDir = filepath.Join(config.XdgDataHome(), "wahay")
 
-func ensureTonioDataDir() {
-	_ = os.MkdirAll(tonioDataDir, 0700)
+func ensureWahayDataDir() {
+	_ = os.MkdirAll(wahayDataDir, 0700)
 }
 
 func createOurInstance(b *binary, torsocksPath string) *instance {
-	d, _ := ioutil.TempDir(tonioDataDir, "tor")
+	d, _ := ioutil.TempDir(wahayDataDir, "tor")
 	controlPort, routePort := findAvailableTorPorts()
 
 	i := &instance{

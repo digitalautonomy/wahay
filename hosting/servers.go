@@ -61,7 +61,7 @@ func (s *servers) initializeSharedObjects() {
 
 func (s *servers) initializeDataDirectory() error {
 	var e error
-	s.dataDir, e = ioutil.TempDir("", "tonio")
+	s.dataDir, e = ioutil.TempDir("", "wahay")
 	if e != nil {
 		return e
 	}

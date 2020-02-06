@@ -8,9 +8,9 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type TonioTorSuite struct{}
+type WahayTorSuite struct{}
 
-var _ = Suite(&TonioTorSuite{})
+var _ = Suite(&WahayTorSuite{})
 
 func Test(t *testing.T) { TestingT(t) }
 
@@ -81,7 +81,7 @@ func (m *controllerMock) createTestGotor(addr string) (torgoController, error) {
 	return m, nil
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAuthenticationFails(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAuthenticationFails(c *C) {
 	mock := &controllerMock{}
 	mock.authenticatePasswordReturn = errors.New("authentication failed bla bla")
 
@@ -100,7 +100,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAuth
 	c.Assert(e, ErrorMatches, "authentication failed.*")
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_authenticatesWithGivenPassword(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_authenticatesWithGivenPassword(c *C) {
 	mock := &controllerMock{}
 
 	var a authenticationMethod = authenticatePassword(passw)
@@ -118,7 +118,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_authenticatesWithG
 	c.Assert(mock.authenticatePasswordArg1, Equals, passw)
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfTorControllerCantBeCreated(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfTorControllerCantBeCreated(c *C) {
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
 		torPort:  9052,
@@ -133,7 +133,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfTorC
 	c.Assert(e, ErrorMatches, "couldn't create torgocontroller")
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_triesToCreateTorControllerWithGivenAddress(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_triesToCreateTorControllerWithGivenAddress(c *C) {
 	var addrGiven *string
 	cntrl := &controller{
 		torHost:  "127.1.2.3",
@@ -151,7 +151,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_triesToCreateTorCo
 	c.Assert(*addrGiven, Equals, "127.1.2.3:9052")
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAddOnionFails(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAddOnionFails(c *C) {
 	mock := &controllerMock{}
 	mock.addOnionReturnError = errors.New("add onion failed")
 
@@ -170,7 +170,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsErrorIfAddO
 	c.Assert(e, ErrorMatches, "add onion failed.*")
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_createsOnionWithGivenArguments(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_createsOnionWithGivenArguments(c *C) {
 	mock := &controllerMock{}
 
 	var a authenticationMethod = authenticatePassword(passw)
@@ -194,7 +194,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_createsOnionWithGi
 	c.Assert(o.Ports[7877], Equals, "127.0.42.1:42")
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_signalsErrorForInvalidPorts(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_signalsErrorForInvalidPorts(c *C) {
 	mock := &controllerMock{}
 
 	var a authenticationMethod = authenticatePassword(passw)
@@ -216,7 +216,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_signalsErrorForInv
 	c.Assert(e, ErrorMatches, "invalid source port")
 }
 
-func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsTheServiceID(c *C) {
+func (s *WahayTorSuite) Test_controller_CreateNewOnionService_returnsTheServiceID(c *C) {
 	mock := &controllerMock{}
 	mock.addOnionAddServiceInfo = "123abcfff"
 
@@ -235,7 +235,7 @@ func (s *TonioTorSuite) Test_controller_CreateNewOnionService_returnsTheServiceI
 	c.Assert(serviceID, Equals, "123abcfff.onion")
 }
 
-func (s *TonioTorSuite) Test_controller_DeleteOnionService_returnsErrorIfServiceIDIsEmpty(c *C) {
+func (s *WahayTorSuite) Test_controller_DeleteOnionService_returnsErrorIfServiceIDIsEmpty(c *C) {
 	mock := &controllerMock{}
 	mock.deleteOnionReturnError = errors.New("the service ID cannot be empty")
 
@@ -253,7 +253,7 @@ func (s *TonioTorSuite) Test_controller_DeleteOnionService_returnsErrorIfService
 	c.Assert(e, ErrorMatches, "the service ID cannot be empty")
 }
 
-func (s *TonioTorSuite) Test_controller_DeleteOnionService_returnsErrorIfFails(c *C) {
+func (s *WahayTorSuite) Test_controller_DeleteOnionService_returnsErrorIfFails(c *C) {
 	mock := &controllerMock{}
 	mock.deleteOnionReturnError = errors.New("service deletion error")
 

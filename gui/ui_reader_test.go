@@ -11,11 +11,11 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type TonioGUIUIReaderSuite struct{}
+type WahayGUIUIReaderSuite struct{}
 
-var _ = Suite(&TonioGUIUIReaderSuite{})
+var _ = Suite(&WahayGUIUIReaderSuite{})
 
-func (s *TonioGUIUIReaderSuite) Test_getActualDefsFolder(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_getActualDefsFolder(c *C) {
 	wd, _ := os.Getwd()
 	defer func() {
 		_ = os.Chdir(wd)
@@ -27,19 +27,19 @@ func (s *TonioGUIUIReaderSuite) Test_getActualDefsFolder(c *C) {
 	c.Assert(getActualDefsFolder(), Equals, "gui/definitions")
 }
 
-func (s *TonioGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsDefinitionIfExists(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsDefinitionIfExists(c *C) {
 	ss := getDefinitionWithFileFallback("MainWindow")
 	c.Assert(ss, Not(Equals), "")
 	c.Assert(strings.Contains(ss, "\"GtkApplicationWindow\""), Equals, true)
 }
 
-func (s *TonioGUIUIReaderSuite) Test_getDefinitionWithFileFallback_panicsForNonExistingDefinition(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_panicsForNonExistingDefinition(c *C) {
 	g1 := CreateGraphics(nil, nil, nil)
 	c.Assert(func() { g1.uiBuilderFor("definitionThatDoesntExist") }, PanicMatches,
 		"No definition found for .*")
 }
 
-func (s *TonioGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsContentThatOnlyExistInMemory(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsContentThatOnlyExistInMemory(c *C) {
 	_escData["/definitions/TestDefinition.xml"] = &_escFile{
 		local:   "definitions/TestDefinition.xml",
 		size:    326,
@@ -89,7 +89,7 @@ func (t *testGtkWithBuilder) BuilderNew() (gtki.Builder, error) {
 	return t.builderNewToReturn1, t.builderNewToReturn2
 }
 
-func (s *TonioGUIUIReaderSuite) Test_uiBuilder_get_returnsTheObjectForKnown(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_uiBuilder_get_returnsTheObjectForKnown(c *C) {
 	ourGtk := &testGtkWithBuilder{}
 	ourBuilder := &testBuilder{}
 	ourGtk.builderNewToReturn1 = ourBuilder
@@ -103,7 +103,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilder_get_returnsTheObjectForKnown(c *C
 	c.Assert(v, Equals, ourBuilder)
 }
 
-func (s *TonioGUIUIReaderSuite) Test_uiBuilder_get_forUnknownObjectPanics(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_uiBuilder_get_forUnknownObjectPanics(c *C) {
 	ourGtk := &testGtkWithBuilder{}
 	ourBuilder := &testBuilder{}
 	ourGtk.builderNewToReturn1 = ourBuilder
@@ -116,7 +116,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilder_get_forUnknownObjectPanics(c *C) 
 	c.Assert(func() { ss.get("somethingNonExisting") }, PanicMatches, "failing on error: couldn't find it")
 }
 
-func (s *TonioGUIUIReaderSuite) Test_uiBuilderFor_panicsOnBadlyFormattedTemplate(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_uiBuilderFor_panicsOnBadlyFormattedTemplate(c *C) {
 	ourGtk := &testGtkWithBuilder{}
 	ourBuilder := &testBuilder{}
 	ourGtk.builderNewToReturn1 = ourBuilder
@@ -129,7 +129,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilderFor_panicsOnBadlyFormattedTemplate
 		"gui: failed load MainWindow: badly formatted template")
 }
 
-func (s *TonioGUIUIReaderSuite) Test_uiBuilderFor_panicsIfBuilderCantBeCreated(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_uiBuilderFor_panicsIfBuilderCantBeCreated(c *C) {
 	ourGtk := &testGtkWithBuilder{}
 	ourGtk.builderNewToReturn2 = errors.New("bad GTK error")
 
@@ -138,7 +138,7 @@ func (s *TonioGUIUIReaderSuite) Test_uiBuilderFor_panicsIfBuilderCantBeCreated(c
 	c.Assert(func() { g1.uiBuilderFor("MainWindow") }, PanicMatches, "failing on error: bad GTK error")
 }
 
-func (s *TonioGUIUIReaderSuite) Test_readFile_failsIfErrorHappens(c *C) {
+func (s *WahayGUIUIReaderSuite) Test_readFile_failsIfErrorHappens(c *C) {
 	c.Assert(func() { readFile("none_existing_file") }, PanicMatches,
 		"failing on error: open none_existing_file: no such file or directory")
 }

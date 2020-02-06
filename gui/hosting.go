@@ -9,10 +9,10 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"autonomia.digital/tonio/app/config"
-	"autonomia.digital/tonio/app/hosting"
-	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
+	"github.com/digitalautonomy/wahay/config"
+	"github.com/digitalautonomy/wahay/hosting"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
 // defaultPortMumble contains the default port used in mumble
@@ -355,7 +355,7 @@ func (h *hostData) getInvitationMicrosoftURI() string {
 }
 
 const invitationTextTemplate = `
-Please join Tonio meeting with the following details:%0D%0A%0D%0A
+Please join Wahay meeting with the following details:%0D%0A%0D%0A
 {{ if .MeetingID }}
 Meeting ID: {{ .MeetingID }}%0D%0A
 {{ end }}
@@ -367,7 +367,7 @@ type Invitation struct {
 }
 
 func (h *hostData) getInvitationSubject() string {
-	return "Join Tonio Meeting"
+	return "Join Wahay Meeting"
 }
 
 func (h *hostData) getInvitationText() string {

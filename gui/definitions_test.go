@@ -7,11 +7,11 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type TonioGUIDefinitionsSuite struct{}
+type WahayGUIDefinitionsSuite struct{}
 
-var _ = Suite(&TonioGUIDefinitionsSuite{})
+var _ = Suite(&WahayGUIDefinitionsSuite{})
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_static_Open(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_static_Open(c *C) {
 	f := FS(false)
 	_, e := f.Open("doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
@@ -47,7 +47,7 @@ CiAgPC9vYmplY3Q+CjwvaW50ZXJmYWNlP===
 	c.Assert(e, ErrorMatches, "illegal base64 data.*")
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_fsFileImplementations(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_fsFileImplementations(c *C) {
 	f := FS(false)
 	ff, _ := f.Open("/definitions/MainWindow.xml")
 
@@ -73,7 +73,7 @@ func (s *TonioGUIDefinitionsSuite) Test_definitions_fsFileImplementations(c *C) 
 	c.Assert(fs.Sys(), Not(IsNil))
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_static_DirectoryOpen(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_static_DirectoryOpen(c *C) {
 	d := Dir(false, "/definitions")
 	_, e := d.Open("/doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
@@ -82,7 +82,7 @@ func (s *TonioGUIDefinitionsSuite) Test_definitions_static_DirectoryOpen(c *C) {
 	c.Assert(e, IsNil)
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_local_Open(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_local_Open(c *C) {
 	f := FS(true)
 	_, e := f.Open("doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
@@ -91,7 +91,7 @@ func (s *TonioGUIDefinitionsSuite) Test_definitions_local_Open(c *C) {
 	c.Assert(e, IsNil)
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_local_DirectoryOpen(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_local_DirectoryOpen(c *C) {
 	d := Dir(true, "/definitions")
 	_, e := d.Open("/doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
@@ -100,7 +100,7 @@ func (s *TonioGUIDefinitionsSuite) Test_definitions_local_DirectoryOpen(c *C) {
 	c.Assert(e, IsNil)
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_local_FSByte(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSByte(c *C) {
 	_, e := FSByte(true, "doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
 
@@ -108,7 +108,7 @@ func (s *TonioGUIDefinitionsSuite) Test_definitions_local_FSByte(c *C) {
 	c.Assert(e, IsNil)
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
 	_, e := FSString(true, "doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
 
@@ -116,13 +116,13 @@ func (s *TonioGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
 	c.Assert(e, IsNil)
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_local_FSMustByte(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustByte(c *C) {
 	c.Assert(func() { FSMustByte(true, "doesntexist") }, PanicMatches, "file does not exist")
 
 	_ = FSMustByte(true, "/definitions/MainWindow.xml")
 }
 
-func (s *TonioGUIDefinitionsSuite) Test_definitions_local_FSMustString(c *C) {
+func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustString(c *C) {
 	c.Assert(func() { FSMustString(true, "doesntexist") }, PanicMatches, "file does not exist")
 
 	_ = FSMustString(true, "/definitions/MainWindow.xml")

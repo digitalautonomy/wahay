@@ -52,13 +52,13 @@ cover-ci: run-coverage
 	go tool cover -func=.coverprofiles/gover.coverprofile
 
 build:
-	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio
+	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay
 
 build-ci:
 ifeq ($(TAG_VERSION),)
-	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio-$(CURRENT_DATE)-$(GIT_SHORT_VERSION)
+	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay-$(CURRENT_DATE)-$(GIT_SHORT_VERSION)
 else
-	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/tonio-$(TAG_VERSION)-$(GIT_SHORT_VERSION)
+	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay-$(TAG_VERSION)-$(GIT_SHORT_VERSION)
 endif
 
 # QUALITY TOOLS

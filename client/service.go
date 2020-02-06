@@ -3,8 +3,8 @@ package client
 import (
 	"errors"
 
-	"autonomia.digital/tonio/app/hosting"
-	"autonomia.digital/tonio/app/tor"
+	"github.com/digitalautonomy/wahay/hosting"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
 var (

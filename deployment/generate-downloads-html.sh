@@ -21,7 +21,7 @@ html { padding:10px; width:95% }
 <h1>Downloads</h1>
 </div>
 <div>
-<p>Tonio is in an early stage of development. Not all of its functionalities have been developed and you may find errors! </p>
+<p>Wahay is in an early stage of development. Not all of its functionalities have been developed and you may find errors! </p>
 <p><strong>Download it at your own risk!</strong></p>
 <p>At the moment it's available only for Linux 64 bits, in the future we plan to provide binaries for other operating systems. </p>
 </div>
@@ -35,17 +35,17 @@ html { padding:10px; width:95% }
 <th>SIGNATURE</th>
 </tr>
 <tr>
-<td><a href="downloads/tonio-latest">tonio-latest</a></td>
-<td><a href="downloads/tonio-latest.sha256sum">sha256sum</a></td>
-<td><a href="downloads/tonio-latest.sha256sum">GPG signature</a></td>
+<td><a href="downloads/wahay-latest">wahay-latest</a></td>
+<td><a href="downloads/wahay-latest.sha256sum">sha256sum</a></td>
+<td><a href="downloads/wahay-latest.sha256sum">GPG signature</a></td>
 </tr>
 
 end-of-html
 
 
-for filename in tonio*; do
+for filename in wahay*; do
     #Be sure not to list files with sha256sum string in their name
-    ls $filename | grep  "sha256sum\|tonio-latest" > /dev/null
+    ls $filename | grep  "sha256sum\|wahay-latest" > /dev/null
         if [ $? -eq 1  ]
         then
 
@@ -68,19 +68,19 @@ Digital hashes protects against unintentional modification of data in transit. T
 
 <br>
 
-To verify the integrity of the file you need to obtain the SHA256SUM of the binary you have downloaded and compare it to the correspondent tonio-xxxxx.sha256.sum. For example if you want to check the sha256sum of tonio-2020-01-22-9319d8d binary. 
+To verify the integrity of the file you need to obtain the SHA256SUM of the binary you have downloaded and compare it to the correspondent wahay-xxxxx.sha256.sum. For example if you want to check the sha256sum of wahay-2020-01-22-9319d8d binary. 
 
 <br><br>
 <div class="code">
-$ sha256sum tonio-2020-01-22-9319d8d<br>
-f75a4b04d05571d5eb7dff267c1efa996b1e24ff9a8d84c4fa1088141dc48cf8  tonio-2020-01-22-9319d8d<br>
+$ sha256sum wahay-2020-01-22-9319d8d<br>
+f75a4b04d05571d5eb7dff267c1efa996b1e24ff9a8d84c4fa1088141dc48cf8  wahay-2020-01-22-9319d8d<br>
 </div>
-<br>The output of the previous command should be compare with the content of tonio-2020-01-22-9319d8d.sha256sum file.
+<br>The output of the previous command should be compare with the content of wahay-2020-01-22-9319d8d.sha256sum file.
 <br><br>
 
 <code>
-$ cat tonio-2020-01-22-9319d8d.sha256sum<br>
-f75a4b04d05571d5eb7dff267c1efa996b1e24ff9a8d84c4fa1088141dc48cf8  bin/tonio-2020-01-22-9319d8d<br>
+$ cat wahay-2020-01-22-9319d8d.sha256sum<br>
+f75a4b04d05571d5eb7dff267c1efa996b1e24ff9a8d84c4fa1088141dc48cf8  bin/wahay-2020-01-22-9319d8d<br>
 </code>
 <br>
 
@@ -94,7 +94,7 @@ Digital signatures ensures that what CAD intended to publish is the same as was 
 
 1) Download and import CAD signing key (testing key at the moment):<br>
 <code>
-<br>$ wget https://staging.tonio.app/cad-testing-public-key.asc
+<br>$ wget https://staging.wahay.app/cad-testing-public-key.asc
 </code>
 
 <br><br>
@@ -109,7 +109,7 @@ gpg:               imported: 1<br>
 
 3) Verify the key<br>
 <div class="code">
-<br>$ gpg --verify tonio-2020-01-22-9319d8d.sha256sum.asc tonio-2020-01-22-9319d8d.sha256sum<br>
+<br>$ gpg --verify wahay-2020-01-22-9319d8d.sha256sum.asc wahay-2020-01-22-9319d8d.sha256sum<br>
 gpg: Signature made mié 22 ene 2020 10:06:02 -05<br>
 gpg:                using EDDSA key A5DA0791073C1374BB2A98B3A5ABBD2E8E623464<br>
 <strong>gpg: Good signature from "CAD Signing Key - testing (This is just a test key) \<admin@autonomia.digital\>"</strong> [unknown]<br>

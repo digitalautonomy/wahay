@@ -4,11 +4,11 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type TonioTorVersionsSuite struct{}
+type WahayTorVersionsSuite struct{}
 
-var _ = Suite(&TonioTorVersionsSuite{})
+var _ = Suite(&WahayTorVersionsSuite{})
 
-func (s *TonioTorVersionsSuite) Test_parseVersion_returnsTheThreeImportantVersionNumbers(c *C) {
+func (s *WahayTorVersionsSuite) Test_parseVersion_returnsTheThreeImportantVersionNumbers(c *C) {
 	maj, min, patch, err := parseVersion("0.12.3.4")
 	c.Assert(err, IsNil)
 	c.Assert(maj, Equals, 0)
@@ -16,7 +16,7 @@ func (s *TonioTorVersionsSuite) Test_parseVersion_returnsTheThreeImportantVersio
 	c.Assert(patch, Equals, 3)
 }
 
-func (s *TonioTorVersionsSuite) Test_parseVersion_returnsErrorForBadNumberInTheFirstThreeParts(c *C) {
+func (s *WahayTorVersionsSuite) Test_parseVersion_returnsErrorForBadNumberInTheFirstThreeParts(c *C) {
 	_, _, _, err := parseVersion("x.12.3.4")
 	c.Assert(err, ErrorMatches, "invalid version number")
 
@@ -30,7 +30,7 @@ func (s *TonioTorVersionsSuite) Test_parseVersion_returnsErrorForBadNumberInTheF
 	c.Assert(err, IsNil)
 }
 
-func (s *TonioTorVersionsSuite) Test_parseVersion_returnsErrorIfThereArentNumbers(c *C) {
+func (s *WahayTorVersionsSuite) Test_parseVersion_returnsErrorIfThereArentNumbers(c *C) {
 	_, _, _, err := parseVersion("1.12")
 	c.Assert(err, ErrorMatches, "invalid version string")
 
@@ -38,7 +38,7 @@ func (s *TonioTorVersionsSuite) Test_parseVersion_returnsErrorIfThereArentNumber
 	c.Assert(err, ErrorMatches, "invalid version string")
 }
 
-func (s *TonioTorVersionsSuite) Test_compareVersions_comparesVersionsCorrectly(c *C) {
+func (s *WahayTorVersionsSuite) Test_compareVersions_comparesVersionsCorrectly(c *C) {
 	cmp, _ := compareVersions("12.0.1.x", "9.1.42")
 	c.Assert(cmp, Equals, 1)
 
@@ -55,7 +55,7 @@ func (s *TonioTorVersionsSuite) Test_compareVersions_comparesVersionsCorrectly(c
 	c.Assert(cmp, Equals, 0)
 }
 
-func (s *TonioTorVersionsSuite) Test_compareVersions_returnsErrorForInvalidVersionString(c *C) {
+func (s *WahayTorVersionsSuite) Test_compareVersions_returnsErrorForInvalidVersionString(c *C) {
 	_, e := compareVersions("12.x.1.x", "9.1.42")
 	c.Assert(e, ErrorMatches, "invalid version string")
 

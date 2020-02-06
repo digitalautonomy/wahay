@@ -3,8 +3,8 @@ package gui
 import (
 	"errors"
 
-	"autonomia.digital/tonio/app/config"
 	"github.com/coyim/gotk3adapter/gtki"
+	"github.com/digitalautonomy/wahay/config"
 )
 
 const passwordMinSize = 1

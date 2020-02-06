@@ -4,18 +4,18 @@ import (
 	"os"
 	"runtime"
 
-	"autonomia.digital/tonio/app/client"
-	"autonomia.digital/tonio/app/config"
-	"autonomia.digital/tonio/app/hosting"
-	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
+	"github.com/digitalautonomy/wahay/client"
+	"github.com/digitalautonomy/wahay/config"
+	"github.com/digitalautonomy/wahay/hosting"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
 const (
-	programName   = "Tonio"
-	applicationID = "digital.autonomia.Tonio"
+	programName   = "Wahay"
+	applicationID = "digital.autonomia.Wahay"
 )
 
 // Graphics represent the graphic configuration

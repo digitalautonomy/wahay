@@ -6,8 +6,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"autonomia.digital/tonio/app/config"
 	"github.com/coyim/gotk3adapter/gtki"
+	"github.com/digitalautonomy/wahay/config"
 )
 
 type settings struct {

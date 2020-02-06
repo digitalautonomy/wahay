@@ -1,11 +1,11 @@
 package main
 
 import (
-	"autonomia.digital/tonio/app/config"
-	"autonomia.digital/tonio/app/gui"
 	"github.com/coyim/gotk3adapter/gdka"
 	"github.com/coyim/gotk3adapter/gliba"
 	"github.com/coyim/gotk3adapter/gtka"
+	"github.com/digitalautonomy/wahay/config"
+	"github.com/digitalautonomy/wahay/gui"
 	log "github.com/sirupsen/logrus"
 )
 
