@@ -4,10 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
 )
@@ -98,7 +99,7 @@ func (b *binary) remove() {
 	if b.shouldBeRemoved() {
 		err := os.RemoveAll(filepath.Dir(b.path))
 		if err != nil {
-			log.Printf("An error occurred while removing Mumble temp directory: %s", err.Error())
+			log.Errorf("An error occurred while removing Mumble temp directory: %s", err.Error())
 		}
 	}
 }
@@ -182,22 +183,21 @@ func getMumbleBinary(conf *config.ApplicationConfig) *binary {
 		b, err := getBinary()
 
 		if err != nil {
-			log.Printf("Mumble binary error: %s", err)
+			log.Errorf("Mumble binary error: %s", err)
 			break
 		}
 
 		if b == nil {
-			log.Printf("Mumble binary error: Not found")
+			log.Errorf("Mumble binary error: Not found")
 			continue
 		}
 
 		if b.lastError != nil {
-			log.Printf("Mumble binary error: %s", b.lastError)
+			log.Errorf("Mumble binary error: %s", b.lastError)
 			continue
 		}
 
 		if !b.isValid {
-			log.Println("Continue with Mumble binary search")
 			continue
 		}
 

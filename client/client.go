@@ -3,9 +3,10 @@ package client
 import (
 	"errors"
 	"io/ioutil"
-	"log"
 	"os/exec"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/tor"
@@ -162,8 +163,8 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 }
 
 func (c *client) Log() {
-	log.Printf("Using Mumble located at: %s\n", c.GetBinaryPath())
-	log.Printf("Using Mumble environment variables: %s\n", c.getBinaryEnv())
+	log.Infof("Using Mumble located at: %s\n", c.GetBinaryPath())
+	log.Infof("Using Mumble environment variables: %s\n", c.getBinaryEnv())
 }
 
 func (c *client) Destroy() {

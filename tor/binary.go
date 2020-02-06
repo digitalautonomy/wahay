@@ -334,8 +334,7 @@ func (b *binary) start(configFile string) (*runningTor, error) {
 
 	if b.isBundle && len(b.env) > 0 {
 		log.Debugf("Tor is bundled with environment variables: %s", b.env)
-		cmd.Env = os.Environ()
-		cmd.Env = append(cmd.Env, b.env...)
+		cmd.Env = append(os.Environ(), b.env...)
 	}
 
 	if err := cmd.Start(); err != nil {

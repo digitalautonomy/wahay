@@ -6,6 +6,7 @@ import (
 
 	"autonomia.digital/tonio/app/client"
 	"autonomia.digital/tonio/app/hosting"
+	"autonomia.digital/tonio/app/tor"
 )
 
 func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
@@ -25,11 +26,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	}()
 }
 
-type mumbleService interface {
-	client.Service
-}
-
-func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, f func()) (mumbleService, error) {
+func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, f func()) (tor.Service, error) {
 	s, err := client.LaunchClient(data, f)
 	if err != nil {
 		return nil, err

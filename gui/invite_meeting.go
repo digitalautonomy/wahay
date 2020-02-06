@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"autonomia.digital/tonio/app/hosting"
+	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
@@ -27,7 +28,7 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
 	return win, builder
 }
 
-func (u *gtkUI) openCurrentMeetingWindow(m mumbleService) {
+func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 	if m.IsClosed() {
 		u.reportError("The Mumble process is down")
 	}
@@ -105,7 +106,7 @@ func (u *gtkUI) openJoinWindow() {
 	u.setCurrentWindow(win)
 }
 
-func (u *gtkUI) openMumble(data hosting.MeetingData, onFinish func()) (mumbleService, error) {
+func (u *gtkUI) openMumble(data hosting.MeetingData, onFinish func()) (tor.Service, error) {
 	if !isMeetingIDValid(data.MeetingID) {
 		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", data.MeetingID)
 	}
@@ -120,7 +121,7 @@ func isMeetingIDValid(meetingID string) bool {
 	return len(meetingID) > onionServiceLength && strings.HasSuffix(meetingID, ".onion")
 }
 
-func (u *gtkUI) leaveMeeting(m mumbleService) {
+func (u *gtkUI) leaveMeeting(m tor.Service) {
 	u.wouldYouConfirmLeaveMeeting(func(res bool) {
 		if res {
 			m.Close()

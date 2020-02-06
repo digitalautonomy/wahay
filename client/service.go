@@ -14,13 +14,8 @@ var (
 	ErrNoService = errors.New("error: the service can't be started")
 )
 
-// Service is a representation of a Mumble service through Tor
-type Service interface {
-	tor.Service
-}
-
 // LaunchClient executes the current Mumble client instance
-func LaunchClient(data hosting.MeetingData, onClose func()) (Service, error) {
+func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error) {
 	c := System()
 
 	if !c.CanBeUsed() {

@@ -7,18 +7,10 @@ import (
 // FileType is the type for identifiying mime-types
 type FileType string
 
-var (
-	// FileBinary is the constant to identify binary files
-	FileBinary FileType = "application/octet-stream"
-	// FileTextPlain is the constant to identify plain-text files
-	FileTextPlain FileType = "text/plain"
-)
-
 var errNoFile = "no file selected"
 
 func (u *gtkUI) setCustomFilePathFor(
 	entry gtki.Entry,
-	t FileType,
 	originalValue string,
 	onSuccess func(string)) {
 	go func() {
@@ -29,10 +21,6 @@ func (u *gtkUI) setCustomFilePathFor(
 			return
 		}
 
-		if !u.validateFileMimeType(filename, t) {
-			return
-		}
-
 		if originalValue != filename {
 			onSuccess(filename)
 			u.doInUIThread(func() {
@@ -40,14 +28,6 @@ func (u *gtkUI) setCustomFilePathFor(
 			})
 		}
 	}()
-}
-
-func (u *gtkUI) validateFileMimeType(filename string, t FileType) bool {
-	// TODO:
-	//   - Valid type validation based on extension and the mime-type
-	//   - Check if the defined `filename` is a file or a directory
-	//   - Should we create the file if not exists?
-	return true
 }
 
 func (u *gtkUI) getCustomFilePath() string {

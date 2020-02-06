@@ -11,6 +11,7 @@ import (
 
 	"autonomia.digital/tonio/app/config"
 	"autonomia.digital/tonio/app/hosting"
+	"autonomia.digital/tonio/app/tor"
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
@@ -19,7 +20,7 @@ const defaultPortMumble = 64738
 
 type hostData struct {
 	u               *gtkUI
-	mumble          mumbleService
+	mumble          tor.Service
 	serverPort      int
 	serverControl   hosting.Server
 	serviceID       string
@@ -116,7 +117,7 @@ func (h *hostData) joinMeetingHost() {
 		mumble, err := h.u.launchMumbleClient(data, h.switchToHostOnFinishMeeting)
 
 		if err != nil {
-			log.Printf("joinMeetingHost() error: %s", err)
+			log.Errorf("joinMeetingHost() error: %s", err)
 			validOpChannel <- false
 		} else {
 			h.mumble = mumble
