@@ -74,15 +74,15 @@ deploy_staging:
     - master
   script:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
-   - 'export DO_SSH="ssh -p2326 wahay@staging.wahay.app "'
+   - 'export DO_SSH="ssh -p2326 wahay@185.108.76.88"'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
    - 'BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'echo $BINARY_NAME'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
-   - 'scp -P2326 $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
-   - 'scp -P2326 deployment/*sh wahay@staging.wahay.app:bin/'
+   - 'scp -P2326 $BINARY_NAME* wahay@185.108.76.88:$DEPLOY_DIR/'
+   - 'scp -P2326 deployment/*sh wahay@185.108.76.88:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
    - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html"'
