@@ -2,13 +2,16 @@
 
 set -x
 
+
 # Create working directories
 mkdir -p generate-bundles/wahay
 mkdir publish-bundles
 
 # Download Binary  Bundles from Nextcloud
 cd generate-bundles
-rclone copy wahay: .
+
+echo "$RCLONE_CONFIG" > rclone.conf
+rclone copy --config rclone.conf  wahay: .
 
 #extract tor
 tar xvf tor-0.4.2.5.tar.bz2 --directory wahay
