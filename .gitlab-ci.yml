@@ -87,7 +87,7 @@ deploy_staging:
    - '$DO_SSH bin/publish-downloads.sh'
    - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html"'
      #Genarate and copy bundles to server (testing at the moment)
-   - deployment/create-bundles-sh
+   - deployment/create-bundles.sh
    - 'scp -P2326 publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
 
 deploy_production:
