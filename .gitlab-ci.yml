@@ -56,17 +56,18 @@ quality:
     - make quality
 
 deploy_staging:
-  image: olabini/ssh_rsync:0.1
+  image: rbonifaz/wahay-deploy:latest
   stage: deploy
   before_script:
-  - apt-get update -qq
-  - apt-get install gpg -qq
   - 'eval $(ssh-agent -s)'
   - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[staging.wahay.app]:2326,[185.108.76.88]:2326 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
   - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
+ # Configure rclone to access Nextcloud files via webdav
+  - mkdir -p ~/.config/rclone/
+  - 'echo "$RCLONE_CONFIG" > ~/.config/rclone/rclone.conf'
   environment:
     name: staging
     url: https://staging.wahay.app
@@ -77,8 +78,7 @@ deploy_staging:
    - 'export DO_SSH="ssh -p2326 wahay@staging.wahay.app"'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
-   - 'BINARY_NAME=$(find bin -name "wahay*" | head -1)'
-   - 'echo $BINARY_NAME'
+   - 'export BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
    - 'scp -P2326 $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
@@ -86,9 +86,12 @@ deploy_staging:
    - '$DO_SSH chmod +x bin/*sh'
    - '$DO_SSH bin/publish-downloads.sh'
    - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html"'
+     #Genarate and copy bundles to server (testing at the moment)
+   - deployment/create-bundles-sh
+   - 'scp -P2326 publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
 
 deploy_production:
-  image: olabini/ssh_rsync:0.1
+  image: rbonifaz/wahay-deploy:latest
   stage: deploy
   before_script:
   - apt-get update -qq
