@@ -35,8 +35,10 @@ test-clean: test
 
 run-coverage: clean-cover
 	mkdir -p .coverprofiles
+	go test -coverprofile=.coverprofiles/client.coverprofile ./client
 	go test -coverprofile=.coverprofiles/config.coverprofile ./config
 	go test -coverprofile=.coverprofiles/gui.coverprofile ./gui
+	go test -coverprofile=.coverprofiles/hosting.coverprofile ./hosting
 	go test -coverprofile=.coverprofiles/tor.coverprofile ./tor
 	gover .coverprofiles .coverprofiles/gover.coverprofile
 
