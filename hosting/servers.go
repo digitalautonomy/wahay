@@ -44,6 +44,7 @@ type servers struct {
 	log     *log.Logger
 }
 
+// TODO[OB]: why is this not a member function on the MeetingData object?
 // GenerateURL is a helper function for creating Mumble valid URLs
 func GenerateURL(data MeetingData) string {
 	u := url.URL{
@@ -68,11 +69,7 @@ func (s *servers) initializeDataDirectory() error {
 
 	grumbleServer.Args.DataDir = s.dataDir
 
-	serversDirPath := filepath.Join(s.dataDir, "servers")
-	e = os.Mkdir(serversDirPath, 0700)
-	if e != nil && !os.IsExist(e) {
-		return e
-	}
+	_ = os.MkdirAll(filepath.Join(s.dataDir, "servers"), 0700)
 
 	return nil
 }
@@ -89,14 +86,14 @@ func (s *servers) initializeLogging() error {
 	l := log.New()
 	l.SetOutput(&logtarget.Target)
 	s.log = l
-	s.log.Printf("Grumble")
-	s.log.Printf("Using data directory: %s", s.dataDir)
+	s.log.Info("Grumble")
+	s.log.Info("Using data directory: %s", s.dataDir)
 
 	return nil
 }
 
 func (s *servers) initializeCertificates() error {
-	s.log.Printf("Generating 4096-bit RSA keypair for self-signed certificate...")
+	s.log.Debug("Generating 4096-bit RSA keypair for self-signed certificate...")
 
 	certFn := filepath.Join(s.dataDir, "cert.pem")
 	keyFn := filepath.Join(s.dataDir, "key.pem")
@@ -105,8 +102,17 @@ func (s *servers) initializeCertificates() error {
 		return err
 	}
 
-	s.log.Printf("Certificate output to %v", certFn)
-	s.log.Printf("Private key output to %v", keyFn)
+	s.log.Debugf("Certificate output to %v", certFn)
+	s.log.Debugf("Private key output to %v", keyFn)
+	return nil
+}
+
+func callAll(fs ...func() error) error {
+	for _, f := range fs {
+		if e := f(); e != nil {
+			return e
+		}
+	}
 	return nil
 }
 
@@ -117,22 +123,11 @@ func (s *servers) initializeCertificates() error {
 func (s *servers) create() error {
 	s.initializeSharedObjects()
 
-	e := s.initializeDataDirectory()
-	if e != nil {
-		return e
-	}
-
-	e = s.initializeLogging()
-	if e != nil {
-		return e
-	}
-
-	e = s.initializeCertificates()
-	if e != nil {
-		return e
-	}
-
-	return nil
+	return callAll(
+		s.initializeDataDirectory,
+		s.initializeLogging,
+		s.initializeCertificates,
+	)
 }
 
 func (s *servers) startListener() {
