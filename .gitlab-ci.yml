@@ -59,10 +59,13 @@ deploy_staging:
   image: rbonifaz/wahay-deploy:latest
   stage: deploy
   before_script:
+  - export SSH_PORT=2326
+  - 'export DO_SSH="ssh -p${SSH_PORT} wahay@staging.wahay.app"'
+  - 'export DO_SCP="scp -P${SSH_PORT}"'
   - 'eval $(ssh-agent -s)'
   - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
-  - 'echo -e "[staging.wahay.app]:2326,[185.108.76.88]:2326 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
+  - 'echo -e "[staging.wahay.app]:${SSH_PORT},[185.108.76.88]:${SSH_PORT} ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
   - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
   environment:
@@ -72,20 +75,18 @@ deploy_staging:
     - master
   script:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
-   - 'export DO_SSH="ssh -p2326 wahay@staging.wahay.app"'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
    - 'export BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
-   - 'scp -P2326 $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
-   - 'scp -P2326 deployment/*sh wahay@staging.wahay.app:bin/'
+   - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
+   - 'scp -P${SSH_PORT} deployment/*sh wahay@staging.wahay.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
+   - deployment/create-bundles.sh
+   - 'scp -P${SSH_PORT} publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - '$DO_SSH bin/publish-downloads.sh'
    - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html"'
-     #Genarate and copy bundles to server (testing at the moment)
-   - deployment/create-bundles.sh
-   - 'scp -P2326 publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
 
 deploy_production:
   image: rbonifaz/wahay-deploy:latest
