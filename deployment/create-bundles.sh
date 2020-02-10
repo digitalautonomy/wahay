@@ -2,7 +2,7 @@
 
 set -x
 
-DISTRO_FILE="supported-bundle-distros.txt"
+DISTRO_FILE="~/deployment/supported-bundle-distros.txt"
 APP_NAME=wahay
 BINARY_BASE_NAME=$(basename $BINARY_NAME)
 BINARY_VERSION=${BINARY_BASE_NAME#$APP_NAME}
@@ -35,5 +35,5 @@ do
  sha256sum wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2 > wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2.sha256sum
  gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2.sha256sum
  mv wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2* ../publish-bundles
-done < "../$DISTRO_FILE"
+done < "$DISTRO_FILE"
 
