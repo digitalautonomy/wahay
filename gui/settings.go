@@ -35,10 +35,6 @@ type settings struct {
 	mumblePortOriginalValue        string
 }
 
-var (
-	decryptUncheckConfirmText = i18n.Sprintf("If you disable this option, anyone could read your configuration settings")
-)
-
 func createSettings(u *gtkUI) *settings {
 	builder := u.g.uiBuilderFor("GlobalSettings")
 	dialog := builder.get("settingsWindow").(gtki.Window)
@@ -128,7 +124,7 @@ func (s *settings) processEncryptFileOption() {
 					// We keep the checkbutton checked. Nothing else change.
 					s.chkEncryptFile.SetActive(true)
 				}
-			}, decryptUncheckConfirmText)
+			}, i18n.Sprintf("If you disable this option, anyone could read your configuration settings"))
 		} else {
 			s.u.captureMasterPassword(func() {
 				s.encryptFileOriginalValue = true

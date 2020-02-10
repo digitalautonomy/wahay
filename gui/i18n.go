@@ -6,10 +6,12 @@ import (
 	"fmt"
 
 	"github.com/coyim/gotk3adapter/gtki"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
+
 	// This is necessary because that's how the translation stuff works
 	_ "github.com/digitalautonomy/wahay/gui/catalog"
+
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 var i18n *message.Printer
