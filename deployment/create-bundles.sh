@@ -18,6 +18,7 @@ tar xvf tor-0.4.2.5.tar.bz2 --directory wahay
 
 # Create Ubuntu 18.04 Bundle
 tar xvf mumble-ubuntu-18-04.tar.bz2 --directory wahay
-cp $BINARY_NAME wahay/wahay
+cp ../$BINARY_NAME wahay/wahay
 tar cjf wahay-bundle-ubuntu-18-04.tar.bz2 wahay
+rm -rf wahay/mumble
 mv wahay-bundle-ubuntu-18-04.tar.bz2 ../publish-bundles
