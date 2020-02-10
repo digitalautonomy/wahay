@@ -87,7 +87,7 @@ func (s *servers) initializeLogging() error {
 	l.SetOutput(&logtarget.Target)
 	s.log = l
 	s.log.Info("Grumble")
-	s.log.Info("Using data directory: %s", s.dataDir)
+	s.log.Infof("Using data directory: %s", s.dataDir)
 
 	return nil
 }

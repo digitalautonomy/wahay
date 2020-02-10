@@ -28,7 +28,7 @@ optional-deps:
 	go get -u github.com/rogpeppe/godef
 
 test:
-	go test -cover -v ./config ./gui ./tor
+	go test -cover -v ./client ./config ./gui ./hosting ./tor
 
 test-clean: test
 	go clean -testcache
