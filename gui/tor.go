@@ -21,7 +21,7 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 
 		if instance == nil {
 			// TODO: implement a proper way to show errors for the final user
-			addNewStartupError(errors.New("tor can't be used"))
+			addNewStartupError(errors.New(i18n.Sprintf("tor can't be used")))
 			return
 		}
 

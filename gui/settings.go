@@ -36,7 +36,7 @@ type settings struct {
 }
 
 var (
-	decryptUncheckConfirmText = "If you disable this option, anyone could read your configuration settings"
+	decryptUncheckConfirmText = i18n.Sprintf("If you disable this option, anyone could read your configuration settings")
 )
 
 func createSettings(u *gtkUI) *settings {
@@ -242,7 +242,6 @@ func removeAt(s string, start, end int) string {
 func (s *settings) onDeletePortMumble(e gtki.Entry, posi int, pose int) {
 	txt, _ := e.GetText()
 	remaining := removeAt(txt, posi, pose)
-	fmt.Printf("onDeletePortMumble %s - %s\n", txt, remaining)
 
 	s.validatePortMumble(e, remaining, txt, false)
 }
@@ -254,7 +253,6 @@ func (s *settings) onInsertPortMumble(e gtki.Entry, newText string) {
 	txtRight := lastText[currentPosition:]
 	completeText := fmt.Sprintf("%s%s%s", txtLeft, newText, txtRight)
 
-	fmt.Printf("onInsertPortMumble: %s\n", completeText)
 	s.validatePortMumble(e, completeText, lastText, true)
 }
 

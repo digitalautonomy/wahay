@@ -21,14 +21,14 @@ gen-ui-defs: check-deps
 deps:
 	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
-	go get -u github.com/atotto/clipboard
+	go get -u golang.org/x/text/cmd/gotext
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin v1.21.0
 
 optional-deps:
 	go get -u github.com/rogpeppe/godef
 
 test:
-	go test -cover -v ./client ./config ./gui ./hosting ./tor
+	go test -cover -v ./client ./config ./gui ./hosting	 ./tor
 
 test-clean: test
 	go clean -testcache

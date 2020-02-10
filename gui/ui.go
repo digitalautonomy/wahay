@@ -153,7 +153,7 @@ func (u *gtkUI) updateMainWindowStatusBar(builder *uiBuilder) {
 		if err == nil {
 			cntx.AddClass("error")
 		}
-		lblAppStatus.SetLabel("We've found errors")
+		lblAppStatus.SetLabel(i18n.Sprintf("We've found errors"))
 		btnStatusShow.SetVisible(true)
 	}
 }

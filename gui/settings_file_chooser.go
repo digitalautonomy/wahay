@@ -7,17 +7,15 @@ import (
 // FileType is the type for identifiying mime-types
 type FileType string
 
-var errNoFile = "no file selected"
-
 func (u *gtkUI) setCustomFilePathFor(
 	entry gtki.Entry,
 	originalValue string,
 	onSuccess func(string)) {
 	go func() {
-		filename := u.getCustomFilePath()
+		ok, filename := u.getCustomFilePath()
 
 		// The file chooser has been closed or no file has been selected
-		if filename == errNoFile {
+		if !ok {
 			return
 		}
 
@@ -30,25 +28,31 @@ func (u *gtkUI) setCustomFilePathFor(
 	}()
 }
 
-func (u *gtkUI) getCustomFilePath() string {
+func (u *gtkUI) getCustomFilePath() (ok bool, path string) {
 	channel := make(chan string)
-	go u.showCustomFilePathDialog(channel)
-	return <-channel
+	errChannel := make(chan bool)
+	go u.showCustomFilePathDialog(channel, errChannel)
+	select {
+	case v := <-channel:
+		return true, v
+	case <-errChannel:
+		return false, ""
+	}
 }
 
-func (u *gtkUI) showCustomFilePathDialog(channel chan string) {
+func (u *gtkUI) showCustomFilePathDialog(channel chan string, errChannel chan bool) {
 	u.doInUIThread(func() {
 		dialog, err := u.g.gtk.FileChooserDialogNewWith2Buttons(
-			"Open file",
+			i18n.Sprintf("Open file"),
 			u.currentWindow,
 			gtki.FILE_CHOOSER_ACTION_OPEN,
-			"Cancel",
+			i18n.Sprintf("Cancel"),
 			gtki.RESPONSE_CANCEL,
-			"Open",
+			i18n.Sprintf("Open"),
 			gtki.RESPONSE_ACCEPT)
 
 		if err != nil {
-			channel <- errNoFile
+			errChannel <- true
 			return
 		}
 
@@ -68,7 +72,7 @@ func (u *gtkUI) showCustomFilePathDialog(channel chan string) {
 		if gtki.ResponseType(res) == gtki.RESPONSE_ACCEPT {
 			channel <- dialog.GetFilename()
 		} else {
-			channel <- errNoFile
+			errChannel <- true
 		}
 
 		u.enableCurrentWindow()

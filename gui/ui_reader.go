@@ -83,7 +83,7 @@ func getFileWithFallback(fileName string, fileExtension string, directory string
 		return embeddedFile
 	}
 
-	log.Printf("Loading content from local file: %q\n", file)
+	log.Debugf("Loading content from local file: %q\n", file)
 	return readFile(file)
 }
 

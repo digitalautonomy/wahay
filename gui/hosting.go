@@ -1,11 +1,9 @@
 package gui
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"strconv"
-	"text/template"
 
 	log "github.com/sirupsen/logrus"
 
@@ -53,7 +51,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 		u.hideLoadingWindow()
 		if len(err) > 0 {
 			u.switchToMainWindow()
-			h.u.reportError(fmt.Sprintf("Something went wrong: %s", err))
+			h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
 		} else {
 			h.showMeetingConfiguration()
 		}
@@ -131,7 +129,7 @@ func (h *hostData) joinMeetingHost() {
 	}
 
 	if err == nil {
-		err = errors.New("we could'nt start the meeting")
+		err = errors.New(i18n.Sprintf("we couldn't start the meeting"))
 	}
 
 	h.u.reportError(err.Error())
@@ -171,7 +169,7 @@ func (u *gtkUI) ensureServerCollection() {
 		var e error
 		u.serverCollection, e = hosting.Create()
 		if e != nil {
-			u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+			u.reportError(i18n.Sprintf("Something went wrong: %s", e.Error()))
 		}
 	}
 }
@@ -187,7 +185,7 @@ func (h *hostData) createOnionService(finish chan string) {
 		if h.u.config.GetPortMumble() != "" {
 			pm, err = strconv.Atoi(h.u.config.GetPortMumble())
 			if err != nil {
-				h.u.reportError(fmt.Sprintf("Configured port mumble is invalid: %s", h.u.config.GetPortMumble()))
+				h.u.reportError(i18n.Sprintf("Configured port mumble is invalid: %s", h.u.config.GetPortMumble()))
 				finish <- err.Error()
 				return
 			}
@@ -210,14 +208,14 @@ func (h *hostData) createOnionService(finish chan string) {
 func (h *hostData) createNewConferenceRoom(complete chan bool) {
 	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort), h.meetingPassword)
 	if e != nil {
-		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+		h.u.reportError(i18n.Sprintf("Something went wrong: %s", e.Error()))
 		complete <- true
 		return
 	}
 
 	e = server.Start()
 	if e != nil {
-		h.u.reportError(fmt.Sprintf("Something went wrong: %s", e.Error()))
+		h.u.reportError(i18n.Sprintf("Something went wrong: %s", e.Error()))
 		complete <- true
 		return
 	}
@@ -237,7 +235,7 @@ func (h *hostData) finishMeetingReal() {
 	// same window using the `u.reportError` function
 	err := h.serverControl.Stop()
 	if err != nil {
-		h.u.reportError(fmt.Sprintf("The meeting can't be closed: %s", err))
+		h.u.reportError(i18n.Sprintf("The meeting can't be closed: %s", err))
 	}
 
 	h.deleteOnionService()
@@ -258,11 +256,11 @@ func (h *hostData) deleteOnionService() {
 			h.serviceID = ""
 		}
 	} else {
-		err = errors.New("tor is not defined")
+		err = errors.New(i18n.Sprintf("tor is not defined"))
 	}
 
 	if err != nil {
-		h.u.reportError(fmt.Sprintf("The onion service can't be deleted: %s", err))
+		h.u.reportError(i18n.Sprintf("The onion service can't be deleted: %s", err))
 	}
 }
 
@@ -303,7 +301,7 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
 	_ = lblMessage.SetProperty("visible", false)
 
 	go func() {
-		h.u.messageToLabel(lblMessage, "The meeting ID has been copied to Clipboard", 5)
+		h.u.messageToLabel(lblMessage, i18n.Sprintf("The meeting ID has been copied to Clipboard"), 5)
 	}()
 }
 
@@ -316,7 +314,7 @@ func (h *hostData) copyInvitationToClipboard(builder *uiBuilder) {
 	_ = lblMessage.SetProperty("visible", false)
 
 	go func() {
-		h.u.messageToLabel(lblMessage, "The invitation email has been copied to Clipboard", 5)
+		h.u.messageToLabel(lblMessage, i18n.Sprintf("The invitation email has been copied to Clipboard"), 5)
 	}()
 }
 
@@ -354,33 +352,16 @@ func (h *hostData) getInvitationMicrosoftURI() string {
 	return uri
 }
 
-const invitationTextTemplate = `
-Please join Wahay meeting with the following details:%0D%0A%0D%0A
-{{ if .MeetingID }}
-Meeting ID: {{ .MeetingID }}%0D%0A
-{{ end }}
-`
-
-// Invitation is the information of the meeting
-type Invitation struct {
-	MeetingID string
-}
-
 func (h *hostData) getInvitationSubject() string {
-	return "Join Wahay Meeting"
+	return i18n.Sprintf("Join Wahay Meeting")
 }
 
 func (h *hostData) getInvitationText() string {
-	data := Invitation{h.serviceID}
-	tmpl := template.Must(template.New("invitation").Parse(invitationTextTemplate))
-
-	var b bytes.Buffer
-	err := tmpl.Execute(&b, &data)
-	if err != nil {
-		fatal("An error occurred while parsing the invitation template")
+	it := i18n.Sprintf("Please join Wahay meeting with the following details:%%0D%%0A%%0D%%0A")
+	if h.serviceID != "" {
+		it = i18n.Sprintf("%s\nMeeting ID: %s%%0D%%0A", it, h.serviceID)
 	}
-
-	return b.String()
+	return it
 }
 
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
@@ -399,6 +380,11 @@ func (h *hostData) showMeetingConfiguration() {
 	win := builder.get("configureMeetingWindow").(gtki.ApplicationWindow)
 	chk := builder.get("chkAutoJoin").(gtki.CheckButton)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
+
+	i18nLabel(builder, "labelMeetingID")
+	i18nLabel(builder, "labelUsername")
+	i18nLabel(builder, "labelMeetingPassword")
+	i18nLabel(builder, "lblMessage")
 
 	chk.SetActive(h.autoJoin)
 	h.changeStartButtonText(btnStart)
@@ -446,9 +432,9 @@ func (h *hostData) showInvitePeopleWindow(builder *uiBuilder) {
 
 func (h *hostData) changeStartButtonText(btn gtki.Button) {
 	if h.autoJoin {
-		_ = btn.SetProperty("label", "Start Meeting & Join")
+		_ = btn.SetProperty("label", i18n.Sprintf("Start Meeting & Join"))
 	} else {
-		_ = btn.SetProperty("label", "Start Meeting")
+		_ = btn.SetProperty("label", i18n.Sprintf("Start Meeting"))
 	}
 }
 

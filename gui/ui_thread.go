@@ -10,6 +10,6 @@ import log "github.com/sirupsen/logrus"
 func (u *gtkUI) doInUIThread(f func()) {
 	_, err := u.g.glib.IdleAdd(f)
 	if err != nil {
-		log.Printf("GTK thread error: %s", err)
+		log.Errorf("GTK thread error: %s", err)
 	}
 }

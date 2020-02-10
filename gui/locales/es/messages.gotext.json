@@ -1,0 +1,10 @@
+{
+    "language": "es",
+    "messages": [
+        {
+            "id": "The meeting ID has been copied to Clipboard",
+            "message": "The meeting ID has been copied to Clipboard",
+            "translation": "El ID de la reunion ha sido copiado al portapapeles"
+        }
+    ]
+}

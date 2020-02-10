@@ -1,7 +1,7 @@
 package gui
 
 import (
-	"fmt"
+	"errors"
 	"strings"
 
 	"github.com/coyim/gotk3adapter/gtki"
@@ -30,7 +30,7 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
 
 func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 	if m.IsClosed() {
-		u.reportError("The Mumble process is down")
+		u.reportError(i18n.Sprintf("The Mumble process is down"))
 	}
 
 	u.hideCurrentWindow()
@@ -53,13 +53,13 @@ func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 
 func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 	if len(data.MeetingID) == 0 {
-		u.openErrorDialog("The Meeting ID cannot be blank")
+		u.openErrorDialog(i18n.Sprintf("The Meeting ID cannot be blank"))
 		return
 	}
 
 	mumble, err := u.openMumble(data, u.switchContextWhenMumbleFinish)
 	if err != nil {
-		u.openErrorDialog(fmt.Sprintf("An error occurred\n\n%s", err.Error()))
+		u.openErrorDialog(i18n.Sprintf("An error occurred\n\n%s", err.Error()))
 		return
 	}
 
@@ -108,7 +108,7 @@ func (u *gtkUI) openJoinWindow() {
 
 func (u *gtkUI) openMumble(data hosting.MeetingData, onFinish func()) (tor.Service, error) {
 	if !isMeetingIDValid(data.MeetingID) {
-		return nil, fmt.Errorf("the provided meeting ID is invalid: \n\n%s", data.MeetingID)
+		return nil, errors.New(i18n.Sprintf("the provided meeting ID is invalid: \n\n%s", data.MeetingID))
 	}
 	return u.launchMumbleClient(data, onFinish)
 }

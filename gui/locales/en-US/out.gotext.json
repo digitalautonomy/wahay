@@ -1,0 +1,303 @@
+{
+    "language": "en-US",
+    "messages": [
+        {
+            "id": "Error",
+            "message": "Error",
+            "translation": "Error",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Something went wrong: {Err}",
+            "message": "Something went wrong: {Err}",
+            "translation": "Something went wrong: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "we couldn't start the meeting",
+            "message": "we couldn't start the meeting",
+            "translation": "we couldn't start the meeting",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Configured port mumble is invalid: {PortMumble}",
+            "message": "Configured port mumble is invalid: {PortMumble}",
+            "translation": "Configured port mumble is invalid: {PortMumble}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "PortMumble",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "h.u.config.GetPortMumble()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "The meeting can't be closed: {Err}",
+            "message": "The meeting can't be closed: {Err}",
+            "translation": "The meeting can't be closed: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "tor is not defined",
+            "message": "tor is not defined",
+            "translation": "tor is not defined",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The onion service can't be deleted: {Err}",
+            "message": "The onion service can't be deleted: {Err}",
+            "translation": "The onion service can't be deleted: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "The meeting ID has been copied to Clipboard",
+            "message": "The meeting ID has been copied to Clipboard",
+            "translation": "The meeting ID has been copied to Clipboard",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The invitation email has been copied to Clipboard",
+            "message": "The invitation email has been copied to Clipboard",
+            "translation": "The invitation email has been copied to Clipboard",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Join Wahay Meeting",
+            "message": "Join Wahay Meeting",
+            "translation": "Join Wahay Meeting",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "message": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "translation": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "message": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "translation": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "It",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "it"
+                },
+                {
+                    "id": "ServiceID",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "h.serviceID"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Start Meeting \u0026 Join",
+            "message": "Start Meeting \u0026 Join",
+            "translation": "Start Meeting \u0026 Join",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Start Meeting",
+            "message": "Start Meeting",
+            "translation": "Start Meeting",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The Mumble process is down",
+            "message": "The Mumble process is down",
+            "translation": "The Mumble process is down",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The Meeting ID cannot be blank",
+            "message": "The Meeting ID cannot be blank",
+            "translation": "The Meeting ID cannot be blank",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "An error occurred\n\n{Error}",
+            "message": "An error occurred\n\n{Error}",
+            "translation": "An error occurred\n\n{Error}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "The meeting ID is invalid",
+            "message": "The meeting ID is invalid",
+            "translation": "The meeting ID is invalid",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "the Mumble client can not be used because: {LastError}",
+            "message": "the Mumble client can not be used because: {LastError}",
+            "translation": "the Mumble client can not be used because: {LastError}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "LastError",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "c.GetLastError()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "please enter a valid password",
+            "message": "please enter a valid password",
+            "translation": "please enter a valid password",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "enter the password confirmation",
+            "message": "enter the password confirmation",
+            "translation": "enter the password confirmation",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "passwords do not match",
+            "message": "passwords do not match",
+            "translation": "passwords do not match",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "enter a password of 6 chars of minimun length",
+            "message": "enter a password of 6 chars of minimun length",
+            "translation": "enter a password of 6 chars of minimun length",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "If you disable this option, anyone could read your configuration settings",
+            "message": "If you disable this option, anyone could read your configuration settings",
+            "translation": "If you disable this option, anyone could read your configuration settings",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open file",
+            "message": "Open file",
+            "translation": "Open file",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Cancel",
+            "message": "Cancel",
+            "translation": "Cancel",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open",
+            "message": "Open",
+            "translation": "Open",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "tor can't be used",
+            "message": "tor can't be used",
+            "translation": "tor can't be used",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "We've found errors",
+            "message": "We've found errors",
+            "translation": "We've found errors",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        }
+    ]
+}

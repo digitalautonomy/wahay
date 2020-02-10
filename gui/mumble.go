@@ -1,7 +1,7 @@
 package gui
 
 import (
-	"fmt"
+	"errors"
 	"sync"
 
 	"github.com/digitalautonomy/wahay/client"
@@ -16,7 +16,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 
 		c := client.InitSystem(u.config)
 		if !c.CanBeUsed() {
-			addNewStartupError(fmt.Errorf("the Mumble client can not be used because: %s", c.GetLastError()))
+			addNewStartupError(errors.New(i18n.Sprintf("the Mumble client can not be used because: %s", c.GetLastError())))
 			return
 		}
 

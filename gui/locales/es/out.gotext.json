@@ -1,0 +1,243 @@
+{
+    "language": "es",
+    "messages": [
+        {
+            "id": "Error",
+            "message": "Error",
+            "translation": ""
+        },
+        {
+            "id": "Something went wrong: {Err}",
+            "message": "Something went wrong: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "we couldn't start the meeting",
+            "message": "we couldn't start the meeting",
+            "translation": ""
+        },
+        {
+            "id": "Configured port mumble is invalid: {PortMumble}",
+            "message": "Configured port mumble is invalid: {PortMumble}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PortMumble",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "h.u.config.GetPortMumble()"
+                }
+            ]
+        },
+        {
+            "id": "The meeting can't be closed: {Err}",
+            "message": "The meeting can't be closed: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "tor is not defined",
+            "message": "tor is not defined",
+            "translation": ""
+        },
+        {
+            "id": "The onion service can't be deleted: {Err}",
+            "message": "The onion service can't be deleted: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "The meeting ID has been copied to Clipboard",
+            "message": "The meeting ID has been copied to Clipboard",
+            "translation": "El ID de la reunion ha sido copiado al portapapeles"
+        },
+        {
+            "id": "The invitation email has been copied to Clipboard",
+            "message": "The invitation email has been copied to Clipboard",
+            "translation": ""
+        },
+        {
+            "id": "Join Wahay Meeting",
+            "message": "Join Wahay Meeting",
+            "translation": ""
+        },
+        {
+            "id": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "message": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "translation": ""
+        },
+        {
+            "id": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "message": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "It",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "it"
+                },
+                {
+                    "id": "ServiceID",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "h.serviceID"
+                }
+            ]
+        },
+        {
+            "id": "Start Meeting \u0026 Join",
+            "message": "Start Meeting \u0026 Join",
+            "translation": ""
+        },
+        {
+            "id": "Start Meeting",
+            "message": "Start Meeting",
+            "translation": ""
+        },
+        {
+            "id": "The Mumble process is down",
+            "message": "The Mumble process is down",
+            "translation": ""
+        },
+        {
+            "id": "The Meeting ID cannot be blank",
+            "message": "The Meeting ID cannot be blank",
+            "translation": ""
+        },
+        {
+            "id": "An error occurred\n\n{Error}",
+            "message": "An error occurred\n\n{Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ]
+        },
+        {
+            "id": "The meeting ID is invalid",
+            "message": "The meeting ID is invalid",
+            "translation": ""
+        },
+        {
+            "id": "the Mumble client can not be used because: {LastError}",
+            "message": "the Mumble client can not be used because: {LastError}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "LastError",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "c.GetLastError()"
+                }
+            ]
+        },
+        {
+            "id": "please enter a valid password",
+            "message": "please enter a valid password",
+            "translation": ""
+        },
+        {
+            "id": "enter the password confirmation",
+            "message": "enter the password confirmation",
+            "translation": ""
+        },
+        {
+            "id": "passwords do not match",
+            "message": "passwords do not match",
+            "translation": ""
+        },
+        {
+            "id": "enter a password of 6 chars of minimun length",
+            "message": "enter a password of 6 chars of minimun length",
+            "translation": ""
+        },
+        {
+            "id": "If you disable this option, anyone could read your configuration settings",
+            "message": "If you disable this option, anyone could read your configuration settings",
+            "translation": ""
+        },
+        {
+            "id": "Open file",
+            "message": "Open file",
+            "translation": ""
+        },
+        {
+            "id": "Cancel",
+            "message": "Cancel",
+            "translation": ""
+        },
+        {
+            "id": "Open",
+            "message": "Open",
+            "translation": ""
+        },
+        {
+            "id": "tor can't be used",
+            "message": "tor can't be used",
+            "translation": ""
+        },
+        {
+            "id": "We've found errors",
+            "message": "We've found errors",
+            "translation": ""
+        }
+    ]
+}
