@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 DISTRO_FILE="../deployment/supported-bundle-distros.txt"
 APP_NAME=wahay
 BINARY_BASE_NAME=$(basename $BINARY_NAME)
