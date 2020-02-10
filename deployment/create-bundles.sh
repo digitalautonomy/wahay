@@ -2,7 +2,7 @@
 
 set -x
 
-DISTRO_FILE="~/deployment/supported-bundle-distros.txt"
+DISTRO_FILE="../deployment/supported-bundle-distros.txt"
 APP_NAME=wahay
 BINARY_BASE_NAME=$(basename $BINARY_NAME)
 BINARY_VERSION=${BINARY_BASE_NAME#$APP_NAME}
@@ -15,7 +15,7 @@ mkdir publish-bundles
 cd generate-bundles
 
 echo "$RCLONE_CONFIG" > rclone.conf
-rclone copy --config rclone.conf  $APP_NAME: .
+rclone copy --config rclone.conf  $APP_NAME:$APP_NAME-bundles .
 
 #extract tor
 tar xvf tor-0.4.2.5.tar.bz2
