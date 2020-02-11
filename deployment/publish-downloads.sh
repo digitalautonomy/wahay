@@ -2,22 +2,19 @@
 
 set -x
 
-#Expect to have the new binary, sha256sum and signature
+#Expect to have the new binary files, bundles per distributions and it's sha256sum and signature     files
+
+APP_NAME=wahay
 TMP_DIR=~/tmp/deploy_binaries
-
-SUM_FILE_FULL=$(find $TMP_DIR -name '*.sha256sum' | head -1)
-
+SUM_FILE_FULL=$(find $TMP_DIR -name "*.sha256sum" | grep -v ".bz2" | head -1)
 SHA256_SUM_FILE=$(basename $SUM_FILE_FULL)
-
 BINARY_SHA256_SUM=$(grep --only-matching -E "[[:xdigit:]]{64}" $SUM_FILE_FULL)
-
 BINARY_NAME=${SHA256_SUM_FILE%.sha256sum}
-
 SIGNATURE_FILE=$SHA256_SUM_FILE.asc
-
-DOWNLOADS_DIR=/usr/local/www/wahay/downloads
-
-WEBSITE_DOCUMENT_ROOT=/usr/local/www/wahay/
+ALL_BUNDLES=$(find $TMP_DIR -name  "*.bz2" -exec basename {} \;)
+ALL_BUNDLES_SHA256_SUM=$(echo "$ALL_BUNDLES"  | sed 's/$/.sha256sum/')
+ALL_BUNDLES_SIGNATURES=$(echo "$ALL_BUNDLES"  | sed 's/$/.sha256sum.asc/')
+DOWNLOADS_DIR=/usr/local/www/${APP_NAME}/downloads
 
 #Compare NEW_WAHAY_BINARY sha256sum with previous
 #hashes to avoid duplicated binaries if a binary 
@@ -31,25 +28,25 @@ then
 fi
 
 #Move binaries to the download page
-mv $TMP_DIR/wahay* $DOWNLOADS_DIR
+mv $TMP_DIR/${APP_NAME}* $DOWNLOADS_DIR
 
 #Identified if the file has a date patern, that way we can
 #now that is not a tagged version
 DATE_FORMAT='20[0-9][0-9]-[0-1][0-9]-[0-3][0-9]'
-
 echo $BINARY_NAME | grep "$DATE_FORMAT"
+HAS_DATE=$?
 
-if [ $? -eq 0  ] 
+if [ $HAS_DATE -eq 0  ] 
 then
         cd $DOWNLOADS_DIR
         
-        if [ -L wahay-latest ] ; then
-                rm wahay-latest*
+        if [ -L ${APP_NAME}-latest ] ; then
+                rm ${APP_NAME}-latest*
         fi
 
-        ln -s $BINARY_NAME wahay-latest
-        ln -s $SHA256_SUM_FILE wahay-latest.sha256sum
-        ln -s $SIGNATURE_FILE wahay-latest.sha256sum.asc
+        ln -s $BINARY_NAME ${APP_NAME}-latest
+        ln -s $SHA256_SUM_FILE ${APP_NAME}-latest.sha256sum
+        ln -s $SIGNATURE_FILE ${APP_NAME}-latest.sha256sum.asc
 else
  
         #Retrieve WAHAY_TAG name        
@@ -65,5 +62,32 @@ else
         ln -s $SHA256_SUM_FILE $WAHAY_TAG_NAME.sha256sum
         ln -s $SIGNATURE_FILE $WAHAY_TAG_NAME.sha256sum.asc
 
+fi
 
+#Move bundles to the download directory
+mkdir -p $DOWNLOADS_DIR/bundles/$BINARY_NAME
+echo "$ALL_BUNDLES" | xargs mv -t $DOWNLOADS_DIR/bundles/$BINARY_NAME
+echo "$ALL_BUNDLES_SHA256_SUM" | xargs mv -t $DOWNLOADS_DIR/bundles/$BINARY_NAME
+echo "$ALL_BUNDLES_SIGNATURES" | xargs mv -t $DOWNLOADS_DIR/bundles/$BINARY_NAME
+
+
+if [ $HAS_DATE -eq 0  ]
+then
+        cd $DOWNLOADS_DIR/bundles/$BINARY_NAME
+        rm -f *latest
+
+        echo "$ALL_BUNDLES" | xargs -I file ln  -s file  file-latest
+        echo "$ALL_BUNDLES_SHA256_SUM" | xargs -I file ln  -s file  file-latest
+        echo "$ALL_BUNDLES_SIGNATURES" | xargs -I file ln  -s file  file-latest
+else
+
+        #Retrieve WAHAY_TAG name
+        WAHAY_TAG_NAME=$(echo ${BINARY_NAME%-*******})
+
+        cd $DOWNLOADS_DIR/bundles/$BINARY_NAME
+        rm  -rf $WAHAY_TAG_NAME*
+
+        echo "$ALL_BUNDLES" | xargs -I file ln  -s file  file-latest
+        echo "$ALL_BUNDLES_SHA256_SUM" | xargs -I file ln  -s file  file-latest
+        echo "$ALL_BUNDLES_SIGNATURES" | xargs -I file ln  -s file  file-latest
 fi
