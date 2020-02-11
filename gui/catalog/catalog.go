@@ -39,21 +39,94 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"The meeting ID has been copied to Clipboard": 0,
+	"%s\nMeeting ID: %s%%0D%%0A":            11,
+	"An error occurred\n\n%s":               16,
+	"Cancel":                                26,
+	"Configured port mumble is invalid: %s": 3,
+	"Error":                                 0,
+	"If you disable this option, anyone could read your configuration settings": 24,
+	"Join Wahay Meeting": 9,
+	"Open":               27,
+	"Open file":          25,
+	"Please join Wahay meeting with the following details:%%0D%%0A%%0D%%0A": 10,
+	"Something went wrong: %s":                          1,
+	"Start Meeting":                                     13,
+	"Start Meeting & Join":                              12,
+	"The Meeting ID cannot be blank":                    15,
+	"The Mumble process is down":                        14,
+	"The invitation email has been copied to Clipboard": 8,
+	"The meeting ID has been copied to Clipboard":       7,
+	"The meeting ID is invalid":                         18,
+	"The meeting can't be closed: %s":                   4,
+	"The onion service can't be deleted: %s":            6,
+	"We've found errors":                                29,
+	"enter a password of 6 chars of minimun length":     23,
+	"enter the password confirmation":                   21,
+	"passwords do not match":                            22,
+	"please enter a valid password":                     20,
+	"the Mumble client can not be used because: %s":     19,
+	"the provided meeting ID is invalid: \n\n%s":        17,
+	"tor can't be used":                                 28,
+	"tor is not defined":                                5,
+	"we couldn't start the meeting":                     2,
 }
 
-var enIndex = []uint32{ // 2 elements
-	0x00000000, 0x0000002c,
-} // Size: 32 bytes
+var enIndex = []uint32{ // 31 elements
+	0x00000000, 0x00000006, 0x00000022, 0x00000040,
+	0x00000069, 0x0000008c, 0x0000009f, 0x000000c9,
+	0x000000f5, 0x00000127, 0x0000013a, 0x0000017c,
+	0x0000019a, 0x000001af, 0x000001bd, 0x000001d8,
+	0x000001f7, 0x00000210, 0x0000023c, 0x00000256,
+	0x00000287, 0x000002a5, 0x000002c5, 0x000002dc,
+	0x0000030a, 0x00000354, 0x0000035e, 0x00000365,
+	0x0000036a, 0x0000037c, 0x0000038f,
+} // Size: 148 bytes
 
-const enData string = "" + // Size: 44 bytes
-	"\x02The meeting ID has been copied to Clipboard"
+const enData string = "" + // Size: 911 bytes
+	"\x02Error\x02Something went wrong: %[1]s\x02we couldn't start the meetin" +
+	"g\x02Configured port mumble is invalid: %[1]s\x02The meeting can't be cl" +
+	"osed: %[1]s\x02tor is not defined\x02The onion service can't be deleted:" +
+	" %[1]s\x02The meeting ID has been copied to Clipboard\x02The invitation " +
+	"email has been copied to Clipboard\x02Join Wahay Meeting\x02Please join " +
+	"Wahay meeting with the following details:%0D%0A%0D%0A\x02%[1]s\x0aMeetin" +
+	"g ID: %[2]s%0D%0A\x02Start Meeting & Join\x02Start Meeting\x02The Mumble" +
+	" process is down\x02The Meeting ID cannot be blank\x02An error occurred" +
+	"\x0a\x0a%[1]s\x02the provided meeting ID is invalid: \x0a\x0a%[1]s\x02Th" +
+	"e meeting ID is invalid\x02the Mumble client can not be used because: %[" +
+	"1]s\x02please enter a valid password\x02enter the password confirmation" +
+	"\x02passwords do not match\x02enter a password of 6 chars of minimun len" +
+	"gth\x02If you disable this option, anyone could read your configuration " +
+	"settings\x02Open file\x02Cancel\x02Open\x02tor can't be used\x02We've fo" +
+	"und errors"
 
-var esIndex = []uint32{ // 2 elements
-	0x00000000, 0x00000034,
-} // Size: 32 bytes
+var esIndex = []uint32{ // 31 elements
+	0x00000000, 0x00000006, 0x0000001d, 0x0000003d,
+	0x00000073, 0x00000098, 0x000000ae, 0x000000db,
+	0x0000010f, 0x00000148, 0x00000171, 0x000001cc,
+	0x000001f1, 0x0000020c, 0x0000021e, 0x0000023d,
+	0x00000266, 0x0000027f, 0x000002b3, 0x000002d5,
+	0x00000306, 0x00000334, 0x00000363, 0x00000381,
+	0x000003b5, 0x00000413, 0x00000421, 0x0000042a,
+	0x00000430, 0x00000445, 0x00000461,
+} // Size: 148 bytes
 
-const esData string = "" + // Size: 52 bytes
-	"\x02El ID de la reunion ha sido copiado al portapapeles"
+const esData string = "" + // Size: 1121 bytes
+	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
+	"El puerto configurado para Mumble es inválido: %[1]s\x02La reunión no se" +
+	" pudo cerrar: %[1]s\x02tor no está definido\x02El servicio Onion no se p" +
+	"udo eliminar: %[1]s\x02El ID de la reunion ha sido copiado al portapapel" +
+	"es\x02El correo de invitación ha sido copiado al portapapeles\x02Unirse " +
+	"a una reunión a travéz de Wahay\x02Por favor únete a la reunión a travéz" +
+	" de Wahay con los siguientes detalles:%0D%0A%0D%0A\x02%[1]s\x0aID de la " +
+	"reunión: %[2]s%0D%0A\x02Comenzar reunión y Unirse\x02Comenzar reunión" +
+	"\x02El proceso Mumble está caído\x02El ID de la reunión no puede ser vac" +
+	"ío\x02Ocurrió un error\x0a\x0a%[1]s\x02el ID de la reunión provisto es " +
+	"inválido: \x0a\x0a%[1]s\x02El ID de la reunión es inválido\x02El cliente" +
+	" Mumble no se puede usar porque: %[1]s\x02por favor especifique una cont" +
+	"raseña válida\x02especifique la confirmación de la contraseña\x02las con" +
+	"traseñas no coinciden\x02especifique una contraseña de mínimo 6 caracter" +
+	"es\x02Si deshabilita esta opción, cualquier persona podría leer los pará" +
+	"metros de configuración\x02Abrir archivo\x02Cancelar\x02Abrir\x02tor no " +
+	"se puede usar\x02Encontramos algunos errores"
 
-	// Total table size 160 bytes (0KiB); checksum: 503DF559
+	// Total table size 2328 bytes (2KiB); checksum: 1879299B

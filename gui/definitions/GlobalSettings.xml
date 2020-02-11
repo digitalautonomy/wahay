@@ -74,7 +74,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel">
+                                  <object class="GtkLabel" id="lblAutojoin">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="margin_top">10</property>
@@ -106,7 +106,7 @@
                       </object>
                     </child>
                     <child type="label">
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="lblHostingGroup">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Hosting</property>
@@ -137,7 +137,7 @@
               </object>
             </child>
             <child type="tab">
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="tabGeneral">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">General</property>
@@ -180,7 +180,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="lblStoreConfigDescription">
                         <property name="width_request">100</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -252,7 +252,7 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="tabSecurity">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Security</property>
@@ -279,7 +279,7 @@
                         <property name="margin_bottom">20</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblDebugWarning">
                             <property name="width_request">100</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -334,7 +334,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblDebugLogFileDescription">
                             <property name="width_request">100</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -369,7 +369,7 @@
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblDebugLogFile">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Raw log file</property>
@@ -429,7 +429,7 @@
                                       </packing>
                                     </child>
                                     <child>
-                                      <object class="GtkLabel">
+                                      <object class="GtkLabel" id="lblDebugLogFileBrowse">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="label" translatable="yes">Browse</property>
@@ -461,7 +461,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblDebugLogFileWarning">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">If you set this option to a file name, low level information will be logged there.</property>
@@ -500,7 +500,7 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="tabDebug">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Debugging</property>
@@ -521,7 +521,7 @@
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="lblMumbleLocation">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Client binary location</property>
@@ -579,7 +579,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkLabel">
+                                  <object class="GtkLabel" id="lblMumbleBinaryBrowse">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="label" translatable="yes">Browse</property>
@@ -629,7 +629,7 @@
                         <property name="margin_top">20</property>
                         <property name="hexpand">False</property>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblMumblePort">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Port</property>
@@ -681,7 +681,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="lblMumblePortHelp">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
@@ -713,7 +713,7 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="tabMumble">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Mumble</property>
@@ -765,7 +765,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="btnCancelSettings">
                     <property name="label" translatable="yes">Cancel</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -782,7 +782,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="btnSaveSettings">
                     <property name="label" translatable="yes">Save changes</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -854,7 +854,7 @@
                 <property name="margin_bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="lblSettingsWarning">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="margin_bottom">20</property>
@@ -872,7 +872,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="lblConfigFileCorrupted">
                     <property name="width_request">100</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -893,7 +893,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="lblConfigFileCorruptedHelp">
                     <property name="width_request">100</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -942,7 +942,7 @@
                 <property name="halign">end</property>
                 <property name="valign">center</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="btnConfigFileCorruptedCancel">
                     <property name="label" translatable="yes">No, cancel</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -959,7 +959,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="btnConfigFileCorruptedBackup">
                     <property name="label" translatable="yes">Yes, backup it &amp; continue</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>

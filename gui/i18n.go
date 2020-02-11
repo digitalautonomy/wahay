@@ -20,7 +20,6 @@ import (
 var i18n *message.Printer
 
 func init() {
-	// TODO: here we should initialize from the system language
 	tag, _ := jibberjabber.DetectLanguageTag()
 	if tag == language.Und {
 		tag = language.English
@@ -29,17 +28,39 @@ func init() {
 	i18n = message.NewPrinter(tag)
 }
 
+func (b *uiBuilder) i18nProperties(objs ...string) {
+	if len(objs)%2 == 1 {
+		panic("programmer error, uneven amount of arguments")
+	}
+
+	i := 0
+	for i < len(objs) {
+		b.i18nProperty(objs[i+1], objs[i])
+		i += 2
+	}
+}
+
 func (b *uiBuilder) i18nLabel(id string) {
 	lbl := b.get(id).(gtki.Label)
 	lbl.SetLabel(i18n.Sprint(lbl.GetLabel()))
 }
 
-func (b *uiBuilder) i18nProperty(id string) {
-	lbl := b.get(id).(glibi.Object)
-	currVal, e := lbl.GetProperty("label")
+func (b *uiBuilder) i18nProperty(id, property string) {
+	obj := b.get(id).(glibi.Object)
+	switch property {
+	case "placeholder":
+		property = "placeholder_text"
+	case "button":
+	case "checkbox":
+		property = "label"
+	case "tooltip":
+		property = "tooltip_text"
+	}
+
+	currentVal, e := obj.GetProperty(property)
 	if e != nil {
 		// programmer error, so ok to die here
 		fatal(e)
 	}
-	lbl.SetProperty("label", i18n.Sprint(currVal.(string)))
+	_ = obj.SetProperty(property, i18n.Sprint(currentVal))
 }

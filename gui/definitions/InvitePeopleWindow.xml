@@ -29,7 +29,7 @@
                 <property name="valign">center</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="lblDescription">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="margin_bottom">40</property>
@@ -77,7 +77,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblDefaultEmail">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Default Email</property>
@@ -124,7 +124,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblGmail">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Gmail</property>
@@ -171,7 +171,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblYahoo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Yahoo Mail</property>
@@ -218,7 +218,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="lblOutlook">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Outlook</property>
@@ -293,7 +293,7 @@
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="btnCopyMeetingID">
                     <property name="label" translatable="yes">Copy Meeting ID</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -311,7 +311,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="btnCopyInvitation">
                     <property name="label" translatable="yes">Copy Invitation</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>

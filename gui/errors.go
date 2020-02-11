@@ -31,6 +31,10 @@ func (u *gtkUI) reportError(message string) {
 	log.Printf("reportError(%s)", message)
 
 	builder := u.g.uiBuilderFor("GeneralError")
+	builder.i18nProperties(
+		"text", "dialog",
+		"secondary_text", "dialog")
+
 	dlg := builder.get("dialog").(gtki.MessageDialog)
 
 	err := dlg.SetProperty("text", i18n.Sprintf("Error"))

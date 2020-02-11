@@ -62,6 +62,15 @@ func (h *hostData) showMeetingControls() {
 	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 
+	builder.i18nProperties(
+		"label", "lblHostMeeting",
+		"label", "lblMeetingID",
+		"label", "lblCopyUrlMessage",
+		"button", "btnFinishMeeting",
+		"button", "btnJoinMeeting",
+		"button", "btnJoinMeeting",
+		"button", "btnCopyUrl")
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": h.u.quit,
 		"on_finish_meeting": func() {
@@ -92,7 +101,7 @@ func (h *hostData) showMeetingControls() {
 		},
 	})
 
-	meetingID, err := builder.GetObject("lblMeetingID")
+	meetingID, err := builder.GetObject("lblMeetingIDValue")
 	if err != nil {
 		log.Printf("meeting id error: %s", err)
 	}
@@ -137,10 +146,22 @@ func (h *hostData) joinMeetingHost() {
 	h.u.switchToMainWindow()
 }
 
+func (u *gtkUI) getCurrentHostMeetingWindow() *uiBuilder {
+	builder := u.g.uiBuilderFor("CurrentHostMeetingWindow")
+
+	builder.i18nProperties(
+		"button", "btnFinishMeeting",
+		"button", "btnLeaveMeeting",
+		"tooltip", "btnFinishMeeting",
+		"tooltip", "btnLeaveMeeting")
+
+	return builder
+}
+
 func (h *hostData) openHostJoinMeetingWindow() {
 	h.u.hideCurrentWindow()
 
-	builder := h.u.g.uiBuilderFor("CurrentHostMeetingWindow")
+	builder := h.u.getCurrentHostMeetingWindow()
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
 
 	builder.ConnectSignals(map[string]interface{}{
@@ -169,7 +190,8 @@ func (u *gtkUI) ensureServerCollection() {
 		var e error
 		u.serverCollection, e = hosting.Create()
 		if e != nil {
-			u.reportError(i18n.Sprintf("Something went wrong: %s", e.Error()))
+			err := e.Error()
+			u.reportError(i18n.Sprintf("Something went wrong: %s", err))
 		}
 	}
 }
@@ -208,14 +230,16 @@ func (h *hostData) createOnionService(finish chan string) {
 func (h *hostData) createNewConferenceRoom(complete chan bool) {
 	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort), h.meetingPassword)
 	if e != nil {
-		h.u.reportError(i18n.Sprintf("Something went wrong: %s", e.Error()))
+		err := e.Error()
+		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
 		complete <- true
 		return
 	}
 
 	e = server.Start()
 	if e != nil {
-		h.u.reportError(i18n.Sprintf("Something went wrong: %s", e.Error()))
+		err := e.Error()
+		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
 		complete <- true
 		return
 	}
@@ -367,6 +391,10 @@ func (h *hostData) getInvitationText() string {
 func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
 	builder := u.g.uiBuilderFor("StartHostingWindow")
 	dialog := builder.get("finishMeeting").(gtki.MessageDialog)
+
+	builder.i18nProperties(
+		"text", "finishMeeting")
+
 	dialog.SetDefaultResponse(gtki.RESPONSE_NO)
 	dialog.SetTransientFor(u.mainWindow)
 	responseType := gtki.ResponseType(dialog.Run())
@@ -375,8 +403,28 @@ func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
 	k(result)
 }
 
+func (u *gtkUI) getConfigureMeetingWindow() *uiBuilder {
+	builder := u.g.uiBuilderFor("ConfigureMeetingWindow")
+
+	builder.i18nProperties(
+		"label", "labelMeetingID",
+		"label", "labelUsername",
+		"label", "lblMessage",
+		"label", "labelMeetingPassword",
+		"placeholder", "inpMeetingUsername",
+		"placeholder", "inpMeetingPassword",
+		"checkbox", "chkAutoJoin",
+		"tooltip", "chkAutoJoin",
+		"button", "btnCopyMeetingID",
+		"button", "btnInviteOthers",
+		"button", "btnCancel",
+		"button", "btnStartMeeting")
+
+	return builder
+}
+
 func (h *hostData) showMeetingConfiguration() {
-	builder := h.u.g.uiBuilderFor("ConfigureMeetingWindow")
+	builder := h.u.getConfigureMeetingWindow()
 	win := builder.get("configureMeetingWindow").(gtki.ApplicationWindow)
 	chk := builder.get("chkAutoJoin").(gtki.CheckButton)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
@@ -460,6 +508,16 @@ func (h *hostData) startMeetingRoutine() {
 
 func (h *hostData) onInviteParticipants() {
 	builder := h.u.g.uiBuilderFor("InvitePeopleWindow")
+
+	builder.i18nProperties(
+		"label", "lblDescription",
+		"label", "lblDefaultEmail",
+		"label", "lblGmail",
+		"label", "lblYahoo",
+		"label", "lblOutlook",
+		"button", "btnCopyMeetingID",
+		"button", "btnCopyInvitation")
+
 	win := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
 
 	btnEmail := builder.get("btnEmail").(gtki.LinkButton)

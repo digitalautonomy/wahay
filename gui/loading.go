@@ -5,6 +5,7 @@ import "github.com/coyim/gotk3adapter/gtki"
 func (u *gtkUI) displayLoadingWindow() {
 	if u.loadingWindow == nil {
 		builder := u.g.uiBuilderFor("LoadingWindow")
+		builder.i18nProperties("label", "lblLoading")
 		win := builder.get("loadingWindow").(gtki.ApplicationWindow)
 		u.loadingWindow = win
 		win.SetApplication(u.app)

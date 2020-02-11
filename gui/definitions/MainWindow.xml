@@ -22,7 +22,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="lblWelcome">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">center</property>
@@ -38,7 +38,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="btnSettings">
                 <property name="label" translatable="yes">Settings</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -234,7 +234,7 @@
             <property name="can_focus">False</property>
             <property name="layout_style">expand</property>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="btnErrorsAccept">
                 <property name="label" translatable="yes">Accept</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>

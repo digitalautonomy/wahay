@@ -44,6 +44,29 @@ func (o *onetimeSavedPassword) CacheFromResult(r config.EncryptionResult) error 
 	return o.realKeySuplier.CacheFromResult(r)
 }
 
+func (u *gtkUI) getMasterPasswordBuilder() *uiBuilder {
+	builder := u.g.uiBuilderFor("MasterPasswordWindow")
+
+	builder.i18nProperties(
+		"title", "captureMasterPassword",
+		"label", "lblPasswordIntro",
+		"placeholder", "txtPassword",
+		"placeholder", "txtPasswordRepeat",
+		"button", "btnCancel",
+		"button", "btnContinue",
+
+		"text", "masterPasswordWindow",
+		"label", "lblMasterPasswordIntro",
+		"label", "lblError",
+		"placeholder", "entryPassword",
+		"tooltip", "btnTogglePassword",
+		"label", "lblMasterPasswordText",
+		"button", "btnMasterPasswordCancel",
+		"button", "btnMasterPasswordContinue")
+
+	return builder
+}
+
 // This function should be only called on startup, never call this function
 // or should not be called during the execution of this app
 func (u *gtkUI) getMasterPassword(p config.EncryptionParameters, lastAttemptFailed bool) config.EncryptionResult {
@@ -51,7 +74,8 @@ func (u *gtkUI) getMasterPassword(p config.EncryptionParameters, lastAttemptFail
 
 	passwordResultCh := make(chan string)
 
-	builder := u.g.uiBuilderFor("MasterPasswordWindow")
+	builder := u.getMasterPasswordBuilder()
+
 	win := builder.get("masterPasswordWindow").(gtki.Window)
 	txtPassword := builder.get("entryPassword").(gtki.Entry)
 	btnTogglePassword := builder.get("btnTogglePassword").(gtki.CheckButton)
@@ -108,7 +132,8 @@ func (u *gtkUI) getMasterPassword(p config.EncryptionParameters, lastAttemptFail
 }
 
 func (u *gtkUI) captureMasterPassword(onSuccess func(), onCancel func()) {
-	builder := u.g.uiBuilderFor("MasterPasswordWindow")
+	builder := u.getMasterPasswordBuilder()
+
 	passwordWindow := builder.get("captureMasterPassword").(gtki.Window)
 
 	txtPassword := builder.get("txtPassword").(gtki.Entry)

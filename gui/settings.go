@@ -36,7 +36,7 @@ type settings struct {
 }
 
 func createSettings(u *gtkUI) *settings {
-	builder := u.g.uiBuilderFor("GlobalSettings")
+	builder := u.getSettingsBuilder()
 	dialog := builder.get("settingsWindow").(gtki.Window)
 
 	s := &settings{
@@ -88,6 +88,46 @@ func (s *settings) init() {
 	s.mumbleBinaryLocation.SetText(s.mumbleBinaryOriginalValue)
 	s.mumblePortOriginalValue = conf.GetPortMumble()
 	s.mumblePort.SetText(s.mumblePortOriginalValue)
+}
+
+func (u *gtkUI) getSettingsBuilder() *uiBuilder {
+	builder := u.g.uiBuilderFor("GlobalSettings")
+
+	builder.i18nProperties(
+		"checkbox", "chkAutojoin",
+		"checkbox", "chkPersistentConfiguration",
+		"checkbox", "chkEncryptFile",
+		"checkbox", "chkEnableLogging",
+		"tooltip", "chkAutojoin",
+		"tooltip", "chkPersistentConfiguration",
+		"tooltip", "chkEnableLogging",
+		"label", "lblAutojoin",
+		"label", "lblHostingGroup",
+		"label", "tabGeneral",
+		"label", "tabSecurity",
+		"label", "tabDebug",
+		"label", "tabMumble",
+		"label", "lblStoreConfigDescription",
+		"label", "lblDebugWarning",
+		"label", "lblDebugLogFile",
+		"label", "lblDebugLogFileDescription",
+		"label", "lblDebugLogFileBrowse",
+		"label", "lblDebugLogFileWarning",
+		"label", "lblMumbleLocation",
+		"label", "lblMumbleBinaryBrowse",
+		"label", "lblMumblePort",
+		"label", "lblPortMumbleMessage",
+		"label", "lblMumblePortHelp",
+		"label", "lblMessage",
+		"label", "lblSettingsWarning",
+		"label", "lblConfigFileCorrupted",
+		"label", "lblConfigFileCorruptedHelp",
+		"button", "btnCancelSettings",
+		"button", "btnSaveSettings",
+		"button", "btnConfigFileCorruptedCancel",
+		"button", "btnConfigFileCorruptedBackup")
+
+	return builder
 }
 
 func (s *settings) processAutojoinOption() {
@@ -370,7 +410,7 @@ func (u *gtkUI) askToResetInvalidConfigFile(selectionChannel chan bool) {
 	u.hideLoadingWindow()
 
 	u.doInUIThread(func() {
-		builder := u.g.uiBuilderFor("GlobalSettings")
+		builder := u.getSettingsBuilder()
 		dialog := builder.get("winDeleteConfigFileConfirm").(gtki.Window)
 
 		clean := func(op bool) {

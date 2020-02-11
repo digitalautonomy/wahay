@@ -22,10 +22,35 @@ func (u *gtkUI) openMainWindow() {
 
 func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
 	builder := u.g.uiBuilderFor("InviteCodeWindow")
+
+	builder.i18nProperties(
+		"title", "inviteWindow",
+		"label", "lblMeetingID",
+		"label", "lblUsername",
+		"label", "lblMeetingPassword",
+		"placeholder", "entScreenName",
+		"placeholder", "entMeetingID",
+		"placeholder", "entMeetingPassword",
+		"button", "btnCancel",
+		"button", "btnJoin")
+
 	win := builder.get("inviteWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
 
 	return win, builder
+}
+
+func (u *gtkUI) getCurrentMeetingWindow() *uiBuilder {
+	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
+
+	builder.i18nProperties(
+		"text", "leaveMeeting",
+		"secondary_text", "leaveMeeting",
+		"button", "btnLeaveMeeting",
+		"tooltip", "btnLeaveMeeting",
+	)
+
+	return builder
 }
 
 func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
@@ -35,7 +60,7 @@ func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 
 	u.hideCurrentWindow()
 
-	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
+	builder := u.getCurrentMeetingWindow()
 	win := builder.get("currentMeetingWindow").(gtki.ApplicationWindow)
 
 	builder.ConnectSignals(map[string]interface{}{
@@ -130,7 +155,7 @@ func (u *gtkUI) leaveMeeting(m tor.Service) {
 }
 
 func (u *gtkUI) wouldYouConfirmLeaveMeeting(k func(bool)) {
-	builder := u.g.uiBuilderFor("CurrentMeetingWindow")
+	builder := u.getCurrentMeetingWindow()
 	dialog := builder.get("leaveMeeting").(gtki.MessageDialog)
 	dialog.SetDefaultResponse(gtki.RESPONSE_NO)
 	responseType := gtki.ResponseType(dialog.Run())

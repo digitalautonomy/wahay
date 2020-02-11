@@ -93,7 +93,7 @@
                     <property name="spacing">10</property>
                     <property name="baseline_position">top</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="lblMeetingID">
                         <property name="name">lblMeetingID</property>
                         <property name="width_request">120</property>
                         <property name="visible">True</property>
@@ -113,7 +113,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="lblMeetingID">
+                      <object class="GtkLabel" id="lblMeetingIDValue">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -145,7 +145,7 @@
                     <property name="valign">center</property>
                     <property name="margin_left">130</property>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="btnCopyUrl">
                         <property name="label" translatable="yes">Copy URL</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>

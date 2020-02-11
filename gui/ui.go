@@ -113,8 +113,25 @@ func (u *gtkUI) configLoaded() {
 	})
 }
 
-func (u *gtkUI) createMainWindow(success bool) {
+func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 	builder := u.g.uiBuilderFor("MainWindow")
+
+	builder.i18nProperties(
+		"label", "lblWelcome",
+		"button", "btnSettings",
+		"button", "btnJoinMeeting",
+		"tooltip", "btnJoinMeeting",
+		"button", "btnHostMeeting",
+		"tooltip", "btnHostMeeting",
+		"label", "lblApplicationStatus",
+		"button", "btnStatusShowErrors",
+		"button", "btnErrorsAccept")
+
+	return builder
+}
+
+func (u *gtkUI) createMainWindow(success bool) {
+	builder := u.getMainWindowBuilder()
 	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	u.currentWindow = win
 	u.mainWindow = win
@@ -180,10 +197,24 @@ func (u *gtkUI) initialSetupWindow() {
 	u.saveConfigOnly()
 }
 
+func (u *gtkUI) getConfirmWindow() *uiBuilder {
+	builder := u.g.uiBuilderFor("Confirm")
+
+	builder.i18nProperties(
+		"title", "dialog",
+		"label", "lblTitle",
+		"label", "lblText",
+		"button", "btnCancel",
+		"button", "btnConfirm",
+	)
+
+	return builder
+}
+
 func (u *gtkUI) showConfirmation(onConfirm func(bool), text string) {
 	u.disableCurrentWindow()
 
-	builder := u.g.uiBuilderFor("Confirm")
+	builder := u.getConfirmWindow()
 	dialog := builder.get("dialog").(gtki.Window)
 
 	if u.currentWindow != nil {
