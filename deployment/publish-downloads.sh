@@ -28,7 +28,8 @@ then
 fi
 
 #Move binaries to the download page
-mv $TMP_DIR/${APP_NAME}* $DOWNLOADS_DIR
+cd $TMP_DIR
+mv $BINARY_NAME $SHA256_SUM_FILE $SIGNATURE_FILE $DOWNLOADS_DIR
 
 #Identified if the file has a date patern, that way we can
 #now that is not a tagged version
