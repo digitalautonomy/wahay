@@ -1,6 +1,12 @@
 package gui
 
-func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt() {
+func init() {
+	noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt1()
+	noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt2()
+	noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3()
+}
+
+func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt1() {
 	// Please add all strings from the definitions directory that
 	// should be translated to this function. If not, the generation of
 	// translation files will not work correctly.
@@ -24,7 +30,8 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt() {
 	_ = i18n.Sprintf("Autojoin to this meeting")
 	_ = i18n.Sprintf("Automatically join a meeting")
 	_ = i18n.Sprintf("Automatically join to this meeting when starting it")
-	_ = i18n.Sprintf("Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.")
+	_ = i18n.Sprintf("Be very careful. This information is sensitive and could " +
+		"potentially contain very private information. Only turns this settings if you absolutely need it for debugging.")
 	_ = i18n.Sprintf("Browse")
 	_ = i18n.Sprintf("By clicking Yes, this meeting will end.")
 	_ = i18n.Sprintf("By clicking Yes, you will leave this meeting.")
@@ -32,6 +39,9 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt() {
 	_ = i18n.Sprintf("Client binary location")
 	_ = i18n.Sprintf("Configuration settings will be lost in the next session")
 	_ = i18n.Sprintf("Configure master password")
+}
+
+func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt2() {
 	_ = i18n.Sprintf("Confirmation")
 	_ = i18n.Sprintf("Connecting, please wait...")
 	_ = i18n.Sprintf("Continue")
@@ -52,7 +62,9 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt() {
 	_ = i18n.Sprintf("Host a new meeting")
 	_ = i18n.Sprintf("Hosting")
 	_ = i18n.Sprintf("Host meeting")
-	_ = i18n.Sprintf("If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.")
+	_ = i18n.Sprintf("If you backup the configuration file, we will reset " +
+		"the settings and continue normally. If the configuration file is ecnrypted, then we will ask you " +
+		"for a password to encrypt the new settings file.")
 	_ = i18n.Sprintf("If you set this option to a file name, low level information will be logged there.")
 	_ = i18n.Sprintf("Invalid configuration file")
 	_ = i18n.Sprintf("Invalid password. Please, try again.")
@@ -67,9 +79,13 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt() {
 	_ = i18n.Sprintf("Leave")
 	_ = i18n.Sprintf("Leave this meeting")
 	_ = i18n.Sprintf("Log debug info")
-	_ = i18n.Sprintf("Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.")
+	_ = i18n.Sprintf("Log debug output to the seleted log file. If no file is " +
+		"selected then the log output will written to the default log file.")
 	_ = i18n.Sprintf("Master password")
 	_ = i18n.Sprintf("Meeting ID")
+}
+
+func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3() {
 	_ = i18n.Sprintf("Meeting ID:")
 	_ = i18n.Sprintf("Meeting password")
 	_ = i18n.Sprintf("Mumble")
@@ -102,7 +118,8 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt() {
 	_ = i18n.Sprintf("Type your screen name")
 	_ = i18n.Sprintf("Username")
 	_ = i18n.Sprintf("Wahay is ready to use")
-	_ = i18n.Sprintf("We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?")
+	_ = i18n.Sprintf("We have detected that the configuration file is invalid or corrupted. " +
+		"Do you want to make a copy (backup) of it and continue?")
 	_ = i18n.Sprintf("Welcome")
 	_ = i18n.Sprintf("When this option is checked, the configuration settings will be stored in the device.")
 	_ = i18n.Sprintf("Yahoo Mail")
