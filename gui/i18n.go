@@ -5,7 +5,10 @@ package gui
 import (
 	"fmt"
 
+	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
+
+	"github.com/cubiest/jibberjabber"
 
 	// This is necessary because that's how the translation stuff works
 	_ "github.com/digitalautonomy/wahay/gui/catalog"
@@ -18,30 +21,25 @@ var i18n *message.Printer
 
 func init() {
 	// TODO: here we should initialize from the system language
-	i18n = message.NewPrinter(language.Spanish)
-
-	labelsGenerated = make(map[string]bool)
+	tag, _ := jibberjabber.DetectLanguageTag()
+	if tag == language.Und {
+		tag = language.English
+	}
+	fmt.Printf("Detected language: %v\n", tag)
+	i18n = message.NewPrinter(tag)
 }
 
-var labelsGenerated map[string]bool
-
-func generateLocaleDefForString(s string) {
-	if labelsGenerated[s] {
-		return
-	}
-
-	fmt.Printf(`
-	{
-		"id": "%s",
-		"message": "%s",
-		"translation": "%s"
-	}
-`, s, s, s)
-	labelsGenerated[s] = true
-}
-
-func i18nLabel(b *uiBuilder, id string) {
+func (b *uiBuilder) i18nLabel(id string) {
 	lbl := b.get(id).(gtki.Label)
-	generateLocaleDefForString(lbl.GetLabel())
 	lbl.SetLabel(i18n.Sprint(lbl.GetLabel()))
+}
+
+func (b *uiBuilder) i18nProperty(id string) {
+	lbl := b.get(id).(glibi.Object)
+	currVal, e := lbl.GetProperty("label")
+	if e != nil {
+		// programmer error, so ok to die here
+		fatal(e)
+	}
+	lbl.SetProperty("label", i18n.Sprint(currVal.(string)))
 }

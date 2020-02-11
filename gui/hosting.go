@@ -381,10 +381,10 @@ func (h *hostData) showMeetingConfiguration() {
 	chk := builder.get("chkAutoJoin").(gtki.CheckButton)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
 
-	i18nLabel(builder, "labelMeetingID")
-	i18nLabel(builder, "labelUsername")
-	i18nLabel(builder, "labelMeetingPassword")
-	i18nLabel(builder, "lblMessage")
+	builder.i18nLabel("labelMeetingID")
+	builder.i18nLabel("labelUsername")
+	builder.i18nLabel("labelMeetingPassword")
+	builder.i18nLabel("lblMessage")
 
 	chk.SetActive(h.autoJoin)
 	h.changeStartButtonText(btnStart)

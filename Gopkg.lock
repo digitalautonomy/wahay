@@ -28,6 +28,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:2e88bdb54f47418ea281c66f4bf43dd55148947b038aa58313a3572c4347a1e0"
+  name = "github.com/cubiest/jibberjabber"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ee8425c22b574ac8c72149419a27ceb90e83ee03"
+
+[[projects]]
+  branch = "master"
   digest = "1:d86d221cec0ea1b42edbd2cb578c860102632bf0bff88d539f7aedddb9bd809e"
   name = "github.com/digitalautonomy/grumble"
   packages = [
@@ -151,14 +159,38 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d1d5dd1405c1445d9d854bf196dea331fb60aa801ad0b7b3fc7cf69a34a0cf7b"
+  digest = "1:82a36a77bd0e9b96345f621e6fe74a83261bb09f1ec3863328420ac5198e7510"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
+    "windows",
   ]
   pruneopts = "UT"
   revision = "d101bd2416d505c0448a6ce8a282482678040a89"
+
+[[projects]]
+  digest = "1:137714ae7838cec8b48918205cb3cd96b17afebaa715e35a8213e6e0cc739d56"
+  name = "golang.org/x/text"
+  packages = [
+    "feature/plural",
+    "internal",
+    "internal/catmsg",
+    "internal/format",
+    "internal/gen",
+    "internal/language",
+    "internal/language/compact",
+    "internal/number",
+    "internal/stringset",
+    "internal/tag",
+    "language",
+    "message",
+    "message/catalog",
+    "unicode/cldr",
+  ]
+  pruneopts = "UT"
+  revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
+  version = "v0.3.2"
 
 [[projects]]
   branch = "v1"
@@ -181,12 +213,16 @@
     "github.com/coyim/gotk3adapter/gtk_mock",
     "github.com/coyim/gotk3adapter/gtka",
     "github.com/coyim/gotk3adapter/gtki",
+    "github.com/cubiest/jibberjabber",
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/sirupsen/logrus",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",
     "golang.org/x/net/proxy",
+    "golang.org/x/text/language",
+    "golang.org/x/text/message",
+    "golang.org/x/text/message/catalog",
     "gopkg.in/check.v1",
   ]
   solver-name = "gps-cdcl"
