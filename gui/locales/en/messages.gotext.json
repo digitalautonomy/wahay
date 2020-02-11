@@ -655,11 +655,6 @@
             "translation": "The error message"
         },
         {
-            "id": "The meeting ID has been copied to the clipboard",
-            "message": "The meeting ID has been copied to the clipboard",
-            "translation": "The meeting ID has been copied to the clipboard"
-        },
-        {
             "id": "The meeting ID is invalid, please check it.",
             "message": "The meeting ID is invalid, please check it.",
             "translation": "The meeting ID is invalid, please check it."

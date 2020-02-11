@@ -648,11 +648,6 @@
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "The meeting ID has been copied to the clipboard",
-            "message": "The meeting ID has been copied to the clipboard",
-            "translation": "TRANSLATE ME"
-        },
-        {
             "id": "A valid port is between 1 and 65535",
             "message": "A valid port is between 1 and 65535",
             "translation": "TRANSLATE ME"
@@ -723,8 +718,8 @@
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "Yes, back it up &amp; continue",
-            "message": "Yes, back it up &amp; continue",
+            "id": "Yes, back it up \u0026amp; continue",
+            "message": "Yes, back it up \u0026amp; continue",
             "translation": "TRANSLATE ME"
         },
         {

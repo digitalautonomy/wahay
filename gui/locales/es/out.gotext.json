@@ -249,8 +249,8 @@
             "fuzzy": true
         },
         {
-            "id": "enter a password of 6 chars of minimun length",
-            "message": "enter a password of 6 chars of minimun length",
+            "id": "enter a password at least 6 characters long",
+            "message": "enter a password at least 6 characters long",
             "translation": "especifique una contraseña de mínimo 6 caracteres",
             "translatorComment": "Copied from source.",
             "fuzzy": true
@@ -648,11 +648,6 @@
             "translation": "El mensaje de error"
         },
         {
-            "id": "The meeting ID has been copied to the clipboard",
-            "message": "The meeting ID has been copied to the clipboard",
-            "translation": "La ID de la reunión se ha copiado en el portapapeles."
-        },
-        {
             "id": "A valid port is between 1 and 65535",
             "message": "A valid port is between 1 and 65535",
             "translation": "El rango de puertos válidos está entre 1 y 65535"
@@ -723,8 +718,8 @@
             "translation": "Correo de Yahoo"
         },
         {
-            "id": "Yes, back it up &amp; continue",
-            "message": "Yes, back it up &amp; continue",
+            "id": "Yes, back it up \u0026amp; continue",
+            "message": "Yes, back it up \u0026amp; continue",
             "translation": "Sí, respaldarlo y continuar"
         },
         {
