@@ -393,7 +393,8 @@ func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
 	dialog := builder.get("finishMeeting").(gtki.MessageDialog)
 
 	builder.i18nProperties(
-		"text", "finishMeeting")
+		"text", "finishMeeting",
+		"secondary_text", "finishMeeting")
 
 	dialog.SetDefaultResponse(gtki.RESPONSE_NO)
 	dialog.SetTransientFor(u.mainWindow)
@@ -429,10 +430,11 @@ func (h *hostData) showMeetingConfiguration() {
 	chk := builder.get("chkAutoJoin").(gtki.CheckButton)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
 
-	builder.i18nLabel("labelMeetingID")
-	builder.i18nLabel("labelUsername")
-	builder.i18nLabel("labelMeetingPassword")
-	builder.i18nLabel("lblMessage")
+	builder.i18nProperties(
+		"label", "labelMeetingID",
+		"label", "labelUsername",
+		"label", "labelMeetingPassword",
+		"label", "lblMessage")
 
 	chk.SetActive(h.autoJoin)
 	h.changeStartButtonText(btnStart)

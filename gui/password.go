@@ -55,7 +55,7 @@ func (u *gtkUI) getMasterPasswordBuilder() *uiBuilder {
 		"button", "btnCancel",
 		"button", "btnContinue",
 
-		"text", "masterPasswordWindow",
+		"title", "masterPasswordWindow",
 		"label", "lblMasterPasswordIntro",
 		"label", "lblError",
 		"placeholder", "entryPassword",
