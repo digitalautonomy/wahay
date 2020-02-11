@@ -358,11 +358,6 @@
             "translation": "Al hacer clic en Sí, saldrá de esta reunión."
         },
         {
-            "id": "Cancel",
-            "message": "Cancel",
-            "translation": "Cancelar"
-        },
-        {
             "id": "Check this option to automatically join every meeting created in the host section",
             "message": "Check this option to automatically join every meeting created in the host section",
             "translation": "Marque esta opción para unirse automáticamente a cada reunión creada en la sección del anfitrión"
@@ -431,11 +426,6 @@
             "id": "Encrypt the configuration file",
             "message": "Encrypt the configuration file",
             "translation": "Cifrar el archivo de configuración"
-        },
-        {
-            "id": "Error",
-            "message": "Error",
-            "translation": "Error"
         },
         {
             "id": "Finish",
@@ -671,11 +661,6 @@
             "id": "The error message",
             "message": "The error message",
             "translation": "El mensaje de error"
-        },
-        {
-            "id": "The meeting ID has been copied to Clipboard",
-            "message": "The meeting ID has been copied to Clipboard",
-            "translation": "La ID de la reunión se ha copiado al Portapapeles."
         },
         {
             "id": "The meeting ID has been copied to the clipboard",

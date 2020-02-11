@@ -1,5 +1,5 @@
 {
-    "language": "en-US",
+    "language": "en",
     "messages": [
         {
             "id": "Error",
@@ -360,11 +360,6 @@
             "translation": "By clicking Yes, you will leave this meeting."
         },
         {
-            "id": "Cancel",
-            "message": "Cancel",
-            "translation": "Cancel"
-        },
-        {
             "id": "Check this option to automatically join every meeting created in the host section",
             "message": "Check this option to automatically join every meeting created in the host section",
             "translation": "Check this option to automatically join every meeting created in the host section"
@@ -433,11 +428,6 @@
             "id": "Encrypt the configuration file",
             "message": "Encrypt the configuration file",
             "translation": "Encrypt the configuration file"
-        },
-        {
-            "id": "Error",
-            "message": "Error",
-            "translation": "Error"
         },
         {
             "id": "Finish",
@@ -673,11 +663,6 @@
             "id": "The error message",
             "message": "The error message",
             "translation": "The error message"
-        },
-        {
-            "id": "The meeting ID has been copied to Clipboard",
-            "message": "The meeting ID has been copied to Clipboard",
-            "translation": "The meeting ID has been copied to Clipboard"
         },
         {
             "id": "The meeting ID has been copied to the clipboard",

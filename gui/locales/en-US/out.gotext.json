@@ -1,17 +1,15 @@
 {
-    "language": "es",
+    "language": "en-US",
     "messages": [
         {
             "id": "Error",
             "message": "Error",
-            "translation": "Error",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "Error"
         },
         {
             "id": "Something went wrong: {Err}",
             "message": "Something went wrong: {Err}",
-            "translation": "Algo salió mal: {Err}",
+            "translation": "Something went wrong: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -28,14 +26,14 @@
         {
             "id": "we couldn't start the meeting",
             "message": "we couldn't start the meeting",
-            "translation": "no se pudo comenzar la reunión",
+            "translation": "we couldn't start the meeting",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Configured port mumble is invalid: {PortMumble}",
             "message": "Configured port mumble is invalid: {PortMumble}",
-            "translation": "El puerto configurado para Mumble es inválido: {PortMumble}",
+            "translation": "Configured port mumble is invalid: {PortMumble}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -52,7 +50,7 @@
         {
             "id": "The meeting can't be closed: {Err}",
             "message": "The meeting can't be closed: {Err}",
-            "translation": "La reunión no se pudo cerrar: {Err}",
+            "translation": "The meeting can't be closed: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -69,14 +67,14 @@
         {
             "id": "tor is not defined",
             "message": "tor is not defined",
-            "translation": "tor no está definido",
+            "translation": "tor is not defined",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "The onion service can't be deleted: {Err}",
             "message": "The onion service can't be deleted: {Err}",
-            "translation": "El servicio Onion no se pudo eliminar: {Err}",
+            "translation": "The onion service can't be deleted: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -93,33 +91,33 @@
         {
             "id": "The meeting ID has been copied to Clipboard",
             "message": "The meeting ID has been copied to Clipboard",
-            "translation": "El ID de la reunion ha sido copiado al portapapeles"
+            "translation": "The meeting ID has been copied to Clipboard"
         },
         {
             "id": "The invitation email has been copied to Clipboard",
             "message": "The invitation email has been copied to Clipboard",
-            "translation": "El correo de invitación ha sido copiado al portapapeles",
+            "translation": "The invitation email has been copied to Clipboard",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Join Wahay Meeting",
             "message": "Join Wahay Meeting",
-            "translation": "Unirse a una reunión a travéz de Wahay",
+            "translation": "Join Wahay Meeting",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
             "message": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
-            "translation": "Por favor únete a la reunión a travéz de Wahay con los siguientes detalles:%0D%0A%0D%0A",
+            "translation": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "{It}\nMeeting ID: {ServiceID}%0D%0A",
             "message": "{It}\nMeeting ID: {ServiceID}%0D%0A",
-            "translation": "{It}\nID de la reunión: {ServiceID}%0D%0A",
+            "translation": "{It}\nMeeting ID: {ServiceID}%0D%0A",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -144,35 +142,35 @@
         {
             "id": "Start Meeting \u0026 Join",
             "message": "Start Meeting \u0026 Join",
-            "translation": "Comenzar reunión y Unirse",
+            "translation": "Start Meeting \u0026 Join",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Start Meeting",
             "message": "Start Meeting",
-            "translation": "Comenzar reunión",
+            "translation": "Start Meeting",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "The Mumble process is down",
             "message": "The Mumble process is down",
-            "translation": "El proceso Mumble está caído",
+            "translation": "The Mumble process is down",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "The Meeting ID cannot be blank",
             "message": "The Meeting ID cannot be blank",
-            "translation": "El ID de la reunión no puede ser vacío",
+            "translation": "The Meeting ID cannot be blank",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "An error occurred\n\n{Error}",
             "message": "An error occurred\n\n{Error}",
-            "translation": "Ocurrió un error\n\n{Error}",
+            "translation": "An error occurred\n\n{Error}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -189,7 +187,7 @@
         {
             "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
             "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
-            "translation": "el ID de la reunión provisto es inválido: \n\n{MeetingID}",
+            "translation": "the provided meeting ID is invalid: \n\n{MeetingID}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -206,14 +204,14 @@
         {
             "id": "The meeting ID is invalid",
             "message": "The meeting ID is invalid",
-            "translation": "El ID de la reunión es inválido",
+            "translation": "The meeting ID is invalid",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "the Mumble client can not be used because: {LastError}",
             "message": "the Mumble client can not be used because: {LastError}",
-            "translation": "El cliente Mumble no se puede usar porque: {LastError}",
+            "translation": "the Mumble client can not be used because: {LastError}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -230,70 +228,68 @@
         {
             "id": "please enter a valid password",
             "message": "please enter a valid password",
-            "translation": "por favor especifique una contraseña válida",
+            "translation": "please enter a valid password",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "enter the password confirmation",
             "message": "enter the password confirmation",
-            "translation": "especifique la confirmación de la contraseña",
+            "translation": "enter the password confirmation",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "passwords do not match",
             "message": "passwords do not match",
-            "translation": "las contraseñas no coinciden",
+            "translation": "passwords do not match",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "enter a password of 6 chars of minimun length",
             "message": "enter a password of 6 chars of minimun length",
-            "translation": "especifique una contraseña de mínimo 6 caracteres",
+            "translation": "enter a password of 6 chars of minimun length",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "If you disable this option, anyone could read your configuration settings",
             "message": "If you disable this option, anyone could read your configuration settings",
-            "translation": "Si deshabilita esta opción, cualquier persona podría leer los parámetros de configuración",
+            "translation": "If you disable this option, anyone could read your configuration settings",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Open file",
             "message": "Open file",
-            "translation": "Abrir archivo",
+            "translation": "Open file",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Cancel",
             "message": "Cancel",
-            "translation": "Cancelar",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "Cancel"
         },
         {
             "id": "Open",
             "message": "Open",
-            "translation": "Abrir",
+            "translation": "Open",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "tor can't be used",
             "message": "tor can't be used",
-            "translation": "tor no se puede usar",
+            "translation": "tor can't be used",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "We've found errors",
             "message": "We've found errors",
-            "translation": "Encontramos algunos errores",
+            "translation": "We've found errors",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         }
