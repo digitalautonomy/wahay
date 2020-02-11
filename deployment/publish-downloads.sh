@@ -66,10 +66,11 @@ else
 fi
 
 #Move bundles to the download directory
+cd $TMP_DIR
 mkdir -p $DOWNLOADS_DIR/bundles/$BINARY_NAME
-echo "$ALL_BUNDLES" | xargs mv -t $DOWNLOADS_DIR/bundles/$BINARY_NAME
-echo "$ALL_BUNDLES_SHA256_SUM" | xargs mv -t $DOWNLOADS_DIR/bundles/$BINARY_NAME
-echo "$ALL_BUNDLES_SIGNATURES" | xargs mv -t $DOWNLOADS_DIR/bundles/$BINARY_NAME
+echo "$ALL_BUNDLES" | xargs -I file mv file $DOWNLOADS_DIR/bundles/$BINARY_NAME
+echo "$ALL_BUNDLES_SHA256_SUM" | xargs -I file mv file $DOWNLOADS_DIR/bundles/$BINARY_NAME
+echo "$ALL_BUNDLES_SIGNATURES" | xargs -I file mv file $DOWNLOADS_DIR/bundles/$BINARY_NAME
 
 
 if [ $HAS_DATE -eq 0  ]
