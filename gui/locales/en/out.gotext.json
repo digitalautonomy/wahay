@@ -33,9 +33,9 @@
             "fuzzy": true
         },
         {
-            "id": "Configured port mumble is invalid: {PortMumble}",
-            "message": "Configured port mumble is invalid: {PortMumble}",
-            "translation": "Configured port mumble is invalid: {PortMumble}",
+            "id": "Configured Mumble port is not valid: {PortMumble}",
+            "message": "Configured Mumble port is not valid: {PortMumble}",
+            "translation": "Configured Mumble port is not valid: {PortMumble}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -67,9 +67,9 @@
             "fuzzy": true
         },
         {
-            "id": "tor is not defined",
-            "message": "tor is not defined",
-            "translation": "tor is not defined",
+            "id": "internal Tor instance has already been closed",
+            "message": "internal Tor instance has already been closed",
+            "translation": "internal Tor instance has already been closed",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -91,16 +91,16 @@
             "fuzzy": true
         },
         {
-            "id": "The meeting ID has been copied to Clipboard",
-            "message": "The meeting ID has been copied to Clipboard",
-            "translation": "The meeting ID has been copied to Clipboard",
+            "id": "The meeting ID has been copied to the clipboard",
+            "message": "The meeting ID has been copied to the clipboard",
+            "translation": "The meeting ID has been copied to the clipboard",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
-            "id": "The invitation email has been copied to Clipboard",
-            "message": "The invitation email has been copied to Clipboard",
-            "translation": "The invitation email has been copied to Clipboard",
+            "id": "The invitation email has been copied to the clipboard",
+            "message": "The invitation email has been copied to the clipboard",
+            "translation": "The invitation email has been copied to the clipboard",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -112,9 +112,9 @@
             "fuzzy": true
         },
         {
-            "id": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
-            "message": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
-            "translation": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "id": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
+            "message": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
+            "translation": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -251,9 +251,9 @@
             "fuzzy": true
         },
         {
-            "id": "enter a password of 6 chars of minimun length",
-            "message": "enter a password of 6 chars of minimun length",
-            "translation": "enter a password of 6 chars of minimun length",
+            "id": "enter a password at least 6 characters long",
+            "message": "enter a password at least 6 characters long",
+            "translation": "enter a password at least 6 characters long",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -305,9 +305,9 @@
             "translation": "Accept"
         },
         {
-            "id": "Allow the host to autojoin a meeting when creates new one",
-            "message": "Allow the host to autojoin a meeting when creates new one",
-            "translation": "Allow the host to autojoin a meeting when creates new one"
+            "id": "Allow the host to automatically join a newly created meeting",
+            "message": "Allow the host to automatically join a newly created meeting",
+            "translation": "Allow the host to automatically join a newly created meeting"
         },
         {
             "id": "Are you sure you want to do this action?",
@@ -325,9 +325,9 @@
             "translation": "Are you sure you want to leave this meeting?"
         },
         {
-            "id": "Autojoin to this meeting",
-            "message": "Autojoin to this meeting",
-            "translation": "Autojoin to this meeting"
+            "id": "Automatically join this meeting",
+            "message": "Automatically join this meeting",
+            "translation": "Automatically join this meeting"
         },
         {
             "id": "Automatically join a meeting",
@@ -335,14 +335,14 @@
             "translation": "Automatically join a meeting"
         },
         {
-            "id": "Automatically join to this meeting when starting it",
-            "message": "Automatically join to this meeting when starting it",
-            "translation": "Automatically join to this meeting when starting it"
+            "id": "Automatically join this meeting when starting it",
+            "message": "Automatically join this meeting when starting it",
+            "translation": "Automatically join this meeting when starting it"
         },
         {
-            "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.",
-            "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.",
-            "translation": "Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging."
+            "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
+            "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
+            "translation": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging."
         },
         {
             "id": "Browse",
@@ -405,9 +405,9 @@
             "translation": "Copy URL"
         },
         {
-            "id": "Check this option to automatically join every meeting created in the host section",
-            "message": "Check this option to automatically join every meeting created in the host section",
-            "translation": "Check this option to automatically join every meeting created in the host section"
+            "id": "Check this option to automatically join every meeting you host",
+            "message": "Check this option to automatically join every meeting you host",
+            "translation": "Check this option to automatically join every meeting you host"
         },
         {
             "id": "Choose your email service to send invitation",
@@ -435,14 +435,14 @@
             "translation": "Finish"
         },
         {
-            "id": "Finish this meeting",
-            "message": "Finish this meeting",
-            "translation": "Finish this meeting"
+            "id": "End this meeting",
+            "message": "End this meeting",
+            "translation": "End this meeting"
         },
         {
-            "id": "Finish this meeting for all",
-            "message": "Finish this meeting for all",
-            "translation": "Finish this meeting for all"
+            "id": "End this meeting for all",
+            "message": "End this meeting for all",
+            "translation": "End this meeting for all"
         },
         {
             "id": "General",
@@ -470,9 +470,9 @@
             "translation": "Host meeting"
         },
         {
-            "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.",
-            "message": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.",
-            "translation": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file."
+            "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
+            "message": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
+            "translation": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file."
         },
         {
             "id": "If you set this option to a file name, low level information will be logged there.",
@@ -510,19 +510,14 @@
             "translation": "Join meeting"
         },
         {
-            "id": "Join to a meeting",
-            "message": "Join to a meeting",
-            "translation": "Join to a meeting"
+            "id": "Join the meeting",
+            "message": "Join the meeting",
+            "translation": "Join the meeting"
         },
         {
-            "id": "Join to the meeting",
-            "message": "Join to the meeting",
-            "translation": "Join to the meeting"
-        },
-        {
-            "id": "Join to this meeting",
-            "message": "Join to this meeting",
-            "translation": "Join to this meeting"
+            "id": "Join this meeting",
+            "message": "Join this meeting",
+            "translation": "Join this meeting"
         },
         {
             "id": "Keep configuration file when Wahay closes",
@@ -545,9 +540,9 @@
             "translation": "Log debug info"
         },
         {
-            "id": "Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.",
-            "message": "Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.",
-            "translation": "Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file."
+            "id": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
+            "message": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
+            "translation": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file."
         },
         {
             "id": "Master password",
@@ -598,11 +593,6 @@
             "id": "Please enter the master password for the configuration file.",
             "message": "Please enter the master password for the configuration file.",
             "translation": "Please enter the master password for the configuration file."
-        },
-        {
-            "id": "Please, enter the master password for the configuration file",
-            "message": "Please, enter the master password for the configuration file",
-            "translation": "Please, enter the master password for the configuration file"
         },
         {
             "id": "Port",
@@ -665,9 +655,9 @@
             "translation": "The meeting ID has been copied to the clipboard"
         },
         {
-            "id": "The range of valid ports are between 1 and 65535",
-            "message": "The range of valid ports are between 1 and 65535",
-            "translation": "The range of valid ports are between 1 and 65535"
+            "id": "A valid port is between 1 and 65535",
+            "message": "A valid port is between 1 and 65535",
+            "translation": "A valid port is between 1 and 65535"
         },
         {
             "id": "This action cannot be undone",
@@ -680,9 +670,9 @@
             "translation": "Toggle password visibility"
         },
         {
-            "id": "Type the Meeting ID (normally an .onion address)",
-            "message": "Type the Meeting ID (normally an .onion address)",
-            "translation": "Type the Meeting ID (normally an .onion address)"
+            "id": "Type the Meeting ID (normally a .onion address)",
+            "message": "Type the Meeting ID (normally a .onion address)",
+            "translation": "Type the Meeting ID (normally a .onion address)"
         },
         {
             "id": "Type the password",
@@ -735,9 +725,9 @@
             "translation": "Yahoo Mail"
         },
         {
-            "id": "Yes, backup it \u0026amp; continue",
-            "message": "Yes, backup it \u0026amp; continue",
-            "translation": "Yes, backup it \u0026amp; continue"
+            "id": "Yes, back it up \u0026amp; continue",
+            "message": "Yes, back it up \u0026amp; continue",
+            "translation": "Yes, back it up \u0026amp; continue"
         },
         {
             "id": "Yes, confirm",

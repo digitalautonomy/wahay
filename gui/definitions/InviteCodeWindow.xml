@@ -62,7 +62,7 @@
                     <property name="secondary_icon_activatable">False</property>
                     <property name="primary_icon_sensitive">False</property>
                     <property name="secondary_icon_sensitive">False</property>
-                    <property name="placeholder_text" translatable="yes">Type the Meeting ID (normally an .onion address)</property>
+                    <property name="placeholder_text" translatable="yes">Type the Meeting ID (normally a .onion address)</property>
                     <property name="input_purpose">url</property>
                     <style>
                       <class name="form-control"/>
@@ -230,7 +230,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="btnJoin">
-                    <property name="label" translatable="yes">Join to the meeting</property>
+                    <property name="label" translatable="yes">Join the meeting</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>

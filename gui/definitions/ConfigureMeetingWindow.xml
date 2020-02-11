@@ -230,11 +230,11 @@
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkCheckButton" id="chkAutoJoin">
-                    <property name="label" translatable="yes">Autojoin to this meeting</property>
+                    <property name="label" translatable="yes">Automatically join this meeting</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">Automatically join to this meeting when starting it</property>
+                    <property name="tooltip_text" translatable="yes">Automatically join this meeting when starting it</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_chkAutoJoin_toggled" swapped="no"/>
                   </object>

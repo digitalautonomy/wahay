@@ -34,7 +34,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Finish this meeting for all</property>
+                <property name="tooltip_text" translatable="yes">End this meeting for all</property>
                 <property name="image_position">bottom</property>
                 <signal name="clicked" handler="on_finish_meeting" swapped="no"/>
                 <style>

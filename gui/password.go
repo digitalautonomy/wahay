@@ -208,7 +208,7 @@ func validatePasswords(pass1, pass2 string) error {
 	}
 
 	if len(pass1) < passwordMinSize {
-		return errors.New(i18n.Sprintf("enter a password of 6 chars of minimun length"))
+		return errors.New(i18n.Sprintf("enter a password at least 6 characters long"))
 	}
 
 	return nil

@@ -61,7 +61,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="focus_on_click">False</property>
                                     <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Allow the host to autojoin a meeting when creates new one</property>
+                                    <property name="tooltip_text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
                                     <property name="xalign">0</property>
                                     <property name="yalign">0.5</property>
                                     <property name="draw_indicator">True</property>
@@ -78,7 +78,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="margin_top">10</property>
-                                    <property name="label" translatable="yes">Check this option to automatically join every meeting created in the host section</property>
+                                    <property name="label" translatable="yes">Check this option to automatically join every meeting you host</property>
                                     <property name="xalign">0</property>
                                     <property name="yalign">0</property>
                                     <style>
@@ -164,7 +164,7 @@
                         <property name="can_focus">True</property>
                         <property name="focus_on_click">False</property>
                         <property name="receives_default">False</property>
-                        <property name="tooltip_text" translatable="yes">Allow the host to autojoin a meeting when creates new one</property>
+                        <property name="tooltip_text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <property name="draw_indicator">True</property>
@@ -283,7 +283,7 @@
                             <property name="width_request">100</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.</property>
+                            <property name="label" translatable="yes">Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.</property>
                             <property name="wrap">True</property>
                             <property name="track_visited_links">False</property>
                             <property name="xalign">0</property>
@@ -318,7 +318,7 @@
                             <property name="can_focus">True</property>
                             <property name="focus_on_click">False</property>
                             <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Allow the host to autojoin a meeting when creates new one</property>
+                            <property name="tooltip_text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <property name="draw_indicator">True</property>
@@ -340,7 +340,7 @@
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
                             <property name="margin_top">10</property>
-                            <property name="label" translatable="yes">Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.</property>
+                            <property name="label" translatable="yes">Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.</property>
                             <property name="wrap">True</property>
                             <property name="width_chars">1</property>
                             <property name="track_visited_links">False</property>
@@ -686,7 +686,7 @@
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin_top">10</property>
-                        <property name="label" translatable="yes">The range of valid ports are between 1 and 65535</property>
+                        <property name="label" translatable="yes">A valid port is between 1 and 65535</property>
                         <style>
                           <class name="control-help"/>
                         </style>
@@ -897,7 +897,7 @@
                     <property name="width_request">100</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.</property>
+                    <property name="label" translatable="yes">If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.</property>
                     <property name="wrap">True</property>
                     <property name="track_visited_links">False</property>
                     <property name="xalign">0</property>
@@ -960,7 +960,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="btnConfigFileCorruptedBackup">
-                    <property name="label" translatable="yes">Yes, backup it &amp; continue</property>
+                    <property name="label" translatable="yes">Yes, back it up &amp; continue</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>

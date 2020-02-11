@@ -207,7 +207,7 @@ func (h *hostData) createOnionService(finish chan string) {
 		if h.u.config.GetPortMumble() != "" {
 			pm, err = strconv.Atoi(h.u.config.GetPortMumble())
 			if err != nil {
-				h.u.reportError(i18n.Sprintf("Configured port mumble is invalid: %s", h.u.config.GetPortMumble()))
+				h.u.reportError(i18n.Sprintf("Configured Mumble port is not valid: %s", h.u.config.GetPortMumble()))
 				finish <- err.Error()
 				return
 			}
@@ -280,7 +280,7 @@ func (h *hostData) deleteOnionService() {
 			h.serviceID = ""
 		}
 	} else {
-		err = errors.New(i18n.Sprintf("tor is not defined"))
+		err = errors.New(i18n.Sprintf("internal Tor instance has already been closed"))
 	}
 
 	if err != nil {
@@ -325,7 +325,7 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
 	_ = lblMessage.SetProperty("visible", false)
 
 	go func() {
-		h.u.messageToLabel(lblMessage, i18n.Sprintf("The meeting ID has been copied to Clipboard"), 5)
+		h.u.messageToLabel(lblMessage, i18n.Sprintf("The meeting ID has been copied to the clipboard"), 5)
 	}()
 }
 
@@ -338,7 +338,7 @@ func (h *hostData) copyInvitationToClipboard(builder *uiBuilder) {
 	_ = lblMessage.SetProperty("visible", false)
 
 	go func() {
-		h.u.messageToLabel(lblMessage, i18n.Sprintf("The invitation email has been copied to Clipboard"), 5)
+		h.u.messageToLabel(lblMessage, i18n.Sprintf("The invitation email has been copied to the clipboard"), 5)
 	}()
 }
 
@@ -381,7 +381,7 @@ func (h *hostData) getInvitationSubject() string {
 }
 
 func (h *hostData) getInvitationText() string {
-	it := i18n.Sprintf("Please join Wahay meeting with the following details:%%0D%%0A%%0D%%0A")
+	it := i18n.Sprintf("Please join the Wahay meeting with the following details:%%0D%%0A%%0D%%0A")
 	if h.serviceID != "" {
 		it = i18n.Sprintf("%s\nMeeting ID: %s%%0D%%0A", it, h.serviceID)
 	}
