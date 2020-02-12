@@ -6,6 +6,7 @@ TMP_DIR=$2
 function generate_bundle_list()
 {
 local FILE=$1
+local ISLATEST=$2
 
 cat << end-of-html
 <table class='table-bundled' cellpadding='0' cellspacing='0'>
@@ -13,7 +14,18 @@ end-of-html
 
 while IFS= read -r DISTRO_NAME
 do
-bundle=$(find bundles/${1}/ -name "*${DISTRO_NAME}*.bz2")
+if [ $ISLATEST == 0 ]
+then
+bundle=$(find -name "*${DISTRO_NAME}*latest*.bz2" -exec basename {} \;)
+cat << end-of-html
+<tr>
+<td><a href="downloads/${bundle}">${DISTRO_NAME}</a></td>
+<td><a href="downloads/${bundle}.sha256sum">sha256sum</a></td>
+<td><a href="downloads/${bundle}.sha256sum.asc">GPG signature</a></td>
+</tr>
+end-of-html
+else
+bundle=$(find bundles/${FILE}/ -name "*${DISTRO_NAME}*.bz2")
 cat << end-of-html
 <tr>
 <td><a href="downloads/bundles/${bundle}">${DISTRO_NAME}</a></td>
@@ -21,6 +33,7 @@ cat << end-of-html
 <td><a href="downloads/bundles/${bundle}.sha256sum.asc">GPG signature</a></td>
 </tr>
 end-of-html
+fi
 done < "$TMP_DIR"
 
 cat << end-of-html
@@ -71,7 +84,7 @@ html { padding:10px; width:95% }
 <td>
 end-of-html
 
-#generate_bundle_list "binary-"
+generate_bundle_list "wahay-latest" 0
 
 cat << end-of-html
 </td>
@@ -80,7 +93,7 @@ end-of-html
 
 for filename in wahay*; do
     #Be sure not to list files with sha256sum string in their name
-    ls $filename | grep  "sha256sum\|wahay-latest" > /dev/null
+    ls $filename | grep 'sha256sum\|wahay-latest\|bz2' > /dev/null
         if [ $? -eq 1  ]
         then
 
@@ -92,7 +105,7 @@ cat << end-of-html
                 <td>
 end-of-html
 
-generate_bundle_list $filename
+generate_bundle_list $filename 1
 
 cat << end-of-html
                 </td>
