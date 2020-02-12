@@ -1,6 +1,33 @@
 #!/usr/bin/env bash
 
 cd $1
+TMP_DIR=$2
+
+function generate_bundle_list()
+{
+local FILE=$1
+
+cat << end-of-html
+<table class='table-bundled' cellpadding='0' cellspacing='0'>
+end-of-html
+
+while IFS= read -r DISTRO_NAME
+do
+bundle=$(find bundles/${1}/ -name "*${DISTRO_NAME}*.bz2")
+cat << end-of-html
+<tr>
+<td><a href="downloads/bundles/${bundle}">${DISTRO_NAME}</a></td>
+<td><a href="downloads/bundles/${bundle}.sha256sum">sha256sum</a></td>
+<td><a href="downloads/bundles/${bundle}.sha256sum.asc">GPG signature</a></td>
+</tr>
+end-of-html
+done < "$TMP_DIR"
+
+cat << end-of-html
+</table>
+end-of-html
+
+}
 
 cat << end-of-html
 <html>
@@ -14,6 +41,8 @@ html { padding:10px; width:95% }
 .table-files tr th { border:1px solid #333; text-align: left; padding:5px; }
 .table-files tr td { border:1px solid #333; padding:5px; }
 .code{ background-color:#111;color:#FFF;font-family:Monospace;font-size:14px;margin:5px;padding:5px;width:90%; }
+.table-bundled { width: 100%; }
+.table-bundled tr td { border:1px solid #333 }
 </style>
 </head>
 <body>
@@ -33,15 +62,21 @@ html { padding:10px; width:95% }
 <th>FILE</th>
 <th>HASH</th>
 <th>SIGNATURE</th>
+<th style='text-align:center'>BUNDLED</th>
 </tr>
 <tr>
 <td><a href="downloads/wahay-latest">wahay-latest</a></td>
 <td><a href="downloads/wahay-latest.sha256sum">sha256sum</a></td>
 <td><a href="downloads/wahay-latest.sha256sum">GPG signature</a></td>
-</tr>
-
+<td>
 end-of-html
 
+#generate_bundle_list "binary-"
+
+cat << end-of-html
+</td>
+</tr>
+end-of-html
 
 for filename in wahay*; do
     #Be sure not to list files with sha256sum string in their name
@@ -54,9 +89,16 @@ cat << end-of-html
                 <td><a href="downloads/$filename">$filename</a></td>
                 <td><a href="downloads/$filename.sha256sum">sha256sum</a></td>
                 <td><a href="downloads/$filename.sha256sum.asc">GPG signature</a></td>
+                <td>
+end-of-html
+
+generate_bundle_list $filename
+
+cat << end-of-html
+                </td>
         </tr>
 end-of-html
-    
+
         fi
 done
 cat << end-of-html
@@ -68,7 +110,7 @@ Digital hashes protects against unintentional modification of data in transit. T
 
 <br>
 
-To verify the integrity of the file you need to obtain the SHA256SUM of the binary you have downloaded and compare it to the correspondent wahay-xxxxx.sha256.sum. For example if you want to check the sha256sum of wahay-2020-01-22-9319d8d binary. 
+To verify the integrity of the file you need to obtain the SHA256SUM of the binary you have downloaded and compare it to the correspondent wahay-xxxxx.sha256.sum. For example if you want to check the sha256sum of wahay-2020-01-22-9319d8d binary.
 
 <br><br>
 <div class="code">
@@ -126,4 +168,3 @@ If you see the message: "gpg: Good signature from "CAD Signing Key - testing (Th
 </div>
 end-of-html
 echo "</body>"
-
