@@ -75,9 +75,9 @@ echo "$ALL_BUNDLES_SIGNATURES" | xargs -I file mv file $DOWNLOADS_DIR/bundles/$B
 
 if [ $HAS_DATE -eq 0  ]
 then
-        cd $DOWNLOADS_DIR/bundles/$BINARY_NAME
-        rm -f *latest
-
+        cd $DOWNLOADS_DIR
+        rm -f *latest.tar.bz2*
+	
 	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.bz2" -exec ln -s {} file-latest.tar.bz2 \;
 	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.sha256sum" -exec ln -s {} file-latest.tar.bz2.sha256sum \;
 	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.asc" -exec ln -s {} file-latest.tar.bz2.sha256sum.asc \;
