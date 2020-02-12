@@ -1,4 +1,4 @@
-ubuntu-18-04
+ubuntu-18_04
 debian-10
 fedora-30
 fedora-31

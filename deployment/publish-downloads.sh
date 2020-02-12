@@ -84,12 +84,12 @@ then
 else
 
         #Retrieve WAHAY_TAG name
-        WAHAY_TAG_NAME=$(echo ${BINARY_NAME%-*******})
+        WAHAY_TAG_NAME=${BINARY_NAME%-*******}
 
-        cd $DOWNLOADS_DIR/bundles/$BINARY_NAME
+        cd $DOWNLOADS_DIR
         rm  -rf $WAHAY_TAG_NAME*
 
-        echo "$ALL_BUNDLES" | xargs -I file ln  -s file  file-latest
-        echo "$ALL_BUNDLES_SHA256_SUM" | xargs -I file ln  -s file  file-latest
-        echo "$ALL_BUNDLES_SIGNATURES" | xargs -I file ln  -s file  file-latest
+	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2 \;
+	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2.sha256sum" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2.sha256sum \;
+	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2.sha256sum.asc" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2.sha256sum.asc \;
 fi
