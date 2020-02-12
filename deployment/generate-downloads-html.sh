@@ -16,7 +16,7 @@ while IFS= read -r DISTRO_NAME
 do
 if [ $ISLATEST == 0 ]
 then
-bundle=$(find -name "*${DISTRO_NAME}*latest*.bz2" -exec basename {} \;)
+bundle=$(find . -name "*${DISTRO_NAME}*latest*.bz2" -exec basename {} \;)
 cat << end-of-html
 <tr>
 <td><a href="downloads/${bundle}">${DISTRO_NAME}</a></td>
