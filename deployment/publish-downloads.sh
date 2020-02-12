@@ -78,9 +78,9 @@ then
         cd $DOWNLOADS_DIR/bundles/$BINARY_NAME
         rm -f *latest
 
-        echo "$ALL_BUNDLES" | xargs -I file ln  -s file  file-latest
-        echo "$ALL_BUNDLES_SHA256_SUM" | xargs -I file ln  -s file  file-latest
-        echo "$ALL_BUNDLES_SIGNATURES" | xargs -I file ln  -s file  file-latest
+	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.bz2" -exec ln -s {} file-latest.tar.bz2 \;
+	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.sha256sum" -exec ln -s {} file-latest.tar.bz2.sha256sum \;
+	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.asc" -exec ln -s {} file-latest.tar.bz2.sha256sum.asc \;
 else
 
         #Retrieve WAHAY_TAG name
