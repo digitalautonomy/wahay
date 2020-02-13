@@ -1,4 +1,4 @@
-//go:generate esc -o definitions.go -modtime 1489449600 -pkg gui -ignore "Makefile" definitions/ styles/
+//go:generate esc -o definitions.go -modtime 1489449600 -pkg gui -ignore "Makefile" definitions/ styles/ images/
 
 package gui
 
@@ -20,11 +20,13 @@ import (
 const (
 	xmlExtension = ".xml"
 	cssExtension = ".css"
+	pngExtension = ".png"
 )
 
 const (
 	definitionsDir = "definitions"
 	cssDir         = "styles"
+	imagesDir      = "/images"
 )
 
 var builderMutex sync.Mutex
@@ -161,4 +163,17 @@ func (b *uiBuilder) get(name string) glibi.Object {
 		fatal(err)
 	}
 	return obj
+}
+
+func (g *Graphics) getImage(imageName string) []byte {
+	return g.getImageBytes(imageName)
+}
+
+func (g Graphics) getImageBytes(filename string) []byte {
+	image := filepath.Join(imagesDir, filename)
+	bs, err := FSByte(false, image)
+	if err != nil {
+		log.Fatal("Developer error: getting the image " + image + " but it does not exist")
+	}
+	return bs
 }
