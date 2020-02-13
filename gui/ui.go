@@ -78,6 +78,9 @@ func NewGTK(gx Graphics) UI {
 	// functionalities of the configuration package
 	ret.keySupplier = config.CreateKeySupplier(ret.getMasterPassword)
 
+	// Ensure all components that should be installed
+	ret.ensureInstallation()
+
 	return ret
 }
 
@@ -137,6 +140,9 @@ func (u *gtkUI) createMainWindow(success bool) {
 	u.mainWindow = win
 
 	win.SetApplication(u.app)
+
+	win.SetIcon(getApplicationIcon().getPixbuf())
+	u.g.gtk.WindowSetDefaultIcon(getApplicationIcon().getPixbuf())
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": u.quit,
