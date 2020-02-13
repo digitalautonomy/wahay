@@ -60,3 +60,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/cubiest/jibberjabber"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/kardianos/osext"
