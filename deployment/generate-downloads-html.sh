@@ -25,7 +25,7 @@ cat << end-of-html
 </tr>
 end-of-html
 else
-bundle=$(find bundles/${FILE}/ -name "*${DISTRO_NAME}*.bz2")
+bundle=$(find bundles/${FILE}/ -name "*${DISTRO_NAME}*.bz2" -exec basename {} \;)
 cat << end-of-html
 <tr>
 <td><a href="downloads/bundles/${bundle}">${DISTRO_NAME}</a></td>
