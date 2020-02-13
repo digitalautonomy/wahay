@@ -1,0 +1,693 @@
+{
+    "language": "ar",
+    "messages": [
+        {
+            "id": "Error",
+            "message": "Error",
+            "translation": ""
+        },
+        {
+            "id": "Something went wrong: {Err}",
+            "message": "Something went wrong: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "we couldn't start the meeting",
+            "message": "we couldn't start the meeting",
+            "translation": ""
+        },
+        {
+            "id": "Configured port mumble is invalid: {PortMumble}",
+            "message": "Configured port mumble is invalid: {PortMumble}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PortMumble",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "h.u.config.GetPortMumble()"
+                }
+            ]
+        },
+        {
+            "id": "The meeting can't be closed: {Err}",
+            "message": "The meeting can't be closed: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "tor is not defined",
+            "message": "tor is not defined",
+            "translation": ""
+        },
+        {
+            "id": "The onion service can't be deleted: {Err}",
+            "message": "The onion service can't be deleted: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "The meeting ID has been copied to Clipboard",
+            "message": "The meeting ID has been copied to Clipboard",
+            "translation": ""
+        },
+        {
+            "id": "The invitation email has been copied to Clipboard",
+            "message": "The invitation email has been copied to Clipboard",
+            "translation": ""
+        },
+        {
+            "id": "Join Wahay Meeting",
+            "message": "Join Wahay Meeting",
+            "translation": ""
+        },
+        {
+            "id": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "message": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
+            "translation": ""
+        },
+        {
+            "id": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "message": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "It",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "it"
+                },
+                {
+                    "id": "ServiceID",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "h.serviceID"
+                }
+            ]
+        },
+        {
+            "id": "Start Meeting \u0026 Join",
+            "message": "Start Meeting \u0026 Join",
+            "translation": ""
+        },
+        {
+            "id": "Start Meeting",
+            "message": "Start Meeting",
+            "translation": ""
+        },
+        {
+            "id": "The Mumble process is down",
+            "message": "The Mumble process is down",
+            "translation": ""
+        },
+        {
+            "id": "The Meeting ID cannot be blank",
+            "message": "The Meeting ID cannot be blank",
+            "translation": ""
+        },
+        {
+            "id": "An error occurred\n\n{Error}",
+            "message": "An error occurred\n\n{Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ]
+        },
+        {
+            "id": "The meeting ID is invalid",
+            "message": "The meeting ID is invalid",
+            "translation": ""
+        },
+        {
+            "id": "the Mumble client can not be used because: {LastError}",
+            "message": "the Mumble client can not be used because: {LastError}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "LastError",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "c.GetLastError()"
+                }
+            ]
+        },
+        {
+            "id": "please enter a valid password",
+            "message": "please enter a valid password",
+            "translation": ""
+        },
+        {
+            "id": "enter the password confirmation",
+            "message": "enter the password confirmation",
+            "translation": ""
+        },
+        {
+            "id": "passwords do not match",
+            "message": "passwords do not match",
+            "translation": ""
+        },
+        {
+            "id": "enter a password of 6 chars of minimun length",
+            "message": "enter a password of 6 chars of minimun length",
+            "translation": ""
+        },
+        {
+            "id": "If you disable this option, anyone could read your configuration settings",
+            "message": "If you disable this option, anyone could read your configuration settings",
+            "translation": ""
+        },
+        {
+            "id": "Open file",
+            "message": "Open file",
+            "translation": ""
+        },
+        {
+            "id": "Cancel",
+            "message": "Cancel",
+            "translation": ""
+        },
+        {
+            "id": "Open",
+            "message": "Open",
+            "translation": ""
+        },
+        {
+            "id": "tor can't be used",
+            "message": "tor can't be used",
+            "translation": ""
+        },
+        {
+            "id": "We've found errors",
+            "message": "We've found errors",
+            "translation": ""
+        },
+        {
+            "id": "Accept",
+            "message": "Accept",
+            "translation": ""
+        },
+        {
+            "id": "Allow the host to autojoin a meeting when creates new one",
+            "message": "Allow the host to autojoin a meeting when creates new one",
+            "translation": ""
+        },
+        {
+            "id": "Are you sure you want to do this action?",
+            "message": "Are you sure you want to do this action?",
+            "translation": ""
+        },
+        {
+            "id": "Are you sure you want to end this meeting?",
+            "message": "Are you sure you want to end this meeting?",
+            "translation": ""
+        },
+        {
+            "id": "Are you sure you want to leave this meeting?",
+            "message": "Are you sure you want to leave this meeting?",
+            "translation": ""
+        },
+        {
+            "id": "Autojoin to this meeting",
+            "message": "Autojoin to this meeting",
+            "translation": ""
+        },
+        {
+            "id": "Automatically join a meeting",
+            "message": "Automatically join a meeting",
+            "translation": ""
+        },
+        {
+            "id": "Automatically join to this meeting when starting it",
+            "message": "Automatically join to this meeting when starting it",
+            "translation": ""
+        },
+        {
+            "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.",
+            "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.",
+            "translation": ""
+        },
+        {
+            "id": "Browse",
+            "message": "Browse",
+            "translation": ""
+        },
+        {
+            "id": "By clicking Yes, this meeting will end.",
+            "message": "By clicking Yes, this meeting will end.",
+            "translation": ""
+        },
+        {
+            "id": "By clicking Yes, you will leave this meeting.",
+            "message": "By clicking Yes, you will leave this meeting.",
+            "translation": ""
+        },
+        {
+            "id": "Client binary location",
+            "message": "Client binary location",
+            "translation": ""
+        },
+        {
+            "id": "Configuration settings will be lost in the next session",
+            "message": "Configuration settings will be lost in the next session",
+            "translation": ""
+        },
+        {
+            "id": "Configure master password",
+            "message": "Configure master password",
+            "translation": ""
+        },
+        {
+            "id": "Confirmation",
+            "message": "Confirmation",
+            "translation": ""
+        },
+        {
+            "id": "Connecting, please wait...",
+            "message": "Connecting, please wait...",
+            "translation": ""
+        },
+        {
+            "id": "Continue",
+            "message": "Continue",
+            "translation": ""
+        },
+        {
+            "id": "Copy Invitation",
+            "message": "Copy Invitation",
+            "translation": ""
+        },
+        {
+            "id": "Copy Meeting ID",
+            "message": "Copy Meeting ID",
+            "translation": ""
+        },
+        {
+            "id": "Copy URL",
+            "message": "Copy URL",
+            "translation": ""
+        },
+        {
+            "id": "Check this option to automatically join every meeting created in the host section",
+            "message": "Check this option to automatically join every meeting created in the host section",
+            "translation": ""
+        },
+        {
+            "id": "Choose your email service to send invitation",
+            "message": "Choose your email service to send invitation",
+            "translation": ""
+        },
+        {
+            "id": "Debugging",
+            "message": "Debugging",
+            "translation": ""
+        },
+        {
+            "id": "Default Email",
+            "message": "Default Email",
+            "translation": ""
+        },
+        {
+            "id": "Encrypt the configuration file",
+            "message": "Encrypt the configuration file",
+            "translation": ""
+        },
+        {
+            "id": "Finish",
+            "message": "Finish",
+            "translation": ""
+        },
+        {
+            "id": "Finish this meeting",
+            "message": "Finish this meeting",
+            "translation": ""
+        },
+        {
+            "id": "Finish this meeting for all",
+            "message": "Finish this meeting for all",
+            "translation": ""
+        },
+        {
+            "id": "General",
+            "message": "General",
+            "translation": ""
+        },
+        {
+            "id": "Gmail",
+            "message": "Gmail",
+            "translation": ""
+        },
+        {
+            "id": "Host a new meeting",
+            "message": "Host a new meeting",
+            "translation": ""
+        },
+        {
+            "id": "Hosting",
+            "message": "Hosting",
+            "translation": ""
+        },
+        {
+            "id": "Host meeting",
+            "message": "Host meeting",
+            "translation": ""
+        },
+        {
+            "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.",
+            "message": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.",
+            "translation": ""
+        },
+        {
+            "id": "If you set this option to a file name, low level information will be logged there.",
+            "message": "If you set this option to a file name, low level information will be logged there.",
+            "translation": ""
+        },
+        {
+            "id": "Invalid configuration file",
+            "message": "Invalid configuration file",
+            "translation": ""
+        },
+        {
+            "id": "Invalid password. Please, try again.",
+            "message": "Invalid password. Please, try again.",
+            "translation": ""
+        },
+        {
+            "id": "Invite others",
+            "message": "Invite others",
+            "translation": ""
+        },
+        {
+            "id": "Join",
+            "message": "Join",
+            "translation": ""
+        },
+        {
+            "id": "Join a meeting",
+            "message": "Join a meeting",
+            "translation": ""
+        },
+        {
+            "id": "Join meeting",
+            "message": "Join meeting",
+            "translation": ""
+        },
+        {
+            "id": "Join to a meeting",
+            "message": "Join to a meeting",
+            "translation": ""
+        },
+        {
+            "id": "Join to the meeting",
+            "message": "Join to the meeting",
+            "translation": ""
+        },
+        {
+            "id": "Join to this meeting",
+            "message": "Join to this meeting",
+            "translation": ""
+        },
+        {
+            "id": "Keep configuration file when Wahay closes",
+            "message": "Keep configuration file when Wahay closes",
+            "translation": ""
+        },
+        {
+            "id": "Leave",
+            "message": "Leave",
+            "translation": ""
+        },
+        {
+            "id": "Leave this meeting",
+            "message": "Leave this meeting",
+            "translation": ""
+        },
+        {
+            "id": "Log debug info",
+            "message": "Log debug info",
+            "translation": ""
+        },
+        {
+            "id": "Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.",
+            "message": "Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.",
+            "translation": ""
+        },
+        {
+            "id": "Master password",
+            "message": "Master password",
+            "translation": ""
+        },
+        {
+            "id": "Meeting ID",
+            "message": "Meeting ID",
+            "translation": ""
+        },
+        {
+            "id": "Meeting ID:",
+            "message": "Meeting ID:",
+            "translation": ""
+        },
+        {
+            "id": "Meeting password",
+            "message": "Meeting password",
+            "translation": ""
+        },
+        {
+            "id": "Mumble",
+            "message": "Mumble",
+            "translation": ""
+        },
+        {
+            "id": "No, cancel",
+            "message": "No, cancel",
+            "translation": ""
+        },
+        {
+            "id": "Now you are hosting a meeting.",
+            "message": "Now you are hosting a meeting.",
+            "translation": ""
+        },
+        {
+            "id": "Outlook",
+            "message": "Outlook",
+            "translation": ""
+        },
+        {
+            "id": "Password",
+            "message": "Password",
+            "translation": ""
+        },
+        {
+            "id": "Please enter the master password for the configuration file.",
+            "message": "Please enter the master password for the configuration file.",
+            "translation": ""
+        },
+        {
+            "id": "Please, enter the master password for the configuration file",
+            "message": "Please, enter the master password for the configuration file",
+            "translation": ""
+        },
+        {
+            "id": "Port",
+            "message": "Port",
+            "translation": ""
+        },
+        {
+            "id": "Port out of range",
+            "message": "Port out of range",
+            "translation": ""
+        },
+        {
+            "id": "Raw log file",
+            "message": "Raw log file",
+            "translation": ""
+        },
+        {
+            "id": "Repeat the password",
+            "message": "Repeat the password",
+            "translation": ""
+        },
+        {
+            "id": "Save changes",
+            "message": "Save changes",
+            "translation": ""
+        },
+        {
+            "id": "Security",
+            "message": "Security",
+            "translation": ""
+        },
+        {
+            "id": "Settings",
+            "message": "Settings",
+            "translation": ""
+        },
+        {
+            "id": "Show",
+            "message": "Show",
+            "translation": ""
+        },
+        {
+            "id": "Specify a password for the meeting",
+            "message": "Specify a password for the meeting",
+            "translation": ""
+        },
+        {
+            "id": "Start meeting",
+            "message": "Start meeting",
+            "translation": ""
+        },
+        {
+            "id": "The error message",
+            "message": "The error message",
+            "translation": ""
+        },
+        {
+            "id": "The meeting ID has been copied to the clipboard",
+            "message": "The meeting ID has been copied to the clipboard",
+            "translation": ""
+        },
+        {
+            "id": "The range of valid ports are between 1 and 65535",
+            "message": "The range of valid ports are between 1 and 65535",
+            "translation": ""
+        },
+        {
+            "id": "This action cannot be undone",
+            "message": "This action cannot be undone",
+            "translation": ""
+        },
+        {
+            "id": "Toggle password visibility",
+            "message": "Toggle password visibility",
+            "translation": ""
+        },
+        {
+            "id": "Type the Meeting ID (normally an .onion address)",
+            "message": "Type the Meeting ID (normally an .onion address)",
+            "translation": ""
+        },
+        {
+            "id": "Type the password",
+            "message": "Type the password",
+            "translation": ""
+        },
+        {
+            "id": "Type the password to join the meeting",
+            "message": "Type the password to join the meeting",
+            "translation": ""
+        },
+        {
+            "id": "Type your preferred screen name",
+            "message": "Type your preferred screen name",
+            "translation": ""
+        },
+        {
+            "id": "Type your screen name",
+            "message": "Type your screen name",
+            "translation": ""
+        },
+        {
+            "id": "Username",
+            "message": "Username",
+            "translation": ""
+        },
+        {
+            "id": "Wahay is ready to use",
+            "message": "Wahay is ready to use",
+            "translation": ""
+        },
+        {
+            "id": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
+            "message": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
+            "translation": ""
+        },
+        {
+            "id": "Welcome",
+            "message": "Welcome",
+            "translation": ""
+        },
+        {
+            "id": "When this option is checked, the configuration settings will be stored in the device.",
+            "message": "When this option is checked, the configuration settings will be stored in the device.",
+            "translation": ""
+        },
+        {
+            "id": "Yahoo Mail",
+            "message": "Yahoo Mail",
+            "translation": ""
+        },
+        {
+            "id": "Yes, backup it \u0026amp; continue",
+            "message": "Yes, backup it \u0026amp; continue",
+            "translation": ""
+        },
+        {
+            "id": "Yes, confirm",
+            "message": "Yes, confirm",
+            "translation": ""
+        },
+        {
+            "id": "You will not be asked for this password again until you restart Wahay.",
+            "message": "You will not be asked for this password again until you restart Wahay.",
+            "translation": ""
+        }
+    ]
+}
