@@ -16,21 +16,25 @@ while IFS= read -r DISTRO_NAME
 do
 if [ $ISLATEST == 0 ]
 then
-bundle=$(find . -name "*${DISTRO_NAME}*latest*.bz2" -exec basename {} \;)
+BUNDLE=$(find . -name "*${DISTRO_NAME}*latest*.bz2" -exec basename {} \;)
 cat << end-of-html
 <tr>
-<td><a href="downloads/${bundle}">${DISTRO_NAME}</a></td>
-<td><a href="downloads/${bundle}.sha256sum">sha256sum</a></td>
-<td><a href="downloads/${bundle}.sha256sum.asc">GPG signature</a></td>
+<td><a href="downloads/${BUNDLE}">${DISTRO_NAME}</a></td>
+<td><a href="downloads/${BUNDLE}.sha256sum">sha256sum</a></td>
+<td><a href="downloads/${BUNDLE}.sha256sum.asc">GPG signature</a></td>
 </tr>
 end-of-html
 else
-bundle=$(find bundles/${FILE}/ -name "*${DISTRO_NAME}*.bz2" -exec basename {} \;)
+BUNDLE=$(find bundles/${FILE}/ -name "*${DISTRO_NAME}*.bz2" -exec basename {} \;)
+
+FILE_NAME=$(echo ${BUNDLE} | cut -d "-" -f 1,4,5,6,7)
+BASE_NAME=${FILE_NAME%.tar.bz2}
+
 cat << end-of-html
 <tr>
-<td><a href="downloads/bundles/${bundle}">${DISTRO_NAME}</a></td>
-<td><a href="downloads/bundles/${bundle}.sha256sum">sha256sum</a></td>
-<td><a href="downloads/bundles/${bundle}.sha256sum.asc">GPG signature</a></td>
+<td><a href="downloads/bundles/${BASE_NAME}/${BUNDLE}">${DISTRO_NAME}</a></td>
+<td><a href="downloads/bundles/${BASE_NAME}/${BUNDLE}.sha256sum">sha256sum</a></td>
+<td><a href="downloads/bundles/${BASE_NAME}${BUNDLE}.sha256sum.asc">GPG signature</a></td>
 </tr>
 end-of-html
 fi
