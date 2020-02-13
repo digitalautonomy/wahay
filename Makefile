@@ -10,6 +10,8 @@ GOPATH_SINGLE=$(shell echo $${GOPATH%%:*})
 
 BUILD_DIR=bin
 
+.PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean run-coverage clean-cover cover cover-ci build build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
+
 default: gen-ui-defs build
 
 check-deps:
