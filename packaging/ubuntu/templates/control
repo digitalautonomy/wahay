@@ -1,0 +1,11 @@
+Package: wahay
+Version: ##VERSION##
+Section: net
+Priority: optional
+Architecture: amd64
+Depends: tor (>= 0.3.5), mumble, libgtk-3-0 (>= 3.16.2)
+Maintainer: Centro de Autonomia Digital  <packaging@autonomia.digital>
+Description: An easy-to-use, secure and decentralized conference call application
+ Wahay - an easy-to-use, secure and decentralized conference call application. 
+ It combines the Tor Onion Services with Mumble to allow secure and autonomous 
+ communications.
