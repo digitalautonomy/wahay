@@ -61,7 +61,6 @@ deploy_staging:
   before_script:
   - export SSH_PORT=2326
   - 'export DO_SSH="ssh -p${SSH_PORT} wahay@staging.wahay.app"'
-  - 'export DO_SCP="scp -P${SSH_PORT}"'
   - 'eval $(ssh-agent -s)'
   - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
@@ -95,7 +94,6 @@ deploy_production:
   before_script:
   - export SSH_PORT=2387
   - 'export DO_SSH="ssh -p${SSH_PORT} wahay@wahay.app"'
-  - 'export DO_SCP="scp -P${SSH_PORT}"'
   - "eval $(ssh-agent -s)"
   - 'ssh-add <(echo "$DEPLOY_PRODUCTION_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
@@ -112,7 +110,7 @@ deploy_production:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
-   - 'BINARY_NAME=$(find bin -name "wahay*" | head -1)'
+   - 'export BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
    - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@wahay.app:$DEPLOY_DIR/'
