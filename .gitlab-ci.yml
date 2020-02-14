@@ -85,7 +85,7 @@ deploy_staging:
    - deployment/create-bundles.sh
    - 'scp -P${SSH_PORT} publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - deployment/create-linux-packages.sh
-   - 'scp -P${SSH_PORT} publish-linux-packages/* wahay@staging.wahay.app:$DEPLOY_DIR/
+   - 'scp -P${SSH_PORT} publish-linux-packages/* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - '$DO_SSH bin/publish-downloads.sh'
    - 'scp -P${SSH_PORT} deployment/supported-bundle-distros.txt wahay@staging.wahay.app:$DEPLOY_DIR'
    - '$DO_SSH "bin/generate-downloads-html.sh /usr/local/www/wahay/downloads $DEPLOY_DIR/supported-bundle-distros.txt > /usr/local/www/wahay/downloads.html"'
