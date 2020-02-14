@@ -18,7 +18,10 @@ check-deps:
 	@type esc >/dev/null 2>&1 || (echo "The program 'esc' is required but not available. Please install it by running 'make deps'." && exit 1)
 
 gen-ui-defs: check-deps
-	make -C gui
+	cd gui && make generate-ui
+
+gen-ui-locale: check-deps
+	cd gui && make generate-locale
 
 deps:
 	go get -u github.com/modocache/gover
