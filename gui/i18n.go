@@ -1,6 +1,6 @@
 package gui
 
-//go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv
+//go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar
 
 import (
 	"github.com/coyim/gotk3adapter/glibi"

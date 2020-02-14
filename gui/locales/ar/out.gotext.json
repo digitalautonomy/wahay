@@ -4,12 +4,15 @@
         {
             "id": "Error",
             "message": "Error",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Something went wrong: {Err}",
             "message": "Something went wrong: {Err}",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -19,17 +22,21 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "we couldn't start the meeting",
             "message": "we couldn't start the meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
-            "id": "Configured port mumble is invalid: {PortMumble}",
-            "message": "Configured port mumble is invalid: {PortMumble}",
-            "translation": "",
+            "id": "Configured Mumble port is not valid: {PortMumble}",
+            "message": "Configured Mumble port is not valid: {PortMumble}",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "PortMumble",
@@ -39,12 +46,14 @@
                     "argNum": 1,
                     "expr": "h.u.config.GetPortMumble()"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "The meeting can't be closed: {Err}",
             "message": "The meeting can't be closed: {Err}",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -54,17 +63,21 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
-            "id": "tor is not defined",
-            "message": "tor is not defined",
-            "translation": ""
+            "id": "internal Tor instance has already been closed",
+            "message": "internal Tor instance has already been closed",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The onion service can't be deleted: {Err}",
             "message": "The onion service can't be deleted: {Err}",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
@@ -74,32 +87,40 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
-            "id": "The meeting ID has been copied to Clipboard",
-            "message": "The meeting ID has been copied to Clipboard",
-            "translation": ""
+            "id": "The meeting ID has been copied to the clipboard",
+            "message": "The meeting ID has been copied to the clipboard",
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "The invitation email has been copied to Clipboard",
-            "message": "The invitation email has been copied to Clipboard",
-            "translation": ""
+            "id": "The invitation email has been copied to the clipboard",
+            "message": "The invitation email has been copied to the clipboard",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Join Wahay Meeting",
             "message": "Join Wahay Meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
-            "id": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
-            "message": "Please join Wahay meeting with the following details:%0D%0A%0D%0A",
-            "translation": ""
+            "id": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
+            "message": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "{It}\nMeeting ID: {ServiceID}%0D%0A",
             "message": "{It}\nMeeting ID: {ServiceID}%0D%0A",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "It",
@@ -117,32 +138,42 @@
                     "argNum": 2,
                     "expr": "h.serviceID"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Start Meeting \u0026 Join",
             "message": "Start Meeting \u0026 Join",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Start Meeting",
             "message": "Start Meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The Mumble process is down",
             "message": "The Mumble process is down",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The Meeting ID cannot be blank",
             "message": "The Meeting ID cannot be blank",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "An error occurred\n\n{Error}",
             "message": "An error occurred\n\n{Error}",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Error",
@@ -152,12 +183,14 @@
                     "argNum": 1,
                     "expr": "err.Error()"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
             "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "MeetingID",
@@ -167,17 +200,21 @@
                     "argNum": 1,
                     "expr": "data.MeetingID"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "The meeting ID is invalid",
             "message": "The meeting ID is invalid",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "the Mumble client can not be used because: {LastError}",
             "message": "the Mumble client can not be used because: {LastError}",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "LastError",
@@ -187,507 +224,513 @@
                     "argNum": 1,
                     "expr": "c.GetLastError()"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "please enter a valid password",
             "message": "please enter a valid password",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "enter the password confirmation",
             "message": "enter the password confirmation",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "passwords do not match",
             "message": "passwords do not match",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
-            "id": "enter a password of 6 chars of minimun length",
-            "message": "enter a password of 6 chars of minimun length",
-            "translation": ""
+            "id": "enter a password at least 6 characters long",
+            "message": "enter a password at least 6 characters long",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "If you disable this option, anyone could read your configuration settings",
             "message": "If you disable this option, anyone could read your configuration settings",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Open file",
             "message": "Open file",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Cancel",
             "message": "Cancel",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Open",
             "message": "Open",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "tor can't be used",
             "message": "tor can't be used",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "We've found errors",
             "message": "We've found errors",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Accept",
             "message": "Accept",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Allow the host to autojoin a meeting when creates new one",
-            "message": "Allow the host to autojoin a meeting when creates new one",
-            "translation": ""
+            "id": "Allow the host to automatically join a newly created meeting",
+            "message": "Allow the host to automatically join a newly created meeting",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Are you sure you want to do this action?",
             "message": "Are you sure you want to do this action?",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Are you sure you want to end this meeting?",
             "message": "Are you sure you want to end this meeting?",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Are you sure you want to leave this meeting?",
             "message": "Are you sure you want to leave this meeting?",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Autojoin to this meeting",
-            "message": "Autojoin to this meeting",
-            "translation": ""
+            "id": "Automatically join this meeting",
+            "message": "Automatically join this meeting",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Automatically join a meeting",
             "message": "Automatically join a meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Automatically join to this meeting when starting it",
-            "message": "Automatically join to this meeting when starting it",
-            "translation": ""
+            "id": "Automatically join this meeting when starting it",
+            "message": "Automatically join this meeting when starting it",
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.",
-            "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turns this settings if you absolutely need it for debugging.",
-            "translation": ""
+            "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
+            "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Browse",
             "message": "Browse",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "By clicking Yes, this meeting will end.",
             "message": "By clicking Yes, this meeting will end.",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "By clicking Yes, you will leave this meeting.",
             "message": "By clicking Yes, you will leave this meeting.",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Client binary location",
             "message": "Client binary location",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Configuration settings will be lost in the next session",
             "message": "Configuration settings will be lost in the next session",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Configure master password",
             "message": "Configure master password",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Confirmation",
             "message": "Confirmation",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Connecting, please wait...",
             "message": "Connecting, please wait...",
-            "translation": ""
+            "translation": "...الاتصال الرجاء الانتظار"
         },
         {
             "id": "Continue",
             "message": "Continue",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Copy Invitation",
             "message": "Copy Invitation",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Copy Meeting ID",
             "message": "Copy Meeting ID",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Copy URL",
             "message": "Copy URL",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Check this option to automatically join every meeting created in the host section",
-            "message": "Check this option to automatically join every meeting created in the host section",
-            "translation": ""
+            "id": "Check this option to automatically join every meeting you host",
+            "message": "Check this option to automatically join every meeting you host",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Choose your email service to send invitation",
             "message": "Choose your email service to send invitation",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Debugging",
             "message": "Debugging",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Default Email",
             "message": "Default Email",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Encrypt the configuration file",
             "message": "Encrypt the configuration file",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Finish",
             "message": "Finish",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Finish this meeting",
-            "message": "Finish this meeting",
-            "translation": ""
+            "id": "End this meeting",
+            "message": "End this meeting",
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Finish this meeting for all",
-            "message": "Finish this meeting for all",
-            "translation": ""
+            "id": "End this meeting for all",
+            "message": "End this meeting for all",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "General",
             "message": "General",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Gmail",
             "message": "Gmail",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Host a new meeting",
             "message": "Host a new meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Hosting",
             "message": "Hosting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Host meeting",
             "message": "Host meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.",
-            "message": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is ecnrypted, then we will ask you for a password to encrypt the new settings file.",
-            "translation": ""
+            "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
+            "message": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "If you set this option to a file name, low level information will be logged there.",
             "message": "If you set this option to a file name, low level information will be logged there.",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Invalid configuration file",
             "message": "Invalid configuration file",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Invalid password. Please, try again.",
             "message": "Invalid password. Please, try again.",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Invite others",
             "message": "Invite others",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Join",
             "message": "Join",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Join a meeting",
             "message": "Join a meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Join meeting",
             "message": "Join meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Join to a meeting",
-            "message": "Join to a meeting",
-            "translation": ""
+            "id": "Join the meeting",
+            "message": "Join the meeting",
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Join to the meeting",
-            "message": "Join to the meeting",
-            "translation": ""
-        },
-        {
-            "id": "Join to this meeting",
-            "message": "Join to this meeting",
-            "translation": ""
+            "id": "Join this meeting",
+            "message": "Join this meeting",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Keep configuration file when Wahay closes",
             "message": "Keep configuration file when Wahay closes",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Leave",
             "message": "Leave",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Leave this meeting",
             "message": "Leave this meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Log debug info",
             "message": "Log debug info",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.",
-            "message": "Log debug output to the seleted log file. If no file is selected then the log output will written to the default log file.",
-            "translation": ""
+            "id": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
+            "message": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Master password",
             "message": "Master password",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Meeting ID",
             "message": "Meeting ID",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Meeting ID:",
             "message": "Meeting ID:",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Meeting password",
             "message": "Meeting password",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Mumble",
             "message": "Mumble",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "No, cancel",
             "message": "No, cancel",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Now you are hosting a meeting.",
             "message": "Now you are hosting a meeting.",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Outlook",
             "message": "Outlook",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Password",
             "message": "Password",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Please enter the master password for the configuration file.",
             "message": "Please enter the master password for the configuration file.",
-            "translation": ""
-        },
-        {
-            "id": "Please, enter the master password for the configuration file",
-            "message": "Please, enter the master password for the configuration file",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Port",
             "message": "Port",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Port out of range",
             "message": "Port out of range",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Raw log file",
             "message": "Raw log file",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Repeat the password",
             "message": "Repeat the password",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Save changes",
             "message": "Save changes",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Security",
             "message": "Security",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Settings",
             "message": "Settings",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Show",
             "message": "Show",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Specify a password for the meeting",
             "message": "Specify a password for the meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Start meeting",
             "message": "Start meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "The error message",
             "message": "The error message",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "The meeting ID has been copied to the clipboard",
-            "message": "The meeting ID has been copied to the clipboard",
-            "translation": ""
-        },
-        {
-            "id": "The range of valid ports are between 1 and 65535",
-            "message": "The range of valid ports are between 1 and 65535",
-            "translation": ""
+            "id": "A valid port is between 1 and 65535",
+            "message": "A valid port is between 1 and 65535",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "This action cannot be undone",
             "message": "This action cannot be undone",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Toggle password visibility",
             "message": "Toggle password visibility",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Type the Meeting ID (normally an .onion address)",
-            "message": "Type the Meeting ID (normally an .onion address)",
-            "translation": ""
+            "id": "Type the Meeting ID (normally a .onion address)",
+            "message": "Type the Meeting ID (normally a .onion address)",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Type the password",
             "message": "Type the password",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Type the password to join the meeting",
             "message": "Type the password to join the meeting",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Type your preferred screen name",
             "message": "Type your preferred screen name",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Type your screen name",
             "message": "Type your screen name",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Username",
             "message": "Username",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Wahay is ready to use",
             "message": "Wahay is ready to use",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
             "message": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Welcome",
             "message": "Welcome",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "When this option is checked, the configuration settings will be stored in the device.",
             "message": "When this option is checked, the configuration settings will be stored in the device.",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Yahoo Mail",
             "message": "Yahoo Mail",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
-            "id": "Yes, backup it \u0026amp; continue",
-            "message": "Yes, backup it \u0026amp; continue",
-            "translation": ""
+            "id": "Yes, back it up \u0026amp; continue",
+            "message": "Yes, back it up \u0026amp; continue",
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Yes, confirm",
             "message": "Yes, confirm",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "You will not be asked for this password again until you restart Wahay.",
             "message": "You will not be asked for this password again until you restart Wahay.",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         }
     ]
 }
