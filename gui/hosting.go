@@ -87,9 +87,7 @@ func (h *hostData) showMeetingControls() {
 				log.Print("server is nil")
 			}
 		},
-		"on_invite_others": func() {
-			h.showInvitePeopleWindow(builder)
-		},
+		"on_invite_others": h.onInviteParticipants,
 		"on_copy_meeting_id": func() {
 			h.copyMeetingIDToClipboard(builder, "")
 		},
@@ -381,9 +379,9 @@ func (h *hostData) getInvitationSubject() string {
 }
 
 func (h *hostData) getInvitationText() string {
-	it := i18n.Sprintf("Please join the Wahay meeting with the following details:%%0D%%0A%%0D%%0A")
+	it := i18n.Sprintf("Please join the Wahay meeting with the following details:") + "%0D%0A%0D%0A"
 	if h.serviceID != "" {
-		it = i18n.Sprintf("%s\nMeeting ID: %s%%0D%%0A", it, h.serviceID)
+		it = i18n.Sprintf("%sMeeting ID: %s", it, h.serviceID)
 	}
 	return it
 }
@@ -531,6 +529,22 @@ func (h *hostData) onInviteParticipants() {
 	_ = btnGmail.SetProperty("uri", h.getInvitationGmailURI())
 	_ = btnYahoo.SetProperty("uri", h.getInvitationYahooURI())
 	_ = btnOutlook.SetProperty("uri", h.getInvitationMicrosoftURI())
+
+	imagePixBuf, _ := h.u.g.getImagePixbufForSize("email.png", 100, 100)
+	widgetImage, _ := h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
+	btnEmail.SetImage(widgetImage)
+
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("gmail.png", 100, 100)
+	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
+	btnGmail.SetImage(widgetImage)
+
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("yahoo.png", 100, 100)
+	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
+	btnYahoo.SetImage(widgetImage)
+
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("outlook.png", 100, 100)
+	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
+	btnOutlook.SetImage(widgetImage)
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": win.Hide,
