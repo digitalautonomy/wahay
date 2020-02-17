@@ -81,6 +81,7 @@ deploy_staging:
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
    - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - 'scp -P${SSH_PORT} deployment/*sh wahay@staging.wahay.app:bin/'
+   - 'scp -P${SSH_PORT} deployment/*rb wahay@staging.wahay.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - deployment/create-bundles.sh
    - 'scp -P${SSH_PORT} publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
@@ -117,6 +118,7 @@ deploy_production:
    - 'gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E  $BINARY_NAME.sha256sum'
    - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@wahay.app:$DEPLOY_DIR/'
    - 'scp -P${SSH_PORT} deployment/*sh wahay@wahay.app:bin/'
+   - 'scp -P${SSH_PORT} deployment/*rb wahay@wahay.app:bin/'
    - '$DO_SSH chmod +x bin/*sh'
    - deployment/create-bundles.sh
    - 'scp -P${SSH_PORT} publish-bundles/* wahay@wahay.app:$DEPLOY_DIR/'
