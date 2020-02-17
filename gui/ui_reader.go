@@ -1,4 +1,4 @@
-//go:generate esc -o definitions.go -modtime 1489449600 -pkg gui -ignore "Makefile" definitions/ styles/ images/ config_files/
+//go:generate ui_generate.sh
 
 package gui
 
@@ -71,10 +71,6 @@ func readFile(fileName string) string {
 		fatal(err)
 	}
 	return string(data)
-}
-
-func (u *gtkUI) getConfigIniFile(fileName string) string {
-	return u.getConfigFileFor(fileName, ".ini")
 }
 
 func (u *gtkUI) getConfigDesktopFile(fileName string) string {
