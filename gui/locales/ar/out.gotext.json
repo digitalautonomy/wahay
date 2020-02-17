@@ -110,17 +110,14 @@
             "fuzzy": true
         },
         {
-            "id": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
-            "message": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
-            "translation": "TRANSLATE ME",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Please join the Wahay meeting with the following details:",
+            "message": "Please join the Wahay meeting with the following details:",
+            "translation": ""
         },
         {
-            "id": "{It}\nMeeting ID: {ServiceID}%0D%0A",
-            "message": "{It}\nMeeting ID: {ServiceID}%0D%0A",
-            "translation": "TRANSLATE ME",
-            "translatorComment": "Copied from source.",
+            "id": "{It}Meeting ID: {ServiceID}",
+            "message": "{It}Meeting ID: {ServiceID}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "It",
@@ -138,8 +135,7 @@
                     "argNum": 2,
                     "expr": "h.serviceID"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Start Meeting \u0026 Join",

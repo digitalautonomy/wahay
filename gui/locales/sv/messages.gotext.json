@@ -110,8 +110,8 @@
             "fuzzy": true
         },
         {
-            "id": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
-            "message": "Please join the Wahay meeting with the following details:%0D%0A%0D%0A",
+            "id": "Please join the Wahay meeting with the following details:",
+            "message": "Please join the Wahay meeting with the following details:",
             "translation": "TRANSLATE ME",
             "translatorComment": "Copied from source.",
             "fuzzy": true
