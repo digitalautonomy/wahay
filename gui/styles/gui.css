@@ -363,7 +363,8 @@ label.label-text {
   font-size: 16px; }
 
 .invite-email-link {
-  border-radius: 100%; }
+  border-radius: 100%;
+  padding: 0; }
 
 .invite-window-bottom {
   padding: 20px;
