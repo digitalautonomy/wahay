@@ -1,4 +1,4 @@
-//go:generate esc -o definitions.go -modtime 1489449600 -pkg gui -ignore "Makefile" definitions/ styles/ images/
+//go:generate esc -o definitions.go -modtime 1489449600 -pkg gui -ignore "Makefile" definitions/ styles/ images/ config_files/
 
 package gui
 
@@ -27,6 +27,7 @@ const (
 	definitionsDir = "definitions"
 	cssDir         = "styles"
 	imagesDir      = "/images"
+	configFilesDir = "/config_files"
 )
 
 var builderMutex sync.Mutex
@@ -70,6 +71,18 @@ func readFile(fileName string) string {
 		fatal(err)
 	}
 	return string(data)
+}
+
+func (u *gtkUI) getConfigIniFile(fileName string) string {
+	return u.getConfigFileFor(fileName, ".ini")
+}
+
+func (u *gtkUI) getConfigDesktopFile(fileName string) string {
+	return u.getConfigFileFor(fileName, ".desktop")
+}
+
+func (u *gtkUI) getConfigFileFor(fileName, extension string) string {
+	return getFileWithFallback(fileName, extension, configFilesDir)
 }
 
 func getFileWithFallback(fileName string, fileExtension string, directory string) string {
