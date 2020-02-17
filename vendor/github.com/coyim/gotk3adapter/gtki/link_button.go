@@ -1,7 +1,7 @@
 package gtki
 
 type LinkButton interface {
-	Bin
+	Button
 
 	GetUri() string
 	SetUri(string)

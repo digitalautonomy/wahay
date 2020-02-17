@@ -35,3 +35,7 @@ func (v *linkButton) GetUri() string {
 func (v *linkButton) SetUri(uri string) {
 	v.internal.SetUri(uri)
 }
+
+func (v *linkButton) SetImage(v1 gtki.Widget) {
+	v.internal.SetImage(unwrapWidget(v1))
+}
