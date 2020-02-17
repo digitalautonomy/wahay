@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Version=1.0
+Encoding=UTF-8
+Name=__NAME__
+Comment=Secure and Decentralized Conference Call Application
+Exec=__EXEC__
+Icon=__ICON__
+Terminal=false
+Categories=Internet

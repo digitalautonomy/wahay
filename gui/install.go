@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/digitalautonomy/wahay/config"
 	"github.com/kardianos/osext"
@@ -13,6 +14,7 @@ import (
 
 type installation struct {
 	g            Graphics
+	u            *gtkUI
 	iconProvider *icon
 	dataHome     string
 }
@@ -30,6 +32,7 @@ func (u *gtkUI) ensureInstallation() {
 
 	i := &installation{
 		g:        u.g,
+		u:        u,
 		dataHome: dataHome,
 	}
 
@@ -97,19 +100,23 @@ func (i *installation) generateDesktopFile() string {
 	path, _ := osext.Executable()
 	icon := i.iconProvider.fileNameNoExt()
 
-	return fmt.Sprintf(`
-#!/usr/bin/env xdg-open
-[Desktop Entry]
-Type=Application
-Version=1.0
-Encoding=UTF-8
-Name=%s
-Comment=Secure and Decentralized Conference Call Application
-Exec=%s
-Icon=%s
-Terminal=false
-Type=Application
-Categories=Network`, programName, path, icon)
+	replacements := map[string]string{
+		"NAME": programName,
+		"EXEC": path,
+		"ICON": icon,
+	}
+
+	output := i.u.getConfigDesktopFile("wahay")
+	for k, v := range replacements {
+		output = strings.Replace(
+			output,
+			fmt.Sprintf("__%s__", k),
+			v,
+			1,
+		)
+	}
+
+	return output
 }
 
 func fileExists(filename string) bool {
