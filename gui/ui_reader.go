@@ -1,4 +1,4 @@
-//go:generate ui_generate.sh
+//go:generate ./ui_generate.sh
 
 package gui
 
