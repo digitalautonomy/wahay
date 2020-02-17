@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
+set -x
+
 CURRENT_VERSION=$(echo 0~$(date "+%y%m%d%H%M%S"))
+
+rm -f ubuntu/ubuntu/usr/bin/wahay
 
 if [ $1 == "local"  ]
 then
@@ -10,11 +14,9 @@ then
 elif [ $1 == "ci" ]
 then
 	BINARY_BASE_NAME=$(basename $BINARY_NAME)
-	cp ../$BINARY_NAME ubuntu/ubuntu/usr/bin
+	cp ../$BINARY_NAME ubuntu/ubuntu/usr/bin/wahay
 	sed "s/##VERSION##/$CURRENT_VERSION/g" ubuntu/templates/control > ubuntu/ubuntu/DEBIAN/control
 	cd  ubuntu/ubuntu/usr/bin 
-	rm -f wahay*
-	ln -s $BINARY_BASE_NAME wahay
 	cd -
 	fakeroot dpkg-deb --build ubuntu/ubuntu ../publish-linux-packages/wahay_${CURRENT_VERSION}_amd64.deb
 else
