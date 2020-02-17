@@ -8,6 +8,5 @@ dev/.vagrant/
 current-short-git-version
 .sass-cache
 /mumble
-packaging/ubuntu/ubuntu/usr/bin
 packaging/ubuntu/ubuntu/DEBIAN/control
 publish-linux-packages/wahay*
