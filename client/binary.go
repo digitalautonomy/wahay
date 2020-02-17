@@ -183,17 +183,17 @@ func getMumbleBinary(conf *config.ApplicationConfig) *binary {
 		b, err := getBinary()
 
 		if err != nil {
-			log.Errorf("Mumble binary error: %s", err)
+			log.Debugf("Mumble binary error: %s", err)
 			break
 		}
 
 		if b == nil {
-			log.Errorf("Mumble binary error: Not found")
+			log.Debugf("Mumble binary error: Not found")
 			continue
 		}
 
 		if b.lastError != nil {
-			log.Errorf("Mumble binary error: %s", b.lastError)
+			log.Debugf("Mumble binary error: %s", b.lastError)
 			continue
 		}
 
@@ -269,7 +269,7 @@ func getMumbleBinaryInSystem() (*binary, error) {
 }
 
 func isAnAvailableMumbleBinary(path string) *binary {
-	log.Printf("Checking Mumble binary in: <%s>", path)
+	log.Debugf("Checking Mumble binary in: <%s>", path)
 
 	b := newMumbleBinary(path)
 	if !b.isValid {
