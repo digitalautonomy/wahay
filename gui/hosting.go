@@ -472,12 +472,6 @@ func (h *hostData) showMeetingConfiguration() {
 	h.u.switchToWindow(win)
 }
 
-func (h *hostData) showInvitePeopleWindow(builder *uiBuilder) {
-	h.u.currentWindow.Hide()
-	win := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
-	h.u.switchToWindow(win)
-}
-
 func (h *hostData) changeStartButtonText(btn gtki.Button) {
 	if h.autoJoin {
 		_ = btn.SetProperty("label", i18n.Sprintf("Start Meeting & Join"))
@@ -530,19 +524,19 @@ func (h *hostData) onInviteParticipants() {
 	_ = btnYahoo.SetProperty("uri", h.getInvitationYahooURI())
 	_ = btnOutlook.SetProperty("uri", h.getInvitationMicrosoftURI())
 
-	imagePixBuf, _ := h.u.g.getImagePixbufForSize("email.png", 100, 100)
+	imagePixBuf, _ := h.u.g.getImagePixbufForSize("email.png")
 	widgetImage, _ := h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnEmail.SetImage(widgetImage)
 
-	imagePixBuf, _ = h.u.g.getImagePixbufForSize("gmail.png", 100, 100)
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("gmail.png")
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnGmail.SetImage(widgetImage)
 
-	imagePixBuf, _ = h.u.g.getImagePixbufForSize("yahoo.png", 100, 100)
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("yahoo.png")
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnYahoo.SetImage(widgetImage)
 
-	imagePixBuf, _ = h.u.g.getImagePixbufForSize("outlook.png", 100, 100)
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("outlook.png")
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnOutlook.SetImage(widgetImage)
 

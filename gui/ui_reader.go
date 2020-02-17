@@ -192,40 +192,7 @@ func (g Graphics) getImageBytes(filename string) []byte {
 	return bs
 }
 
-func (g Graphics) getImagePixbuf(imageName string) (gdki.Pixbuf, error) {
-	var w sync.WaitGroup
-
-	pl, err := g.gdk.PixbufLoaderNew()
-	if err != nil {
-		return nil, err
-	}
-
-	w.Add(1)
-
-	_, err = pl.Connect("area-prepared", func() {
-		defer w.Done()
-	})
-	if err != nil {
-		log.WithFields(log.Fields{
-			"caller": "pl.Connect(\"area-prepared\")",
-		}).Errorf("getImagePixbufForSize(): %s", err.Error())
-	}
-
-	bytes := g.getImage(imageName)
-	if _, err := pl.Write(bytes); err != nil {
-		return nil, err
-	}
-
-	if err := pl.Close(); err != nil {
-		return nil, err
-	}
-
-	w.Wait()
-
-	return pl.GetPixbuf()
-}
-
-func (g Graphics) getImagePixbufForSize(imageName string, width, height int) (gdki.Pixbuf, error) {
+func (g Graphics) getImagePixbufForSize(imageName string) (gdki.Pixbuf, error) {
 	var w sync.WaitGroup
 
 	pl, err := g.gdk.PixbufLoaderNew()
@@ -245,7 +212,7 @@ func (g Graphics) getImagePixbufForSize(imageName string, width, height int) (gd
 	}
 
 	_, err = pl.Connect("size-prepared", func() {
-		pl.SetSize(width, height)
+		pl.SetSize(100, 100)
 	})
 	if err != nil {
 		log.WithFields(log.Fields{
