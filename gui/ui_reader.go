@@ -77,6 +77,10 @@ func (u *gtkUI) getConfigDesktopFile(fileName string) string {
 	return u.getConfigFileFor(fileName, ".desktop")
 }
 
+func (u *gtkUI) getConfigIniFile(fileName string) string {
+	return u.getConfigFileFor(fileName, ".ini")
+}
+
 func (u *gtkUI) getConfigFileFor(fileName, extension string) string {
 	return getFileWithFallback(fileName, extension, configFilesDir)
 }
