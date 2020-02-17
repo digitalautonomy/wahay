@@ -62,33 +62,6 @@ func (c *client) EnsureConfiguration() error {
 	return nil
 }
 
-// TODO: consider moving this to definitions
-const mumbleInitialConfig = `
-[General]
-lastupdate=2
-
-[net]
-tcponly=true
-
-[overlay]
-enable=false
-version=1.3.0
-
-[privacy]
-hideos=true
-
-[shortcuts]
-size=0
-
-[ui]
-WindowLayout=1
-alwaysontop=1
-askonquit=false
-drag=1
-language=es
-usage=false
-`
-
 const (
 	configFileName = "mumble.ini"
 	configDataName = ".mumble.sqlite"
@@ -113,7 +86,7 @@ func (c *client) writeConfigToFile(path string) error {
 		}
 	}
 
-	err := config.SafeWrite(configFile, []byte(mumbleInitialConfig), 0600)
+	err := config.SafeWrite(configFile, []byte(c.configContentProvider()), 0600)
 	if err != nil {
 		return err
 	}

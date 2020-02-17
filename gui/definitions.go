@@ -182,18 +182,6 @@ func FSMustString(useLocal bool, name string) string {
 
 var _escData = map[string]*_escFile{
 
-	"/config_files/wahay.desktop": {
-		local:   "config_files/wahay.desktop",
-		size:    221,
-		modtime: 1489449600,
-		compressed: `
-IyEvdXNyL2Jpbi9lbnYgeGRnLW9wZW4KW0Rlc2t0b3AgRW50cnldClR5cGU9QXBwbGljYXRpb24KVmVy
-c2lvbj0xLjAKRW5jb2Rpbmc9VVRGLTgKTmFtZT1fX05BTUVfXwpDb21tZW50PVNlY3VyZSBhbmQgRGVj
-ZW50cmFsaXplZCBDb25mZXJlbmNlIENhbGwgQXBwbGljYXRpb24KRXhlYz1fX0VYRUNfXwpJY29uPV9f
-SUNPTl9fClRlcm1pbmFsPWZhbHNlCkNhdGVnb3JpZXM9SW50ZXJuZXQ=
-`,
-	},
-
 	"/definitions/ConfigureMeetingWindow.xml": {
 		local:   "definitions/ConfigureMeetingWindow.xml",
 		size:    18396,
@@ -4855,11 +4843,6 @@ cyIKfQ==
 	"/": {
 		isDir: true,
 		local: "",
-	},
-
-	"/config_files": {
-		isDir: true,
-		local: "config_files",
 	},
 
 	"/definitions": {

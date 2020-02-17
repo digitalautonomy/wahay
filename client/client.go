@@ -25,24 +25,28 @@ type Instance interface {
 
 type client struct {
 	sync.Mutex
-	binary             *binary
-	isValid            bool
-	configFile         string
-	err                error
-	torCommandModifier tor.ModifyCommand
+	binary                *binary
+	isValid               bool
+	configFile            string
+	configContentProvider mumbleIniProvider
+	err                   error
+	torCommandModifier    tor.ModifyCommand
 }
 
-func newMumbleClient() *client {
+func newMumbleClient(p mumbleIniProvider) *client {
 	c := &client{
-		binary:  nil,
-		isValid: false,
-		err:     nil,
+		binary:                nil,
+		isValid:               false,
+		configContentProvider: p,
+		err:                   nil,
 	}
 
 	return c
 }
 
 var currentInstance *client
+
+type mumbleIniProvider func() string
 
 // System returns the current Mumble instance
 func System() Instance {
@@ -51,10 +55,10 @@ func System() Instance {
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
-func InitSystem(conf *config.ApplicationConfig) Instance {
+func InitSystem(conf *config.ApplicationConfig, p mumbleIniProvider) Instance {
 	var err error
 
-	currentInstance = newMumbleClient()
+	currentInstance = newMumbleClient(p)
 	b := getMumbleBinary(conf)
 
 	if b == nil {

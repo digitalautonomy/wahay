@@ -14,7 +14,10 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	go func() {
 		defer wg.Done()
 
-		c := client.InitSystem(u.config)
+		c := client.InitSystem(u.config, func() string {
+			return u.getConfigIniFile("mumble")
+		})
+
 		if !c.CanBeUsed() {
 			addNewStartupError(errors.New(i18n.Sprintf("the Mumble client can not be used because: %s", c.GetLastError())))
 			return
