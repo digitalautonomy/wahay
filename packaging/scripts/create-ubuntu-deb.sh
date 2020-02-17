@@ -17,6 +17,7 @@ then
 	BINARY_VERSION=${BINARY_BASE_NAME#wahay-}
 	cp ../$BINARY_NAME ubuntu/ubuntu/usr/bin/wahay
 	sed "s/##VERSION##/$CURRENT_VERSION/g" ubuntu/templates/control > ubuntu/ubuntu/DEBIAN/control
+	find ubuntu/ubuntu -type d -exec chmod 755 {} \;
 	fakeroot dpkg-deb --build ubuntu/ubuntu ../publish-linux-packages/wahay-ubuntu-${BINARY_VERSION}-amd64.deb
 else
 	echo "Unknow argument value"
