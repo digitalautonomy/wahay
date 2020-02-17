@@ -2,6 +2,8 @@
 
 set -x
 
+pwd
+
 CURRENT_VERSION=$(echo 0~$(date "+%y%m%d%H%M%S"))
 
 rm -f ubuntu/ubuntu/usr/bin/wahay
@@ -14,11 +16,12 @@ then
 elif [ $1 == "ci" ]
 then
 	BINARY_BASE_NAME=$(basename $BINARY_NAME)
+	BINARY_VERSION=${BINARY_BASE_NAME#wahay-}
 	cp ../$BINARY_NAME ubuntu/ubuntu/usr/bin/wahay
 	sed "s/##VERSION##/$CURRENT_VERSION/g" ubuntu/templates/control > ubuntu/ubuntu/DEBIAN/control
 	cd  ubuntu/ubuntu/usr/bin 
 	cd -
-	fakeroot dpkg-deb --build ubuntu/ubuntu ../publish-linux-packages/wahay_${CURRENT_VERSION}_amd64.deb
+	fakeroot dpkg-deb --build ubuntu/ubuntu ../publish-linux-packages/wahay-ubuntu-${BINARY_VERSION}-amd64.deb
 else
 	echo "Unknow argument value"
 
