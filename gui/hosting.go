@@ -72,7 +72,7 @@ func (h *hostData) showMeetingControls() {
 		"button", "btnCopyUrl")
 
 	builder.ConnectSignals(map[string]interface{}{
-		"on_close_window_signal": h.u.quit,
+		"on_close_window_signal": h.finishMeetingReal,
 		"on_finish_meeting": func() {
 			if h.serverControl != nil {
 				h.finishMeeting()
@@ -271,11 +271,7 @@ func (h *hostData) finishMeetingReal() {
 
 	h.deleteOnionService()
 
-	h.u.doInUIThread(func() {
-		h.u.currentWindow.Hide()
-		h.u.currentWindow = h.u.mainWindow
-		h.u.mainWindow.Show()
-	})
+	h.u.switchToMainWindow()
 }
 
 func (h *hostData) deleteOnionService() {
