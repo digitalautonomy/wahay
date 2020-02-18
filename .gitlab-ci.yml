@@ -124,6 +124,8 @@ deploy_production:
    - '$DO_SSH chmod +x bin/*sh'
    - deployment/create-bundles.sh
    - 'scp -P${SSH_PORT} publish-bundles/* wahay@wahay.app:$DEPLOY_DIR/'
+   - deployment/create-linux-packages.sh
+   - 'scp -P${SSH_PORT} publish-linux-packages/* wahay@wahay.app:$DEPLOY_DIR/'
    - '$DO_SSH bin/publish-downloads.sh'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@wahay.app:$DEPLOY_DIR'
    - '$DO_SSH "bin/generate-downloads-html.rb /usr/local/www/wahay/downloads $DEPLOY_DIR/ > /usr/local/www/wahay/downloads.html"'
