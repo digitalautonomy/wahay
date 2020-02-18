@@ -75,6 +75,9 @@ var messageKeyToIndex = map[string]int{
 	"End this meeting":               57,
 	"End this meeting for all":       58,
 	"Error":                          0,
+	"Ex. /home/user/mumble/mumble":   118,
+	"Ex. 9800":                       121,
+	"Executable Mumble location":     117,
 	"Finish":                         56,
 	"General":                        59,
 	"Gmail":                          60,
@@ -82,8 +85,10 @@ var messageKeyToIndex = map[string]int{
 	"Host meeting":                   63,
 	"Hosting":                        62,
 	"If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.": 64,
-	"If you disable this option, anyone could read your configuration settings":          24,
-	"If you set this option to a file name, low level information will be logged there.": 65,
+	"If you disable this option, anyone could read your configuration settings":                                       24,
+	"If you set this option to a file name, low level information will be logged there.":                              65,
+	"If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535":         122,
+	"If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.": 119,
 	"Invalid configuration file":                66,
 	"Invalid password. Please, try again.":      67,
 	"Invite others":                             68,
@@ -103,6 +108,7 @@ var messageKeyToIndex = map[string]int{
 	"Meeting ID:":                    81,
 	"Meeting password":               82,
 	"Mumble":                         83,
+	"Mumble service port":            120,
 	"No, cancel":                     84,
 	"Now you are hosting a meeting.": 85,
 	"Open":                           27,
@@ -160,7 +166,7 @@ var messageKeyToIndex = map[string]int{
 	"we couldn't start the meeting":                                          2,
 }
 
-var arIndex = []uint32{ // 118 elements
+var arIndex = []uint32{ // 124 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -194,10 +200,11 @@ var arIndex = []uint32{ // 118 elements
 	0x0000056b, 0x00000578, 0x00000585, 0x00000592,
 	0x0000059f, 0x000005ac, 0x000005b9, 0x000005c6,
 	0x000005d3, 0x000005e0, 0x000005ed, 0x000005fa,
-	0x00000607, 0x00000614,
-} // Size: 496 bytes
+	0x00000607, 0x00000614, 0x00000621, 0x0000062e,
+	0x0000063b, 0x00000648, 0x00000655, 0x00000662,
+} // Size: 520 bytes
 
-const arData string = "" + // Size: 1556 bytes
+const arData string = "" + // Size: 1634 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -224,9 +231,10 @@ const arData string = "" + // Size: 1556 bytes
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME"
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-var enIndex = []uint32{ // 118 elements
+var enIndex = []uint32{ // 124 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x00000022, 0x00000040,
 	0x0000006b, 0x0000008e, 0x000000bc, 0x000000e6,
@@ -260,10 +268,11 @@ var enIndex = []uint32{ // 118 elements
 	0x00000c0a, 0x00000c1c, 0x00000c42, 0x00000c62,
 	0x00000c78, 0x00000c81, 0x00000c97, 0x00000d15,
 	0x00000d1d, 0x00000d73, 0x00000d7e, 0x00000d9d,
-	0x00000daa, 0x00000df1,
-} // Size: 496 bytes
+	0x00000daa, 0x00000df1, 0x00000e0c, 0x00000e29,
+	0x00000e99, 0x00000ead, 0x00000eb6, 0x00000f1e,
+} // Size: 520 bytes
 
-const enData string = "" + // Size: 3569 bytes
+const enData string = "" + // Size: 3870 bytes
 	"\x02Error\x02Something went wrong: %[1]s\x02we couldn't start the meetin" +
 	"g\x02Configured Mumble port is not valid: %[1]s\x02The meeting can't be " +
 	"closed: %[1]s\x02internal Tor instance has already been closed\x02The on" +
@@ -318,9 +327,14 @@ const enData string = "" + // Size: 3569 bytes
 	"copy (backup) of it and continue?\x02Welcome\x02When this option is chec" +
 	"ked, the configuration settings will be stored in the device.\x02Yahoo M" +
 	"ail\x02Yes, back it up &amp; continue\x02Yes, confirm\x02You will not be" +
-	" asked for this password again until you restart Wahay."
+	" asked for this password again until you restart Wahay.\x02Executable Mu" +
+	"mble location\x02Ex. /home/user/mumble/mumble\x02If you want to use your" +
+	" own Mumble instance, please enter the location where Mumble is availabl" +
+	"e in the system.\x02Mumble service port\x02Ex. 9800\x02If you want to se" +
+	"t up a custom port to run the Mumble service, please a port number betwe" +
+	"en 1 and 65535"
 
-var esIndex = []uint32{ // 118 elements
+var esIndex = []uint32{ // 124 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x0000001d, 0x0000003d,
 	0x00000073, 0x00000098, 0x000000ae, 0x000000db,
@@ -354,10 +368,11 @@ var esIndex = []uint32{ // 118 elements
 	0x00000f1f, 0x00000f36, 0x00000f67, 0x00000f8e,
 	0x00000fab, 0x00000fbd, 0x00000fdb, 0x0000105d,
 	0x00001068, 0x000010bd, 0x000010cd, 0x000010ea,
-	0x000010f8, 0x00001141,
-} // Size: 496 bytes
+	0x000010f8, 0x00001141, 0x00001165, 0x00001182,
+	0x000011f6, 0x00001210, 0x00001219, 0x00001294,
+} // Size: 520 bytes
 
-const esData string = "" + // Size: 4417 bytes
+const esData string = "" + // Size: 4756 bytes
 	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
 	"El puerto configurado para Mumble es inválido: %[1]s\x02La reunión no se" +
 	" pudo cerrar: %[1]s\x02tor no está definido\x02El servicio Onion no se p" +
@@ -422,9 +437,14 @@ const esData string = "" + // Size: 4417 bytes
 	"dad y continuar?\x02Bienvenido\x02Cuando esta opción está marcada, la co" +
 	"nfiguración se guardará en el dispositivo.\x02Correo de Yahoo\x02Sí, res" +
 	"paldarlo y continuar\x02Si, confirmar\x02No se le volverá a solicitar es" +
-	"ta contraseña hasta que reinicie Wahay."
+	"ta contraseña hasta que reinicie Wahay.\x02Ubicación del ejecutable de M" +
+	"umble\x02Ej. /home/user/mumble/mumble\x02Si desea utilizar su propia ins" +
+	"tancia de Mumble, ingrese la ubicación donde Mumble está disponible en e" +
+	"l sistema.\x02Puerto de servicio Mumble\x02Ej. 9800\x02Si desea configur" +
+	"ar un puerto personalizado para ejecutar el servicio Mumble, ingrese un " +
+	"número de puerto entre 1 y 65535"
 
-var svIndex = []uint32{ // 118 elements
+var svIndex = []uint32{ // 124 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -458,10 +478,11 @@ var svIndex = []uint32{ // 118 elements
 	0x00000557, 0x00000564, 0x00000571, 0x0000057e,
 	0x0000058b, 0x00000598, 0x000005a5, 0x000005b2,
 	0x000005bf, 0x000005cc, 0x000005d9, 0x000005e6,
-	0x000005f3, 0x00000600,
-} // Size: 496 bytes
+	0x000005f3, 0x00000600, 0x0000060d, 0x0000061a,
+	0x00000627, 0x00000634, 0x00000641, 0x0000064e,
+} // Size: 520 bytes
 
-const svData string = "" + // Size: 1536 bytes
+const svData string = "" + // Size: 1614 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -488,6 +509,7 @@ const svData string = "" + // Size: 1536 bytes
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME"
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 13062 bytes (12KiB); checksum: F99193A7
+	// Total table size 13954 bytes (13KiB); checksum: A61B49C4

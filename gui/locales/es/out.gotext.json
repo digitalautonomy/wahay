@@ -731,6 +731,36 @@
             "id": "You will not be asked for this password again until you restart Wahay.",
             "message": "You will not be asked for this password again until you restart Wahay.",
             "translation": "No se le volverá a solicitar esta contraseña hasta que reinicie Wahay."
+        },
+        {
+            "id": "Executable Mumble location",
+            "message": "Executable Mumble location",
+            "translation": "Ubicación del ejecutable de Mumble"
+        },
+        {
+            "id": "Ex. /home/user/mumble/mumble",
+            "message": "Ex. /home/user/mumble/mumble",
+            "translation": "Ej. /home/user/mumble/mumble"
+        },
+        {
+            "id": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
+            "message": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
+            "translation": "Si desea utilizar su propia instancia de Mumble, ingrese la ubicación donde Mumble está disponible en el sistema."
+        },
+        {
+            "id": "Mumble service port",
+            "message": "Mumble service port",
+            "translation": "Puerto de servicio Mumble"
+        },
+        {
+            "id": "Ex. 9800",
+            "message": "Ex. 9800",
+            "translation": "Ej. 9800"
+        },
+        {
+            "id": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
+            "message": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
+            "translation": "Si desea configurar un puerto personalizado para ejecutar el servicio Mumble, ingrese un número de puerto entre 1 y 65535"
         }
     ]
 }
