@@ -6,7 +6,7 @@ set -x
 
 APP_NAME=wahay
 TMP_DIR=~/tmp/deploy_binaries
-SUM_FILE_FULL=$(find $TMP_DIR -name "*.sha256sum" | grep -v ".bz2" | head -1)
+SUM_FILE_FULL=$(find $TMP_DIR -name "*.sha256sum" | grep -v ".bz2\|.deb\|.rpm" | head -1)
 SHA256_SUM_FILE=$(basename $SUM_FILE_FULL)
 BINARY_SHA256_SUM=$(grep --only-matching -E "[[:xdigit:]]{64}" $SUM_FILE_FULL)
 BINARY_NAME=${SHA256_SUM_FILE%.sha256sum}
