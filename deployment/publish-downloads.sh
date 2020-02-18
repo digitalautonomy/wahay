@@ -98,7 +98,7 @@ fi
 #Move Linux Packages to the Download directory
 cd $TMP_DIR
 mkdir -p $DOWNLOADS_DIR/linux-packages/$BINARY_NAME
-mv publish-linux-packages/wahay-ubuntu-${BINARY_VERSION}-amd64.deb* $DOWNLOADS_DIR/linux-packages/$BINARY_NAME/
+mv wahay-ubuntu-${BINARY_VERSION}-amd64.deb* $DOWNLOADS_DIR/linux-packages/$BINARY_NAME/
 
 #Create symlinks for Linux Packagres (just Ubuntu for now)
 if [ $HAS_DATE -eq 0  ]
