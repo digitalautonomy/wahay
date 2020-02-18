@@ -9,8 +9,8 @@ TMP_DIR=~/tmp/deploy_binaries
 SUM_FILE_FULL=$(find $TMP_DIR -name "*.sha256sum" | grep -v ".bz2" | head -1)
 SHA256_SUM_FILE=$(basename $SUM_FILE_FULL)
 BINARY_SHA256_SUM=$(grep --only-matching -E "[[:xdigit:]]{64}" $SUM_FILE_FULL)
-BINARY_VERSION=${BINARY_NAME#$APP_NAME}
 BINARY_NAME=${SHA256_SUM_FILE%.sha256sum}
+BINARY_VERSION=${BINARY_NAME#$APP_NAME-}
 SIGNATURE_FILE=$SHA256_SUM_FILE.asc
 ALL_BUNDLES=$(find $TMP_DIR -name  "*.bz2" -exec basename {} \;)
 ALL_BUNDLES_SHA256_SUM=$(echo "$ALL_BUNDLES"  | sed 's/$/.sha256sum/')
@@ -98,7 +98,7 @@ fi
 #Move Linux Packages to the Download directory
 cd $TMP_DIR
 mkdir -p $DOWNLOADS_DIR/linux-packages/$BINARY_NAME
-mv publish-linux-packages/wahay-ubuntu-$BINARY_VERSION-amd64.deb* $DOWNLOADS_DIR/linux-packages/$BINARY_NAME/
+mv publish-linux-packages/wahay-ubuntu-${BINARY_VERSION}-amd64.deb* $DOWNLOADS_DIR/linux-packages/$BINARY_NAME/
 
 #Create symlinks for Linux Packagres (just Ubuntu for now)
 if [ $HAS_DATE -eq 0  ]
