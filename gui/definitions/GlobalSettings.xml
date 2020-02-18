@@ -721,7 +721,7 @@
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin_top">10</property>
-                        <property name="label" translatable="yes">Enter a valid port number between 1 and 65535</property>
+                        <property name="label" translatable="yes">If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535</property>
                         <style>
                           <class name="control-help"/>
                         </style>

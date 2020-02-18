@@ -112,12 +112,15 @@
         {
             "id": "Please join the Wahay meeting with the following details:",
             "message": "Please join the Wahay meeting with the following details:",
-            "translation": ""
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "{It}Meeting ID: {ServiceID}",
             "message": "{It}Meeting ID: {ServiceID}",
-            "translation": "",
+            "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "It",
@@ -135,7 +138,8 @@
                     "argNum": 2,
                     "expr": "h.serviceID"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Start Meeting \u0026 Join",

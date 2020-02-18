@@ -117,8 +117,8 @@
             "fuzzy": true
         },
         {
-            "id": "{It}\nMeeting ID: {ServiceID}%0D%0A",
-            "message": "{It}\nMeeting ID: {ServiceID}%0D%0A",
+            "id": "{It}Meeting ID: {ServiceID}",
+            "message": "{It}Meeting ID: {ServiceID}",
             "translation": "TRANSLATE ME",
             "translatorComment": "Copied from source.",
             "placeholders": [
@@ -605,6 +605,36 @@
         {
             "id": "Port out of range",
             "message": "Port out of range",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Executable Mumble location",
+            "message": "Executable Mumble location",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Ex. /home/user/mumble/mumble",
+            "message": "Ex. /home/user/mumble/mumble",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
+            "message": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Mumble service port",
+            "message": "Mumble service port",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Ex. 9800",
+            "message": "Ex. 9800",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
+            "message": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
             "translation": "TRANSLATE ME"
         },
         {
