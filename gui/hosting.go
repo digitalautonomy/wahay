@@ -25,6 +25,7 @@ type hostData struct {
 	autoJoin        bool
 	meetingUsername string
 	meetingPassword string
+	currentWindow   gtki.Window
 	next            func()
 }
 
@@ -39,7 +40,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 	h := &hostData{
 		u:        u,
 		autoJoin: u.config.GetAutoJoin(),
-		next:     func() {},
+		next:     nil,
 	}
 
 	finish := make(chan string)
@@ -120,7 +121,10 @@ func (h *hostData) joinMeetingHost() {
 		}
 
 		mumble, err := h.u.launchMumbleClient(data, func() {
-			h.next = h.uiActionFinishMeeting
+			if h.next == nil {
+				h.next = h.uiActionFinishMeeting
+			}
+
 			h.switchToHostOnFinishMeeting()
 		})
 
@@ -149,8 +153,10 @@ func (h *hostData) joinMeetingHost() {
 
 func (h *hostData) switchToHostOnFinishMeeting() {
 	h.u.doInUIThread(func() {
-		h.next()
-		h.next = func() {}
+		if h.next != nil {
+			h.next()
+			h.next = nil
+		}
 	})
 }
 
@@ -271,6 +277,11 @@ func (h *hostData) finishMeetingReal() {
 
 	h.deleteOnionService()
 
+	if h.currentWindow != nil {
+		h.currentWindow.Destroy()
+		h.currentWindow = nil
+	}
+
 	h.u.switchToMainWindow()
 }
 
@@ -292,7 +303,7 @@ func (h *hostData) deleteOnionService() {
 }
 
 func (h *hostData) finishMeetingMumble() {
-	h.u.wouldYouConfirmFinishMeeting(func(res bool) {
+	h.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
 			h.next = h.uiActionFinishMeeting
 			go h.mumble.Close()
@@ -301,7 +312,7 @@ func (h *hostData) finishMeetingMumble() {
 }
 
 func (h *hostData) finishMeeting() {
-	h.u.wouldYouConfirmFinishMeeting(func(res bool) {
+	h.wouldYouConfirmFinishMeeting(func(res bool) {
 		if res {
 			h.finishMeetingReal()
 		}
@@ -391,8 +402,8 @@ func (h *hostData) getInvitationText() string {
 	return it
 }
 
-func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
-	builder := u.g.uiBuilderFor("StartHostingWindow")
+func (h *hostData) wouldYouConfirmFinishMeeting(k func(bool)) {
+	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	dialog := builder.get("finishMeeting").(gtki.MessageDialog)
 
 	builder.i18nProperties(
@@ -400,7 +411,10 @@ func (u *gtkUI) wouldYouConfirmFinishMeeting(k func(bool)) {
 		"secondary_text", "finishMeeting")
 
 	dialog.SetDefaultResponse(gtki.RESPONSE_NO)
-	dialog.SetTransientFor(u.mainWindow)
+	dialog.SetTransientFor(h.u.currentWindow)
+
+	h.currentWindow = dialog
+
 	responseType := gtki.ResponseType(dialog.Run())
 	result := responseType == gtki.RESPONSE_YES
 	dialog.Destroy()
