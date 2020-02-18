@@ -119,7 +119,10 @@ func (h *hostData) joinMeetingHost() {
 			Username:  h.meetingUsername,
 		}
 
-		mumble, err := h.u.launchMumbleClient(data, h.switchToHostOnFinishMeeting)
+		mumble, err := h.u.launchMumbleClient(data, func() {
+			h.next = h.uiActionFinishMeeting
+			h.switchToHostOnFinishMeeting()
+		})
 
 		if err != nil {
 			log.Errorf("joinMeetingHost() error: %s", err)
@@ -142,6 +145,13 @@ func (h *hostData) joinMeetingHost() {
 	h.u.reportError(err.Error())
 
 	h.u.switchToMainWindow()
+}
+
+func (h *hostData) switchToHostOnFinishMeeting() {
+	h.u.doInUIThread(func() {
+		h.next()
+		h.next = func() {}
+	})
 }
 
 func (u *gtkUI) getCurrentHostMeetingWindow() *uiBuilder {
@@ -229,16 +239,18 @@ func (h *hostData) createNewConferenceRoom(complete chan bool) {
 	server, e := h.u.serverCollection.CreateServer(fmt.Sprintf("%d", h.serverPort), h.meetingPassword)
 	if e != nil {
 		err := e.Error()
+		h.u.hideLoadingWindow()
 		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
-		complete <- true
+		complete <- false
 		return
 	}
 
 	e = server.Start()
 	if e != nil {
 		err := e.Error()
+		h.u.hideLoadingWindow()
 		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
-		complete <- true
+		complete <- false
 		return
 	}
 
@@ -248,9 +260,6 @@ func (h *hostData) createNewConferenceRoom(complete chan bool) {
 }
 
 func (h *hostData) finishMeetingReal() {
-	// Hide the current window
-	h.u.doInUIThread(h.u.currentWindow.Hide)
-
 	// TODO: What happen if two errors occurrs?
 	// We need to do a better controlling for each error
 	// and if multiple errors occurrs, show all the errors in the
@@ -488,8 +497,13 @@ func (h *hostData) startMeetingHandler() {
 
 func (h *hostData) startMeetingRoutine() {
 	complete := make(chan bool)
+
 	go h.createNewConferenceRoom(complete)
-	<-complete
+
+	if !<-complete {
+		// TODO: Close the meeting window and return to the main window
+		return
+	}
 
 	h.u.hideLoadingWindow()
 

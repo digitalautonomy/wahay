@@ -38,13 +38,6 @@ func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, f func()) (tor.Serv
 	return s, nil
 }
 
-func (h *hostData) switchToHostOnFinishMeeting() {
-	h.u.doInUIThread(func() {
-		h.next()
-		h.next = func() {}
-	})
-}
-
 func (u *gtkUI) switchContextWhenMumbleFinish() {
 	u.hideCurrentWindow()
 	u.openMainWindow()
