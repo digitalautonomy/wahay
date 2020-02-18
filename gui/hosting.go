@@ -526,7 +526,7 @@ func (h *hostData) onInviteParticipants() {
 		"button", "btnCopyMeetingID",
 		"button", "btnCopyInvitation")
 
-	win := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
+	dialog := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
 
 	btnEmail := builder.get("btnEmail").(gtki.LinkButton)
 	btnGmail := builder.get("btnGmail").(gtki.LinkButton)
@@ -554,9 +554,14 @@ func (h *hostData) onInviteParticipants() {
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnOutlook.SetImage(widgetImage)
 
+	cleanup := func() {
+		dialog.Hide()
+		h.u.enableCurrentWindow()
+	}
+
 	builder.ConnectSignals(map[string]interface{}{
-		"on_close_window_signal": win.Hide,
-		"on_link_clicked":        win.Hide,
+		"on_close_window_signal": cleanup,
+		"on_link_clicked":        cleanup,
 		"on_copy_meeting_id": func() {
 			h.copyMeetingIDToClipboard(builder, "")
 		},
@@ -565,5 +570,8 @@ func (h *hostData) onInviteParticipants() {
 		},
 	})
 
-	h.u.doInUIThread(win.Show)
+	h.u.doInUIThread(func() {
+		h.u.disableCurrentWindow()
+		dialog.Show()
+	})
 }

@@ -8,6 +8,7 @@
     <property name="border_width">0</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
+    <signal name="remove" handler="on_cancel" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
