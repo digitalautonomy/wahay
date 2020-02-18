@@ -125,7 +125,9 @@ func (u *gtkUI) getSettingsBuilder() *uiBuilder {
 		"button", "btnCancelSettings",
 		"button", "btnSaveSettings",
 		"button", "btnConfigFileCorruptedCancel",
-		"button", "btnConfigFileCorruptedBackup")
+		"button", "btnConfigFileCorruptedBackup",
+		"placeholder", "mumbleBinaryLocation",
+		"placeholder", "mumblePort")
 
 	return builder
 }
