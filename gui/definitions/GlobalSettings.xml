@@ -125,12 +125,6 @@
                     <property name="position">0</property>
                   </packing>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
                 <style>
                   <class name="window-content"/>
                 </style>
@@ -396,6 +390,9 @@
                                 <property name="can_focus">True</property>
                                 <property name="secondary_icon_stock">gtk-file</property>
                                 <signal name="icon-press" handler="on_rawLogFile_icon_press_event" swapped="no"/>
+                                <style>
+                                  <class name="form-control"/>
+                                </style>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -409,7 +406,7 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="margin_left">10</property>
+                                <property name="margin_left">20</property>
                                 <signal name="clicked" handler="on_rawLogFile_button_clicked_event" swapped="no"/>
                                 <child>
                                   <object class="GtkBox">
@@ -432,6 +429,7 @@
                                       <object class="GtkLabel" id="lblDebugLogFileBrowse">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
+                                        <property name="margin_left">10</property>
                                         <property name="label" translatable="yes">Browse</property>
                                       </object>
                                       <packing>
@@ -524,7 +522,7 @@
                       <object class="GtkLabel" id="lblMumbleLocation">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Client binary location</property>
+                        <property name="label" translatable="yes">Executable Mumble location</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <style>
@@ -547,7 +545,11 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="secondary_icon_stock">gtk-file</property>
+                            <property name="placeholder_text" translatable="yes">Ex. /home/user/mumble/mumble</property>
                             <signal name="icon-press" handler="on_mumbleBinaryLocation_icon_press" swapped="no"/>
+                            <style>
+                              <class name="form-control"/>
+                            </style>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -561,6 +563,7 @@
                             <property name="can_focus">True</property>
                             <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
+                            <property name="margin_left">20</property>
                             <signal name="clicked" handler="on_mumbleBinaryLocation_clicked_event" swapped="no"/>
                             <child>
                               <object class="GtkBox">
@@ -582,6 +585,7 @@
                                   <object class="GtkLabel" id="lblMumbleBinaryBrowse">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="margin_left">10</property>
                                     <property name="label" translatable="yes">Browse</property>
                                   </object>
                                   <packing>
@@ -610,6 +614,29 @@
                         <property name="position">1</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkLabel" id="lblDebugLogFileDescription1">
+                        <property name="width_request">100</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin_top">10</property>
+                        <property name="label" translatable="yes">If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.</property>
+                        <property name="wrap">True</property>
+                        <property name="width_chars">1</property>
+                        <property name="track_visited_links">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <style>
+                          <class name="control-help"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -628,11 +655,17 @@
                         <property name="can_focus">False</property>
                         <property name="margin_top">20</property>
                         <property name="hexpand">False</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel" id="lblMumblePort">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Port</property>
+                            <property name="label" translatable="yes">Mumble service port</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">0</property>
+                            <style>
+                              <class name="control-label"/>
+                            </style>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -644,9 +677,8 @@
                           <object class="GtkEntry" id="mumblePort">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="margin_left">10</property>
-                            <property name="margin_right">10</property>
-                            <property name="input_purpose">GTK_INPUT_PURPOSE_DIGITS</property>
+                            <property name="placeholder_text" translatable="yes">Ex. 9800</property>
+                            <property name="input_purpose">digits</property>
                             <signal name="delete-text" handler="on_portMumble_delete_text" swapped="no"/>
                             <signal name="insert-text" handler="on_portMumble_insert_text" swapped="no"/>
                             <style>
@@ -662,9 +694,12 @@
                         <child>
                           <object class="GtkLabel" id="lblPortMumbleMessage">
                             <property name="can_focus">False</property>
+                            <property name="margin_top">10</property>
                             <property name="label" translatable="yes">Port out of range</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">0</property>
                             <style>
-                              <class name="label-settings-warning"/>
+                              <class name="text-danger"/>
                             </style>
                           </object>
                           <packing>
@@ -686,7 +721,7 @@
                         <property name="can_focus">False</property>
                         <property name="halign">start</property>
                         <property name="margin_top">10</property>
-                        <property name="label" translatable="yes">A valid port is between 1 and 65535</property>
+                        <property name="label" translatable="yes">Enter a valid port number between 1 and 65535</property>
                         <style>
                           <class name="control-help"/>
                         </style>
