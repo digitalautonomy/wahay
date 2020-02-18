@@ -4,6 +4,7 @@ func init() {
 	noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt1()
 	noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt2()
 	noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3()
+	noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt4()
 }
 
 func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt1() {
@@ -123,10 +124,15 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3() {
 	_ = i18n.Sprintf("Yes, back it up &amp; continue")
 	_ = i18n.Sprintf("Yes, confirm")
 	_ = i18n.Sprintf("You will not be asked for this password again until you restart Wahay.")
+}
+
+func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt4() {
 	_ = i18n.Sprintf("Executable Mumble location")
 	_ = i18n.Sprintf("Ex. /home/user/mumble/mumble")
-	_ = i18n.Sprintf("If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.")
+	_ = i18n.Sprintf("If you want to use your own Mumble instance, please enter the location " +
+		"where Mumble is available in the system.")
 	_ = i18n.Sprintf("Mumble service port")
 	_ = i18n.Sprintf("Ex. 9800")
-	_ = i18n.Sprintf("If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535")
+	_ = i18n.Sprintf("If you want to set up a custom port to run the Mumble service, " +
+		"please a port number between 1 and 65535")
 }
