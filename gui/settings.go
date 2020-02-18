@@ -122,6 +122,7 @@ func (u *gtkUI) getSettingsBuilder() *uiBuilder {
 		"label", "lblSettingsWarning",
 		"label", "lblConfigFileCorrupted",
 		"label", "lblConfigFileCorruptedHelp",
+		"label", "lblMumbleBinaryDescription",
 		"button", "btnCancelSettings",
 		"button", "btnSaveSettings",
 		"button", "btnConfigFileCorruptedCancel",

@@ -70,7 +70,8 @@ func (h *hostData) showMeetingControls() {
 		"button", "btnFinishMeeting",
 		"button", "btnJoinMeeting",
 		"button", "btnJoinMeeting",
-		"button", "btnCopyUrl")
+		"button", "btnCopyUrl",
+		"tooltip", "btnJoinMeeting")
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": h.finishMeetingReal,

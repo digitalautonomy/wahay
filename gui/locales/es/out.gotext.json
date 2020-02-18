@@ -144,14 +144,14 @@
         {
             "id": "Start Meeting \u0026 Join",
             "message": "Start Meeting \u0026 Join",
-            "translation": "Comenzar reunión y Unirse",
+            "translation": "Iniciar reunión y unirse",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Start Meeting",
             "message": "Start Meeting",
-            "translation": "Comenzar reunión",
+            "translation": "Iniciar reunión",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -310,17 +310,17 @@
         {
             "id": "Are you sure you want to do this action?",
             "message": "Are you sure you want to do this action?",
-            "translation": "¿Está seguro de que quieres hacer esta acción?"
+            "translation": "¿Está seguro de hacer esta acción?"
         },
         {
             "id": "Are you sure you want to end this meeting?",
             "message": "Are you sure you want to end this meeting?",
-            "translation": "¿Está seguro de que quieres terminar esta reunión?"
+            "translation": "¿Está seguro de finalizar esta reunión?"
         },
         {
             "id": "Are you sure you want to leave this meeting?",
             "message": "Are you sure you want to leave this meeting?",
-            "translation": "¿Está seguro de que quiere dejar esta reunión?"
+            "translation": "¿Está seguro de abandonar esta reunión?"
         },
         {
             "id": "Automatically join this meeting",
@@ -330,12 +330,12 @@
         {
             "id": "Automatically join a meeting",
             "message": "Automatically join a meeting",
-            "translation": "Únase automáticamente a esta reunión al iniciarla"
+            "translation": "Unirse automáticamente al iniciar una reunión"
         },
         {
             "id": "Automatically join this meeting when starting it",
             "message": "Automatically join this meeting when starting it",
-            "translation": "Únase automáticamente a esta reunión al iniciarla"
+            "translation": "Unirse automáticamente a esta reunión al iniciarla"
         },
         {
             "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
@@ -395,7 +395,7 @@
         {
             "id": "Copy Meeting ID",
             "message": "Copy Meeting ID",
-            "translation": "Copiar ID de reunión"
+            "translation": "Copiar ID de la reunión"
         },
         {
             "id": "Copy URL",
@@ -430,17 +430,17 @@
         {
             "id": "Finish",
             "message": "Finish",
-            "translation": "Terminar"
+            "translation": "Finalizar"
         },
         {
             "id": "End this meeting",
             "message": "End this meeting",
-            "translation": "Termina esta reunión"
+            "translation": "Finaliza esta reunión"
         },
         {
             "id": "End this meeting for all",
             "message": "End this meeting for all",
-            "translation": "Termina esta reunión para todos"
+            "translation": "Finaliza esta reunión para todos"
         },
         {
             "id": "General",
@@ -460,12 +460,12 @@
         {
             "id": "Hosting",
             "message": "Hosting",
-            "translation": "Hosting"
+            "translation": "Anfitrión"
         },
         {
             "id": "Host meeting",
             "message": "Host meeting",
-            "translation": "Reunión de acogida"
+            "translation": "Alojar una reunión"
         },
         {
             "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
@@ -475,7 +475,7 @@
         {
             "id": "If you set this option to a file name, low level information will be logged there.",
             "message": "If you set this option to a file name, low level information will be logged there.",
-            "translation": "Si establece esta opción en un nombre de archivo, la información de bajo nivel se registrará allí."
+            "translation": "Si establece esta opción con un nombre de archivo, la información de bajo nivel se registrará allí."
         },
         {
             "id": "Invalid configuration file",
@@ -505,7 +505,7 @@
         {
             "id": "Join meeting",
             "message": "Join meeting",
-            "translation": "Unirse a la reunión"
+            "translation": "Unirse a una reunión"
         },
         {
             "id": "Join the meeting",
@@ -625,7 +625,7 @@
         {
             "id": "Settings",
             "message": "Settings",
-            "translation": "Configuraciones"
+            "translation": "Configuración"
         },
         {
             "id": "Show",

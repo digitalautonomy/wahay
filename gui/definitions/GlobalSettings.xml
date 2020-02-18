@@ -615,7 +615,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="lblDebugLogFileDescription1">
+                      <object class="GtkLabel" id="lblMumbleBinaryDescription">
                         <property name="width_request">100</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

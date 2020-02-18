@@ -339,40 +339,40 @@ var esIndex = []uint32{ // 124 elements
 	0x00000000, 0x00000006, 0x0000001d, 0x0000003d,
 	0x00000073, 0x00000098, 0x000000ae, 0x000000db,
 	0x0000010f, 0x00000148, 0x00000171, 0x000001c0,
-	0x000001de, 0x000001f9, 0x0000020b, 0x0000022a,
-	0x00000253, 0x0000026c, 0x000002a0, 0x000002c2,
-	0x000002f3, 0x00000321, 0x00000350, 0x0000036e,
-	0x000003a2, 0x00000400, 0x0000040e, 0x00000417,
-	0x0000041d, 0x00000432, 0x0000044e, 0x00000456,
+	0x000001de, 0x000001f8, 0x00000209, 0x00000228,
+	0x00000251, 0x0000026a, 0x0000029e, 0x000002c0,
+	0x000002f1, 0x0000031f, 0x0000034e, 0x0000036c,
+	0x000003a0, 0x000003fe, 0x0000040c, 0x00000415,
+	0x0000041b, 0x00000430, 0x0000044c, 0x00000454,
 	// Entry 20 - 3F
-	0x000004ae, 0x000004e0, 0x00000516, 0x00000548,
-	0x00000570, 0x000005a5, 0x000005da, 0x0000068e,
-	0x00000697, 0x000006c8, 0x000006f8, 0x00000716,
-	0x00000758, 0x00000777, 0x00000785, 0x000007a5,
-	0x000007af, 0x000007c2, 0x000007d8, 0x000007e3,
-	0x00000849, 0x0000088e, 0x0000089a, 0x000008af,
-	0x000008d3, 0x000008dc, 0x000008f2, 0x00000913,
-	0x0000091b, 0x00000921, 0x0000093e, 0x00000946,
+	0x000004ac, 0x000004d2, 0x000004fd, 0x00000528,
+	0x00000550, 0x00000580, 0x000005b5, 0x00000669,
+	0x00000672, 0x000006a3, 0x000006d3, 0x000006f1,
+	0x00000733, 0x00000752, 0x00000760, 0x00000780,
+	0x0000078a, 0x0000079d, 0x000007b6, 0x000007c1,
+	0x00000827, 0x0000086c, 0x00000878, 0x0000088d,
+	0x000008b1, 0x000008bb, 0x000008d2, 0x000008f4,
+	0x000008fc, 0x00000902, 0x0000091f, 0x0000092a,
 	// Entry 40 - 5F
-	0x0000095a, 0x00000a56, 0x00000abd, 0x00000ae1,
-	0x00000b0c, 0x00000b1c, 0x00000b23, 0x00000b39,
-	0x00000b4e, 0x00000b63, 0x00000b7a, 0x00000bb0,
-	0x00000bb6, 0x00000bcd, 0x00000bf3, 0x00000cb1,
-	0x00000cc5, 0x00000cd7, 0x00000cea, 0x00000d05,
-	0x00000d0c, 0x00000d19, 0x00000d40, 0x00000d48,
-	0x00000d54, 0x00000d96, 0x00000d9d, 0x00000db3,
-	0x00000dc8, 0x00000dde, 0x00000dee, 0x00000df8,
+	0x0000093e, 0x00000a3a, 0x00000aa2, 0x00000ac6,
+	0x00000af1, 0x00000b01, 0x00000b08, 0x00000b1e,
+	0x00000b34, 0x00000b49, 0x00000b60, 0x00000b96,
+	0x00000b9c, 0x00000bb3, 0x00000bd9, 0x00000c97,
+	0x00000cab, 0x00000cbd, 0x00000cd0, 0x00000ceb,
+	0x00000cf2, 0x00000cff, 0x00000d26, 0x00000d2e,
+	0x00000d3a, 0x00000d7c, 0x00000d83, 0x00000d99,
+	0x00000dae, 0x00000dc4, 0x00000dd4, 0x00000dde,
 	// Entry 60 - 7F
-	0x00000e08, 0x00000e10, 0x00000e3d, 0x00000e51,
-	0x00000e65, 0x00000e98, 0x00000eba, 0x00000ede,
-	0x00000f1f, 0x00000f36, 0x00000f67, 0x00000f8e,
-	0x00000fab, 0x00000fbd, 0x00000fdb, 0x0000105d,
-	0x00001068, 0x000010bd, 0x000010cd, 0x000010ea,
-	0x000010f8, 0x00001141, 0x00001165, 0x00001182,
-	0x000011f6, 0x00001210, 0x00001219, 0x00001294,
+	0x00000ded, 0x00000df5, 0x00000e22, 0x00000e36,
+	0x00000e4a, 0x00000e7d, 0x00000e9f, 0x00000ec3,
+	0x00000f04, 0x00000f1b, 0x00000f4c, 0x00000f73,
+	0x00000f90, 0x00000fa2, 0x00000fc0, 0x00001042,
+	0x0000104d, 0x000010a2, 0x000010b2, 0x000010cf,
+	0x000010dd, 0x00001126, 0x0000114a, 0x00001167,
+	0x000011db, 0x000011f5, 0x000011fe, 0x00001279,
 } // Size: 520 bytes
 
-const esData string = "" + // Size: 4756 bytes
+const esData string = "" + // Size: 4729 bytes
 	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
 	"El puerto configurado para Mumble es inválido: %[1]s\x02La reunión no se" +
 	" pudo cerrar: %[1]s\x02tor no está definido\x02El servicio Onion no se p" +
@@ -380,8 +380,8 @@ const esData string = "" + // Size: 4756 bytes
 	"es\x02El correo de invitación ha sido copiado al portapapeles\x02Unirse " +
 	"a una reunión a travéz de Wahay\x02Por favor únete a la reunión a travéz" +
 	" de Wahay con los siguientes detalles:\x02%[1]sID de la reunión: %[2]s" +
-	"\x02Comenzar reunión y Unirse\x02Comenzar reunión\x02El proceso Mumble e" +
-	"stá caído\x02El ID de la reunión no puede ser vacío\x02Ocurrió un error" +
+	"\x02Iniciar reunión y unirse\x02Iniciar reunión\x02El proceso Mumble est" +
+	"á caído\x02El ID de la reunión no puede ser vacío\x02Ocurrió un error" +
 	"\x0a\x0a%[1]s\x02el ID de la reunión provisto es inválido: \x0a\x0a%[1]s" +
 	"\x02El ID de la reunión es inválido\x02El cliente Mumble no se puede usa" +
 	"r porque: %[1]s\x02por favor especifique una contraseña válida\x02especi" +
@@ -391,58 +391,58 @@ const esData string = "" + // Size: 4756 bytes
 	"ón\x02Abrir archivo\x02Cancelar\x02Abrir\x02tor no se puede usar\x02Enc" +
 	"ontramos algunos errores\x02Aceptar\x02Permita que el organizador se una" +
 	" automáticamente a una reunión cuando cree una nueva\x02¿Está seguro de " +
-	"que quieres hacer esta acción?\x02¿Está seguro de que quieres terminar e" +
-	"sta reunión?\x02¿Está seguro de que quiere dejar esta reunión?\x02Unirse" +
-	" automáticamente a esta reunión\x02Únase automáticamente a esta reunión " +
-	"al iniciarla\x02Únase automáticamente a esta reunión al iniciarla\x02Ten" +
-	" mucho cuidado. Esta información es confidencial y podría contener infor" +
-	"mación muy privada. Solo cambia esta configuración si la necesita absolu" +
-	"tamente para la depuración.\x02Examinar\x02Al hacer clic en Sí, esta reu" +
-	"nión finalizará.\x02Al hacer clic en Sí, saldrá de esta reunión.\x02Ubic" +
-	"ación del binario Mumble\x02Los ajustes de configuración se perderán en " +
-	"la próxima sesión\x02Configurar contraseña maestra\x02Confirmación\x02Co" +
-	"nectando, espere por favor...\x02Continuar\x02Copiar invitación\x02Copia" +
-	"r ID de reunión\x02Copiar URL\x02Marque esta opción para unirse automáti" +
-	"camente a cada reunión creada en la sección del anfitrión\x02Elija su se" +
-	"rvicio de correo electrónico para enviar la invitación.\x02Depuración" +
-	"\x02Email predeterminado\x02Cifrar el archivo de configuración\x02Termin" +
-	"ar\x02Termina esta reunión\x02Termina esta reunión para todos\x02General" +
-	"\x02Gmail\x02Organizar una nueva reunión\x02Hosting\x02Reunión de acogid" +
-	"a\x02Si realiza una copia de seguridad del archivo de configuración, res" +
-	"tableceremos la configuración y continuaremos normalmente. Si el archivo" +
-	" de configuración está cifrado, le pediremos una contraseña para cifrar " +
-	"el nuevo archivo de configuración.\x02Si establece esta opción en un nom" +
-	"bre de archivo, la información de bajo nivel se registrará allí.\x02Arch" +
-	"ivo de configuración inválido\x02Contraseña invalida. Inténtalo de nuevo" +
-	".\x02Invitar a otros\x02Unirse\x02Unirse a una reunión\x02Unirse a la re" +
-	"unión\x02Únete a la reunión\x02Únete a esta reunión\x02Mantener el archi" +
-	"vo de configuración al cerrar Wahay\x02Salir\x02Salir de esta reunión" +
-	"\x02Registrar información de depuración\x02Registre la salida de depurac" +
-	"ión en el archivo de registro seleccionado. Si no se selecciona ningún a" +
-	"rchivo, la salida del registro se escribirá en el archivo de registro pr" +
-	"edeterminado.\x02Contraseña maestra\x02ID de la reunión\x02ID de la reun" +
-	"ión:\x02Contraseña de la reunión\x02Mumble\x02No, cancelar\x02Ahora está" +
-	"s organizando una reunión.\x02Outlook\x02Contraseña\x02Ingrese la contra" +
-	"seña maestra para el archivo de configuración.\x02Puerto\x02Puerto fuera" +
-	" de rango\x02Archivo de registros\x02Repita la contraseña\x02Guardar cam" +
-	"bios\x02Seguridad\x02Configuraciones\x02Mostrar\x02Especifique una contr" +
-	"aseña para la reunión\x02Comience a reunirse\x02El mensaje de error\x02E" +
-	"l rango de puertos válidos está entre 1 y 65535\x02Esta acción no se pue" +
-	"de deshacer\x02Alternar visibilidad de contraseña\x02Escriba la ID de la" +
-	" reunión (normalmente una dirección .onion)\x02Escribe la contraseña\x02" +
-	"Escriba la contraseña para unirse a la reunión\x02Escriba su nombre de u" +
-	"suario preferido\x02Escriba su nombre de usuario\x02Nombre de usuario" +
-	"\x02Wahay está listo para usarse\x02Hemos detectado que el archivo de co" +
-	"nfiguración no es válido o está dañado. ¿Desea hacer una copia de seguri" +
-	"dad y continuar?\x02Bienvenido\x02Cuando esta opción está marcada, la co" +
-	"nfiguración se guardará en el dispositivo.\x02Correo de Yahoo\x02Sí, res" +
-	"paldarlo y continuar\x02Si, confirmar\x02No se le volverá a solicitar es" +
-	"ta contraseña hasta que reinicie Wahay.\x02Ubicación del ejecutable de M" +
-	"umble\x02Ej. /home/user/mumble/mumble\x02Si desea utilizar su propia ins" +
-	"tancia de Mumble, ingrese la ubicación donde Mumble está disponible en e" +
-	"l sistema.\x02Puerto de servicio Mumble\x02Ej. 9800\x02Si desea configur" +
-	"ar un puerto personalizado para ejecutar el servicio Mumble, ingrese un " +
-	"número de puerto entre 1 y 65535"
+	"hacer esta acción?\x02¿Está seguro de finalizar esta reunión?\x02¿Está s" +
+	"eguro de abandonar esta reunión?\x02Unirse automáticamente a esta reunió" +
+	"n\x02Unirse automáticamente al iniciar una reunión\x02Unirse automáticam" +
+	"ente a esta reunión al iniciarla\x02Ten mucho cuidado. Esta información " +
+	"es confidencial y podría contener información muy privada. Solo cambia e" +
+	"sta configuración si la necesita absolutamente para la depuración.\x02Ex" +
+	"aminar\x02Al hacer clic en Sí, esta reunión finalizará.\x02Al hacer clic" +
+	" en Sí, saldrá de esta reunión.\x02Ubicación del binario Mumble\x02Los a" +
+	"justes de configuración se perderán en la próxima sesión\x02Configurar c" +
+	"ontraseña maestra\x02Confirmación\x02Conectando, espere por favor...\x02" +
+	"Continuar\x02Copiar invitación\x02Copiar ID de la reunión\x02Copiar URL" +
+	"\x02Marque esta opción para unirse automáticamente a cada reunión creada" +
+	" en la sección del anfitrión\x02Elija su servicio de correo electrónico " +
+	"para enviar la invitación.\x02Depuración\x02Email predeterminado\x02Cifr" +
+	"ar el archivo de configuración\x02Finalizar\x02Finaliza esta reunión\x02" +
+	"Finaliza esta reunión para todos\x02General\x02Gmail\x02Organizar una nu" +
+	"eva reunión\x02Anfitrión\x02Alojar una reunión\x02Si realiza una copia d" +
+	"e seguridad del archivo de configuración, restableceremos la configuraci" +
+	"ón y continuaremos normalmente. Si el archivo de configuración está cif" +
+	"rado, le pediremos una contraseña para cifrar el nuevo archivo de config" +
+	"uración.\x02Si establece esta opción con un nombre de archivo, la inform" +
+	"ación de bajo nivel se registrará allí.\x02Archivo de configuración invá" +
+	"lido\x02Contraseña invalida. Inténtalo de nuevo.\x02Invitar a otros\x02U" +
+	"nirse\x02Unirse a una reunión\x02Unirse a una reunión\x02Únete a la reun" +
+	"ión\x02Únete a esta reunión\x02Mantener el archivo de configuración al c" +
+	"errar Wahay\x02Salir\x02Salir de esta reunión\x02Registrar información d" +
+	"e depuración\x02Registre la salida de depuración en el archivo de regist" +
+	"ro seleccionado. Si no se selecciona ningún archivo, la salida del regis" +
+	"tro se escribirá en el archivo de registro predeterminado.\x02Contraseña" +
+	" maestra\x02ID de la reunión\x02ID de la reunión:\x02Contraseña de la re" +
+	"unión\x02Mumble\x02No, cancelar\x02Ahora estás organizando una reunión." +
+	"\x02Outlook\x02Contraseña\x02Ingrese la contraseña maestra para el archi" +
+	"vo de configuración.\x02Puerto\x02Puerto fuera de rango\x02Archivo de re" +
+	"gistros\x02Repita la contraseña\x02Guardar cambios\x02Seguridad\x02Confi" +
+	"guración\x02Mostrar\x02Especifique una contraseña para la reunión\x02Com" +
+	"ience a reunirse\x02El mensaje de error\x02El rango de puertos válidos e" +
+	"stá entre 1 y 65535\x02Esta acción no se puede deshacer\x02Alternar visi" +
+	"bilidad de contraseña\x02Escriba la ID de la reunión (normalmente una di" +
+	"rección .onion)\x02Escribe la contraseña\x02Escriba la contraseña para u" +
+	"nirse a la reunión\x02Escriba su nombre de usuario preferido\x02Escriba " +
+	"su nombre de usuario\x02Nombre de usuario\x02Wahay está listo para usars" +
+	"e\x02Hemos detectado que el archivo de configuración no es válido o está" +
+	" dañado. ¿Desea hacer una copia de seguridad y continuar?\x02Bienvenido" +
+	"\x02Cuando esta opción está marcada, la configuración se guardará en el " +
+	"dispositivo.\x02Correo de Yahoo\x02Sí, respaldarlo y continuar\x02Si, co" +
+	"nfirmar\x02No se le volverá a solicitar esta contraseña hasta que reinic" +
+	"ie Wahay.\x02Ubicación del ejecutable de Mumble\x02Ej. /home/user/mumble" +
+	"/mumble\x02Si desea utilizar su propia instancia de Mumble, ingrese la u" +
+	"bicación donde Mumble está disponible en el sistema.\x02Puerto de servic" +
+	"io Mumble\x02Ej. 9800\x02Si desea configurar un puerto personalizado par" +
+	"a ejecutar el servicio Mumble, ingrese un número de puerto entre 1 y 655" +
+	"35"
 
 var svIndex = []uint32{ // 124 elements
 	// Entry 0 - 1F
@@ -512,4 +512,4 @@ const svData string = "" + // Size: 1614 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 13954 bytes (13KiB); checksum: A61B49C4
+	// Total table size 13927 bytes (13KiB); checksum: 9ECF452B
