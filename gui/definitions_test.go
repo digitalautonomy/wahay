@@ -88,12 +88,14 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_static_DirectoryOpen(c *C) {
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_Open(c *C) {
-	f := FS(true)
-	_, e := f.Open("doesntexist")
-	c.Assert(e, ErrorMatches, "file does not exist")
+	if dirExists("definitions") {
+		f := FS(true)
+		_, e := f.Open("doesntexist")
+		c.Assert(e, ErrorMatches, "file does not exist")
 
-	_, e = f.Open("/definitions/MainWindow.xml")
-	c.Assert(e, IsNil)
+		_, e = f.Open("/definitions/MainWindow.xml")
+		c.Assert(e, IsNil)
+	}
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_DirectoryOpen(c *C) {
@@ -118,11 +120,13 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSByte(c *C) {
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
-	_, e := FSString(true, "doesntexist")
-	c.Assert(e, ErrorMatches, "file does not exist")
+	if dirExists("definitions") {
+		_, e := FSString(true, "doesntexist")
+		c.Assert(e, ErrorMatches, "file does not exist")
 
-	_, e = FSString(true, "/definitions/MainWindow.xml")
-	c.Assert(e, IsNil)
+		_, e = FSString(true, "/definitions/MainWindow.xml")
+		c.Assert(e, IsNil)
+	}
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustByte(c *C) {
