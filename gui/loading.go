@@ -2,20 +2,40 @@ package gui
 
 import "github.com/coyim/gotk3adapter/gtki"
 
+func (u *gtkUI) displayLoadingWindowWithCallback(cb func()) {
+	u.displayLoadingWindowHelper(cb)
+}
+
 func (u *gtkUI) displayLoadingWindow() {
-	if u.loadingWindow == nil {
-		builder := u.g.uiBuilderFor("LoadingWindow")
-		builder.i18nProperties("label", "lblLoading")
-		win := builder.get("loadingWindow").(gtki.ApplicationWindow)
-		u.loadingWindow = win
-		win.SetApplication(u.app)
-		u.doInUIThread(win.Show)
-	}
+	u.displayLoadingWindowHelper(nil)
 }
 
 func (u *gtkUI) hideLoadingWindow() {
-	if u.loadingWindow != nil {
-		u.doInUIThread(u.loadingWindow.Hide)
-		u.loadingWindow = nil
+	if u.loadingWindow == nil {
+		return
 	}
+
+	u.doInUIThread(u.loadingWindow.Hide)
+	u.loadingWindow = nil
+}
+
+func (u *gtkUI) displayLoadingWindowHelper(cb func()) {
+	if u.loadingWindow != nil {
+		return
+	}
+
+	builder := u.g.uiBuilderFor("LoadingWindow")
+	builder.i18nProperties("label", "lblLoading")
+
+	if cb != nil {
+		builder.ConnectSignals(map[string]interface{}{
+			"on_close": cb,
+		})
+	}
+
+	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
+
+	win.SetApplication(u.app)
+	u.loadingWindow = win
+	u.doInUIThread(win.Show)
 }

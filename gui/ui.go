@@ -96,7 +96,7 @@ func (u *gtkUI) Loop() {
 }
 
 func (u *gtkUI) onActivate() {
-	u.displayLoadingWindow()
+	u.displayLoadingWindowWithCallback(u.quit)
 
 	go u.setGlobalStyles()
 	go u.loadConfig()

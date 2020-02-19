@@ -4,14 +4,13 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkApplicationWindow" id="loadingWindow">
     <property name="can_focus">False</property>
-    <property name="type">popup</property>
+    <property name="title" translatable="yes">Wahay Conference Calls</property>
     <property name="resizable">False</property>
-    <property name="modal">True</property>
     <property name="window_position">center</property>
-    <property name="default_width">300</property>
-    <property name="default_height">100</property>
-    <property name="type_hint">notification</property>
-    <property name="deletable">False</property>
+    <property name="default_width">400</property>
+    <property name="default_height">120</property>
+    <property name="type_hint">dialog</property>
+    <signal name="remove" handler="on_close" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -19,12 +18,16 @@
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
         <property name="margin_left">20</property>
         <property name="margin_right">20</property>
         <property name="margin_top">20</property>
         <property name="margin_bottom">20</property>
         <child>
           <object class="GtkSpinner" id="spinner">
+            <property name="width_request">50</property>
+            <property name="height_request">50</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_left">20</property>
