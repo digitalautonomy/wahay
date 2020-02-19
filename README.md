@@ -6,7 +6,7 @@ providing extremely high security and privacy out of the box.
 
 In order to do this, we use [Tor](https://torproject.org) Onion Services in order to communicate between the end-points, and we use the
 [Mumble](https://www.mumble.info) protocol for the actual voice communication. We are doing extensive user testing in order to ensure that
-the usibility of the application is as good as possible. 
+the usability of the application is as good as possible. 
 
 
 ## Installing
