@@ -130,6 +130,15 @@ func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 		"button", "btnStatusShowErrors",
 		"button", "btnErrorsAccept")
 
+	imgHostMeeting := builder.get("imgHostMeeting").(gtki.Image)
+	imgJoinMeeting := builder.get("imgJoinMeeting").(gtki.Image)
+
+	icon1, _ := u.g.getImagePixbufForSize("host-meeting.svg", 32)
+	icon2, _ := u.g.getImagePixbufForSize("join-meeting.svg", 32)
+
+	imgHostMeeting.SetFromPixbuf(icon1)
+	imgJoinMeeting.SetFromPixbuf(icon2)
+
 	return builder
 }
 
@@ -140,7 +149,6 @@ func (u *gtkUI) createMainWindow(success bool) {
 	u.mainWindow = win
 
 	win.SetApplication(u.app)
-
 	win.SetIcon(getApplicationIcon().getPixbuf())
 	u.g.gtk.WindowSetDefaultIcon(getApplicationIcon().getPixbuf())
 

@@ -78,7 +78,8 @@ dialog {
   margin-top: 10px;
   padding-top: 10px; }
 
-.btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
+.btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
   padding: 12px 20px;
   font-size: 14px;
   font-weight: 400;
@@ -86,36 +87,45 @@ dialog {
   border: 1px solid rgba(27, 31, 35, 0.2);
   box-shadow: none;
   border-radius: 0.25em; }
-  .btn.append, .main-window-top-bar .append.main-window-btn-settings, .main-window-actions .append.btn-host-meeting, .main-window-actions .append.btn-join-meeting, .append.invite-email-link, .append.invite-window-btn {
+  .btn.append, .main-window-top-bar .append.main-window-btn-settings, .main-window-actions .append.btn-host-meeting,
+  .main-window-actions .append.btn-join-meeting, .append.invite-email-link, .append.invite-window-btn {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left-width: 0; }
-  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover, .main-window-actions .btn-host-meeting:hover, .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
+  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover, .main-window-actions .btn-host-meeting:hover,
+  .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
     background-repeat: repeat-x; }
-  .btn:active, .main-window-top-bar .main-window-btn-settings:active, .main-window-actions .btn-host-meeting:active, .main-window-actions .btn-join-meeting:active, .invite-email-link:active, .invite-window-btn:active {
+  .btn:active, .main-window-top-bar .main-window-btn-settings:active, .main-window-actions .btn-host-meeting:active,
+  .main-window-actions .btn-join-meeting:active, .invite-email-link:active, .invite-window-btn:active {
     background-image: none; }
 
-.btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
+.btn, .main-window-top-bar .main-window-btn-settings, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
   color: #24292e;
   background-color: #eff3f6;
   background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%); }
-  .btn:focus, .main-window-top-bar .main-window-btn-settings:focus, .main-window-actions .btn-host-meeting:focus, .main-window-actions .btn-join-meeting:focus, .invite-email-link:focus, .invite-window-btn:focus {
+  .btn:focus, .main-window-top-bar .main-window-btn-settings:focus, .main-window-actions .btn-host-meeting:focus,
+  .main-window-actions .btn-join-meeting:focus, .invite-email-link:focus, .invite-window-btn:focus {
     box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0.3); }
-  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover, .main-window-actions .btn-host-meeting:hover, .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
+  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover, .main-window-actions .btn-host-meeting:hover,
+  .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
     background-color: #e6ebf1;
     background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
     border-color: rgba(27, 31, 35, 0.35); }
-  .btn:active, .main-window-top-bar .main-window-btn-settings:active, .main-window-actions .btn-host-meeting:active, .main-window-actions .btn-join-meeting:active, .invite-email-link:active, .invite-window-btn:active {
+  .btn:active, .main-window-top-bar .main-window-btn-settings:active, .main-window-actions .btn-host-meeting:active,
+  .main-window-actions .btn-join-meeting:active, .invite-email-link:active, .invite-window-btn:active {
     background-color: #e9ecef;
     background-image: none;
     border-color: rgba(27, 31, 35, 0.35);
     box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15); }
-  .btn:checked, .main-window-top-bar .main-window-btn-settings:checked, .main-window-actions .btn-host-meeting:checked, .main-window-actions .btn-join-meeting:checked, .invite-email-link:checked, .invite-window-btn:checked {
+  .btn:checked, .main-window-top-bar .main-window-btn-settings:checked, .main-window-actions .btn-host-meeting:checked,
+  .main-window-actions .btn-join-meeting:checked, .invite-email-link:checked, .invite-window-btn:checked {
     background-color: #e9ecef;
     background-image: none;
     border-color: rgba(27, 31, 35, 0.35);
     box-shadow: inset 0 0.3em 0.5em rgba(27, 31, 35, 0.3); }
-  .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled, .main-window-actions .btn-host-meeting:disabled, .main-window-actions .btn-join-meeting:disabled, .invite-email-link:disabled, .invite-window-btn:disabled {
+  .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled, .main-window-actions .btn-host-meeting:disabled,
+  .main-window-actions .btn-join-meeting:disabled, .invite-email-link:disabled, .invite-window-btn:disabled {
     color: rgba(36, 41, 46, 0.4);
     background-color: #eff3f6;
     background-image: none;
@@ -257,7 +267,8 @@ dialog {
     border-color: rgba(27, 31, 35, 0.15);
     box-shadow: none; }
 
-.btn-lg, .main-window-actions .btn-host-meeting, .main-window-actions .btn-join-meeting {
+.btn-lg, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting {
   border-radius: 0.2em;
   padding: 15px 20px;
   font-size: 18px; }
@@ -333,6 +344,9 @@ label.label-text {
 
 .main-window-actions {
   padding: 20px; }
+  .main-window-actions .btn-host-meeting,
+  .main-window-actions .btn-join-meeting {
+    text-shadow: none; }
 
 .main-window-status-bar {
   color: #e1e4e8;

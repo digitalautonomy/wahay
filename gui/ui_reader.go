@@ -192,7 +192,7 @@ func (g Graphics) getImageBytes(filename string) []byte {
 	return bs
 }
 
-func (g Graphics) getImagePixbufForSize(imageName string) (gdki.Pixbuf, error) {
+func (g Graphics) getImagePixbufForSize(imageName string, size int) (gdki.Pixbuf, error) {
 	var w sync.WaitGroup
 
 	pl, err := g.gdk.PixbufLoaderNew()
@@ -212,7 +212,7 @@ func (g Graphics) getImagePixbufForSize(imageName string) (gdki.Pixbuf, error) {
 	}
 
 	_, err = pl.Connect("size-prepared", func() {
-		pl.SetSize(100, 100)
+		pl.SetSize(size, size)
 	})
 	if err != nil {
 		log.WithFields(log.Fields{

@@ -12,15 +12,19 @@
 .main-window-actions {
   padding: $spacing;
 
-  .btn-host-meeting {
+  .btn-host-meeting,
+  .btn-join-meeting {
+    text-shadow: none;
+
     @extend .btn;
     @extend .btn-lg;
+  }
+
+  .btn-host-meeting {
     @extend .btn-blue;
   }
-  
+
   .btn-join-meeting {
-    @extend .btn;
-    @extend .btn-lg;
     @extend .btn-orange;
   }
 }

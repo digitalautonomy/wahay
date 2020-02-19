@@ -2,6 +2,26 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
+  <object class="GtkImage" id="imgHostMeeting">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_right">10</property>
+    <property name="stock">gtk-media-record</property>
+    <property name="icon_size">3</property>
+  </object>
+  <object class="GtkImage" id="imgJoinMeeting">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_right">10</property>
+    <property name="stock">gtk-zoom-in</property>
+    <property name="icon_size">3</property>
+  </object>
+  <object class="GtkImage" id="imgSettings">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_right">5</property>
+    <property name="stock">gtk-properties</property>
+  </object>
   <object class="GtkApplicationWindow" id="mainWindow">
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
@@ -42,7 +62,10 @@
                 <property name="label" translatable="yes">Settings</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
+                <property name="image">imgSettings</property>
+                <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_open_settings" swapped="no"/>
                 <style>
                   <class name="main-window-btn-settings"/>
@@ -72,38 +95,18 @@
             <property name="margin_bottom">100</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkButton" id="btnJoinMeeting">
-                <property name="label" translatable="yes">Join meeting</property>
-                <property name="name">joinMeetingButton</property>
-                <property name="width_request">100</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Join a meeting</property>
-                <property name="image_position">bottom</property>
-                <signal name="clicked" handler="on_join_meeting" swapped="no"/>
-                <style>
-                  <class name="btn-join-meeting"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="padding">10</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="btnHostMeeting">
                 <property name="label" translatable="yes">Host meeting</property>
                 <property name="name">hostMeetingButton</property>
                 <property name="width_request">100</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
                 <property name="tooltip_text" translatable="yes">Host a new meeting</property>
-                <property name="image_position">top</property>
+                <property name="valign">center</property>
+                <property name="image">imgHostMeeting</property>
+                <property name="always_show_image">True</property>
                 <signal name="clicked" handler="on_host_meeting" swapped="no"/>
                 <style>
                   <class name="btn-host-meeting"/>
@@ -117,7 +120,29 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="btnJoinMeeting">
+                <property name="label" translatable="yes">Join meeting</property>
+                <property name="name">joinMeetingButton</property>
+                <property name="width_request">100</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">True</property>
+                <property name="tooltip_text" translatable="yes">Join a meeting</property>
+                <property name="image">imgJoinMeeting</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_join_meeting" swapped="no"/>
+                <style>
+                  <class name="btn-join-meeting"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="padding">10</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
             </child>
             <style>
               <class name="main-window-actions"/>

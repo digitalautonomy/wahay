@@ -549,19 +549,19 @@ func (h *hostData) onInviteParticipants() {
 	_ = btnYahoo.SetProperty("uri", h.getInvitationYahooURI())
 	_ = btnOutlook.SetProperty("uri", h.getInvitationMicrosoftURI())
 
-	imagePixBuf, _ := h.u.g.getImagePixbufForSize("email.png")
+	imagePixBuf, _ := h.u.g.getImagePixbufForSize("email.png", 100)
 	widgetImage, _ := h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnEmail.SetImage(widgetImage)
 
-	imagePixBuf, _ = h.u.g.getImagePixbufForSize("gmail.png")
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("gmail.png", 100)
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnGmail.SetImage(widgetImage)
 
-	imagePixBuf, _ = h.u.g.getImagePixbufForSize("yahoo.png")
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("yahoo.png", 100)
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnYahoo.SetImage(widgetImage)
 
-	imagePixBuf, _ = h.u.g.getImagePixbufForSize("outlook.png")
+	imagePixBuf, _ = h.u.g.getImagePixbufForSize("outlook.png", 100)
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnOutlook.SetImage(widgetImage)
 
