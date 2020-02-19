@@ -73,6 +73,11 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_fsFileImplementations(c *C) 
 	c.Assert(fs.Sys(), Not(IsNil))
 }
 
+func dirExists(d string) bool {
+	_, err := os.Stat(d)
+	return err == nil
+}
+
 func (s *WahayGUIDefinitionsSuite) Test_definitions_static_DirectoryOpen(c *C) {
 	d := Dir(false, "/definitions")
 	_, e := d.Open("/doesntexist")
@@ -96,16 +101,20 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_local_DirectoryOpen(c *C) {
 	_, e := d.Open("/doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
 
-	_, e = d.Open("/MainWindow.xml")
-	c.Assert(e, IsNil)
+	if dirExists("definitions") {
+		_, e = d.Open("/MainWindow.xml")
+		c.Assert(e, IsNil)
+	}
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSByte(c *C) {
 	_, e := FSByte(true, "doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
 
-	_, e = FSByte(true, "/definitions/MainWindow.xml")
-	c.Assert(e, IsNil)
+	if dirExists("definitions") {
+		_, e = FSByte(true, "/definitions/MainWindow.xml")
+		c.Assert(e, IsNil)
+	}
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
@@ -117,13 +126,17 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustByte(c *C) {
-	c.Assert(func() { FSMustByte(true, "doesntexist") }, PanicMatches, "file does not exist")
+	if dirExists("definitions") {
+		c.Assert(func() { FSMustByte(true, "doesntexist") }, PanicMatches, "file does not exist")
 
-	_ = FSMustByte(true, "/definitions/MainWindow.xml")
+		_ = FSMustByte(true, "/definitions/MainWindow.xml")
+	}
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustString(c *C) {
-	c.Assert(func() { FSMustString(true, "doesntexist") }, PanicMatches, "file does not exist")
+	if dirExists("definitions") {
+		c.Assert(func() { FSMustString(true, "doesntexist") }, PanicMatches, "file does not exist")
 
-	_ = FSMustString(true, "/definitions/MainWindow.xml")
+		_ = FSMustString(true, "/definitions/MainWindow.xml")
+	}
 }
