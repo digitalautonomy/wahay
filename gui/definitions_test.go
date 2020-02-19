@@ -73,8 +73,8 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_fsFileImplementations(c *C) 
 	c.Assert(fs.Sys(), Not(IsNil))
 }
 
-func dirExists(d string) bool {
-	_, err := os.Stat(d)
+func definitionsExists() bool {
+	_, err := os.Stat("definitions")
 	return err == nil
 }
 
@@ -88,7 +88,7 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_static_DirectoryOpen(c *C) {
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_Open(c *C) {
-	if dirExists("definitions") {
+	if definitionsExists() {
 		f := FS(true)
 		_, e := f.Open("doesntexist")
 		c.Assert(e, ErrorMatches, "file does not exist")
@@ -103,7 +103,7 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_local_DirectoryOpen(c *C) {
 	_, e := d.Open("/doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
 
-	if dirExists("definitions") {
+	if definitionsExists() {
 		_, e = d.Open("/MainWindow.xml")
 		c.Assert(e, IsNil)
 	}
@@ -113,14 +113,14 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSByte(c *C) {
 	_, e := FSByte(true, "doesntexist")
 	c.Assert(e, ErrorMatches, "file does not exist")
 
-	if dirExists("definitions") {
+	if definitionsExists() {
 		_, e = FSByte(true, "/definitions/MainWindow.xml")
 		c.Assert(e, IsNil)
 	}
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
-	if dirExists("definitions") {
+	if definitionsExists() {
 		_, e := FSString(true, "doesntexist")
 		c.Assert(e, ErrorMatches, "file does not exist")
 
@@ -130,7 +130,7 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSString(c *C) {
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustByte(c *C) {
-	if dirExists("definitions") {
+	if definitionsExists() {
 		c.Assert(func() { FSMustByte(true, "doesntexist") }, PanicMatches, "file does not exist")
 
 		_ = FSMustByte(true, "/definitions/MainWindow.xml")
@@ -138,7 +138,7 @@ func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustByte(c *C) {
 }
 
 func (s *WahayGUIDefinitionsSuite) Test_definitions_local_FSMustString(c *C) {
-	if dirExists("definitions") {
+	if definitionsExists() {
 		c.Assert(func() { FSMustString(true, "doesntexist") }, PanicMatches, "file does not exist")
 
 		_ = FSMustString(true, "/definitions/MainWindow.xml")
