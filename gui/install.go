@@ -21,7 +21,7 @@ type installation struct {
 
 func (u *gtkUI) ensureInstallation() {
 	if u.g.gdk == nil {
-		log.Error("ensureInstallation(): UI Graphics hasn't been initialized correctly.")
+		log.Debug("ensureInstallation(): UI Graphics hasn't been initialized correctly.")
 		return
 	}
 
