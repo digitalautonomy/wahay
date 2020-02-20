@@ -62,8 +62,15 @@ func (cntrl *controller) UseCookieAuth() {
 	cntrl.authType = &a
 }
 
-func (cntrl *controller) CreateNewOnionService(destinationHost string, destinationPort int,
-	servicePort int) (serviceID string, err error) {
+// OnionPort is a representation of the information to create a hidde
+// service with support for multiple destination ports
+type OnionPort struct {
+	ServicePort     int
+	DestinationPort int
+	DestinationHost string
+}
+
+func (cntrl *controller) CreateNewOnionServiceWithPorts(ports []OnionPort) (serviceID string, err error) {
 	tc, err := cntrl.getTorController()
 	if err != nil {
 		return
@@ -76,14 +83,27 @@ func (cntrl *controller) CreateNewOnionService(destinationHost string, destinati
 		}
 	}
 
-	if !config.CheckPort(destinationPort) || !config.CheckPort(servicePort) {
+	invalidPorts := []string{}
+	finalPorts := make(map[int]string)
+	for _, p := range ports {
+		host := net.JoinHostPort(p.DestinationHost, strconv.Itoa(p.DestinationPort))
+
+		if !config.CheckPort(p.ServicePort) || !config.CheckPort(p.DestinationPort) {
+			invalidPorts = append(invalidPorts, host)
+			continue
+		}
+
+		finalPorts[p.ServicePort] = host
+	}
+
+	if len(finalPorts) == 0 {
 		return "", errors.New("invalid source port")
+	} else if len(invalidPorts) > 0 {
+		return "", fmt.Errorf("some ports are invalid: %v", invalidPorts)
 	}
 
 	onion := &torgo.Onion{
-		Ports: map[int]string{
-			servicePort: net.JoinHostPort(destinationHost, strconv.Itoa(destinationPort)),
-		},
+		Ports:          finalPorts,
 		PrivateKeyType: "NEW",
 		PrivateKey:     "ED25519-V3",
 	}
@@ -97,6 +117,16 @@ func (cntrl *controller) CreateNewOnionService(destinationHost string, destinati
 	onions = append(onions, serviceID)
 
 	return serviceID, nil
+}
+
+func (cntrl *controller) CreateNewOnionService(destinationHost string, destinationPort int,
+	servicePort int) (serviceID string, err error) {
+	p := OnionPort{
+		ServicePort:     servicePort,
+		DestinationPort: destinationPort,
+		DestinationHost: destinationHost,
+	}
+	return cntrl.CreateNewOnionServiceWithPorts([]OnionPort{p})
 }
 
 func (cntrl *controller) DeleteOnionService(serviceID string) error {
