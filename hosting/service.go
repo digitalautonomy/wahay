@@ -43,9 +43,10 @@ type Service interface {
 }
 
 type service struct {
-	port  int
-	onion tor.Onion
-	room  *conferenceRoom
+	port       int
+	onion      tor.Onion
+	room       *conferenceRoom
+	httpServer *webserver
 }
 
 func (s *service) GetID() string {
@@ -75,6 +76,9 @@ func (s *service) NewConferenceRoom(password string) error {
 		server: serv,
 	}
 
+	// Start our certification http server
+	s.httpServer.start()
+
 	return nil
 }
 
@@ -90,6 +94,17 @@ func NewService(port string) (Service, error) {
 	}
 
 	var onionPorts []tor.OnionPort
+
+	httpServer, err := ensureCertificationServer(config.RandomPort(), collection.GetDataDir())
+	if err != nil {
+		return nil, err
+	}
+
+	onionPorts = append(onionPorts, tor.OnionPort{
+		DestinationHost: httpServer.host,
+		DestinationPort: httpServer.port,
+		ServicePort:     8181,
+	})
 
 	p := defaultPort
 	if port != "" {
@@ -113,8 +128,9 @@ func NewService(port string) (Service, error) {
 	}
 
 	s := &service{
-		port:  serverPort,
-		onion: onion,
+		port:       serverPort,
+		onion:      onion,
+		httpServer: httpServer,
 	}
 
 	return s, nil
@@ -130,10 +146,17 @@ var (
 func (s *service) Close() error {
 	var err error
 
+	if s.httpServer != nil {
+		err = s.httpServer.stop()
+		if err != nil {
+			log.Errorf("hosting stop http server: Close(): %s", err)
+		}
+	}
+
 	if s.room != nil {
 		err = s.room.close()
 		if err != nil {
-			log.Errorf("hosting: Close(): %s", err)
+			log.Errorf("hosting stop server: Close(): %s", err)
 			return ErrServerNoClosed
 		}
 	}
@@ -141,7 +164,7 @@ func (s *service) Close() error {
 	if s.onion != nil {
 		err = s.onion.Delete()
 		if err != nil {
-			log.Errorf("hosting: Close(): %s", err)
+			log.Errorf("hosting delete hidden service: Close(): %s", err)
 			return ErrServerOnionDelete
 		}
 	}

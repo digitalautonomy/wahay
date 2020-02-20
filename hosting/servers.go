@@ -19,6 +19,7 @@ type Servers interface {
 	CreateServer(port string, password string) (Server, error)
 	DestroyServer(Server) error
 	Shutdown() error
+	GetDataDir() string
 }
 
 // MeetingData is an structure for storing meeting info
@@ -139,10 +140,12 @@ func (s *servers) startListener() {
 
 func (s *servers) CreateServer(port string, password string) (Server, error) {
 	s.nextID++
+
 	serv, err := grumbleServer.NewServer(int64(s.nextID))
 	if err != nil {
 		return nil, err
 	}
+
 	s.servers[serv.Id] = serv
 	serv.Set("NoWebServer", "true")
 	serv.Set("Address", "127.0.0.1")
@@ -167,4 +170,8 @@ func (s *servers) DestroyServer(Server) error {
 
 func (s *servers) Shutdown() error {
 	return os.RemoveAll(s.dataDir)
+}
+
+func (s *servers) GetDataDir() string {
+	return s.dataDir
 }
