@@ -9,7 +9,6 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 	"github.com/digitalautonomy/wahay/client"
 	"github.com/digitalautonomy/wahay/config"
-	"github.com/digitalautonomy/wahay/hosting"
 	"github.com/digitalautonomy/wahay/tor"
 )
 
@@ -47,16 +46,15 @@ func argsWithApplicationName() *[]string {
 }
 
 type gtkUI struct {
-	app              gtki.Application
-	mainWindow       gtki.ApplicationWindow
-	currentWindow    gtki.ApplicationWindow
-	loadingWindow    gtki.ApplicationWindow
-	g                Graphics
-	tor              tor.Instance
-	client           client.Instance
-	serverCollection hosting.Servers
-	keySupplier      config.KeySupplier
-	config           *config.ApplicationConfig
+	app           gtki.Application
+	mainWindow    gtki.ApplicationWindow
+	currentWindow gtki.ApplicationWindow
+	loadingWindow gtki.ApplicationWindow
+	g             Graphics
+	tor           tor.Instance
+	client        client.Instance
+	keySupplier   config.KeySupplier
+	config        *config.ApplicationConfig
 }
 
 // NewGTK returns a new client for a GTK ui

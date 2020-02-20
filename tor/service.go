@@ -26,7 +26,7 @@ type service struct {
 
 // NewService creates a new Tor command service
 func NewService(c Command) (Service, error) {
-	rc, err := System().Exec(c.Cmd, c.Args, c.Modifier)
+	rc, err := GetCurrentInstance().Exec(c.Cmd, c.Args, c.Modifier)
 	if err != nil {
 		return nil, err
 	}

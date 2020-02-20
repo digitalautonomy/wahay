@@ -69,9 +69,74 @@ func getSingleInstance() (Instance, error) {
 	return currentInstance, nil
 }
 
-// System returns the current Tor instance
-func System() Instance {
+// GetCurrentInstance returns the current Tor instance
+func GetCurrentInstance() Instance {
 	return currentInstance
+}
+
+// GetController returns the Tor controller for the current instance
+func GetController() (Control, error) {
+	i := GetCurrentInstance()
+
+	if i == nil {
+		return nil, errors.New("tor hasn't been initialized")
+	}
+
+	return i.GetController(), nil
+}
+
+// DeleteOnionService deletes a specific ONION service for the
+// current Tor instance controller
+func DeleteOnionService(serviceID string) error {
+	controller, err := GetController()
+	if err != nil {
+		return err
+	}
+
+	return controller.DeleteOnionService(serviceID)
+}
+
+// Onion is a representation of a Tor Onion Service
+type Onion interface {
+	GetID() string
+	Delete() error
+}
+
+type onion struct {
+	id              string
+	destinationHost string
+	destinationPort int
+	port            int
+}
+
+func (s *onion) GetID() string {
+	return s.id
+}
+
+func (s *onion) Delete() error {
+	return DeleteOnionService(s.id)
+}
+
+// NewOnionService creates a new Onion service for the current Tor controller
+func NewOnionService(host string, port, servicePort int) (Onion, error) {
+	controller, err := GetController()
+	if err != nil {
+		return nil, err
+	}
+
+	serviceID, err := controller.CreateNewOnionService(host, port, servicePort)
+	if err != nil {
+		return nil, err
+	}
+
+	s := &onion{
+		id:              serviceID,
+		destinationHost: host,
+		destinationPort: servicePort,
+		port:            port,
+	}
+
+	return s, nil
 }
 
 // GetInstance returns the Instance for working with Tor
