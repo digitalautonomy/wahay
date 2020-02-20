@@ -103,10 +103,8 @@ type Onion interface {
 }
 
 type onion struct {
-	id              string
-	destinationHost string
-	destinationPort int
-	port            int
+	id    string
+	ports []OnionPort
 }
 
 func (s *onion) GetID() string {
@@ -117,23 +115,21 @@ func (s *onion) Delete() error {
 	return DeleteOnionService(s.id)
 }
 
-// NewOnionService creates a new Onion service for the current Tor controller
-func NewOnionService(host string, port, servicePort int) (Onion, error) {
+// NewOnionServiceWithMultiplePorts creates a new Onion service for the current Tor controller
+func NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, error) {
 	controller, err := GetController()
 	if err != nil {
 		return nil, err
 	}
 
-	serviceID, err := controller.CreateNewOnionService(host, port, servicePort)
+	serviceID, err := controller.CreateNewOnionServiceWithMultiplePorts(ports)
 	if err != nil {
 		return nil, err
 	}
 
 	s := &onion{
-		id:              serviceID,
-		destinationHost: host,
-		destinationPort: servicePort,
-		port:            port,
+		id:    serviceID,
+		ports: ports,
 	}
 
 	return s, nil

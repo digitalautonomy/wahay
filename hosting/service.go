@@ -89,6 +89,8 @@ func NewService(port string) (Service, error) {
 		return nil, err
 	}
 
+	var onionPorts []tor.OnionPort
+
 	p := defaultPort
 	if port != "" {
 		p, err = strconv.Atoi(port)
@@ -99,7 +101,13 @@ func NewService(port string) (Service, error) {
 
 	serverPort := config.GetRandomPort()
 
-	onion, err := tor.NewOnionService(defaultHost, serverPort, p)
+	onionPorts = append(onionPorts, tor.OnionPort{
+		DestinationHost: defaultHost,
+		DestinationPort: serverPort,
+		ServicePort:     p,
+	})
+
+	onion, err := tor.NewOnionServiceWithMultiplePorts(onionPorts)
 	if err != nil {
 		return nil, err
 	}

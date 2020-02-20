@@ -15,6 +15,7 @@ import (
 type Control interface {
 	SetPassword(string)
 	UseCookieAuth()
+	CreateNewOnionServiceWithMultiplePorts(ports []OnionPort) (serviceID string, err error)
 	CreateNewOnionService(destinationHost string, destinationPort int, port int) (serviceID string, err error)
 	DeleteOnionService(serviceID string) error
 	DeleteOnionServices()
@@ -70,7 +71,7 @@ type OnionPort struct {
 	DestinationHost string
 }
 
-func (cntrl *controller) CreateNewOnionServiceWithPorts(ports []OnionPort) (serviceID string, err error) {
+func (cntrl *controller) CreateNewOnionServiceWithMultiplePorts(ports []OnionPort) (serviceID string, err error) {
 	tc, err := cntrl.getTorController()
 	if err != nil {
 		return
@@ -126,7 +127,7 @@ func (cntrl *controller) CreateNewOnionService(destinationHost string, destinati
 		DestinationPort: destinationPort,
 		DestinationHost: destinationHost,
 	}
-	return cntrl.CreateNewOnionServiceWithPorts([]OnionPort{p})
+	return cntrl.CreateNewOnionServiceWithMultiplePorts([]OnionPort{p})
 }
 
 func (cntrl *controller) DeleteOnionService(serviceID string) error {
