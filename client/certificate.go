@@ -36,6 +36,7 @@ func (c *client) LoadCertificateFrom(serviceID string, servicePort int, webPort 
 
 	certContent := escapeByteString(arrayByteToString([]byte(cert)))
 
+	// TODO: should we maintain this?
 	return c.saveCertificateConfigFile(certContent)
 }
 

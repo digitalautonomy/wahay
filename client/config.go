@@ -129,21 +129,3 @@ func (c *client) saveCertificateConfigFile(cert string) error {
 
 	return nil
 }
-
-// f, err := os.Create(filename)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	defer f.Close()
-
-// 	_, err = f.Write(data)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	log.WithFields(log.Fields{
-// 		"filename": filename,
-// 	}).Debugf("writePfxDataToFile(): bytes written successfully")
-
-// 	return nil
