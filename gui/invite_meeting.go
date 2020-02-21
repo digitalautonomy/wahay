@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"errors"
 	"strings"
 
 	"github.com/coyim/gotk3adapter/gtki"
@@ -10,14 +9,8 @@ import (
 )
 
 func (u *gtkUI) joinMeeting() {
-	if u.mainWindow != nil {
-		u.mainWindow.Hide()
-	}
+	u.hideMainWindow()
 	u.openJoinWindow()
-}
-
-func (u *gtkUI) openMainWindow() {
-	u.switchToMainWindow()
 }
 
 func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
@@ -79,12 +72,40 @@ func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 	if len(data.MeetingID) == 0 {
 		u.openErrorDialog(i18n.Sprintf("The Meeting ID cannot be blank"))
+		u.showMainWindow()
 		return
 	}
 
-	mumble, err := u.openMumble(data, u.switchContextWhenMumbleFinish)
+	if !isMeetingIDValid(data.MeetingID) {
+		u.reportError(i18n.Sprintf("The provided meeting ID is invalid: \n\n%s", data.MeetingID))
+		u.showMainWindow()
+		return
+	}
+
+	u.hideCurrentWindow()
+	u.displayLoadingWindow()
+
+	var mumble tor.Service
+	var err error
+
+	finish := make(chan bool)
+
+	go func() {
+		mumble, err = u.launchMumbleClient(
+			data,
+			u.switchContextWhenMumbleFinish,
+		)
+
+		finish <- true
+	}()
+
+	<-finish // wait until the Mumble client has started
+
+	u.hideLoadingWindow()
+
 	if err != nil {
 		u.openErrorDialog(i18n.Sprintf("An error occurred\n\n%s", err.Error()))
+		u.showMainWindow()
 		return
 	}
 
@@ -102,7 +123,7 @@ func (u *gtkUI) openJoinWindow() {
 
 	cleanup := func() {
 		win.Destroy()
-		u.openMainWindow()
+		u.switchToMainWindow()
 	}
 
 	builder.ConnectSignals(map[string]interface{}{
@@ -117,25 +138,14 @@ func (u *gtkUI) openJoinWindow() {
 				Password:  password,
 			}
 
-			u.joinMeetingHandler(data)
+			go u.joinMeetingHandler(data)
 		},
-		"on_cancel": func() {
-			cleanup()
-		},
-		"on_close": func() {
-			cleanup()
-		},
+		"on_cancel": cleanup,
+		"on_close":  cleanup,
 	})
 
 	win.Show()
 	u.setCurrentWindow(win)
-}
-
-func (u *gtkUI) openMumble(data hosting.MeetingData, onFinish func()) (tor.Service, error) {
-	if !isMeetingIDValid(data.MeetingID) {
-		return nil, errors.New(i18n.Sprintf("the provided meeting ID is invalid: \n\n%s", data.MeetingID))
-	}
-	return u.launchMumbleClient(data, onFinish)
 }
 
 const onionServiceLength = 60

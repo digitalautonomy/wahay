@@ -45,5 +45,5 @@ func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, onClose func()) (to
 
 func (u *gtkUI) switchContextWhenMumbleFinish() {
 	u.hideCurrentWindow()
-	u.openMainWindow()
+	u.switchToMainWindow()
 }

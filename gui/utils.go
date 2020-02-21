@@ -30,6 +30,12 @@ func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
 	u.doInUIThread(win.Show)
 }
 
+func (u *gtkUI) showMainWindow() {
+	if u.mainWindow != nil {
+		u.switchToWindow(u.mainWindow)
+	}
+}
+
 func (u *gtkUI) copyToClipboard(text string) error {
 	return clipboard.WriteAll(text)
 }
