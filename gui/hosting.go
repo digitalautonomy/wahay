@@ -27,14 +27,19 @@ func (u *gtkUI) hostMeetingHandler() {
 }
 
 func (u *gtkUI) realHostMeetingHandler() {
-	u.hideMainWindow()
-	u.displayLoadingWindow()
-
 	h := &hostData{
 		u:        u,
 		autoJoin: u.config.GetAutoJoin(),
 		next:     nil,
 	}
+
+	u.hideMainWindow()
+	u.displayLoadingWindowWithCallback(func() {
+		if h.service != nil {
+			h.service.Close()
+		}
+		u.switchToMainWindow()
+	})
 
 	err := make(chan error)
 
@@ -96,7 +101,9 @@ func (h *hostData) showMeetingControls() {
 }
 
 func (h *hostData) joinMeetingHost() {
-	h.u.displayLoadingWindow()
+	h.u.displayLoadingWindowWithCallback(func() {
+		h.u.switchToMainWindow()
+	})
 
 	var err error
 	validOpChannel := make(chan bool)
@@ -451,6 +458,7 @@ func (h *hostData) changeStartButtonText(btn gtki.Button) {
 func (h *hostData) startMeetingHandler() {
 	h.u.hideCurrentWindow()
 	h.u.displayLoadingWindow()
+
 	go h.startMeetingRoutine()
 }
 

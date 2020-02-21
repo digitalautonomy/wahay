@@ -27,13 +27,15 @@ func (u *gtkUI) displayLoadingWindowHelper(cb func()) {
 	builder := u.g.uiBuilderFor("LoadingWindow")
 	builder.i18nProperties("label", "lblLoading")
 
+	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
+
 	if cb != nil {
 		builder.ConnectSignals(map[string]interface{}{
 			"on_close": cb,
 		})
+	} else {
+		_ = win.SetProperty("deletable", false)
 	}
-
-	win := builder.get("loadingWindow").(gtki.ApplicationWindow)
 
 	win.SetApplication(u.app)
 	u.loadingWindow = win
