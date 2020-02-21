@@ -2,6 +2,7 @@ package hosting
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"sync"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 
@@ -21,10 +23,9 @@ type webserver struct {
 	port    int
 	address string
 	dir     string
+	running bool
 	server  *http.Server
 }
-
-var initialized bool
 
 func ensureCertificateServer(port int, dir string) (*webserver, error) {
 	if !config.IsPortAvailable(port) {
@@ -32,14 +33,27 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 	}
 
 	address := net.JoinHostPort("127.0.0.1", strconv.Itoa(port))
-	httpServer := &http.Server{Addr: address}
 
 	s := &webserver{
 		host:    "127.0.0.1",
 		port:    port,
 		address: address,
-		server:  httpServer,
 		dir:     dir,
+	}
+
+	h := http.NewServeMux()
+	h.HandleFunc("/", s.handleCertificateRequest)
+
+	s.server = &http.Server{
+		Addr:    address,
+		Handler: h,
+
+		// Set sensible timeouts, in case no reverse proxy is in front of Grumble.
+		// Non-conforming (or malicious) clients may otherwise block indefinitely and cause
+		// file descriptors (or handles, depending on your OS) to leak and/or be exhausted
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  2 * time.Minute,
 	}
 
 	log.WithFields(log.Fields{
@@ -47,24 +61,14 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 		"dir":     dir,
 	}).Info("Creating Mumble certificate server")
 
-	if !initialized {
-		http.HandleFunc("/", s.handleCertificateRequest)
-		initialized = true
-	}
-
 	return s, nil
 }
 
 func (s *webserver) start() {
-	s.Add(1)
-
-	go s.startToListen()
-
-	s.Wait()
-}
-
-func (s *webserver) startToListen() {
-	defer s.Done()
+	if s.running {
+		log.Warning("http server is already running")
+		return
+	}
 
 	go func() {
 		log.WithFields(log.Fields{
@@ -72,14 +76,33 @@ func (s *webserver) startToListen() {
 			"dir":     s.dir,
 		}).Info("Starting Mumble certificate server directory")
 
-		if err := s.server.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatalf("certificate web server start(): %v", err)
+		err := s.server.ListenAndServe()
+		if err != http.ErrServerClosed {
+			log.Fatalf("Fatal HTTP server error: %v", err)
 		}
 	}()
 }
 
 func (s *webserver) stop() error {
-	return s.server.Shutdown(context.TODO())
+	if !s.running {
+		return errors.New("http server not running")
+	}
+
+	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(15*time.Second))
+	err := s.server.Shutdown(ctx)
+	cancel()
+
+	if err == context.DeadlineExceeded {
+		log.Warning("Forcibly shutdown HTTP server while stopping")
+	} else if err != nil {
+		return err
+	}
+
+	s.running = false
+
+	log.Info("HTTP server stopped")
+
+	return nil
 }
 
 func (s *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Request) {
