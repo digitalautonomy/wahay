@@ -5,12 +5,17 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net"
+	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/net/proxy"
 
 	"github.com/digitalautonomy/wahay/config"
 )
@@ -29,6 +34,7 @@ type Instance interface {
 	Destroy()
 	GetController() Control
 	Exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error)
+	HTTPrequest(url string) (string, error)
 }
 
 type instance struct {
@@ -45,6 +51,39 @@ type instance struct {
 	controller    Control
 	runningTor    *runningTor
 	binary        *binary
+}
+
+func (i *instance) HTTPrequest(u string) (string, error) {
+	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(i.controlHost, strconv.Itoa(i.socksPort)))
+	if err != nil {
+		return "", err
+	}
+
+	dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
+	if err != nil {
+		return "", err
+	}
+
+	t := &http.Transport{Dial: dialer.Dial}
+	client := &http.Client{Transport: t}
+
+	resp, err := client.Get(u)
+	if err != nil {
+		return "", err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", errors.New("invalid request")
+	}
+
+	content, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(content), nil
 }
 
 type runningTor struct {
