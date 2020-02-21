@@ -30,6 +30,9 @@ func ensureServerCollection() error {
 const (
 	defaultPort = 64738
 	defaultHost = "127.0.0.1"
+
+	// DefaultCertificateServerPort is the default port for the certificate web server
+	DefaultCertificateServerPort = 8181
 )
 
 var errInvalidPort = errors.New("invalid port supplied")
@@ -38,12 +41,14 @@ var errInvalidPort = errors.New("invalid port supplied")
 type Service interface {
 	GetID() string
 	GetPort() int
+	GetServicePort() int
 	NewConferenceRoom(password string) error
 	Close() error
 }
 
 type service struct {
 	port       int
+	mumblePort int
 	onion      tor.Onion
 	room       *conferenceRoom
 	httpServer *webserver
@@ -55,6 +60,10 @@ func (s *service) GetID() string {
 
 func (s *service) GetPort() int {
 	return s.port
+}
+
+func (s *service) GetServicePort() int {
+	return s.mumblePort
 }
 
 type conferenceRoom struct {
@@ -95,7 +104,7 @@ func NewService(port string) (Service, error) {
 
 	var onionPorts []tor.OnionPort
 
-	httpServer, err := ensureCertificationServer(config.RandomPort(), collection.GetDataDir())
+	httpServer, err := ensureCertificateServer(config.RandomPort(), collection.GetDataDir())
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +112,7 @@ func NewService(port string) (Service, error) {
 	onionPorts = append(onionPorts, tor.OnionPort{
 		DestinationHost: httpServer.host,
 		DestinationPort: httpServer.port,
-		ServicePort:     8181,
+		ServicePort:     DefaultCertificateServerPort,
 	})
 
 	p := defaultPort
@@ -129,6 +138,7 @@ func NewService(port string) (Service, error) {
 
 	s := &service{
 		port:       serverPort,
+		mumblePort: p,
 		onion:      onion,
 		httpServer: httpServer,
 	}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 	"sync"
@@ -15,15 +16,17 @@ import (
 )
 
 type webserver struct {
+	sync.WaitGroup
 	host    string
 	port    int
 	address string
 	dir     string
-	wg      *sync.WaitGroup
 	server  *http.Server
 }
 
-func ensureCertificationServer(port int, dir string) (*webserver, error) {
+var initialized bool
+
+func ensureCertificateServer(port int, dir string) (*webserver, error) {
 	if !config.IsPortAvailable(port) {
 		return nil, fmt.Errorf("the web server port is in use: %d", port)
 	}
@@ -37,44 +40,66 @@ func ensureCertificationServer(port int, dir string) (*webserver, error) {
 		address: address,
 		server:  httpServer,
 		dir:     dir,
-		wg:      &sync.WaitGroup{},
 	}
 
 	log.WithFields(log.Fields{
 		"address": address,
 		"dir":     dir,
-	}).Info("Creating Mumble certication server")
+	}).Info("Creating Mumble certificate server")
 
-	http.HandleFunc("/", s.handleCertificationRequest)
+	if !initialized {
+		http.HandleFunc("/", s.handleCertificateRequest)
+		initialized = true
+	}
 
 	return s, nil
 }
 
 func (s *webserver) start() {
-	go func() {
-		defer s.wg.Done()
+	s.Add(1)
 
+	go s.startToListen()
+
+	s.Wait()
+}
+
+func (s *webserver) startToListen() {
+	defer s.Done()
+
+	go func() {
 		log.WithFields(log.Fields{
 			"address": s.address,
 			"dir":     s.dir,
-		}).Info("Starting Mumble certication server directory")
+		}).Info("Starting Mumble certificate server directory")
 
 		if err := s.server.ListenAndServe(); err != http.ErrServerClosed {
 			log.Fatalf("certificate web server start(): %v", err)
 		}
 	}()
-
-	s.wg.Wait()
 }
 
 func (s *webserver) stop() error {
 	return s.server.Shutdown(context.TODO())
 }
 
-func (s *webserver) handleCertificationRequest(w http.ResponseWriter, r *http.Request) {
+func (s *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
 		"dir": s.dir,
-	}).Debug("handleCertificationRequest(): serving file directory")
+	}).Debug("handleCertificateRequest(): serving cert file")
+
+	if !fileExists(filepath.Join(s.dir, "cert.pem")) {
+		http.Error(
+			w,
+			"The requested certificate is invalid",
+			http.StatusInternalServerError,
+		)
+		return
+	}
 
 	http.ServeFile(w, r, filepath.Join(s.dir, "cert.pem"))
+}
+
+func fileExists(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil
 }
