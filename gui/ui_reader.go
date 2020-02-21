@@ -82,6 +82,10 @@ func (u *gtkUI) getConfigIniFile(fileName string) string {
 	return u.getConfigFileFor(fileName, ".ini")
 }
 
+func (u *gtkUI) getSQLite(fileName string) string {
+	return u.getConfigFileFor(fileName, ".sqlite")
+}
+
 func (u *gtkUI) getConfigFileFor(fileName, extension string) string {
 	return getFileWithFallback(fileName, extension, configFilesDir)
 }
