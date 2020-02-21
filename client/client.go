@@ -18,6 +18,7 @@ type Instance interface {
 	GetBinaryPath() string
 	GetLastError() error
 	EnsureConfiguration() error
+	LoadCertificateFrom(serviceID string, servicePort int, webPort int) error
 	GetTorCommandModifier() tor.ModifyCommand
 	Log()
 	Destroy()
@@ -29,15 +30,17 @@ type client struct {
 	isValid               bool
 	configFile            string
 	configContentProvider mumbleIniProvider
+	databaseProvider      databaseProvider
 	err                   error
 	torCommandModifier    tor.ModifyCommand
 }
 
-func newMumbleClient(p mumbleIniProvider) *client {
+func newMumbleClient(p mumbleIniProvider, d databaseProvider) *client {
 	c := &client{
 		binary:                nil,
 		isValid:               false,
 		configContentProvider: p,
+		databaseProvider:      d,
 		err:                   nil,
 	}
 
@@ -47,18 +50,19 @@ func newMumbleClient(p mumbleIniProvider) *client {
 var currentInstance *client
 
 type mumbleIniProvider func() string
+type databaseProvider func() []byte
 
-// System returns the current Mumble instance
-func System() Instance {
+// GetMumbleInstance returns the current Mumble instance
+func GetMumbleInstance() Instance {
 	return currentInstance
 }
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
-func InitSystem(conf *config.ApplicationConfig, p mumbleIniProvider) Instance {
+func InitSystem(conf *config.ApplicationConfig, p mumbleIniProvider, d databaseProvider) Instance {
 	var err error
 
-	currentInstance = newMumbleClient(p)
+	currentInstance = newMumbleClient(p, d)
 	b := getMumbleBinary(conf)
 
 	if b == nil {

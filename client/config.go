@@ -2,9 +2,12 @@ package client
 
 import (
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/digitalautonomy/wahay/config"
 )
@@ -45,6 +48,12 @@ func (c *client) EnsureConfiguration() error {
 	err = createFile(filepath.Join(binaryDir, configDataName))
 	if err != nil {
 		log.Println("The Mumble data file could not be created")
+	}
+
+	configData := c.databaseProvider()
+	err = ioutil.WriteFile(filepath.Join(binaryDir, configDataName), configData, 0644)
+	if err != nil {
+		return err
 	}
 
 	filename := filepath.Join(binaryDir, configFileName)
@@ -95,3 +104,46 @@ func (c *client) writeConfigToFile(path string) error {
 
 	return nil
 }
+
+func (c *client) saveCertificateConfigFile(cert string) error {
+	if len(c.configFile) == 0 || !fileExists(c.configFile) {
+		return errors.New("invalid mumble.ini file")
+	}
+
+	content, err := ioutil.ReadFile(c.configFile)
+	if err != nil {
+		return err
+	}
+
+	certSectionProp := strings.Replace(
+		string(content),
+		"#CERTIFICATE",
+		fmt.Sprintf("certificate=%s", cert),
+		1,
+	)
+
+	err = ioutil.WriteFile(c.configFile, []byte(certSectionProp), 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// f, err := os.Create(filename)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	defer f.Close()
+
+// 	_, err = f.Write(data)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	log.WithFields(log.Fields{
+// 		"filename": filename,
+// 	}).Debugf("writePfxDataToFile(): bytes written successfully")
+
+// 	return nil

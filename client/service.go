@@ -3,6 +3,8 @@ package client
 import (
 	"errors"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/digitalautonomy/wahay/hosting"
 	"github.com/digitalautonomy/wahay/tor"
 )
@@ -16,15 +18,27 @@ var (
 
 // LaunchClient executes the current Mumble client instance
 func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error) {
-	c := System()
+	c := GetMumbleInstance()
 
 	if !c.CanBeUsed() {
 		return nil, ErrNoClient
 	}
 
+	err := c.LoadCertificateFrom(
+		data.MeetingID,
+		data.Port,
+		hosting.DefaultCertificateServerPort)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"serviceID": data.MeetingID,
+			"port":      hosting.DefaultCertificateServerPort,
+		}).Errorf("No valid Mumble certificate available: %s", err)
+		return nil, err
+	}
+
 	cm := tor.Command{
 		Cmd:      c.GetBinaryPath(),
-		Args:     []string{hosting.GenerateURL(data)},
+		Args:     []string{data.GenerateURL()},
 		Modifier: c.GetTorCommandModifier(),
 	}
 
