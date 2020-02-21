@@ -13,7 +13,7 @@ import (
 	"github.com/gotk3/gotk3/glib"
 )
 
-const(
+const (
 	POLICY_EXTERNAL  PolicyType = C.GTK_POLICY_EXTERNAL
 )
 
@@ -55,6 +55,31 @@ func marshalButtonRole(p uintptr) (interface{}, error) {
 	c := C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))
 	return ButtonRole(c), nil
 }
+
+/*
+ * GtkStack
+ */
+
+// TODO:
+// gtk_stack_set_hhomogeneous().
+// gtk_stack_get_hhomogeneous().
+// gtk_stack_set_vhomogeneous().
+// gtk_stack_get_vhomogeneous().
+
+/*
+ * GtkNotebook
+ */
+
+// TODO:
+// gtk_notebook_detach_tab().
+
+/*
+ * GtkListBox
+ */
+
+// TODO:
+// GtkListBoxCreateWidgetFunc().
+// gtk_list_box_bind_model().
 
 /*
  * GtkScrolledWindow
@@ -228,10 +253,12 @@ func StackSidebarNew() (*StackSidebar, error) {
 	return wrapStackSidebar(glib.Take(unsafe.Pointer(c))), nil
 }
 
+// SetStack is a wrapper around gtk_stack_sidebar_set_stack().
 func (v *StackSidebar) SetStack(stack *Stack) {
 	C.gtk_stack_sidebar_set_stack(v.native(), stack.native())
 }
 
+// GetStack is a wrapper around gtk_stack_sidebar_get_stack().
 func (v *StackSidebar) GetStack() *Stack {
 	c := C.gtk_stack_sidebar_get_stack(v.native())
 	if c == nil {
@@ -253,7 +280,7 @@ func (v *Entry) GrabFocusWithoutSelecting() {
  * GtkTextBuffer
  */
 
-// InsertMarkup() is a wrapper around  gtk_text_buffer_insert_markup()
+// InsertMarkup is a wrapper around  gtk_text_buffer_insert_markup()
 func (v *TextBuffer) InsertMarkup(start *TextIter, text string) {
 	cstr := C.CString(text)
 	defer C.free(unsafe.Pointer(cstr))

@@ -184,6 +184,12 @@ toGtkWindow(void *p)
 	return (GTK_WINDOW(p));
 }
 
+static GtkWindowGroup *
+toGtkWindowGroup(void *p)
+{
+	return (GTK_WINDOW_GROUP(p));
+}
+
 static GtkBox *
 toGtkBox(void *p)
 {
@@ -376,6 +382,12 @@ toGtkLayout(void *p)
 	return (GTK_LAYOUT(p));
 }
 
+static GtkTreeModelSort *
+toGtkTreeModelSortable(void *p)
+{
+    return (GTK_TREE_MODEL_SORT(p));
+}
+
 static GtkListStore *
 toGtkListStore(void *p)
 {
@@ -482,6 +494,12 @@ static GtkTreeSelection *
 toGtkTreeSelection(void *p)
 {
 	return (GTK_TREE_SELECTION(p));
+}
+
+static GtkTreeModelSort *
+toGtkTreeModelSort(void *p)
+{
+	return (GTK_TREE_MODEL_SORT(p));
 }
 
 static GtkTreeSortable *
@@ -766,6 +784,24 @@ toGdkPixbuf(void *p)
 	return (GDK_PIXBUF(p));
 }
 
+static GdkScreen *
+toGdkScreen(void *p)
+{
+	return (GDK_SCREEN(p));
+}
+
+static GdkDevice *
+toGdkDevice(void *p)
+{
+	return (GDK_DEVICE(p));
+}
+
+static GObject *
+toGObject(void *p)
+{
+	return (G_OBJECT(p));
+}
+
 static GType *
 alloc_types(int n) {
 	return ((GType *)g_new0(GType, n));
@@ -775,6 +811,13 @@ static void
 set_type(GType *types, int n, GType t)
 {
 	types[n] = t;
+}
+
+// _gtk_test_init is a wrapper to use gtk_test_init directly from go.
+// The variadic part on gtk_test_init is not used at the moment, according to the documentation.
+static void _gtk_test_init(int *argcp, char ***argvp)
+{
+	gtk_test_init(argcp, argvp);
 }
 
 static GtkTreeViewColumn *
@@ -946,6 +989,10 @@ extern gint goTreeSortableSortFuncs(GtkTreeModel *model, GtkTreeIter *a, GtkTree
 
 static inline void _gtk_tree_sortable_set_sort_func(GtkTreeSortable *sortable, gint sort_column_id, gpointer user_data) {
     gtk_tree_sortable_set_sort_func(sortable, sort_column_id, (GtkTreeIterCompareFunc)(goTreeSortableSortFuncs), user_data, NULL);
+}
+
+static inline void _gtk_tree_sortable_set_default_sort_func(GtkTreeSortable *sortable, gpointer user_data) {
+    gtk_tree_sortable_set_default_sort_func(sortable, (GtkTreeIterCompareFunc)(goTreeSortableSortFuncs), user_data, NULL);
 }
 
 static GtkWidget *
