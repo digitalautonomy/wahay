@@ -81,6 +81,8 @@ func (s *webserver) start() {
 			log.Fatalf("Fatal HTTP server error: %v", err)
 		}
 	}()
+
+	s.running = true
 }
 
 func (s *webserver) stop() error {
