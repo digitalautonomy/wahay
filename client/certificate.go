@@ -3,6 +3,8 @@ package client
 import (
 	// #nosec
 	"crypto/sha1"
+	"encoding/pem"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -16,10 +18,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func (c *client) LoadCertificateFrom(
-	serviceID string,
-	servicePort int,
-	webPort int) error {
+func (c *client) LoadCertificateFrom(serviceID string, servicePort int, webPort int) error {
 	u := &url.URL{
 		Scheme: "http",
 		Host:   net.JoinHostPort(serviceID, strconv.Itoa(webPort)),
@@ -41,6 +40,11 @@ func (c *client) LoadCertificateFrom(
 }
 
 func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte) error {
+	block, _ := pem.Decode(cert)
+	if block == nil || block.Type != "CERTIFICATE" {
+		return errors.New("invalid certificate")
+	}
+
 	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
 	if !fileExists(sqlFile) {
 		data := c.databaseProvider()
@@ -55,7 +59,7 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 		return err
 	}
 
-	digest, err := getDigestForCert(cert)
+	digest, err := getDigestForCert(block.Bytes)
 	if err != nil {
 		return err
 	}
