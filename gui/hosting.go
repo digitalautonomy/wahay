@@ -70,8 +70,11 @@ func (h *hostData) showMeetingControls() {
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": h.finishMeetingReal,
 		"on_finish_meeting":      h.finishMeeting,
-		"on_join_meeting":        h.joinMeetingHost,
-		"on_invite_others":       h.onInviteParticipants,
+		"on_join_meeting": func() {
+			h.u.hideCurrentWindow()
+			go h.joinMeetingHost()
+		},
+		"on_invite_others": h.onInviteParticipants,
 		"on_copy_meeting_id": func() {
 			h.copyMeetingIDToClipboard(builder, "")
 		},
@@ -93,23 +96,39 @@ func (h *hostData) showMeetingControls() {
 }
 
 func (h *hostData) joinMeetingHost() {
+	h.u.displayLoadingWindow()
+
 	var err error
 	validOpChannel := make(chan bool)
 
 	go func() {
 		data := hosting.MeetingData{
 			MeetingID: h.service.GetID(),
+			Port:      h.service.GetServicePort(),
 			Password:  h.meetingPassword,
 			Username:  h.meetingUsername,
 		}
 
-		mumble, err := h.u.launchMumbleClient(data, func() {
-			if h.next == nil {
-				h.next = h.uiActionFinishMeeting
-			}
+		var mumble tor.Service
+		finish := make(chan bool)
 
-			h.switchToHostOnFinishMeeting()
-		})
+		go func() {
+			mumble, err = h.u.launchMumbleClient(
+				data,
+				// Callback to be executed when the client is closed
+				func() {
+					if h.next == nil {
+						h.next = h.uiActionFinishMeeting
+					}
+					h.switchToHostOnFinishMeeting()
+				})
+
+			finish <- true
+		}()
+
+		<-finish // wait until the Mumble client has started
+
+		h.u.hideLoadingWindow()
 
 		if err != nil {
 			log.Errorf("joinMeetingHost() error: %s", err)
