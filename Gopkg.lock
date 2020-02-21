@@ -75,8 +75,7 @@
   version = "v1.4.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:d73a7c75e41cc7f723939374b92eb5be1fca38be826255d6af366d759134e7e9"
+  digest = "1:ddf66fdcdb1ec703fa6316f0735dc287290f6e0123037f59972f5fe9202e09d4"
   name = "github.com/gotk3/gotk3"
   packages = [
     "cairo",
@@ -86,7 +85,8 @@
     "pango",
   ]
   pruneopts = "UT"
-  revision = "69caac910e503eb4c7d2de1c82f36de61dca361a"
+  revision = "f7e85ed33fd290bcfbf4ce56dcdae192647f42c1"
+  version = "v0.4.0"
 
 [[projects]]
   branch = "master"
@@ -113,12 +113,20 @@
   version = "v0.2.0"
 
 [[projects]]
-  digest = "1:15b5cc79aad436d47019f814fde81a10221c740dc8ddf769221a65097fb6c2e9"
+  digest = "1:7218fd69ff5436d016101bbc6183cdc289aa45ac37b48e78846318e4ef389bea"
   name = "github.com/kr/text"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e2ffdb16a802fe2bb95e2e35ff34f0e53aeef34f"
-  version = "v0.1.0"
+  revision = "702c74938df48b97370179f33ce2107bd7ff3b3e"
+  version = "v0.2.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:5f0da76ddb1ec8183caefc01e9b8f5c8665101317b30c573da2495204d58f5e0"
+  name = "github.com/mxk/go-sqlite"
+  packages = ["sqlite3"]
+  pruneopts = "UT"
+  revision = "167da9432e1f4602e95ea67b67051cfa34412e3f"
 
 [[projects]]
   digest = "1:04457f9f6f3ffc5fea48e71d62f2ca256637dee0a04d710288e27e05c8b41976"
@@ -152,7 +160,7 @@
     "sha3",
   ]
   pruneopts = "UT"
-  revision = "69ecbb4d6d5dab05e49161c6e77ea40a030884e1"
+  revision = "bac4c82f69751a6dd76e702d54b3ceb88adab236"
 
 [[projects]]
   branch = "master"
@@ -163,11 +171,11 @@
     "proxy",
   ]
   pruneopts = "UT"
-  revision = "16171245cfb220d5317888b716d69c1fb4e7992b"
+  revision = "46282727080fcf56da5781d0a9ef2fda184be5e6"
 
 [[projects]]
   branch = "master"
-  digest = "1:82a36a77bd0e9b96345f621e6fe74a83261bb09f1ec3863328420ac5198e7510"
+  digest = "1:20fe0d4f6ff9ee6dba5d094f824df4e70248cf787ce99de6d9f3c661cb0e0f90"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -175,7 +183,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "d101bd2416d505c0448a6ce8a282482678040a89"
+  revision = "cb0a6d8edb6c3528b01a0be84a5fe513dbf880a6"
 
 [[projects]]
   digest = "1:137714ae7838cec8b48918205cb3cd96b17afebaa715e35a8213e6e0cc739d56"
@@ -208,6 +216,17 @@
   pruneopts = "UT"
   revision = "41f04d3bba152ddec2103e299fed053415705330"
 
+[[projects]]
+  branch = "master"
+  digest = "1:983c7c4222548783168247c1ff53835bf50bc4fb652787d9c08c428c1fd8d9bb"
+  name = "software.sslmate.com/src/go-pkcs12"
+  packages = [
+    ".",
+    "internal/rc2",
+  ]
+  pruneopts = "UT"
+  revision = "6e380ad96778cc63c6ea17649a9b74224bceafe9"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -225,6 +244,7 @@
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/kardianos/osext",
+    "github.com/mxk/go-sqlite/sqlite3",
     "github.com/sirupsen/logrus",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",
@@ -233,6 +253,7 @@
     "golang.org/x/text/message",
     "golang.org/x/text/message/catalog",
     "gopkg.in/check.v1",
+    "software.sslmate.com/src/go-pkcs12",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
