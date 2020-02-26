@@ -27,6 +27,7 @@ func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error)
 	err := c.LoadCertificateFrom(
 		data.MeetingID,
 		data.Port,
+		data.Cert,
 		hosting.DefaultCertificateServerPort)
 	if err != nil {
 		log.WithFields(log.Fields{
