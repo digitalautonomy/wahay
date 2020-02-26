@@ -67,8 +67,4 @@
 
 [[constraint]]
   branch = "master"
-  name = "software.sslmate.com/src/go-pkcs12"
-
-[[constraint]]
-  branch = "master"
   name = "github.com/mxk/go-sqlite"
