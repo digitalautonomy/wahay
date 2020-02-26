@@ -2,7 +2,9 @@ package hosting
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -15,6 +17,19 @@ import (
 
 	"github.com/digitalautonomy/wahay/config"
 )
+
+func (s *service) GetCertificate() ([]byte, error) {
+	if s.httpServer == nil {
+		return nil, errors.New("the certificate server hasn't been initialized")
+	}
+
+	certFile := filepath.Join(s.httpServer.dir, "cert.pem")
+	if !fileExists(certFile) {
+		return nil, errors.New("the certificate file doesn't exists")
+	}
+
+	return ioutil.ReadFile(certFile)
+}
 
 type webserver struct {
 	sync.WaitGroup
@@ -63,31 +78,31 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 	return s, nil
 }
 
-func (s *webserver) start() {
-	if s.running {
+func (h *webserver) start() {
+	if h.running {
 		log.Warning("http server is already running")
 		return
 	}
 
 	go func() {
 		log.WithFields(log.Fields{
-			"address": s.address,
-			"dir":     s.dir,
+			"address": h.address,
+			"dir":     h.dir,
 		}).Info("Starting Mumble certificate server directory")
 
-		err := s.server.ListenAndServe()
+		err := h.server.ListenAndServe()
 		if err != http.ErrServerClosed {
 			log.Fatalf("Fatal HTTP server error: %v", err)
 		}
 	}()
 
-	s.running = true
+	h.running = true
 }
 
-func (s *webserver) stop() error {
-	if !s.running {
+func (h *webserver) stop() error {
+	if !h.running {
 		log.WithFields(log.Fields{
-			"address": s.address,
+			"address": h.address,
 		}).Debugf("stop(): http server not running")
 
 		// we don't throw an error here because it's not a big deal
@@ -96,7 +111,7 @@ func (s *webserver) stop() error {
 	}
 
 	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(15*time.Second))
-	err := s.server.Shutdown(ctx)
+	err := h.server.Shutdown(ctx)
 	cancel()
 
 	if err == context.DeadlineExceeded {
@@ -105,19 +120,19 @@ func (s *webserver) stop() error {
 		return err
 	}
 
-	s.running = false
+	h.running = false
 
 	log.Info("HTTP server stopped")
 
 	return nil
 }
 
-func (s *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Request) {
+func (h *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
-		"dir": s.dir,
+		"dir": h.dir,
 	}).Debug("handleCertificateRequest(): serving cert file")
 
-	if !fileExists(filepath.Join(s.dir, "cert.pem")) {
+	if !fileExists(filepath.Join(h.dir, "cert.pem")) {
 		http.Error(
 			w,
 			"The requested certificate is invalid",
@@ -126,7 +141,7 @@ func (s *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	http.ServeFile(w, r, filepath.Join(s.dir, "cert.pem"))
+	http.ServeFile(w, r, filepath.Join(h.dir, "cert.pem"))
 }
 
 func fileExists(filename string) bool {

@@ -44,6 +44,7 @@ type Service interface {
 	GetURL() string
 	GetPort() int
 	GetServicePort() int
+	GetCertificate() ([]byte, error)
 	NewConferenceRoom(password string) error
 	Close() error
 }
@@ -139,8 +140,6 @@ func NewService(port string) (Service, error) {
 		DestinationPort: serverPort,
 		ServicePort:     p,
 	})
-
-	log.Println(onionPorts)
 
 	onion, err := tor.NewOnionServiceWithMultiplePorts(onionPorts)
 	if err != nil {

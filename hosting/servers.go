@@ -29,6 +29,7 @@ type MeetingData struct {
 	Port      int
 	Password  string
 	Username  string
+	Cert      []byte
 }
 
 // Create creates
