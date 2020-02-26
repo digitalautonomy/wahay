@@ -35,11 +35,6 @@ func getWindowsLocaleFrom(sysCall string) (string, error) {
 }
 
 func getWindowsLocale() (string, error) {
-	dll, err := windows.LoadDLL("kernel32")
-	if err != nil {
-		return "", errors.New("could not find kernel32 dll: " + err.Error())
-	}
-
 	locale, err := getWindowsLocaleFrom("GetUserDefaultLocaleName")
 	if err != nil {
 		locale, err = getWindowsLocaleFrom("GetSystemDefaultLocaleName")

@@ -28,11 +28,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:2e88bdb54f47418ea281c66f4bf43dd55148947b038aa58313a3572c4347a1e0"
+  digest = "1:5b2204ad5712e6f3b8414fcb9203a03f907ea295724cdd7e1982b35b8ce9d2af"
   name = "github.com/cubiest/jibberjabber"
   packages = ["."]
   pruneopts = "UT"
-  revision = "ee8425c22b574ac8c72149419a27ceb90e83ee03"
+  revision = "1351aa3fb4de4dc6935fa3daa6e89c1e94566168"
 
 [[projects]]
   branch = "master"
@@ -146,7 +146,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ebe29104de94140a8aa6b90ed625c5023e0c90ce9a988fde6c043612e61213e6"
+  digest = "1:fcc72469858c87677fecf3ffe6494711bee501c6671b212e65156a52096a82ae"
   name = "golang.org/x/crypto"
   packages = [
     "ed25519",
@@ -160,7 +160,7 @@
     "sha3",
   ]
   pruneopts = "UT"
-  revision = "bac4c82f69751a6dd76e702d54b3ceb88adab236"
+  revision = "2aa609cf4a9d7d1126360de73b55b6002f9e052a"
 
 [[projects]]
   branch = "master"
@@ -171,11 +171,11 @@
     "proxy",
   ]
   pruneopts = "UT"
-  revision = "46282727080fcf56da5781d0a9ef2fda184be5e6"
+  revision = "0de0cce0169b09b364e001f108dc0399ea8630b3"
 
 [[projects]]
   branch = "master"
-  digest = "1:20fe0d4f6ff9ee6dba5d094f824df4e70248cf787ce99de6d9f3c661cb0e0f90"
+  digest = "1:fbf6d19600d4293ff5aa1417c773e7dfe8ed62a7956c16e98195555ca447db67"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -183,7 +183,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "cb0a6d8edb6c3528b01a0be84a5fe513dbf880a6"
+  revision = "d5e6a3e2c0ae16fc7480523ebcb7fd4dd3215489"
 
 [[projects]]
   digest = "1:137714ae7838cec8b48918205cb3cd96b17afebaa715e35a8213e6e0cc739d56"
@@ -216,17 +216,6 @@
   pruneopts = "UT"
   revision = "41f04d3bba152ddec2103e299fed053415705330"
 
-[[projects]]
-  branch = "master"
-  digest = "1:983c7c4222548783168247c1ff53835bf50bc4fb652787d9c08c428c1fd8d9bb"
-  name = "software.sslmate.com/src/go-pkcs12"
-  packages = [
-    ".",
-    "internal/rc2",
-  ]
-  pruneopts = "UT"
-  revision = "6e380ad96778cc63c6ea17649a9b74224bceafe9"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -253,7 +242,6 @@
     "golang.org/x/text/message",
     "golang.org/x/text/message/catalog",
     "gopkg.in/check.v1",
-    "software.sslmate.com/src/go-pkcs12",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
