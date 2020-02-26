@@ -2,7 +2,6 @@ package hosting
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -87,7 +86,13 @@ func (s *webserver) start() {
 
 func (s *webserver) stop() error {
 	if !s.running {
-		return errors.New("http server not running")
+		log.WithFields(log.Fields{
+			"address": s.address,
+		}).Debugf("stop(): http server not running")
+
+		// we don't throw an error here because it's not a big deal
+		// that the server is not running
+		return nil
 	}
 
 	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(15*time.Second))
