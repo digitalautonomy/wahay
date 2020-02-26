@@ -19,6 +19,17 @@ import (
 )
 
 func (c *client) LoadCertificateFrom(serviceID string, servicePort int, webPort int) error {
+	found, err := c.certificateFoundInDatabase(serviceID)
+	if err != nil {
+		return err
+	}
+
+	if found {
+		log.Debug("Certificate found in DB")
+		return nil
+	}
+
+	log.Debug("Certificate not found in DB, creating...")
 	u := &url.URL{
 		Scheme: "http",
 		Host:   net.JoinHostPort(serviceID, strconv.Itoa(webPort)),
@@ -85,6 +96,7 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 	if err != nil {
 		return err
 	}
+	defer conn.Close()
 
 	err = conn.Exec("REPLACE INTO `cert` (`hostname`,`port`,`digest`) VALUES ($hostname,$port,$digest)", params)
 	if err != nil {
@@ -92,6 +104,28 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 	}
 
 	return nil
+}
+
+func (c *client) certificateFoundInDatabase(serviceID string) (bool, error) {
+	conn, err := c.getDBConnection()
+	if err != nil {
+		return false, err
+	}
+	defer conn.Close()
+
+	var numOfRecords int
+	for q, err := conn.Query("SELECT COUNT(*) FROM cert WHERE hostname = ?", serviceID); err == nil; err = q.Next() {
+		err = q.Scan(&numOfRecords)
+		if err != nil {
+			return false, err
+		}
+	}
+
+	if numOfRecords > 0 {
+		return true, nil
+	}
+
+	return false, nil
 }
 
 func getDigestForCert(cert []byte) (string, error) {

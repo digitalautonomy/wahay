@@ -24,8 +24,6 @@ func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error)
 		return nil, ErrNoClient
 	}
 
-	// TODO: we should avoid this step for the host, because
-	// we already have the hosting information and the certificate
 	err := c.LoadCertificateFrom(
 		data.MeetingID,
 		data.Port,
