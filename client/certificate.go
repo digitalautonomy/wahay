@@ -40,24 +40,28 @@ func (c *client) LoadCertificateFrom(serviceID string, servicePort int, webPort 
 	return c.saveCertificateConfigFile(certContent)
 }
 
-func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte) error {
-	block, _ := pem.Decode(cert)
-	if block == nil || block.Type != "CERTIFICATE" {
-		return errors.New("invalid certificate")
-	}
-
+func (c *client) getDBConnection() (*sqlite3.Conn, error) {
 	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
 	if !fileExists(sqlFile) {
 		data := c.databaseProvider()
 		err := ioutil.WriteFile(sqlFile, data, 0644)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
 	conn, err := sqlite3.Open(sqlFile)
 	if err != nil {
-		return err
+		return nil, err
+	}
+
+	return conn, nil
+}
+
+func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte) error {
+	block, _ := pem.Decode(cert)
+	if block == nil || block.Type != "CERTIFICATE" {
+		return errors.New("invalid certificate")
 	}
 
 	digest, err := getDigestForCert(block.Bytes)
@@ -75,6 +79,11 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 		"$hostname": serviceID,
 		"$port":     servicePort,
 		"$digest":   digest,
+	}
+
+	conn, err := c.getDBConnection()
+	if err != nil {
+		return err
 	}
 
 	err = conn.Exec("REPLACE INTO `cert` (`hostname`,`port`,`digest`) VALUES ($hostname,$port,$digest)", params)
