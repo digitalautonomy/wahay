@@ -72,13 +72,11 @@ func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 	if len(data.MeetingID) == 0 {
 		u.openErrorDialog(i18n.Sprintf("The Meeting ID cannot be blank"))
-		u.showMainWindow()
 		return
 	}
 
 	if !isAValidMeetingID(data.MeetingID) {
 		u.reportError(i18n.Sprintf("The provided meeting ID is invalid: \n\n%s", data.MeetingID))
-		u.showMainWindow()
 		return
 	}
 
