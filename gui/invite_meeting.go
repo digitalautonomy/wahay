@@ -76,7 +76,7 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 		return
 	}
 
-	if !isMeetingIDValid(data.MeetingID) {
+	if !isAValidMeetingID(data.MeetingID) {
 		u.reportError(i18n.Sprintf("The provided meeting ID is invalid: \n\n%s", data.MeetingID))
 		u.showMainWindow()
 		return
@@ -148,12 +148,33 @@ func (u *gtkUI) openJoinWindow() {
 	u.setCurrentWindow(win)
 }
 
-const onionServiceLength = 60
+const onionServiceLength = 62
 
-// This function needs to be improved in order to make a real validation of the Meeting ID or Onion Address.
+// TODO: This function needs to be improved in order to make a real validation of
+// the Meeting ID or Onion Address.
 // At the moment, this function helps to test the error code window render.
-func isMeetingIDValid(meetingID string) bool {
-	return len(meetingID) > onionServiceLength && strings.HasSuffix(meetingID, ".onion")
+func isAValidMeetingID(meetingID string) bool {
+	if len(meetingID) < onionServiceLength {
+		return false
+	}
+
+	if len(meetingID) == onionServiceLength &&
+		!strings.HasSuffix(meetingID, ".onion") {
+		return false
+	}
+
+	if len(meetingID) > onionServiceLength &&
+		len(meetingID[:onionServiceLength]) < onionServiceLength {
+		return false
+	}
+
+	if len(meetingID) > onionServiceLength &&
+		strings.Index(meetingID, ":") != onionServiceLength &&
+		strings.Index(meetingID, ".onion") != onionServiceLength-4 {
+		return false
+	}
+
+	return true
 }
 
 func (u *gtkUI) leaveMeeting(m tor.Service) {
