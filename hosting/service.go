@@ -2,6 +2,7 @@ package hosting
 
 import (
 	"errors"
+	"net"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -40,6 +41,7 @@ var errInvalidPort = errors.New("invalid port supplied")
 // Service is a representation of our custom Mumble server
 type Service interface {
 	GetID() string
+	GetURL() string
 	GetPort() int
 	GetServicePort() int
 	NewConferenceRoom(password string) error
@@ -56,6 +58,13 @@ type service struct {
 
 func (s *service) GetID() string {
 	return s.onion.GetID()
+}
+
+func (s *service) GetURL() string {
+	if s.GetServicePort() != defaultPort {
+		return net.JoinHostPort(s.GetID(), strconv.Itoa(s.GetServicePort()))
+	}
+	return s.GetID()
 }
 
 func (s *service) GetPort() int {
@@ -130,6 +139,8 @@ func NewService(port string) (Service, error) {
 		DestinationPort: serverPort,
 		ServicePort:     p,
 	})
+
+	log.Println(onionPorts)
 
 	onion, err := tor.NewOnionServiceWithMultiplePorts(onionPorts)
 	if err != nil {

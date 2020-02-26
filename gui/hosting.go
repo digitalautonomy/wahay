@@ -95,7 +95,7 @@ func (h *hostData) showMeetingControls() {
 	if err != nil {
 		log.Printf("meeting id error: %s", err)
 	}
-	_ = meetingID.SetProperty("label", h.service.GetID())
+	_ = meetingID.SetProperty("label", h.service.GetURL())
 
 	h.u.switchToWindow(win)
 }
@@ -281,7 +281,7 @@ func (h *hostData) leaveHostMeeting() {
 }
 
 func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
-	err := h.u.copyToClipboard(h.service.GetID())
+	err := h.u.copyToClipboard(h.service.GetURL())
 	if err != nil {
 		fatal("clipboard copying error")
 	}
@@ -352,8 +352,8 @@ func (h *hostData) getInvitationSubject() string {
 
 func (h *hostData) getInvitationText() string {
 	it := i18n.Sprintf("Please join the Wahay meeting with the following details:") + "%0D%0A%0D%0A"
-	if h.service.GetID() != "" {
-		it = i18n.Sprintf("%sMeeting ID: %s", it, h.service.GetID())
+	if h.service.GetURL() != "" {
+		it = i18n.Sprintf("%sMeeting ID: %s", it, h.service.GetURL())
 	}
 	return it
 }
@@ -442,7 +442,7 @@ func (h *hostData) showMeetingConfiguration() {
 	if err != nil {
 		log.Printf("meeting id error: %s", err)
 	}
-	_ = meetingID.SetProperty("text", h.service.GetID())
+	_ = meetingID.SetProperty("text", h.service.GetURL())
 
 	h.u.switchToWindow(win)
 }
