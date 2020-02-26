@@ -102,50 +102,12 @@ func (h *hostData) showMeetingControls() {
 }
 
 func (h *hostData) joinMeetingHost() {
-	h.u.displayLoadingWindowWithCallback(func() {
-		h.u.switchToMainWindow()
-	})
+	h.u.displayLoadingWindowWithCallback(h.u.switchToMainWindow)
 
 	var err error
 	validOpChannel := make(chan bool)
 
-	go func() {
-		data := hosting.MeetingData{
-			MeetingID: h.service.GetID(),
-			Port:      h.service.GetServicePort(),
-			Password:  h.meetingPassword,
-			Username:  h.meetingUsername,
-		}
-
-		var mumble tor.Service
-		finish := make(chan bool)
-
-		go func() {
-			mumble, err = h.u.launchMumbleClient(
-				data,
-				// Callback to be executed when the client is closed
-				func() {
-					if h.next == nil {
-						h.next = h.uiActionFinishMeeting
-					}
-					h.switchToHostOnFinishMeeting()
-				})
-
-			finish <- true
-		}()
-
-		<-finish // wait until the Mumble client has started
-
-		h.u.hideLoadingWindow()
-
-		if err != nil {
-			log.Errorf("joinMeetingHost() error: %s", err)
-			validOpChannel <- false
-		} else {
-			h.mumble = mumble
-			validOpChannel <- true
-		}
-	}()
+	go h.joinMeetingHostHelper(validOpChannel)
 
 	if <-validOpChannel {
 		h.openHostJoinMeetingWindow()
@@ -157,8 +119,52 @@ func (h *hostData) joinMeetingHost() {
 	}
 
 	h.u.reportError(err.Error())
-
 	h.u.switchToMainWindow()
+}
+
+func (h *hostData) joinMeetingHostHelper(validOpChannel chan bool) {
+	cert, err := h.service.GetCertificate()
+	if err != nil {
+		// TODO: should we skip the join meeting action here?
+		log.Info("The host certificate is not valid. The system will ask for it again on connnecting.")
+	}
+
+	data := hosting.MeetingData{
+		MeetingID: h.service.GetID(),
+		Port:      h.service.GetServicePort(),
+		Cert:      cert,
+		Password:  h.meetingPassword,
+		Username:  h.meetingUsername,
+	}
+
+	var mumble tor.Service
+	finish := make(chan bool)
+
+	go func() {
+		mumble, err = h.u.launchMumbleClient(
+			data,
+			// Callback to be executed when the client is closed
+			func() {
+				if h.next == nil {
+					h.next = h.uiActionFinishMeeting
+				}
+				h.switchToHostOnFinishMeeting()
+			})
+
+		finish <- true
+	}()
+
+	<-finish // wait until the Mumble client has started
+
+	h.u.hideLoadingWindow()
+
+	if err != nil {
+		log.Errorf("joinMeetingHost() error: %s", err)
+		validOpChannel <- false
+	} else {
+		h.mumble = mumble
+		validOpChannel <- true
+	}
 }
 
 func (h *hostData) switchToHostOnFinishMeeting() {
