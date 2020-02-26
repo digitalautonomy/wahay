@@ -1,11 +1,17 @@
 package gui
 
 import (
+	"errors"
+	"net"
+	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/coyim/gotk3adapter/gtki"
 	"github.com/digitalautonomy/wahay/hosting"
 	"github.com/digitalautonomy/wahay/tor"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func (u *gtkUI) joinMeeting() {
@@ -126,12 +132,26 @@ func (u *gtkUI) openJoinWindow() {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
-			meetingID, _ := entMeetingID.GetText()
+			url, _ := entMeetingID.GetText()
 			username, _ := entScreenName.GetText()
 			password, _ := entMeetingPassword.GetText()
 
+			// TODO: remove this if we show a custom input field to enter
+			// the SERVICE URL and the PORT
+			meetingID, port, err := extractMeetingIDandPort(url)
+			if err != nil {
+				log.WithFields(log.Fields{
+					"url":  url,
+					"ID":   meetingID,
+					"port": port,
+				}).Error("Invalid meeting ID provided")
+				u.reportError(i18n.Sprintf("Invalid meeting ID provided"))
+				return
+			}
+
 			data := hosting.MeetingData{
 				MeetingID: meetingID,
+				Port:      port,
 				Username:  username,
 				Password:  password,
 			}
@@ -144,6 +164,67 @@ func (u *gtkUI) openJoinWindow() {
 
 	win.Show()
 	u.setCurrentWindow(win)
+}
+
+var errInvalidMeetingAddr = errors.New("invalid meeting address")
+
+func extractMeetingIDandPort(meetingURL string) (meetingID string, port int, err error) {
+	if !isAValidMeetingID(meetingURL) {
+		err = errInvalidMeetingAddr
+		return
+	}
+
+	if !strings.HasPrefix(meetingURL, "mumble://") {
+		v := url.URL{
+			Scheme: "mumble",
+			Host:   meetingURL,
+		}
+		meetingURL = v.String()
+	}
+
+	h, p, e := extractURLAndPort(meetingURL)
+	if e != nil {
+		err = errInvalidMeetingAddr
+		return
+	}
+
+	meetingID = h
+	port = p
+
+	return
+}
+
+func extractURLAndPort(urlToParse string) (host string, port int, err error) {
+	var h string
+	var p string
+	var e error
+
+	u, e := url.Parse(urlToParse)
+	if e != nil {
+		err = e
+		return
+	}
+
+	if u.Port() != "" {
+		h, p, e = net.SplitHostPort(u.Host)
+		if e != nil {
+			err = e
+			return
+		}
+
+		host = h
+
+		port, e = strconv.Atoi(p)
+		if e != nil {
+			err = e
+		}
+
+		return
+	}
+
+	host = u.Host
+
+	return host, port, err
 }
 
 const onionServiceLength = 62
