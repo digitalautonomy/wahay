@@ -105,6 +105,7 @@ func (c *client) writeConfigToFile(path string) error {
 	return nil
 }
 
+// TODO: this function needs revision
 func (c *client) saveCertificateConfigFile(cert string) error {
 	if len(c.configFile) == 0 || !fileExists(c.configFile) {
 		return errors.New("invalid mumble.ini file")
