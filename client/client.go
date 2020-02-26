@@ -18,7 +18,7 @@ type Instance interface {
 	GetBinaryPath() string
 	GetLastError() error
 	EnsureConfiguration() error
-	LoadCertificateFrom(serviceID string, servicePort int, webPort int) error
+	LoadCertificateFrom(serviceID string, servicePort int, cert []byte, webPort int) error
 	GetTorCommandModifier() tor.ModifyCommand
 	Log()
 	Destroy()
