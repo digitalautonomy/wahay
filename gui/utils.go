@@ -41,11 +41,17 @@ func (u *gtkUI) copyToClipboard(text string) error {
 }
 
 func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
-	label.SetVisible(true)
-	label.SetText(message)
+	u.doInUIThread(func() {
+		label.SetVisible(true)
+		label.SetText(message)
+	})
+
 	time.Sleep(time.Duration(seconds) * time.Second)
-	label.SetText("")
-	label.SetVisible(false)
+
+	u.doInUIThread(func() {
+		label.SetText("")
+		label.SetVisible(false)
+	})
 }
 
 func (u *gtkUI) enableWindow(win gtki.Window) {

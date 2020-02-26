@@ -3,6 +3,7 @@ package gui
 import (
 	"errors"
 	"fmt"
+	"sync"
 
 	log "github.com/sirupsen/logrus"
 
@@ -280,21 +281,31 @@ func (h *hostData) leaveHostMeeting() {
 	go h.mumble.Close()
 }
 
+var uiHostingLock sync.Mutex
+
 func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
+	uiHostingLock.Lock()
+	defer uiHostingLock.Unlock()
+
 	err := h.u.copyToClipboard(h.service.GetURL())
 	if err != nil {
 		fatal("clipboard copying error")
 	}
 
-	var lblMessage gtki.Label
-	if len(label) == 0 {
-		lblMessage = builder.get("lblMessage").(gtki.Label)
-	} else {
-		lblMessage = builder.get(label).(gtki.Label)
-	}
-	_ = lblMessage.SetProperty("visible", false)
-
 	go func() {
+		var lblMessage gtki.Label
+
+		if len(label) == 0 {
+			lblMessage = builder.get("lblMessage").(gtki.Label)
+		} else {
+			lblMessage = builder.get(label).(gtki.Label)
+		}
+
+		err = lblMessage.SetProperty("visible", false)
+		if err != nil {
+			panic(fmt.Sprintf("programmer error: %s", err))
+		}
+
 		h.u.messageToLabel(lblMessage, i18n.Sprintf("The meeting ID has been copied to the clipboard"), 5)
 	}()
 }
