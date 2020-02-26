@@ -15,37 +15,44 @@ import (
 
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/mxk/go-sqlite/sqlite3"
+
 	log "github.com/sirupsen/logrus"
 )
 
-func (c *client) LoadCertificateFrom(serviceID string, servicePort int, webPort int) error {
-	found, err := c.certificateFoundInDatabase(serviceID)
-	if err != nil {
-		return err
-	}
-
+func (c *client) LoadCertificateFrom(
+	serviceID string,
+	servicePort int,
+	cert []byte,
+	webPort int) error {
+	found := c.certificateFoundInDatabase(serviceID)
 	if found {
-		log.Debug("Certificate found in DB")
+		// certificate already in the Mumble database
 		return nil
 	}
 
-	log.Debug("Certificate not found in DB, creating...")
-	u := &url.URL{
-		Scheme: "http",
-		Host:   net.JoinHostPort(serviceID, strconv.Itoa(webPort)),
+	var err error
+	var content string
+
+	if cert == nil {
+		u := &url.URL{
+			Scheme: "http",
+			Host:   net.JoinHostPort(serviceID, strconv.Itoa(webPort)),
+		}
+
+		content, err = tor.GetCurrentInstance().HTTPrequest(u.String())
+		if err != nil {
+			return err
+		}
+
+		cert = []byte(content)
 	}
 
-	cert, err := tor.GetCurrentInstance().HTTPrequest(u.String())
+	err = c.storeCertificate(serviceID, servicePort, cert)
 	if err != nil {
 		return err
 	}
 
-	err = c.storeCertificate(serviceID, servicePort, []byte(cert))
-	if err != nil {
-		return err
-	}
-
-	certContent := escapeByteString(arrayByteToString([]byte(cert)))
+	certContent := escapeByteString(arrayByteToString(cert))
 
 	// TODO: should we maintain this?
 	return c.saveCertificateConfigFile(certContent)
@@ -106,10 +113,10 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 	return nil
 }
 
-func (c *client) certificateFoundInDatabase(serviceID string) (bool, error) {
+func (c *client) certificateFoundInDatabase(serviceID string) bool {
 	conn, err := c.getDBConnection()
 	if err != nil {
-		return false, err
+		return false
 	}
 	defer conn.Close()
 
@@ -117,15 +124,11 @@ func (c *client) certificateFoundInDatabase(serviceID string) (bool, error) {
 	for q, err := conn.Query("SELECT COUNT(*) FROM cert WHERE hostname = ?", serviceID); err == nil; err = q.Next() {
 		err = q.Scan(&numOfRecords)
 		if err != nil {
-			return false, err
+			return false
 		}
 	}
 
-	if numOfRecords > 0 {
-		return true, nil
-	}
-
-	return false, nil
+	return numOfRecords > 0
 }
 
 func getDigestForCert(cert []byte) (string, error) {
