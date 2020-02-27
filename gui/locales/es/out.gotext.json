@@ -9,21 +9,19 @@
             "fuzzy": true
         },
         {
-            "id": "Something went wrong: {Err}",
-            "message": "Something went wrong: {Err}",
-            "translation": "Algo salió mal: {Err}",
-            "translatorComment": "Copied from source.",
+            "id": "Something went wrong: {Error}",
+            "message": "Something went wrong: {Error}",
+            "translation": "",
             "placeholders": [
                 {
-                    "id": "Err",
+                    "id": "Error",
                     "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
                     "argNum": 1,
-                    "expr": "err"
+                    "expr": "e"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "we couldn't start the meeting",
@@ -33,50 +31,9 @@
             "fuzzy": true
         },
         {
-            "id": "Configured Mumble port is not valid: {PortMumble}",
-            "message": "Configured Mumble port is not valid: {PortMumble}",
-            "translation": "El puerto configurado para Mumble es inválido: {PortMumble}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "PortMumble",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "h.u.config.GetPortMumble()"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
             "id": "The meeting can't be closed: {Err}",
             "message": "The meeting can't be closed: {Err}",
             "translation": "La reunión no se pudo cerrar: {Err}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Err",
-                    "string": "%[1]s",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
-                    "argNum": 1,
-                    "expr": "err"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "internal Tor instance has already been closed",
-            "message": "internal Tor instance has already been closed",
-            "translation": "tor no está definido",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "The onion service can't be deleted: {Err}",
-            "message": "The onion service can't be deleted: {Err}",
-            "translation": "El servicio Onion no se pudo eliminar: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -117,10 +74,9 @@
             "fuzzy": true
         },
         {
-            "id": "{It}Meeting ID: {ServiceID}",
-            "message": "{It}Meeting ID: {ServiceID}",
-            "translation": "{It}ID de la reunión: {ServiceID}",
-            "translatorComment": "Copied from source.",
+            "id": "{It}Meeting ID: {URL}",
+            "message": "{It}Meeting ID: {URL}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "It",
@@ -131,15 +87,14 @@
                     "expr": "it"
                 },
                 {
-                    "id": "ServiceID",
+                    "id": "URL",
                     "string": "%[2]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 2,
-                    "expr": "h.serviceID"
+                    "expr": "h.service.GetURL()"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Start Meeting \u0026 Join",
@@ -170,6 +125,21 @@
             "fuzzy": true
         },
         {
+            "id": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ]
+        },
+        {
             "id": "An error occurred\n\n{Error}",
             "message": "An error occurred\n\n{Error}",
             "translation": "Ocurrió un error\n\n{Error}",
@@ -187,21 +157,9 @@
             "fuzzy": true
         },
         {
-            "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
-            "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
-            "translation": "el ID de la reunión provisto es inválido: \n\n{MeetingID}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "MeetingID",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "data.MeetingID"
-                }
-            ],
-            "fuzzy": true
+            "id": "Invalid meeting ID provided",
+            "message": "Invalid meeting ID provided",
+            "translation": ""
         },
         {
             "id": "The meeting ID is invalid",
@@ -280,13 +238,6 @@
             "id": "Open",
             "message": "Open",
             "translation": "Abrir",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "tor can't be used",
-            "message": "tor can't be used",
-            "translation": "tor no se puede usar",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

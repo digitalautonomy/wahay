@@ -17,7 +17,7 @@ const UsrLocalBinPath = "/usr/local/bin/tor"*/
 
 // Connectivity is used to check whether Tor can connect in different ways
 type Connectivity interface {
-	Check() (total error, partial error)
+	Check() (errTotal error, errPartial error)
 }
 
 type connectivity struct {
@@ -104,17 +104,31 @@ func (c *connectivity) checkConnectionOverTor() bool {
 	return v.IsTor
 }
 
-func (c *connectivity) Check() (total error, partial error) {
+var (
+	// ErrPartialTorNoControlPort is an error to be trown when a valid Tor
+	// control port cannot be found
+	ErrPartialTorNoControlPort = errors.New("no Tor control port found")
+
+	// ErrPartialTorNoValidAuth is an error to be trown when the system
+	// cannot authenticate to the Tor control port
+	ErrPartialTorNoValidAuth = errors.New("no Tor control port valid authentication")
+
+	// ErrFatalTorNoConnectionAllowed is a fatal error that it's trown when
+	// the system cannot make a connection over the Tor network
+	ErrFatalTorNoConnectionAllowed = errors.New("no connection over Tor allowed")
+)
+
+func (c *connectivity) Check() (errTotal error, errPartial error) {
 	if !c.checkTorControlPortExists() {
-		return nil, errors.New("no Tor Control Port found")
+		return nil, ErrPartialTorNoControlPort
 	}
 
 	if !c.checkTorControlAuth() {
-		return nil, errors.New("no Tor Control Port valid authentication")
+		return nil, ErrPartialTorNoValidAuth
 	}
 
 	if !c.checkConnectionOverTor() {
-		return errors.New("not connection over Tor allowed"), nil
+		return ErrFatalTorNoConnectionAllowed, nil
 	}
 
 	return nil, nil

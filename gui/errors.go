@@ -10,20 +10,12 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-var (
-	startupErrors      []string
-	startupErrorsIlock sync.Mutex
-)
-
-func weHaveStartupErrors() bool {
-	return len(startupErrors) > 0
+func fatal(v interface{}) {
+	panic(fmt.Sprintf("failing on error: %v", v))
 }
 
-func addNewStartupError(err error) {
-	startupErrorsIlock.Lock()
-	defer startupErrorsIlock.Unlock()
-
-	startupErrors = append(startupErrors, err.Error())
+func fatalf(format string, v ...interface{}) {
+	panic(fmt.Sprintf(format, v...))
 }
 
 func (u *gtkUI) reportError(message string) {
@@ -58,14 +50,25 @@ func (u *gtkUI) reportError(message string) {
 	})
 }
 
-func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
-	if !weHaveStartupErrors() {
-		return // nothing to show
+func getStatusErrorsText() string {
+	if !isThereAnyStartupError() {
+		return "" // nothing to show
 	}
 
+	txt := []string{}
+	for _, v := range startupErrors {
+		txt = append(txt, v.errorList...)
+	}
+
+	return strings.Join(txt, "\n")
+}
+
+func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
+	txt := getStatusErrorsText()
+
 	dialog := builder.get("mainWindowErrors").(gtki.Dialog)
-	txt := builder.get("textContent").(gtki.Label)
-	txt.SetMarkup(strings.Join(startupErrors, "\n"))
+	buffer := builder.get("helpTextBuffer").(gtki.TextBuffer)
+	buffer.SetText(txt)
 
 	if u.mainWindow != nil {
 		dialog.SetTransientFor(u.mainWindow)
@@ -84,10 +87,41 @@ func (u *gtkUI) closeStatusErrorsWindow() {
 	}
 }
 
-func fatal(v interface{}) {
-	panic(fmt.Sprintf("failing on error: %v", v))
+type errGroupType string
+type errGroupParser func(err error) string
+type errGroupData struct {
+	errorList []string
+	parser    errGroupParser
 }
 
-func fatalf(format string, v ...interface{}) {
-	panic(fmt.Sprintf(format, v...))
+var startupErrors = map[errGroupType]*errGroupData{}
+
+func initStartupErrorGroup(group errGroupType, parser errGroupParser) {
+	if _, ok := startupErrors[group]; ok {
+		return
+	}
+
+	startupErrors[group] = &errGroupData{
+		errorList: []string{},
+		parser:    parser,
+	}
+}
+
+func isThereAnyStartupError() bool {
+	return weHaveErrors
+}
+
+var startupErrorsIlock sync.Mutex
+var weHaveErrors bool
+
+func addNewStartupError(err error, group errGroupType) {
+	startupErrorsIlock.Lock()
+	defer startupErrorsIlock.Unlock()
+
+	weHaveErrors = true
+
+	startupErrors[group].errorList = append(
+		startupErrors[group].errorList,
+		startupErrors[group].parser(err),
+	)
 }
