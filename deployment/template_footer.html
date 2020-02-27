@@ -1,7 +1,7 @@
 </table>
 </div>
 
-<h2>Verify instructions</h2>
+<h2 id="instructions">Verify instructions</h2>
 
 <div class="box">
 <p><strong>Hashes:</strong><br><br>
@@ -35,7 +35,7 @@ Digital signatures ensures that what CAD intended to publish is the same as was 
 
 1) Download and import CAD signing key (testing key at the moment):<br>
 <code>
-<br>$ wget https://staging.wahay.app/cad-testing-public-key.asc
+<br>$ wget https://wahay.app/cad-testing-public-key.asc
 </code>
 
 <br><br>
@@ -48,7 +48,7 @@ gpg:               imported: 1<br>
 </div>
 <br><br>
 
-3) Verify the key<br>
+3) Verify hash signature<br>
 <div class="code">
 <br>$ gpg --verify wahay-2020-01-22-9319d8d.sha256sum.asc wahay-2020-01-22-9319d8d.sha256sum<br>
 gpg: Signature made mié 22 ene 2020 10:06:02 -05<br>
