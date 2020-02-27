@@ -47,7 +47,7 @@ then
         fi
 
         ln -s $BINARY_NAME ${APP_NAME}-latest
-        ln -s $SHA256_SUM_FILE ${APP_NAME}-latest.sha256sum/
+        ln -s $SHA256_SUM_FILE ${APP_NAME}-latest.sha256sum
         ln -s $SIGNATURE_FILE ${APP_NAME}-latest.sha256sum.asc
 else
  
