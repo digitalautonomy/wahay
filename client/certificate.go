@@ -14,8 +14,6 @@ import (
 	"strings"
 
 	"github.com/digitalautonomy/wahay/tor"
-	"github.com/mxk/go-sqlite/sqlite3"
-
 	log "github.com/sirupsen/logrus"
 )
 
@@ -24,9 +22,7 @@ func (c *client) LoadCertificateFrom(
 	servicePort int,
 	cert []byte,
 	webPort int) error {
-	found := c.certificateFoundInDatabase(serviceID)
-	if found {
-		// certificate already in the Mumble database
+	if c.isTheCertificateInDB(serviceID) {
 		return nil
 	}
 
@@ -58,24 +54,6 @@ func (c *client) LoadCertificateFrom(
 	return c.saveCertificateConfigFile(certContent)
 }
 
-func (c *client) getDBConnection() (*sqlite3.Conn, error) {
-	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
-	if !fileExists(sqlFile) {
-		data := c.databaseProvider()
-		err := ioutil.WriteFile(sqlFile, data, 0644)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	conn, err := sqlite3.Open(sqlFile)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn, nil
-}
-
 func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte) error {
 	block, _ := pem.Decode(cert)
 	if block == nil || block.Type != "CERTIFICATE" {
@@ -93,42 +71,49 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 		"digest":   digest,
 	}).Info("Loading certificate")
 
-	params := sqlite3.NamedArgs{
-		"$hostname": serviceID,
-		"$port":     servicePort,
-		"$digest":   digest,
-	}
-
-	conn, err := c.getDBConnection()
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-
-	err = conn.Exec("REPLACE INTO `cert` (`hostname`,`port`,`digest`) VALUES ($hostname,$port,$digest)", params)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return c.storeCertificateInDB(serviceID, servicePort, digest)
 }
 
-func (c *client) certificateFoundInDatabase(serviceID string) bool {
-	conn, err := c.getDBConnection()
-	if err != nil {
-		return false
-	}
-	defer conn.Close()
-
-	var numOfRecords int
-	for q, err := conn.Query("SELECT COUNT(*) FROM cert WHERE hostname = ?", serviceID); err == nil; err = q.Next() {
-		err = q.Scan(&numOfRecords)
+func (c *client) getDB() (*conn, error) {
+	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
+	if !fileExists(sqlFile) {
+		data := c.databaseProvider()
+		err := ioutil.WriteFile(sqlFile, data, 0644)
 		if err != nil {
-			return false
+			return nil, err
 		}
 	}
 
-	return numOfRecords > 0
+	conn, err := getSQLConnection(sqlFile)
+	if err != nil {
+		return nil, err
+	}
+
+	return conn, nil
+}
+
+func (c *client) storeCertificateInDB(id string, port int, digest string) error {
+	conn, err := c.getDB()
+	if err != nil {
+		return err
+	}
+	defer conn.close()
+
+	return conn.replace("cert", map[string]string{
+		"hostname": id,
+		"port":     strconv.Itoa(port),
+		"digest":   digest,
+	})
+}
+
+func (c *client) isTheCertificateInDB(serviceID string) bool {
+	conn, err := c.getDB()
+	if err != nil {
+		return false
+	}
+	defer conn.close()
+
+	return conn.exists("cert", "hostname", serviceID)
 }
 
 func getDigestForCert(cert []byte) (string, error) {
