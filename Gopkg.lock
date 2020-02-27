@@ -122,11 +122,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5f0da76ddb1ec8183caefc01e9b8f5c8665101317b30c573da2495204d58f5e0"
-  name = "github.com/mxk/go-sqlite"
-  packages = ["sqlite3"]
+  digest = "1:16091034e92d6b5ba928e89b9d6131c0d208704e001dd4f33031b4903e0b7f24"
+  name = "github.com/mattn/go-sqlite3"
+  packages = ["."]
   pruneopts = "UT"
-  revision = "167da9432e1f4602e95ea67b67051cfa34412e3f"
+  revision = "67986a7832dcbda29de5c1341b3dec6c6d97511a"
 
 [[projects]]
   digest = "1:04457f9f6f3ffc5fea48e71d62f2ca256637dee0a04d710288e27e05c8b41976"
@@ -233,7 +233,7 @@
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/kardianos/osext",
-    "github.com/mxk/go-sqlite/sqlite3",
+    "github.com/mattn/go-sqlite3",
     "github.com/sirupsen/logrus",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",

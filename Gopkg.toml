@@ -67,4 +67,4 @@
 
 [[constraint]]
   branch = "master"
-  name = "github.com/mxk/go-sqlite"
+  name = "github.com/mattn/go-sqlite3"
