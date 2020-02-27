@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"errors"
 	"sync"
 
 	"github.com/digitalautonomy/wahay/client"
@@ -25,8 +24,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 		)
 
 		if !c.CanBeUsed() {
-			e := errors.New(i18n.Sprintf("the Mumble client can not be used because: %s", c.GetLastError()))
-			addNewStartupError(e, errGroupMumble)
+			addNewStartupError(c.GetLastError(), errGroupMumble)
 			return
 		}
 
@@ -56,5 +54,5 @@ func init() {
 }
 
 func parseMumbleError(err error) string {
-	return "mumble error"
+	return i18n.Sprintf("the Mumble client can not be used because: %s", err.Error())
 }
