@@ -4,6 +4,8 @@ import (
 	"os"
 	"runtime"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
@@ -105,11 +107,11 @@ func (u *gtkUI) configLoaded() {
 
 	go u.initLogs()
 
-	go u.ensureDependencies(func(success bool) {
+	go u.ensureDependencies(func() {
 		u.hideLoadingWindow()
 
 		u.doInUIThread(func() {
-			u.createMainWindow(success)
+			u.createMainWindow()
 		})
 	})
 }
@@ -140,7 +142,7 @@ func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 	return builder
 }
 
-func (u *gtkUI) createMainWindow(success bool) {
+func (u *gtkUI) createMainWindow() {
 	builder := u.getMainWindowBuilder()
 	win := builder.get("mainWindow").(gtki.ApplicationWindow)
 	u.currentWindow = win
@@ -163,31 +165,39 @@ func (u *gtkUI) createMainWindow(success bool) {
 		},
 	})
 
-	if !success {
-		u.updateMainWindowStatusBar(builder)
-		u.disableMainWindowControls(builder)
-	}
+	u.updateMainWindowStatusBar(builder)
+	u.disableMainWindowControls(builder)
 
 	win.Show()
 }
 
 func (u *gtkUI) updateMainWindowStatusBar(builder *uiBuilder) {
+	if !isThereAnyStartupError() {
+		return // nothing to do
+	}
+
 	lblAppStatus := builder.get("lblApplicationStatus").(gtki.Label)
 	btnStatusShow := builder.get("btnStatusShowErrors").(gtki.Button)
 
 	box := builder.get("boxApplicationStatus").(gtki.Widget)
 	cntx, err := box.GetStyleContext()
-
-	if weHaveStartupErrors() {
-		if err == nil {
-			cntx.AddClass("error")
-		}
-		lblAppStatus.SetLabel(i18n.Sprintf("We've found errors"))
-		btnStatusShow.SetVisible(true)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"context": "boxApplicationStatus style context",
+		}).Debug("programmer error: updateMainWindowStatusBar()")
+	} else {
+		cntx.AddClass("error")
 	}
+
+	lblAppStatus.SetLabel(i18n.Sprintf("We've found errors"))
+	btnStatusShow.SetVisible(true)
 }
 
 func (u *gtkUI) disableMainWindowControls(builder *uiBuilder) {
+	if !isThereAnyStartupError() {
+		return // nothing to do
+	}
+
 	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
 	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
 
