@@ -25,7 +25,8 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 		)
 
 		if !c.CanBeUsed() {
-			addNewStartupError(errors.New(i18n.Sprintf("the Mumble client can not be used because: %s", c.GetLastError())), errGroupMumble)
+			e := errors.New(i18n.Sprintf("the Mumble client can not be used because: %s", c.GetLastError()))
+			addNewStartupError(e, errGroupMumble)
 			return
 		}
 
