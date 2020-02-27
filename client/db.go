@@ -3,8 +3,6 @@ package client
 import (
 	"database/sql"
 	"errors"
-	"fmt"
-	"strings"
 
 	// We’re loading the driver anonymously, aliasing its package
 	// qualifier to _ so none of its exported names are visible to
@@ -12,7 +10,6 @@ import (
 	// available to the database/sql package, but in general nothing
 	// else happens with the exception that the init function is run.
 	_ "github.com/mattn/go-sqlite3"
-	log "github.com/sirupsen/logrus"
 )
 
 type conn struct {
@@ -20,33 +17,8 @@ type conn struct {
 	db       *sql.DB
 }
 
-type params map[string]string
-
-func (c *conn) prepareKeysValues(p1 params) (p []string, v []string) {
-	for k, v1 := range p1 {
-		p = append(p, fmt.Sprintf("`%s`", k))
-		v = append(v, fmt.Sprintf("'%s'", v1))
-	}
-
-	return
-}
-
-func (c *conn) replace(table string, p1 map[string]string) error {
-	p, v := c.prepareKeysValues(p1)
-
-	log.Println(fmt.Sprintf(
-		"REPLACE INTO `%s` (%s) VALUES (%s)",
-		table,
-		strings.Join(p, ","),
-		strings.Join(v, ","),
-	))
-
-	r, err := c.db.Exec(fmt.Sprintf(
-		"REPLACE INTO `%s` (%s) VALUES (%s)",
-		table,
-		strings.Join(p, ","),
-		strings.Join(v, ","),
-	))
+func (c *conn) replace(query string, params ...interface{}) error {
+	r, err := c.db.Exec(query, params...)
 	if err != nil {
 		return err
 	}
@@ -58,10 +30,11 @@ func (c *conn) replace(table string, p1 map[string]string) error {
 	return nil
 }
 
+const queryExistsText = "SELECT COUNT(*) FROM `?` WHERE `?` = ? LIMIT 1"
+
 func (c *conn) exists(table string, key, value string) bool {
 	var total int
-
-	for r, err := c.db.Query(fmt.Sprintf("SELECT COUNT(*) FROM `%s` WHERE %s = `%s` LIMIT 1", table, key, value)); err == nil; r.Next() {
+	for r, err := c.db.Query(queryExistsText, table, key, value); err == nil; r.Next() {
 		err = r.Scan(&total)
 		if err != nil {
 			return false

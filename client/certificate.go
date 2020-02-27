@@ -92,6 +92,8 @@ func (c *client) getDB() (*conn, error) {
 	return conn, nil
 }
 
+const checkCertExistanceQuery = "REPLACE INTO `cert` (hostname, port, digest) VALUES (?,?,?)"
+
 func (c *client) storeCertificateInDB(id string, port int, digest string) error {
 	conn, err := c.getDB()
 	if err != nil {
@@ -99,11 +101,7 @@ func (c *client) storeCertificateInDB(id string, port int, digest string) error 
 	}
 	defer conn.close()
 
-	return conn.replace("cert", map[string]string{
-		"hostname": id,
-		"port":     strconv.Itoa(port),
-		"digest":   digest,
-	})
+	return conn.replace(checkCertExistanceQuery, id, port, digest)
 }
 
 func (c *client) isTheCertificateInDB(serviceID string) bool {
