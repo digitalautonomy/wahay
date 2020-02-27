@@ -80,7 +80,7 @@ generate_linux_packages_list "wahay-latest", true
 puts "</td>"
 puts "</tr>"
 
-Dir["wahay*"].each do |filename|
+Dir["wahay*"].sort_by{|fname|File.mtime(fname)}.reverse.each do |filename|
     case filename
     when /sha256sum|wahay-latest|bz2|\.deb|\.rpm/
         # Ignore these files
