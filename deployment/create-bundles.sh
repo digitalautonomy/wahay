@@ -16,14 +16,14 @@ echo "$RCLONE_CONFIG" > rclone.conf
 rclone copy --config rclone.conf  $APP_NAME:$APP_NAME-bundles .
 
 #extract tor
-tar xvf tor-0.4.2.5.tar.bz2
+tar xf tor-0.4.2.5.tar.bz2
 
 # Create distro bundles
 while IFS= read -r DISTRO_NAME
 do
  DISTRO_DIR=${APP_NAME}-${DISTRO_NAME}${BINARY_VERSION}
  mkdir $DISTRO_DIR
- tar xvf mumble-${DISTRO_NAME}.tar.bz2 --directory $DISTRO_DIR
+ tar xf mumble-${DISTRO_NAME}.tar.bz2 --directory $DISTRO_DIR
  cp -r tor $DISTRO_DIR
  cp ../$BINARY_NAME $DISTRO_DIR
  cd $DISTRO_DIR
