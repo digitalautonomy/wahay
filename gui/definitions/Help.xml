@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="helpWindow">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Help</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="default_width">550</property>
+    <property name="default_height">450</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="urgency_hint">True</property>
+    <signal name="destroy" handler="on_destroy" swapped="no"/>
+    <signal name="remove" handler="on_close_window_signal" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkViewport">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <property name="baseline_position">top</property>
+            <child>
+              <object class="GtkLabel" id="lblWhatIsWahay">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">2</property>
+                <property name="margin_top">10</property>
+                <property name="label" translatable="yes">Qué es Wahay?</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0.10000000149011612</property>
+                <attributes>
+                  <attribute name="underline-color" value="#2e2e34343636"/>
+                </attributes>
+                <style>
+                  <class name="form-legend-title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblDescWhatIsWahay">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">2</property>
+                <property name="margin_right">2</property>
+                <property name="label" translatable="yes">La comunicación es una necesidad básica del ser humano, en sus inicios se realizaba verbalmente de persona a persona sin embargo mediante el uso de tecnología se han desarrollado diversas herramientas para este propósito tales como: Skype, Zoom, Google Hangouts, etc. Sin embargo existen varios aspectos que no han sido considerados en el desarrollo de estas soluciones: servidores centralizados, tecnología propietaria, seguridad, son algunos aspectos que no han sido contemplados o han sido implementados de forma parcial. 
+
+Wahay (https://wahay.org) se ha desarrollado como una herramienta para realizar conferencias de voz de forma fácil, extremedamente segura y decentralizada (sin la necesidad de ningún servicio o servidor centralizado).  Internamente usa TOR (https://www.torproject.org/) como herramienta para establecer comunicaciones seguras y Mumble (https://www.mumble.com/) como cliente para establecer voz sobre IP.</property>
+                <property name="justify">fill</property>
+                <property name="wrap">True</property>
+                <style>
+                  <class name="form-legend-content"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblWhatIsTor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">2</property>
+                <property name="margin_top">10</property>
+                <property name="label" translatable="yes">Qué es TOR?</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="form-legend-title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblDescWhatIsTor">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Tor es una herramienta libre y de código abierto que permite establecer comunicaciones anónimas y distribuidas. TOR dirige su tráfico de internet a través de una serie de routers llamados ‘routers cebolla’ permitiendo mantener anónima la comunicación entre sus nodos , esta red funciona funciona a partir de un conjunto de organizaciones e individuos que donan su ancho de banda y poder de procesamiento.</property>
+                <property name="wrap">True</property>
+                <style>
+                  <class name="form-legend-content"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblWhatIsMumble">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">2</property>
+                <property name="margin_top">10</property>
+                <property name="label" translatable="yes">Qué es Mumble?</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="form-legend-title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="padding">5</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblDescWhatIsMumble">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">2</property>
+                <property name="margin_right">2</property>
+                <property name="label" translatable="yes">Mumble es una aplicación libre y de código abierto que permite establecer conferencias de voz sobre IP entre usuarios con alta calidad de sonido y baja latencia.</property>
+                <property name="wrap">True</property>
+                <property name="xalign">0</property>
+                <style>
+                  <class name="form-legend-content"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

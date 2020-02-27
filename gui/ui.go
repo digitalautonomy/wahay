@@ -157,6 +157,7 @@ func (u *gtkUI) createMainWindow() {
 		"on_host_meeting":        u.hostMeetingHandler,
 		"on_join_meeting":        u.joinMeeting,
 		"on_open_settings":       u.openSettingsWindow,
+		"on_open_help":           u.openHelpWindow,
 		"on_show_errors": func() {
 			u.showStatusErrorsWindow(builder)
 		},
