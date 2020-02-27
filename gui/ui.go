@@ -120,8 +120,8 @@ func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 	builder := u.g.uiBuilderFor("MainWindow")
 
 	builder.i18nProperties(
-		"label", "lblWelcome",
-		"button", "btnSettings",
+		//"label", "lblWelcome",
+		//"button", "btnSettings",
 		"button", "btnJoinMeeting",
 		"tooltip", "btnJoinMeeting",
 		"button", "btnHostMeeting",

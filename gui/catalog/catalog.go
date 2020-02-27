@@ -41,132 +41,129 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"%sMeeting ID: %s":                    11,
-	"A valid port is between 1 and 65535": 100,
-	"Accept":                              30,
-	"Allow the host to automatically join a newly created meeting": 31,
-	"An error occurred\n\n%s":                                      16,
-	"Are you sure you want to do this action?":                     32,
-	"Are you sure you want to end this meeting?":                   33,
-	"Are you sure you want to leave this meeting?":                 34,
-	"Automatically join a meeting":                                 36,
-	"Automatically join this meeting":                              35,
-	"Automatically join this meeting when starting it":             37,
-	"Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.": 38,
-	"Browse": 39,
-	"By clicking Yes, this meeting will end.":       40,
-	"By clicking Yes, you will leave this meeting.": 41,
-	"Cancel": 26,
-	"Check this option to automatically join every meeting you host": 51,
-	"Choose your email service to send invitation":                   52,
-	"Client binary location":                                         42,
-	"Configuration settings will be lost in the next session":        43,
-	"Configure master password":                                      44,
-	"Configured Mumble port is not valid: %s":                        3,
-	"Confirmation":                   45,
-	"Connecting, please wait...":     46,
-	"Continue":                       47,
-	"Copy Invitation":                48,
-	"Copy Meeting ID":                49,
-	"Copy URL":                       50,
-	"Debugging":                      53,
-	"Default Email":                  54,
-	"Encrypt the configuration file": 55,
-	"End this meeting":               57,
-	"End this meeting for all":       58,
-	"Error":                          0,
-	"Ex. /home/user/mumble/mumble":   118,
-	"Ex. 9800":                       121,
-	"Executable Mumble location":     117,
-	"Finish":                         56,
-	"General":                        59,
-	"Gmail":                          60,
-	"Host a new meeting":             61,
-	"Host meeting":                   63,
-	"Hosting":                        62,
-	"If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.": 64,
-	"If you disable this option, anyone could read your configuration settings":                                       24,
-	"If you set this option to a file name, low level information will be logged there.":                              65,
-	"If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535":         122,
-	"If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.": 119,
-	"Invalid configuration file":                66,
-	"Invalid password. Please, try again.":      67,
-	"Invite others":                             68,
-	"Join":                                      69,
-	"Join Wahay Meeting":                        9,
-	"Join a meeting":                            70,
-	"Join meeting":                              71,
-	"Join the meeting":                          72,
-	"Join this meeting":                         73,
-	"Keep configuration file when Wahay closes": 74,
-	"Leave":              75,
-	"Leave this meeting": 76,
-	"Log debug info":     77,
-	"Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.": 78,
-	"Master password":                79,
-	"Meeting ID":                     80,
-	"Meeting ID:":                    81,
-	"Meeting password":               82,
-	"Mumble":                         83,
-	"Mumble service port":            120,
-	"No, cancel":                     84,
-	"Now you are hosting a meeting.": 85,
-	"Open":                           27,
-	"Open file":                      25,
-	"Outlook":                        86,
-	"Password":                       87,
-	"Please enter the master password for the configuration file.": 88,
-	"Please join the Wahay meeting with the following details:":    10,
-	"Port":                               89,
-	"Port out of range":                  90,
-	"Raw log file":                       91,
-	"Repeat the password":                92,
-	"Save changes":                       93,
-	"Security":                           94,
-	"Settings":                           95,
-	"Show":                               96,
-	"Something went wrong: %s":           1,
-	"Specify a password for the meeting": 97,
-	"Start Meeting":                      13,
-	"Start Meeting & Join":               12,
-	"Start meeting":                      98,
-	"The Meeting ID cannot be blank":     15,
-	"The Mumble process is down":         14,
-	"The error message":                  99,
-	"The invitation email has been copied to the clipboard": 8,
-	"The meeting ID has been copied to the clipboard":       7,
-	"The meeting ID is invalid":                             18,
-	"The meeting can't be closed: %s":                       4,
-	"The onion service can't be deleted: %s":                6,
-	"This action cannot be undone":                          101,
-	"Toggle password visibility":                            102,
-	"Type the Meeting ID (normally a .onion address)":       103,
-	"Type the password":                                     104,
-	"Type the password to join the meeting":                 105,
-	"Type your preferred screen name":                       106,
-	"Type your screen name":                                 107,
-	"Username":                                              108,
-	"Wahay is ready to use":                                 109,
-	"We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?": 110,
-	"We've found errors": 29,
-	"Welcome":            111,
-	"When this option is checked, the configuration settings will be stored in the device.": 112,
-	"Yahoo Mail":                     113,
-	"Yes, back it up &amp; continue": 114,
-	"Yes, confirm":                   115,
-	"You will not be asked for this password again until you restart Wahay.": 116,
-	"enter a password at least 6 characters long":                            23,
-	"enter the password confirmation":                                        21,
-	"internal Tor instance has already been closed":                          5,
-	"passwords do not match":                                                 22,
-	"please enter a valid password":                                          20,
-	"the Mumble client can not be used because: %s":                          19,
-	"the provided meeting ID is invalid: \n\n%s":                             17,
-	"tor can't be used":                                                      28,
-	"we couldn't start the meeting":                                          2,
+	"%sMeeting ID: %s":                    117,
+	"A valid port is between 1 and 65535": 93,
+	"Accept":                              23,
+	"Allow the host to automatically join a newly created meeting": 24,
+	"An error occurred\n\n%s":                                      11,
+	"Are you sure you want to do this action?":                     25,
+	"Are you sure you want to end this meeting?":                   26,
+	"Are you sure you want to leave this meeting?":                 27,
+	"Automatically join a meeting":                                 29,
+	"Automatically join this meeting":                              28,
+	"Automatically join this meeting when starting it":             30,
+	"Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.": 31,
+	"Browse": 32,
+	"By clicking Yes, this meeting will end.":       33,
+	"By clicking Yes, you will leave this meeting.": 34,
+	"Cancel": 20,
+	"Check this option to automatically join every meeting you host": 44,
+	"Choose your email service to send invitation":                   45,
+	"Client binary location":                                         35,
+	"Configuration settings will be lost in the next session":        36,
+	"Configure master password":                                      37,
+	"Confirmation":                                                   38,
+	"Connecting, please wait...":                                     39,
+	"Continue":                                                       40,
+	"Copy Invitation":                                                41,
+	"Copy Meeting ID":                                                42,
+	"Copy URL":                                                       43,
+	"Debugging":                                                      46,
+	"Default Email":                                                  47,
+	"Encrypt the configuration file":                                 48,
+	"End this meeting":                                               50,
+	"End this meeting for all":                                       51,
+	"Error":                                                          0,
+	"Ex. /home/user/mumble/mumble":                                   111,
+	"Ex. 9800":                                                       114,
+	"Executable Mumble location":                                     110,
+	"Finish":                                                         49,
+	"General":                                                        52,
+	"Gmail":                                                          53,
+	"Host a new meeting":                                             54,
+	"Host meeting":                                                   56,
+	"Hosting":                                                        55,
+	"If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.": 57,
+	"If you disable this option, anyone could read your configuration settings":                                       18,
+	"If you set this option to a file name, low level information will be logged there.":                              58,
+	"If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535":         115,
+	"If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.": 112,
+	"Invalid configuration file":                59,
+	"Invalid meeting ID provided":               119,
+	"Invalid password. Please, try again.":      60,
+	"Invite others":                             61,
+	"Join":                                      62,
+	"Join Wahay Meeting":                        5,
+	"Join a meeting":                            63,
+	"Join meeting":                              64,
+	"Join the meeting":                          65,
+	"Join this meeting":                         66,
+	"Keep configuration file when Wahay closes": 67,
+	"Leave":              68,
+	"Leave this meeting": 69,
+	"Log debug info":     70,
+	"Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.": 71,
+	"Master password":                72,
+	"Meeting ID":                     73,
+	"Meeting ID:":                    74,
+	"Meeting password":               75,
+	"Mumble":                         76,
+	"Mumble service port":            113,
+	"No, cancel":                     77,
+	"Now you are hosting a meeting.": 78,
+	"Open":                           21,
+	"Open file":                      19,
+	"Outlook":                        79,
+	"Password":                       80,
+	"Please enter the master password for the configuration file.": 81,
+	"Please join the Wahay meeting with the following details:":    6,
+	"Port":                               82,
+	"Port out of range":                  83,
+	"Raw log file":                       84,
+	"Repeat the password":                85,
+	"Save changes":                       86,
+	"Security":                           87,
+	"Settings":                           88,
+	"Show":                               89,
+	"Something went wrong: %s":           116,
+	"Specify a password for the meeting": 90,
+	"Start Meeting":                      8,
+	"Start Meeting & Join":               7,
+	"Start meeting":                      91,
+	"The Meeting ID cannot be blank":     10,
+	"The Mumble process is down":         9,
+	"The error message":                  92,
+	"The invitation email has been copied to the clipboard": 4,
+	"The meeting ID has been copied to the clipboard":       3,
+	"The meeting ID is invalid":                             12,
+	"The meeting can't be closed: %s":                       2,
+	"The provided meeting ID is invalid: \n\n%s":            118,
+	"This action cannot be undone":                          94,
+	"Toggle password visibility":                            95,
+	"Type the Meeting ID (normally a .onion address)":       96,
+	"Type the password":                                     97,
+	"Type the password to join the meeting":                 98,
+	"Type your preferred screen name":                       99,
+	"Type your screen name":                                 100,
+	"Username":                                              101,
+	"Wahay is ready to use":                                 102,
+	"We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?": 103,
+	"We've found errors": 22,
+	"Welcome":            104,
+	"When this option is checked, the configuration settings will be stored in the device.": 105,
+	"Yahoo Mail":                     106,
+	"Yes, back it up &amp; continue": 107,
+	"Yes, confirm":                   108,
+	"You will not be asked for this password again until you restart Wahay.": 109,
+	"enter a password at least 6 characters long":                            17,
+	"enter the password confirmation":                                        15,
+	"passwords do not match":                                                 16,
+	"please enter a valid password":                                          14,
+	"the Mumble client can not be used because: %s":                          13,
+	"we couldn't start the meeting":                                          1,
 }
 
-var arIndex = []uint32{ // 124 elements
+var arIndex = []uint32{ // 121 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -179,8 +176,8 @@ var arIndex = []uint32{ // 124 elements
 	// Entry 20 - 3F
 	0x000001a0, 0x000001ad, 0x000001ba, 0x000001c7,
 	0x000001d4, 0x000001e1, 0x000001ee, 0x000001fb,
-	0x00000208, 0x00000215, 0x00000222, 0x0000022f,
-	0x0000023c, 0x00000249, 0x00000256, 0x00000286,
+	0x0000022b, 0x00000238, 0x00000245, 0x00000252,
+	0x0000025f, 0x0000026c, 0x00000279, 0x00000286,
 	0x00000293, 0x000002a0, 0x000002ad, 0x000002ba,
 	0x000002c7, 0x000002d4, 0x000002e1, 0x000002ee,
 	0x000002fb, 0x00000308, 0x00000315, 0x00000322,
@@ -200,11 +197,21 @@ var arIndex = []uint32{ // 124 elements
 	0x0000056b, 0x00000578, 0x00000585, 0x00000592,
 	0x0000059f, 0x000005ac, 0x000005b9, 0x000005c6,
 	0x000005d3, 0x000005e0, 0x000005ed, 0x000005fa,
-	0x00000607, 0x00000614, 0x00000621, 0x0000062e,
-	0x0000063b, 0x00000648, 0x00000655, 0x00000662,
-} // Size: 520 bytes
+	0x00000607, 0x00000607, 0x00000607, 0x00000607,
+	0x00000607,
+} // Size: 508 bytes
 
-const arData string = "" + // Size: 1634 bytes
+const arData string = "" + // Size: 1543 bytes
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02...الاتصال الرجاء ال" +
+	"انتظار\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -215,236 +222,218 @@ const arData string = "" + // Size: 1634 bytes
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02...الاتصال الرجاء الانتظار\x02TRANSLATE ME\x02TRANSL" +
-	"ATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-var enIndex = []uint32{ // 124 elements
+var enIndex = []uint32{ // 121 elements
 	// Entry 0 - 1F
-	0x00000000, 0x00000006, 0x00000022, 0x00000040,
-	0x0000006b, 0x0000008e, 0x000000bc, 0x000000e6,
-	0x00000116, 0x0000014c, 0x0000015f, 0x00000199,
-	0x000001b0, 0x000001c5, 0x000001d3, 0x000001ee,
-	0x0000020d, 0x00000226, 0x00000252, 0x0000026c,
-	0x0000029d, 0x000002bb, 0x000002db, 0x000002f2,
-	0x0000031e, 0x00000368, 0x00000372, 0x00000379,
-	0x0000037e, 0x00000390, 0x000003a3, 0x000003aa,
+	0x00000000, 0x00000006, 0x00000024, 0x00000047,
+	0x00000077, 0x000000ad, 0x000000c0, 0x000000fa,
+	0x0000010f, 0x0000011d, 0x00000138, 0x00000157,
+	0x00000170, 0x0000018a, 0x000001bb, 0x000001d9,
+	0x000001f9, 0x00000210, 0x0000023c, 0x00000286,
+	0x00000290, 0x00000297, 0x0000029c, 0x000002af,
+	0x000002b6, 0x000002f3, 0x0000031c, 0x00000347,
+	0x00000374, 0x00000394, 0x000003b1, 0x000003e2,
 	// Entry 20 - 3F
-	0x000003e7, 0x00000410, 0x0000043b, 0x00000468,
-	0x00000488, 0x000004a5, 0x000004d6, 0x00000582,
-	0x00000589, 0x000005b1, 0x000005df, 0x000005f6,
-	0x0000062e, 0x00000648, 0x00000655, 0x00000670,
-	0x00000679, 0x00000689, 0x00000699, 0x000006a2,
-	0x000006e1, 0x0000070e, 0x00000718, 0x00000726,
-	0x00000745, 0x0000074c, 0x0000075d, 0x00000776,
-	0x0000077e, 0x00000784, 0x00000797, 0x0000079f,
+	0x0000048e, 0x00000495, 0x000004bd, 0x000004eb,
+	0x00000502, 0x0000053a, 0x00000554, 0x00000561,
+	0x0000057c, 0x00000585, 0x00000595, 0x000005a5,
+	0x000005ae, 0x000005ed, 0x0000061a, 0x00000624,
+	0x00000632, 0x00000651, 0x00000658, 0x00000669,
+	0x00000682, 0x0000068a, 0x00000690, 0x000006a3,
+	0x000006ab, 0x000006b8, 0x0000077e, 0x000007d1,
+	0x000007ec, 0x00000811, 0x0000081f, 0x00000824,
 	// Entry 40 - 5F
-	0x000007ac, 0x00000872, 0x000008c5, 0x000008e0,
-	0x00000905, 0x00000913, 0x00000918, 0x00000927,
-	0x00000934, 0x00000945, 0x00000957, 0x00000981,
-	0x00000987, 0x0000099a, 0x000009a9, 0x00000a28,
-	0x00000a38, 0x00000a43, 0x00000a4f, 0x00000a60,
-	0x00000a67, 0x00000a72, 0x00000a91, 0x00000a99,
-	0x00000aa2, 0x00000adf, 0x00000ae4, 0x00000af6,
-	0x00000b03, 0x00000b17, 0x00000b24, 0x00000b2d,
+	0x00000833, 0x00000840, 0x00000851, 0x00000863,
+	0x0000088d, 0x00000893, 0x000008a6, 0x000008b5,
+	0x00000934, 0x00000944, 0x0000094f, 0x0000095b,
+	0x0000096c, 0x00000973, 0x0000097e, 0x0000099d,
+	0x000009a5, 0x000009ae, 0x000009eb, 0x000009f0,
+	0x00000a02, 0x00000a0f, 0x00000a23, 0x00000a30,
+	0x00000a39, 0x00000a42, 0x00000a47, 0x00000a6a,
+	0x00000a78, 0x00000a8a, 0x00000aae, 0x00000acb,
 	// Entry 60 - 7F
-	0x00000b36, 0x00000b3b, 0x00000b5e, 0x00000b6c,
-	0x00000b7e, 0x00000ba2, 0x00000bbf, 0x00000bda,
-	0x00000c0a, 0x00000c1c, 0x00000c42, 0x00000c62,
-	0x00000c78, 0x00000c81, 0x00000c97, 0x00000d15,
-	0x00000d1d, 0x00000d73, 0x00000d7e, 0x00000d9d,
-	0x00000daa, 0x00000df1, 0x00000e0c, 0x00000e29,
-	0x00000e99, 0x00000ead, 0x00000eb6, 0x00000f1e,
-} // Size: 520 bytes
+	0x00000ae6, 0x00000b16, 0x00000b28, 0x00000b4e,
+	0x00000b6e, 0x00000b84, 0x00000b8d, 0x00000ba3,
+	0x00000c21, 0x00000c29, 0x00000c7f, 0x00000c8a,
+	0x00000ca9, 0x00000cb6, 0x00000cfd, 0x00000d18,
+	0x00000d35, 0x00000da5, 0x00000db9, 0x00000dc2,
+	0x00000e2a, 0x00000e46, 0x00000e5d, 0x00000e89,
+	0x00000ea5,
+} // Size: 508 bytes
 
-const enData string = "" + // Size: 3870 bytes
-	"\x02Error\x02Something went wrong: %[1]s\x02we couldn't start the meetin" +
-	"g\x02Configured Mumble port is not valid: %[1]s\x02The meeting can't be " +
-	"closed: %[1]s\x02internal Tor instance has already been closed\x02The on" +
-	"ion service can't be deleted: %[1]s\x02The meeting ID has been copied to" +
-	" the clipboard\x02The invitation email has been copied to the clipboard" +
-	"\x02Join Wahay Meeting\x02Please join the Wahay meeting with the followi" +
-	"ng details:\x02%[1]sMeeting ID: %[2]s\x02Start Meeting & Join\x02Start M" +
-	"eeting\x02The Mumble process is down\x02The Meeting ID cannot be blank" +
-	"\x02An error occurred\x0a\x0a%[1]s\x02the provided meeting ID is invalid" +
-	": \x0a\x0a%[1]s\x02The meeting ID is invalid\x02the Mumble client can no" +
-	"t be used because: %[1]s\x02please enter a valid password\x02enter the p" +
-	"assword confirmation\x02passwords do not match\x02enter a password at le" +
-	"ast 6 characters long\x02If you disable this option, anyone could read y" +
-	"our configuration settings\x02Open file\x02Cancel\x02Open\x02tor can't b" +
-	"e used\x02We've found errors\x02Accept\x02Allow the host to automaticall" +
-	"y join a newly created meeting\x02Are you sure you want to do this actio" +
-	"n?\x02Are you sure you want to end this meeting?\x02Are you sure you wan" +
-	"t to leave this meeting?\x02Automatically join this meeting\x02Automatic" +
-	"ally join a meeting\x02Automatically join this meeting when starting it" +
-	"\x02Be very careful. This information is sensitive and could potentially" +
-	" contain very private information. Only turn on these settings if you ab" +
-	"solutely need it for debugging.\x02Browse\x02By clicking Yes, this meeti" +
-	"ng will end.\x02By clicking Yes, you will leave this meeting.\x02Client " +
-	"binary location\x02Configuration settings will be lost in the next sessi" +
-	"on\x02Configure master password\x02Confirmation\x02Connecting, please wa" +
-	"it...\x02Continue\x02Copy Invitation\x02Copy Meeting ID\x02Copy URL\x02C" +
-	"heck this option to automatically join every meeting you host\x02Choose " +
-	"your email service to send invitation\x02Debugging\x02Default Email\x02E" +
-	"ncrypt the configuration file\x02Finish\x02End this meeting\x02End this " +
-	"meeting for all\x02General\x02Gmail\x02Host a new meeting\x02Hosting\x02" +
-	"Host meeting\x02If you backup the configuration file, we will reset the " +
-	"settings and continue normally. If the configuration file is encrypted, " +
-	"then we will ask you for a password to encrypt the new settings file." +
-	"\x02If you set this option to a file name, low level information will be" +
-	" logged there.\x02Invalid configuration file\x02Invalid password. Please" +
-	", try again.\x02Invite others\x02Join\x02Join a meeting\x02Join meeting" +
-	"\x02Join the meeting\x02Join this meeting\x02Keep configuration file whe" +
-	"n Wahay closes\x02Leave\x02Leave this meeting\x02Log debug info\x02Log d" +
-	"ebug output to the selected log file. If no file is selected then the lo" +
-	"g output will be written to the default log file.\x02Master password\x02" +
-	"Meeting ID\x02Meeting ID:\x02Meeting password\x02Mumble\x02No, cancel" +
-	"\x02Now you are hosting a meeting.\x02Outlook\x02Password\x02Please ente" +
-	"r the master password for the configuration file.\x02Port\x02Port out of" +
-	" range\x02Raw log file\x02Repeat the password\x02Save changes\x02Securit" +
-	"y\x02Settings\x02Show\x02Specify a password for the meeting\x02Start mee" +
-	"ting\x02The error message\x02A valid port is between 1 and 65535\x02This" +
-	" action cannot be undone\x02Toggle password visibility\x02Type the Meeti" +
-	"ng ID (normally a .onion address)\x02Type the password\x02Type the passw" +
-	"ord to join the meeting\x02Type your preferred screen name\x02Type your " +
-	"screen name\x02Username\x02Wahay is ready to use\x02We have detected tha" +
-	"t the configuration file is invalid or corrupted. Do you want to make a " +
-	"copy (backup) of it and continue?\x02Welcome\x02When this option is chec" +
-	"ked, the configuration settings will be stored in the device.\x02Yahoo M" +
-	"ail\x02Yes, back it up &amp; continue\x02Yes, confirm\x02You will not be" +
-	" asked for this password again until you restart Wahay.\x02Executable Mu" +
-	"mble location\x02Ex. /home/user/mumble/mumble\x02If you want to use your" +
-	" own Mumble instance, please enter the location where Mumble is availabl" +
-	"e in the system.\x02Mumble service port\x02Ex. 9800\x02If you want to se" +
-	"t up a custom port to run the Mumble service, please a port number betwe" +
-	"en 1 and 65535"
+const enData string = "" + // Size: 3749 bytes
+	"\x02Error\x02we couldn't start the meeting\x02The meeting can't be close" +
+	"d: %[1]s\x02The meeting ID has been copied to the clipboard\x02The invit" +
+	"ation email has been copied to the clipboard\x02Join Wahay Meeting\x02Pl" +
+	"ease join the Wahay meeting with the following details:\x02Start Meeting" +
+	" & Join\x02Start Meeting\x02The Mumble process is down\x02The Meeting ID" +
+	" cannot be blank\x02An error occurred\x0a\x0a%[1]s\x02The meeting ID is " +
+	"invalid\x02the Mumble client can not be used because: %[1]s\x02please en" +
+	"ter a valid password\x02enter the password confirmation\x02passwords do " +
+	"not match\x02enter a password at least 6 characters long\x02If you disab" +
+	"le this option, anyone could read your configuration settings\x02Open fi" +
+	"le\x02Cancel\x02Open\x02We've found errors\x02Accept\x02Allow the host t" +
+	"o automatically join a newly created meeting\x02Are you sure you want to" +
+	" do this action?\x02Are you sure you want to end this meeting?\x02Are yo" +
+	"u sure you want to leave this meeting?\x02Automatically join this meetin" +
+	"g\x02Automatically join a meeting\x02Automatically join this meeting whe" +
+	"n starting it\x02Be very careful. This information is sensitive and coul" +
+	"d potentially contain very private information. Only turn on these setti" +
+	"ngs if you absolutely need it for debugging.\x02Browse\x02By clicking Ye" +
+	"s, this meeting will end.\x02By clicking Yes, you will leave this meetin" +
+	"g.\x02Client binary location\x02Configuration settings will be lost in t" +
+	"he next session\x02Configure master password\x02Confirmation\x02Connecti" +
+	"ng, please wait...\x02Continue\x02Copy Invitation\x02Copy Meeting ID\x02" +
+	"Copy URL\x02Check this option to automatically join every meeting you ho" +
+	"st\x02Choose your email service to send invitation\x02Debugging\x02Defau" +
+	"lt Email\x02Encrypt the configuration file\x02Finish\x02End this meeting" +
+	"\x02End this meeting for all\x02General\x02Gmail\x02Host a new meeting" +
+	"\x02Hosting\x02Host meeting\x02If you backup the configuration file, we " +
+	"will reset the settings and continue normally. If the configuration file" +
+	" is encrypted, then we will ask you for a password to encrypt the new se" +
+	"ttings file.\x02If you set this option to a file name, low level informa" +
+	"tion will be logged there.\x02Invalid configuration file\x02Invalid pass" +
+	"word. Please, try again.\x02Invite others\x02Join\x02Join a meeting\x02J" +
+	"oin meeting\x02Join the meeting\x02Join this meeting\x02Keep configurati" +
+	"on file when Wahay closes\x02Leave\x02Leave this meeting\x02Log debug in" +
+	"fo\x02Log debug output to the selected log file. If no file is selected " +
+	"then the log output will be written to the default log file.\x02Master p" +
+	"assword\x02Meeting ID\x02Meeting ID:\x02Meeting password\x02Mumble\x02No" +
+	", cancel\x02Now you are hosting a meeting.\x02Outlook\x02Password\x02Ple" +
+	"ase enter the master password for the configuration file.\x02Port\x02Por" +
+	"t out of range\x02Raw log file\x02Repeat the password\x02Save changes" +
+	"\x02Security\x02Settings\x02Show\x02Specify a password for the meeting" +
+	"\x02Start meeting\x02The error message\x02A valid port is between 1 and " +
+	"65535\x02This action cannot be undone\x02Toggle password visibility\x02T" +
+	"ype the Meeting ID (normally a .onion address)\x02Type the password\x02T" +
+	"ype the password to join the meeting\x02Type your preferred screen name" +
+	"\x02Type your screen name\x02Username\x02Wahay is ready to use\x02We hav" +
+	"e detected that the configuration file is invalid or corrupted. Do you w" +
+	"ant to make a copy (backup) of it and continue?\x02Welcome\x02When this " +
+	"option is checked, the configuration settings will be stored in the devi" +
+	"ce.\x02Yahoo Mail\x02Yes, back it up &amp; continue\x02Yes, confirm\x02Y" +
+	"ou will not be asked for this password again until you restart Wahay." +
+	"\x02Executable Mumble location\x02Ex. /home/user/mumble/mumble\x02If you" +
+	" want to use your own Mumble instance, please enter the location where M" +
+	"umble is available in the system.\x02Mumble service port\x02Ex. 9800\x02" +
+	"If you want to set up a custom port to run the Mumble service, please a " +
+	"port number between 1 and 65535\x02Something went wrong: %[1]s\x02%[1]sM" +
+	"eeting ID: %[2]s\x02The provided meeting ID is invalid: \x0a\x0a%[1]s" +
+	"\x02Invalid meeting ID provided"
 
-var esIndex = []uint32{ // 124 elements
+var esIndex = []uint32{ // 121 elements
 	// Entry 0 - 1F
-	0x00000000, 0x00000006, 0x0000001d, 0x0000003d,
-	0x00000073, 0x00000098, 0x000000ae, 0x000000db,
-	0x0000010f, 0x00000148, 0x00000171, 0x000001c0,
-	0x000001de, 0x000001f8, 0x00000209, 0x00000228,
-	0x00000251, 0x0000026a, 0x0000029e, 0x000002c0,
-	0x000002f1, 0x0000031f, 0x0000034e, 0x0000036c,
-	0x000003a0, 0x000003fe, 0x0000040c, 0x00000415,
-	0x0000041b, 0x00000430, 0x0000044c, 0x00000454,
+	0x00000000, 0x00000006, 0x00000026, 0x0000004b,
+	0x0000007f, 0x000000b8, 0x000000e1, 0x00000130,
+	0x0000014a, 0x0000015b, 0x0000017a, 0x000001a3,
+	0x000001bc, 0x000001de, 0x0000020f, 0x0000023d,
+	0x0000026c, 0x0000028a, 0x000002be, 0x0000031c,
+	0x0000032a, 0x00000333, 0x00000339, 0x00000355,
+	0x0000035d, 0x000003b5, 0x000003db, 0x00000406,
+	0x00000431, 0x00000459, 0x00000489, 0x000004be,
 	// Entry 20 - 3F
-	0x000004ac, 0x000004d2, 0x000004fd, 0x00000528,
-	0x00000550, 0x00000580, 0x000005b5, 0x00000669,
-	0x00000672, 0x000006a3, 0x000006d3, 0x000006f1,
-	0x00000733, 0x00000752, 0x00000760, 0x00000780,
-	0x0000078a, 0x0000079d, 0x000007b6, 0x000007c1,
-	0x00000827, 0x0000086c, 0x00000878, 0x0000088d,
-	0x000008b1, 0x000008bb, 0x000008d2, 0x000008f4,
-	0x000008fc, 0x00000902, 0x0000091f, 0x0000092a,
+	0x00000572, 0x0000057b, 0x000005ac, 0x000005dc,
+	0x000005fa, 0x0000063c, 0x0000065b, 0x00000669,
+	0x00000689, 0x00000693, 0x000006a6, 0x000006bf,
+	0x000006ca, 0x00000730, 0x00000775, 0x00000781,
+	0x00000796, 0x000007ba, 0x000007c4, 0x000007db,
+	0x000007fd, 0x00000805, 0x0000080b, 0x00000828,
+	0x00000833, 0x00000847, 0x00000943, 0x000009ab,
+	0x000009cf, 0x000009fa, 0x00000a0a, 0x00000a11,
 	// Entry 40 - 5F
-	0x0000093e, 0x00000a3a, 0x00000aa2, 0x00000ac6,
-	0x00000af1, 0x00000b01, 0x00000b08, 0x00000b1e,
-	0x00000b34, 0x00000b49, 0x00000b60, 0x00000b96,
-	0x00000b9c, 0x00000bb3, 0x00000bd9, 0x00000c97,
-	0x00000cab, 0x00000cbd, 0x00000cd0, 0x00000ceb,
-	0x00000cf2, 0x00000cff, 0x00000d26, 0x00000d2e,
-	0x00000d3a, 0x00000d7c, 0x00000d83, 0x00000d99,
-	0x00000dae, 0x00000dc4, 0x00000dd4, 0x00000dde,
+	0x00000a27, 0x00000a3d, 0x00000a52, 0x00000a69,
+	0x00000a9f, 0x00000aa5, 0x00000abc, 0x00000ae2,
+	0x00000ba0, 0x00000bb4, 0x00000bc6, 0x00000bd9,
+	0x00000bf4, 0x00000bfb, 0x00000c08, 0x00000c2f,
+	0x00000c37, 0x00000c43, 0x00000c85, 0x00000c8c,
+	0x00000ca2, 0x00000cb7, 0x00000ccd, 0x00000cdd,
+	0x00000ce7, 0x00000cf6, 0x00000cfe, 0x00000d2b,
+	0x00000d3f, 0x00000d53, 0x00000d86, 0x00000da8,
 	// Entry 60 - 7F
-	0x00000ded, 0x00000df5, 0x00000e22, 0x00000e36,
-	0x00000e4a, 0x00000e7d, 0x00000e9f, 0x00000ec3,
-	0x00000f04, 0x00000f1b, 0x00000f4c, 0x00000f73,
-	0x00000f90, 0x00000fa2, 0x00000fc0, 0x00001042,
-	0x0000104d, 0x000010a2, 0x000010b2, 0x000010cf,
-	0x000010dd, 0x00001126, 0x0000114a, 0x00001167,
-	0x000011db, 0x000011f5, 0x000011fe, 0x00001279,
-} // Size: 520 bytes
+	0x00000dcc, 0x00000e0d, 0x00000e24, 0x00000e55,
+	0x00000e7c, 0x00000e99, 0x00000eab, 0x00000ec9,
+	0x00000f4b, 0x00000f56, 0x00000fab, 0x00000fbb,
+	0x00000fd8, 0x00000fe6, 0x0000102f, 0x00001053,
+	0x00001070, 0x000010e4, 0x000010fe, 0x00001107,
+	0x00001182, 0x00001182, 0x00001182, 0x00001182,
+	0x00001182,
+} // Size: 508 bytes
 
-const esData string = "" + // Size: 4729 bytes
-	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
-	"El puerto configurado para Mumble es inválido: %[1]s\x02La reunión no se" +
-	" pudo cerrar: %[1]s\x02tor no está definido\x02El servicio Onion no se p" +
-	"udo eliminar: %[1]s\x02El ID de la reunion ha sido copiado al portapapel" +
-	"es\x02El correo de invitación ha sido copiado al portapapeles\x02Unirse " +
-	"a una reunión a travéz de Wahay\x02Por favor únete a la reunión a travéz" +
-	" de Wahay con los siguientes detalles:\x02%[1]sID de la reunión: %[2]s" +
-	"\x02Iniciar reunión y unirse\x02Iniciar reunión\x02El proceso Mumble est" +
-	"á caído\x02El ID de la reunión no puede ser vacío\x02Ocurrió un error" +
-	"\x0a\x0a%[1]s\x02el ID de la reunión provisto es inválido: \x0a\x0a%[1]s" +
-	"\x02El ID de la reunión es inválido\x02El cliente Mumble no se puede usa" +
-	"r porque: %[1]s\x02por favor especifique una contraseña válida\x02especi" +
-	"fique la confirmación de la contraseña\x02las contraseñas no coinciden" +
-	"\x02especifique una contraseña de mínimo 6 caracteres\x02Si deshabilita " +
-	"esta opción, cualquier persona podría leer los parámetros de configuraci" +
-	"ón\x02Abrir archivo\x02Cancelar\x02Abrir\x02tor no se puede usar\x02Enc" +
-	"ontramos algunos errores\x02Aceptar\x02Permita que el organizador se una" +
-	" automáticamente a una reunión cuando cree una nueva\x02¿Está seguro de " +
-	"hacer esta acción?\x02¿Está seguro de finalizar esta reunión?\x02¿Está s" +
-	"eguro de abandonar esta reunión?\x02Unirse automáticamente a esta reunió" +
-	"n\x02Unirse automáticamente al iniciar una reunión\x02Unirse automáticam" +
-	"ente a esta reunión al iniciarla\x02Ten mucho cuidado. Esta información " +
-	"es confidencial y podría contener información muy privada. Solo cambia e" +
-	"sta configuración si la necesita absolutamente para la depuración.\x02Ex" +
-	"aminar\x02Al hacer clic en Sí, esta reunión finalizará.\x02Al hacer clic" +
-	" en Sí, saldrá de esta reunión.\x02Ubicación del binario Mumble\x02Los a" +
-	"justes de configuración se perderán en la próxima sesión\x02Configurar c" +
-	"ontraseña maestra\x02Confirmación\x02Conectando, espere por favor...\x02" +
-	"Continuar\x02Copiar invitación\x02Copiar ID de la reunión\x02Copiar URL" +
-	"\x02Marque esta opción para unirse automáticamente a cada reunión creada" +
-	" en la sección del anfitrión\x02Elija su servicio de correo electrónico " +
-	"para enviar la invitación.\x02Depuración\x02Email predeterminado\x02Cifr" +
-	"ar el archivo de configuración\x02Finalizar\x02Finaliza esta reunión\x02" +
-	"Finaliza esta reunión para todos\x02General\x02Gmail\x02Organizar una nu" +
-	"eva reunión\x02Anfitrión\x02Alojar una reunión\x02Si realiza una copia d" +
-	"e seguridad del archivo de configuración, restableceremos la configuraci" +
-	"ón y continuaremos normalmente. Si el archivo de configuración está cif" +
-	"rado, le pediremos una contraseña para cifrar el nuevo archivo de config" +
-	"uración.\x02Si establece esta opción con un nombre de archivo, la inform" +
-	"ación de bajo nivel se registrará allí.\x02Archivo de configuración invá" +
-	"lido\x02Contraseña invalida. Inténtalo de nuevo.\x02Invitar a otros\x02U" +
-	"nirse\x02Unirse a una reunión\x02Unirse a una reunión\x02Únete a la reun" +
-	"ión\x02Únete a esta reunión\x02Mantener el archivo de configuración al c" +
-	"errar Wahay\x02Salir\x02Salir de esta reunión\x02Registrar información d" +
-	"e depuración\x02Registre la salida de depuración en el archivo de regist" +
-	"ro seleccionado. Si no se selecciona ningún archivo, la salida del regis" +
-	"tro se escribirá en el archivo de registro predeterminado.\x02Contraseña" +
-	" maestra\x02ID de la reunión\x02ID de la reunión:\x02Contraseña de la re" +
-	"unión\x02Mumble\x02No, cancelar\x02Ahora estás organizando una reunión." +
-	"\x02Outlook\x02Contraseña\x02Ingrese la contraseña maestra para el archi" +
-	"vo de configuración.\x02Puerto\x02Puerto fuera de rango\x02Archivo de re" +
-	"gistros\x02Repita la contraseña\x02Guardar cambios\x02Seguridad\x02Confi" +
-	"guración\x02Mostrar\x02Especifique una contraseña para la reunión\x02Com" +
-	"ience a reunirse\x02El mensaje de error\x02El rango de puertos válidos e" +
-	"stá entre 1 y 65535\x02Esta acción no se puede deshacer\x02Alternar visi" +
-	"bilidad de contraseña\x02Escriba la ID de la reunión (normalmente una di" +
-	"rección .onion)\x02Escribe la contraseña\x02Escriba la contraseña para u" +
-	"nirse a la reunión\x02Escriba su nombre de usuario preferido\x02Escriba " +
-	"su nombre de usuario\x02Nombre de usuario\x02Wahay está listo para usars" +
-	"e\x02Hemos detectado que el archivo de configuración no es válido o está" +
-	" dañado. ¿Desea hacer una copia de seguridad y continuar?\x02Bienvenido" +
-	"\x02Cuando esta opción está marcada, la configuración se guardará en el " +
-	"dispositivo.\x02Correo de Yahoo\x02Sí, respaldarlo y continuar\x02Si, co" +
-	"nfirmar\x02No se le volverá a solicitar esta contraseña hasta que reinic" +
-	"ie Wahay.\x02Ubicación del ejecutable de Mumble\x02Ej. /home/user/mumble" +
-	"/mumble\x02Si desea utilizar su propia instancia de Mumble, ingrese la u" +
-	"bicación donde Mumble está disponible en el sistema.\x02Puerto de servic" +
-	"io Mumble\x02Ej. 9800\x02Si desea configurar un puerto personalizado par" +
-	"a ejecutar el servicio Mumble, ingrese un número de puerto entre 1 y 655" +
-	"35"
+const esData string = "" + // Size: 4482 bytes
+	"\x02Error\x02no se pudo comenzar la reunión\x02La reunión no se pudo cer" +
+	"rar: %[1]s\x02El ID de la reunion ha sido copiado al portapapeles\x02El " +
+	"correo de invitación ha sido copiado al portapapeles\x02Unirse a una reu" +
+	"nión a travéz de Wahay\x02Por favor únete a la reunión a travéz de Wahay" +
+	" con los siguientes detalles:\x02Iniciar reunión y unirse\x02Iniciar reu" +
+	"nión\x02El proceso Mumble está caído\x02El ID de la reunión no puede ser" +
+	" vacío\x02Ocurrió un error\x0a\x0a%[1]s\x02El ID de la reunión es inváli" +
+	"do\x02El cliente Mumble no se puede usar porque: %[1]s\x02por favor espe" +
+	"cifique una contraseña válida\x02especifique la confirmación de la contr" +
+	"aseña\x02las contraseñas no coinciden\x02especifique una contraseña de m" +
+	"ínimo 6 caracteres\x02Si deshabilita esta opción, cualquier persona pod" +
+	"ría leer los parámetros de configuración\x02Abrir archivo\x02Cancelar" +
+	"\x02Abrir\x02Encontramos algunos errores\x02Aceptar\x02Permita que el or" +
+	"ganizador se una automáticamente a una reunión cuando cree una nueva\x02" +
+	"¿Está seguro de hacer esta acción?\x02¿Está seguro de finalizar esta re" +
+	"unión?\x02¿Está seguro de abandonar esta reunión?\x02Unirse automáticame" +
+	"nte a esta reunión\x02Unirse automáticamente al iniciar una reunión\x02U" +
+	"nirse automáticamente a esta reunión al iniciarla\x02Ten mucho cuidado. " +
+	"Esta información es confidencial y podría contener información muy priva" +
+	"da. Solo cambia esta configuración si la necesita absolutamente para la " +
+	"depuración.\x02Examinar\x02Al hacer clic en Sí, esta reunión finalizará." +
+	"\x02Al hacer clic en Sí, saldrá de esta reunión.\x02Ubicación del binari" +
+	"o Mumble\x02Los ajustes de configuración se perderán en la próxima sesió" +
+	"n\x02Configurar contraseña maestra\x02Confirmación\x02Conectando, espere" +
+	" por favor...\x02Continuar\x02Copiar invitación\x02Copiar ID de la reuni" +
+	"ón\x02Copiar URL\x02Marque esta opción para unirse automáticamente a ca" +
+	"da reunión creada en la sección del anfitrión\x02Elija su servicio de co" +
+	"rreo electrónico para enviar la invitación.\x02Depuración\x02Email prede" +
+	"terminado\x02Cifrar el archivo de configuración\x02Finalizar\x02Finaliza" +
+	" esta reunión\x02Finaliza esta reunión para todos\x02General\x02Gmail" +
+	"\x02Organizar una nueva reunión\x02Anfitrión\x02Alojar una reunión\x02Si" +
+	" realiza una copia de seguridad del archivo de configuración, restablece" +
+	"remos la configuración y continuaremos normalmente. Si el archivo de con" +
+	"figuración está cifrado, le pediremos una contraseña para cifrar el nuev" +
+	"o archivo de configuración.\x02Si establece esta opción con un nombre de" +
+	" archivo, la información de bajo nivel se registrará allí.\x02Archivo de" +
+	" configuración inválido\x02Contraseña invalida. Inténtalo de nuevo.\x02I" +
+	"nvitar a otros\x02Unirse\x02Unirse a una reunión\x02Unirse a una reunión" +
+	"\x02Únete a la reunión\x02Únete a esta reunión\x02Mantener el archivo de" +
+	" configuración al cerrar Wahay\x02Salir\x02Salir de esta reunión\x02Regi" +
+	"strar información de depuración\x02Registre la salida de depuración en e" +
+	"l archivo de registro seleccionado. Si no se selecciona ningún archivo, " +
+	"la salida del registro se escribirá en el archivo de registro predetermi" +
+	"nado.\x02Contraseña maestra\x02ID de la reunión\x02ID de la reunión:\x02" +
+	"Contraseña de la reunión\x02Mumble\x02No, cancelar\x02Ahora estás organi" +
+	"zando una reunión.\x02Outlook\x02Contraseña\x02Ingrese la contraseña mae" +
+	"stra para el archivo de configuración.\x02Puerto\x02Puerto fuera de rang" +
+	"o\x02Archivo de registros\x02Repita la contraseña\x02Guardar cambios\x02" +
+	"Seguridad\x02Configuración\x02Mostrar\x02Especifique una contraseña para" +
+	" la reunión\x02Comience a reunirse\x02El mensaje de error\x02El rango de" +
+	" puertos válidos está entre 1 y 65535\x02Esta acción no se puede deshace" +
+	"r\x02Alternar visibilidad de contraseña\x02Escriba la ID de la reunión (" +
+	"normalmente una dirección .onion)\x02Escribe la contraseña\x02Escriba la" +
+	" contraseña para unirse a la reunión\x02Escriba su nombre de usuario pre" +
+	"ferido\x02Escriba su nombre de usuario\x02Nombre de usuario\x02Wahay est" +
+	"á listo para usarse\x02Hemos detectado que el archivo de configuración " +
+	"no es válido o está dañado. ¿Desea hacer una copia de seguridad y contin" +
+	"uar?\x02Bienvenido\x02Cuando esta opción está marcada, la configuración " +
+	"se guardará en el dispositivo.\x02Correo de Yahoo\x02Sí, respaldarlo y c" +
+	"ontinuar\x02Si, confirmar\x02No se le volverá a solicitar esta contraseñ" +
+	"a hasta que reinicie Wahay.\x02Ubicación del ejecutable de Mumble\x02Ej." +
+	" /home/user/mumble/mumble\x02Si desea utilizar su propia instancia de Mu" +
+	"mble, ingrese la ubicación donde Mumble está disponible en el sistema." +
+	"\x02Puerto de servicio Mumble\x02Ej. 9800\x02Si desea configurar un puer" +
+	"to personalizado para ejecutar el servicio Mumble, ingrese un número de " +
+	"puerto entre 1 y 65535"
 
-var svIndex = []uint32{ // 124 elements
+var svIndex = []uint32{ // 121 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -457,8 +446,8 @@ var svIndex = []uint32{ // 124 elements
 	// Entry 20 - 3F
 	0x000001a0, 0x000001ad, 0x000001ba, 0x000001c7,
 	0x000001d4, 0x000001e1, 0x000001ee, 0x000001fb,
-	0x00000208, 0x00000215, 0x00000222, 0x0000022f,
-	0x0000023c, 0x00000249, 0x00000256, 0x00000272,
+	0x00000217, 0x00000224, 0x00000231, 0x0000023e,
+	0x0000024b, 0x00000258, 0x00000265, 0x00000272,
 	0x0000027f, 0x0000028c, 0x00000299, 0x000002a6,
 	0x000002b3, 0x000002c0, 0x000002cd, 0x000002da,
 	0x000002e7, 0x000002f4, 0x00000301, 0x0000030e,
@@ -478,11 +467,21 @@ var svIndex = []uint32{ // 124 elements
 	0x00000557, 0x00000564, 0x00000571, 0x0000057e,
 	0x0000058b, 0x00000598, 0x000005a5, 0x000005b2,
 	0x000005bf, 0x000005cc, 0x000005d9, 0x000005e6,
-	0x000005f3, 0x00000600, 0x0000060d, 0x0000061a,
-	0x00000627, 0x00000634, 0x00000641, 0x0000064e,
-} // Size: 520 bytes
+	0x000005f3, 0x000005f3, 0x000005f3, 0x000005f3,
+	0x000005f3,
+} // Size: 508 bytes
 
-const svData string = "" + // Size: 1614 bytes
+const svData string = "" + // Size: 1523 bytes
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02Ansluter, var god vä" +
+	"nta...\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -493,23 +492,11 @@ const svData string = "" + // Size: 1614 bytes
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02Ansluter, var god vänta...\x02TRANSLATE ME\x02TRANSL" +
-	"ATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 13927 bytes (13KiB); checksum: 9ECF452B
+	// Total table size 13329 bytes (13KiB); checksum: 45922280
