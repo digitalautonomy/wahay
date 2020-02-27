@@ -174,6 +174,20 @@ func NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, error) {
 	return s, nil
 }
 
+var (
+	// ErrTorBinaryNotFound is an error to be trown when wasn't
+	// possible to find any available or valid Tor binary
+	ErrTorBinaryNotFound = errors.New("no Tor binary found")
+
+	// ErrTorInstanceCantStart is an error to be trown when the
+	// Tor instance cannot be started
+	ErrTorInstanceCantStart = errors.New("the Tor instance cannot start")
+
+	// ErrTorConnectionTimeout is an error to be trown when the
+	// connection to the Tor network using our instance wasn't possible
+	ErrTorConnectionTimeout = errors.New("connection over Tor timeout")
+)
+
 // GetInstance returns the Instance for working with Tor
 // This function should be called only once during the system initialization
 func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
@@ -184,17 +198,17 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 	ensureWahayDataDir()
 
-	b, valid, err := findTorBinary(conf)
-	if !valid || err != nil {
-		return nil, errors.New("error: there is no valid or available Tor binary")
+	b, err := findTorBinary(conf)
+	if b == nil || err != nil {
+		return nil, ErrTorBinaryNotFound
 	}
 
 	log.Printf("Using Tor binary found in: %s", b.path)
 
 	i, err = getOurInstance(b, conf)
 	if err != nil {
-		log.Printf("tor.GetInstance() error: %s", err)
-		return nil, errors.New("error: we can't start our Tor instance")
+		log.Debugf("tor.GetInstance() error: %s", err)
+		return nil, err
 	}
 
 	setSingleInstance(i)
@@ -209,7 +223,7 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 
 	err := i.Start()
 	if err != nil {
-		return nil, errors.New("error: we can't start our instance")
+		return nil, err
 	}
 
 	checker := NewCustomChecker(i.controlHost, i.socksPort, i.controlPort)
@@ -217,16 +231,17 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 	timeout := time.Now().Add(torStartupTimeout)
 	for {
 		time.Sleep(3 * time.Second)
-		total, partial := checker.Check()
-		if total != nil {
-			return nil, errors.New("error: we can't check our instance")
+
+		errTotal, errPartial := checker.Check()
+		if errTotal != nil {
+			return nil, errTotal
 		}
 
 		if time.Now().After(timeout) {
-			return nil, errors.New("error: we can't start our instance because timeout")
+			return nil, ErrTorConnectionTimeout
 		}
 
-		if partial == nil {
+		if errPartial == nil {
 			return i, nil
 		}
 	}
@@ -243,7 +258,7 @@ func newInstance(b *binary, torsocksPath string) (*instance, error) {
 // Start our Tor Control Port
 func (i *instance) Start() error {
 	if i.binary == nil || !i.binary.isValid {
-		return errors.New("we can't start our Tor instance")
+		return ErrTorInstanceCantStart
 	}
 
 	state, err := i.binary.start(i.configFile)
