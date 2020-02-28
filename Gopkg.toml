@@ -64,7 +64,3 @@
 [[constraint]]
   branch = "master"
   name = "github.com/kardianos/osext"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/mattn/go-sqlite3"

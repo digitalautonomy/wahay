@@ -63,8 +63,8 @@
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   pruneopts = "UT"
-  revision = "d23c5127dc24889085f8ccea5c9d560a57a879d8"
-  version = "v1.3.3"
+  revision = "5d5b4c10bd43f85e63bd9e4a3fa9b1ea2ef88af2"
+  version = "v1.3.4"
 
 [[projects]]
   digest = "1:e62657cca9badaa308d86e7716083e4c5933bb78e30a17743fc67f50be26f6f4"
@@ -105,14 +105,6 @@
   version = "v1.0.2"
 
 [[projects]]
-  digest = "1:4cc7748b74453830951f95ddc3fd980387e7c13f77cc33d7cba54cd6b96dad26"
-  name = "github.com/kr/pretty"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "4e0886370c3a67530192c6a238cff68f56c141b0"
-  version = "v0.2.0"
-
-[[projects]]
   digest = "1:7218fd69ff5436d016101bbc6183cdc289aa45ac37b48e78846318e4ef389bea"
   name = "github.com/kr/text"
   packages = ["."]
@@ -122,11 +114,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:16091034e92d6b5ba928e89b9d6131c0d208704e001dd4f33031b4903e0b7f24"
-  name = "github.com/mattn/go-sqlite3"
+  digest = "1:4454a22e87e1aacfb4c7e9550ab98c711a5285a0cc7f9ff8952c44a9b0dbbb05"
+  name = "github.com/niemeyer/pretty"
   packages = ["."]
   pruneopts = "UT"
-  revision = "67986a7832dcbda29de5c1341b3dec6c6d97511a"
+  revision = "a10e7caefd8e0d600cea437f5c3613aeb1553d56"
 
 [[projects]]
   digest = "1:04457f9f6f3ffc5fea48e71d62f2ca256637dee0a04d710288e27e05c8b41976"
@@ -210,11 +202,11 @@
 
 [[projects]]
   branch = "v1"
-  digest = "1:bc88591477b5fee4520dcd3d8fa8fd26f5d78b83193ed0102a7e83552652daa4"
+  digest = "1:95c723aeb49b28a44330cd94e0272e23ad6ad6e3fb2945a556b72d71fd7b8c65"
   name = "gopkg.in/check.v1"
   packages = ["."]
   pruneopts = "UT"
-  revision = "41f04d3bba152ddec2103e299fed053415705330"
+  revision = "8fa46927fb4f5b54d48bde78c6c08db205b2298c"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -233,7 +225,6 @@
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/kardianos/osext",
-    "github.com/mattn/go-sqlite3",
     "github.com/sirupsen/logrus",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",
