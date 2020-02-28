@@ -13,16 +13,18 @@ To verify the integrity of the file you need to obtain the SHA256SUM of the bina
 
 <br><br>
 <div class="code">
+<br>
 $ sha256sum wahay-2020-01-22-9319d8d<br>
 f75a4b04d05571d5eb7dff267c1efa996b1e24ff9a8d84c4fa1088141dc48cf8  wahay-2020-01-22-9319d8d<br>
 </div>
 <br>The output of the previous command should be compare with the content of wahay-2020-01-22-9319d8d.sha256sum file.
 <br><br>
 
-<code>
+<div class="code">
+<br>
 $ cat wahay-2020-01-22-9319d8d.sha256sum<br>
 f75a4b04d05571d5eb7dff267c1efa996b1e24ff9a8d84c4fa1088141dc48cf8  bin/wahay-2020-01-22-9319d8d<br>
-</code>
+</div>
 <br>
 
 If the output of both is the same, then the binary has not been modified in transit, otherwise you have a corrupted file.
