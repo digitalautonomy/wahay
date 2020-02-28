@@ -11,7 +11,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:52c2d98651b92ae48ecee7252d8380dd2ba58e9ab12203fa1b8b9aa4f00176ec"
+  digest = "1:cedb027eba1844933b5c277bc3d1608149a05344b219fb67ad8ccbe3263e16ab"
   name = "github.com/coyim/gotk3adapter"
   packages = [
     "gdka",
@@ -24,7 +24,7 @@
     "gtki",
   ]
   pruneopts = "UT"
-  revision = "ac9face653f406218ca1c1ce94d66e2d03b3dd76"
+  revision = "8ad62a930093c5c48a13619223885d6ac3418bb0"
 
 [[projects]]
   branch = "master"
@@ -111,14 +111,6 @@
   pruneopts = "UT"
   revision = "702c74938df48b97370179f33ce2107bd7ff3b3e"
   version = "v0.2.0"
-
-[[projects]]
-  digest = "1:e2ac6e4ee843b2001b6c3a7801180ea3f7fa6d61fb917ca7dde15e26ef02a082"
-  name = "github.com/mattn/go-sqlite3"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "9bdaffc12bf8be15afceb51bb60851edd4afdff5"
-  version = "v2.0.3"
 
 [[projects]]
   branch = "master"
@@ -233,7 +225,6 @@
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/kardianos/osext",
-    "github.com/mattn/go-sqlite3",
     "github.com/sirupsen/logrus",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",
