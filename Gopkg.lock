@@ -113,6 +113,14 @@
   version = "v0.2.0"
 
 [[projects]]
+  digest = "1:e2ac6e4ee843b2001b6c3a7801180ea3f7fa6d61fb917ca7dde15e26ef02a082"
+  name = "github.com/mattn/go-sqlite3"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9bdaffc12bf8be15afceb51bb60851edd4afdff5"
+  version = "v2.0.3"
+
+[[projects]]
   branch = "master"
   digest = "1:4454a22e87e1aacfb4c7e9550ab98c711a5285a0cc7f9ff8952c44a9b0dbbb05"
   name = "github.com/niemeyer/pretty"
@@ -225,6 +233,7 @@
     "github.com/digitalautonomy/grumble/pkg/logtarget",
     "github.com/digitalautonomy/grumble/server",
     "github.com/kardianos/osext",
+    "github.com/mattn/go-sqlite3",
     "github.com/sirupsen/logrus",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",

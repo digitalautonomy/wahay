@@ -64,3 +64,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/kardianos/osext"
+
+[[constraint]]
+  name = "github.com/mattn/go-sqlite3"
+  version = "2.0.3"

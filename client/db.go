@@ -3,6 +3,9 @@ package client
 import (
 	"database/sql"
 	"errors"
+
+	// The sqlite3 driver is automatic added by this package
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type conn struct {
@@ -52,7 +55,7 @@ func getSQLConnection(filename string) (*conn, error) {
 	var err error
 	c.filename = filename
 
-	c.db, err = sql.Open("sqlite", filename)
+	c.db, err = sql.Open("sqlite3", filename)
 	if err != nil {
 		return nil, err
 	}
