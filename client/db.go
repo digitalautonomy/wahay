@@ -3,13 +3,6 @@ package client
 import (
 	"database/sql"
 	"errors"
-
-	// We’re loading the driver anonymously, aliasing its package
-	// qualifier to _ so none of its exported names are visible to
-	// our code. Under the hood, the driver registers itself as being
-	// available to the database/sql package, but in general nothing
-	// else happens with the exception that the init function is run.
-	_ "github.com/mattn/go-sqlite3"
 )
 
 type conn struct {
@@ -49,17 +42,17 @@ func (c *conn) close() error {
 }
 
 // The caller should close the connection
-func getSQLConnection(sqlFile string) (*conn, error) {
+func getSQLConnection(filename string) (*conn, error) {
 	c := &conn{}
 
-	if !fileExists(sqlFile) {
+	if !fileExists(filename) {
 		return c, errors.New("the database doesn't exists")
 	}
 
 	var err error
-	c.filename = sqlFile
+	c.filename = filename
 
-	c.db, err = sql.Open("sqlite3", sqlFile)
+	c.db, err = sql.Open("sqlite", filename)
 	if err != nil {
 		return nil, err
 	}
