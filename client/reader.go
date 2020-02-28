@@ -1,7 +1,6 @@
 package client
 
 import (
-	"io/ioutil"
 	"os"
 
 	"github.com/digitalautonomy/wahay/codegen"
@@ -64,12 +63,4 @@ func isADirectory(path string) bool {
 
 func isAFile(filename string) bool {
 	return !isADirectory(filename)
-}
-
-func readFile(fileName string) string {
-	data, err := ioutil.ReadFile(fileName)
-	if err != nil {
-		panic(err.Error())
-	}
-	return string(data)
 }

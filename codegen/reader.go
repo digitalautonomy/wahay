@@ -20,10 +20,10 @@ func GetFileWithFallback(name, directory string, fs FSStringProvider) string {
 
 	embeddedFile, err := fs(false, embeddedName)
 	if err != nil {
-		panic(fmt.Sprintf("No embedded file found for %s", embeddedName))
+		panic(fmt.Sprintf("No definition found for %s", embeddedName))
 	}
 
-	if !fileNotFound(filename) {
+	if fileNotFound(filename) {
 		return embeddedFile
 	}
 

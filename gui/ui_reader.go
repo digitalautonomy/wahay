@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"sync"
 
 	"github.com/digitalautonomy/wahay/codegen"
@@ -44,11 +45,6 @@ func (g *Graphics) uiBuilderFor(name string) *uiBuilder {
 	return &uiBuilder{g.builderForDefinition(name)}
 }
 
-func fileNotFound(fileName string) bool {
-	_, fnf := os.Stat(fileName)
-	return os.IsNotExist(fnf)
-}
-
 func readFile(fileName string) string {
 	data, err := ioutil.ReadFile(fileName)
 	if err != nil {
@@ -71,6 +67,14 @@ func getCSSFileWithFallback(fileName string) string {
 
 func getDefinitionWithFileFallback(uiName string) string {
 	return codegen.GetFileWithFallback(uiName+xmlExtension, filepath.Join("gui", definitionsDir), FSString)
+}
+
+func getActualDefsFolder() string {
+	wd, _ := os.Getwd()
+	if strings.HasSuffix(wd, "/gui") {
+		return "definitions"
+	}
+	return "gui/definitions"
 }
 
 func (g *Graphics) loadCSSFor(cssFile string) gtki.CssProvider {
