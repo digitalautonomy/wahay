@@ -5,12 +5,11 @@ package gui
 import (
 	"io/ioutil"
 	"os"
-	"path"
 	"path/filepath"
 	"reflect"
-	"strings"
 	"sync"
 
+	"github.com/digitalautonomy/wahay/codegen"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/coyim/gotk3adapter/gdki"
@@ -27,8 +26,8 @@ const (
 const (
 	definitionsDir = "definitions"
 	cssDir         = "styles"
-	imagesDir      = "/images"
-	configFilesDir = "/config_files"
+	imagesDir      = "images"
+	configFilesDir = "config_files"
 )
 
 var builderMutex sync.Mutex
@@ -43,22 +42,6 @@ func (g *Graphics) cssFor(name string) gtki.CssProvider {
 
 func (g *Graphics) uiBuilderFor(name string) *uiBuilder {
 	return &uiBuilder{g.builderForDefinition(name)}
-}
-
-func getActualFolder(directory string) string {
-	wd, _ := os.Getwd()
-	if strings.HasSuffix(wd, "/gui") {
-		return directory
-	}
-	return path.Join("gui/", directory)
-}
-
-func getActualDefsFolder() string {
-	wd, _ := os.Getwd()
-	if strings.HasSuffix(wd, "/gui") {
-		return "definitions"
-	}
-	return "gui/definitions"
 }
 
 func fileNotFound(fileName string) bool {
@@ -78,41 +61,16 @@ func (u *gtkUI) getConfigDesktopFile(fileName string) string {
 	return u.getConfigFileFor(fileName, ".desktop")
 }
 
-func (u *gtkUI) getConfigIniFile(fileName string) string {
-	return u.getConfigFileFor(fileName, ".ini")
-}
-
-func (u *gtkUI) getSQLite(fileName string) string {
-	return u.getConfigFileFor(fileName, ".sqlite")
-}
-
 func (u *gtkUI) getConfigFileFor(fileName, extension string) string {
-	return getFileWithFallback(fileName, extension, configFilesDir)
-}
-
-func getFileWithFallback(fileName string, fileExtension string, directory string) string {
-	fname := path.Join("/"+directory, fileName+fileExtension)
-
-	embeddedFile, err := FSString(false, fname)
-	if err != nil {
-		fatalf("No definition found for %s", fname)
-	}
-
-	file := filepath.Join(getActualFolder(directory), fileName+fileExtension)
-	if fileNotFound(file) {
-		return embeddedFile
-	}
-
-	log.Debugf("Loading content from local file: %q\n", file)
-	return readFile(file)
+	return codegen.GetFileWithFallback(fileName+extension, filepath.Join("gui", configFilesDir), FSString)
 }
 
 func getCSSFileWithFallback(fileName string) string {
-	return getFileWithFallback(fileName, cssExtension, cssDir)
+	return codegen.GetFileWithFallback(fileName+cssExtension, filepath.Join("gui", cssDir), FSString)
 }
 
 func getDefinitionWithFileFallback(uiName string) string {
-	return getFileWithFallback(uiName, xmlExtension, definitionsDir)
+	return codegen.GetFileWithFallback(uiName+xmlExtension, filepath.Join("gui", definitionsDir), FSString)
 }
 
 func (g *Graphics) loadCSSFor(cssFile string) gtki.CssProvider {
@@ -188,7 +146,7 @@ func (g *Graphics) getImage(imageName string) []byte {
 }
 
 func (g Graphics) getImageBytes(filename string) []byte {
-	image := filepath.Join(imagesDir, filename)
+	image := filepath.Join("/"+imagesDir, filename)
 	bs, err := FSByte(false, image)
 	if err != nil {
 		log.Fatal("Developer error: getting the image " + image + " but it does not exist")

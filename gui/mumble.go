@@ -13,15 +13,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	go func() {
 		defer wg.Done()
 
-		c := client.InitSystem(
-			u.config,
-			func() string {
-				return u.getConfigIniFile("mumble")
-			},
-			func() []byte {
-				return []byte(u.getSQLite(".mumble"))
-			},
-		)
+		c := client.InitSystem(u.config)
 
 		if !c.CanBeUsed() {
 			addNewStartupError(c.GetLastError(), errGroupMumble)
