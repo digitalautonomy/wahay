@@ -1,49 +1,115 @@
 <html>
-<head>
-<style>
-html { padding:10px; width:95% }
-.block-center { margin:auto; width:100%; }
-.box { width:100%; border:1px solid #ADADAD; padding: 10px; margin:5px; }
-#.box > p { font-weight:bold }
-.table-files { width:100%; border:1px solid #333; border-collapse: collapse; }
-.table-files tr th { border:1px solid #333; text-align: left; padding:5px; }
-.table-files tr td { border:1px solid #333; padding:5px; }
-.code{ background-color:#111;color:#FFF;font-family:Monospace;font-size:14px;margin:5px;padding:5px;width:90%; }
-.table-bundled { width: 100%; }
-.table-bundled tr td { border:1px solid #333 }
-</style>
-</head>
-<body>
-<div class="block-center">
-<h1>Downloads</h1>
-</div>
-<div>
-<p>Wahay is in an early stage of development. Not all of its functionalities have been developed and you may find errors! </p>
-<p><strong>Download it at your own risk!</strong></p>
-<p>At the moment it's available only for Linux 64 bits, in the future we plan to provide binaries for other operating systems. </p>
-<h2>Linux downloads</h2>
-<p>
-In order for Wahay to work Mumble and Tor should be installed in the operating system. The binary file would work on most Linux distributions, but you would have to install Mumble and Tor (>= 0.3.5) package by your self.
-</p>
-<p>
-The Bundle packages are a compress directory that includes Wahay binary, Mumble and Tor. They are dependent of the distribution, but there is no need to install in the system. Just download, uncompress and double click on <strong>wahay</strong> file.
-</p>
-<p>
-The Linux packages, are packages that would work on specific Linux distribution. At the moment we have deb packages that can be installed in Debian base distributions. It is important to note that the distribution must have Tor >= 0.3.5, that is why it would not work out of the box in Ubuntu 18.04. To fix this issue install a newer version of Tor (<a href="https://2019.www.torproject.org/docs/debian.html.en#ubuntu" target="#">https://2019.www.torproject.org/docs/debian.html.en#ubuntu</a>). A simpler solution would be to use the Bundle package if available.
-</p>
-<p>
-Different options to install Wahay are available. The Binary file is Wahay application without Mumble and Tor.
-</p>
-<table class="table-files">
-<tr>
-<th>BINARY</th>
-<th>HASH</th>
-<th>SIGNATURE</th>
-<th style='text-align:center'>BUNDLED</th>
-<th style='text-align:center'>LINUX PACKAGES</th>
-</tr>
-<tr>
-<td><a href="downloads/wahay-latest">wahay-latest</a></td>
-<td><a href="downloads/wahay-latest.sha256sum">sha256sum</a></td>
-<td><a href="downloads/wahay-latest.sha256sum">GPG signature</a></td>
-<td>
+  <head>
+    <style>
+      html {
+        padding: 10px;
+        width: 95%;
+      }
+      .block-center {
+        margin: auto;
+        width: 100%;
+      }
+      .box {
+        width: 100%;
+        border: 1px solid #adadad;
+        padding: 10px;
+        margin: 5px;
+      }
+      #.box > p {
+        font-weight: bold;
+      }
+      .table-files {
+        width: 100%;
+        border: 1px solid #333;
+        border-collapse: collapse;
+      }
+      .table-files tr th {
+        border: 1px solid #333;
+        text-align: left;
+        padding: 5px;
+      }
+      .table-files tr td {
+        border: 1px solid #333;
+        padding: 5px;
+      }
+      .code {
+        background-color: #111;
+        color: #fff;
+        font-family: Monospace;
+        font-size: 14px;
+        margin: 5px;
+        padding: 5px;
+        width: 90%;
+      }
+      .table-bundled {
+        width: 100%;
+      }
+      .table-bundled tr td {
+        border: 1px solid #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="block-center">
+      <h1>Downloads</h1>
+    </div>
+    <div>
+      <p>
+        Wahay is in an early stage of development. Not all of its
+        functionalities have been developed and you may find errors!
+      </p>
+      <p><strong>Download it at your own risk!</strong></p>
+      <p>
+        At the moment it's available only for Linux 64 bits, in the future we
+        plan to provide binaries for other operating systems.
+      </p>
+      <h2>Linux downloads</h2>
+      <p>
+        This binary should be compatible with most of the modern Linux
+        distributions. In order for Wahay to work you will need to install
+        <a href="https://www.mumble.info/downloads/" target="#">Mumble</a>
+        and
+        <a href="https://support.torproject.org/apt/tor-deb-repo/" target="#"
+          >Tor</a
+        >
+        (>=0.3.5).
+      </p>
+      <p>
+        This is a compress file that bundles Wahay, Tor and Mumble. It is not
+        necessary to install on the system or have root privileges, all you have
+        to do is uncompress it and double-click on the Wahay app.
+      </p>
+      <p>
+        The Linux packages, are packages that would work on specific Linux
+        distribution. At the moment we have deb packages that can be installed
+        in Debian base distributions. It is important to note that the
+        distribution must have Tor >= 0.3.5, that is why it would not work out
+        of the box in Ubuntu 18.04. To fix this issue install a newer version of
+        Tor (<a
+          href="https://2019.www.torproject.org/docs/debian.html.en#ubuntu"
+          target="#"
+          >https://2019.www.torproject.org/docs/debian.html.en#ubuntu</a
+        >). A simpler solution would be to use the Bundle package if available.
+      </p>
+      <p>
+        Different options to install Wahay are available. The Binary file is
+        Wahay application without Mumble and Tor.
+      </p>
+      <table class="table-files">
+        <tr>
+          <th>BINARY</th>
+          <th>HASH</th>
+          <th>SIGNATURE</th>
+          <th style="text-align:center">BUNDLED</th>
+          <th style="text-align:center">LINUX PACKAGES</th>
+        </tr>
+        <tr>
+          <td><a href="downloads/wahay-latest">wahay-latest</a></td>
+          <td><a href="downloads/wahay-latest.sha256sum">sha256sum</a></td>
+          <td><a href="downloads/wahay-latest.sha256sum">GPG signature</a></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
