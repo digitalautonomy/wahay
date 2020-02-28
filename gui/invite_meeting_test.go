@@ -6,7 +6,7 @@ type WahayInviteMeetingSuite struct{}
 
 var _ = Suite(&WahayInviteMeetingSuite{})
 
-func (s *WahayGUIDefinitionsSuite) Test_InviteMeeting_extractMeetingIDandPort_SucceedIfValidUrl(c *C) {
+func (s *WahayInviteMeetingSuite) Test_InviteMeeting_extractMeetingIDandPort_SucceedIfValidUrl(c *C) {
 	h1, p1, e1 := extractMeetingIDandPort("qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion")
 	h2, p2, e2 := extractMeetingIDandPort("qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion:8080")
 
