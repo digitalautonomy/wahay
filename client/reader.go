@@ -1,8 +1,20 @@
 package client
 
 import (
+	"io/ioutil"
 	"os"
+
+	"github.com/digitalautonomy/wahay/codegen"
 )
+
+func getDBFileContent() []byte {
+	content := codegen.GetFileWithFallback(".mumble.sqlite", "client/files", FSString)
+	return []byte(content)
+}
+
+func getIniFileContent() string {
+	return codegen.GetFileWithFallback("mumble.ini", "client/files", FSString)
+}
 
 func createDir(path string) error {
 	return os.MkdirAll(path, 0700)
@@ -52,4 +64,12 @@ func isADirectory(path string) bool {
 
 func isAFile(filename string) bool {
 	return !isADirectory(filename)
+}
+
+func readFile(fileName string) string {
+	data, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		panic(err.Error())
+	}
+	return string(data)
 }

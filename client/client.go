@@ -1,5 +1,7 @@
 package client
 
+//go:generate esc -o gen_client_files.go -pkg client -ignore "Makefile" files
+
 import (
 	"errors"
 	"io/ioutil"
@@ -59,10 +61,11 @@ func GetMumbleInstance() Instance {
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
-func InitSystem(conf *config.ApplicationConfig, p mumbleIniProvider, d databaseProvider) Instance {
+func InitSystem(conf *config.ApplicationConfig) Instance {
 	var err error
 
-	currentInstance = newMumbleClient(p, d)
+	currentInstance = newMumbleClient(getIniFileContent, getDBFileContent)
+
 	b := getMumbleBinary(conf)
 
 	if b == nil {

@@ -23,6 +23,9 @@ gen-ui-defs: check-deps
 gen-ui-locale: check-deps
 	cd gui && make generate-locale
 
+gen-client-files: check-deps
+	cd client && make
+
 deps:
 	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
