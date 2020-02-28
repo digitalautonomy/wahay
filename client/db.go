@@ -1,64 +1,87 @@
 package client
 
 import (
-	"database/sql"
-	"errors"
-
-	// The sqlite3 driver is automatic added by this package
-	_ "github.com/mattn/go-sqlite3"
+	"bufio"
+	"bytes"
+	b "encoding/binary"
+	"io/ioutil"
+	"os"
 )
 
-type conn struct {
+type dbData struct {
 	filename string
-	db       *sql.DB
+	content  []byte
 }
 
-func (c *conn) replace(query string, params ...interface{}) error {
-	r, err := c.db.Exec(query, params...)
+func (d *dbData) exists(k string) bool {
+	return bytes.Contains(d.content, []byte(k))
+}
+
+func (d *dbData) replaceString(find, replace string) {
+	newContent := bytes.Replace(d.content, []byte(find), []byte(replace), -1)
+	d.content = newContent
+}
+
+func (d *dbData) replaceInteger(find, replace int) {
+	d.replaceString(
+		intToStringToSearch(find),
+		intToStringToSearch(replace),
+	)
+}
+
+func (d *dbData) write() error {
+	err := ioutil.WriteFile(d.filename, d.content, 0)
 	if err != nil {
 		return err
 	}
-
-	if n, err := r.RowsAffected(); n == 0 || err != nil {
-		return errors.New("sql: replace query did not worked")
-	}
-
 	return nil
 }
 
-const queryExistsText = "SELECT COUNT(*) FROM `?` WHERE `?` = ? LIMIT 1"
+func intToStringToSearch(n int) string {
+	n1 := n >> 8
+	n2 := n % 256
 
-func (c *conn) exists(table string, key, value string) bool {
-	var total int
-	for r, err := c.db.Query(queryExistsText, table, key, value); err == nil; r.Next() {
-		err = r.Scan(&total)
-		if err != nil {
-			return false
-		}
-	}
+	buf := new(bytes.Buffer)
+	_ = b.Write(buf, b.LittleEndian, uint8(n1))
+	_ = b.Write(buf, b.LittleEndian, uint8(n2))
 
-	return total == 1
+	return buf.String()
 }
 
-func (c *conn) close() error {
-	return c.db.Close()
-}
-
-// The caller should close the connection
-func getSQLConnection(filename string) (*conn, error) {
-	c := &conn{}
-
-	if !fileExists(filename) {
-		return c, errors.New("the database doesn't exists")
-	}
-
-	var err error
-	c.filename = filename
-
-	c.db, err = sql.Open("sqlite3", filename)
+func loadDBFromFile(filename string) (*dbData, error) {
+	content, err := readBinaryContent(filename)
 	if err != nil {
 		return nil, err
 	}
 
-	return c, nil
+	d := &dbData{
+		filename: filename,
+		content:  content,
+	}
+
+	return d, nil
+}
+
+func readBinaryContent(filename string) ([]byte, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	info, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+
+	size := info.Size()
+	bytes := make([]byte, size)
+
+	buffer := bufio.NewReader(file)
+	_, err = buffer.Read(bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return bytes, nil
 }

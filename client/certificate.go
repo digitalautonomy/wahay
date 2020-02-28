@@ -74,7 +74,7 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 	return c.storeCertificateInDB(serviceID, servicePort, digest)
 }
 
-func (c *client) getDB() (*conn, error) {
+func (c *client) getDB() (*dbData, error) {
 	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
 	if !fileExists(sqlFile) {
 		data := c.databaseProvider()
@@ -84,34 +84,40 @@ func (c *client) getDB() (*conn, error) {
 		}
 	}
 
-	conn, err := getSQLConnection(sqlFile)
+	d, err := loadDBFromFile(sqlFile)
 	if err != nil {
 		return nil, err
 	}
 
-	return conn, nil
+	return d, nil
 }
 
-const checkCertExistanceQuery = "REPLACE INTO `cert` (hostname, port, digest) VALUES (?,?,?)"
+const (
+	defaultHostToReplace   = "ffaaffaabbddaabbddeeaaddccaaffeebbaabbeeddeeaaddbbeeeeff"
+	defaultPortToReplace   = 64738
+	defaultDigestToReplace = "AAABACADAFBABBBCBDBEBFCACBCCCDCECFDADBDC"
+)
 
 func (c *client) storeCertificateInDB(id string, port int, digest string) error {
-	conn, err := c.getDB()
+	d, err := c.getDB()
 	if err != nil {
 		return err
 	}
-	defer conn.close()
 
-	return conn.replace(checkCertExistanceQuery, id, port, digest)
+	d.replaceString(defaultHostToReplace, id)
+	d.replaceInteger(defaultPortToReplace, port)
+	d.replaceString(defaultDigestToReplace, digest)
+
+	return d.write()
 }
 
 func (c *client) isTheCertificateInDB(serviceID string) bool {
-	conn, err := c.getDB()
+	d, err := c.getDB()
 	if err != nil {
 		return false
 	}
-	defer conn.close()
 
-	return conn.exists("cert", "hostname", serviceID)
+	return d.exists(serviceID)
 }
 
 func getDigestForCert(cert []byte) (string, error) {
