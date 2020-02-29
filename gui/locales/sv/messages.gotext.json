@@ -771,6 +771,41 @@
             "id": "You will not be asked for this password again until you restart Wahay.",
             "message": "You will not be asked for this password again until you restart Wahay.",
             "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "What is Wahay?",
+            "message": "What is Wahay?",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
+            "message": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses TOR (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
+            "message": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses TOR (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "What is TOR?",
+            "message": "What is TOR?",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. TOR directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
+            "message": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. TOR directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "What is Mumble?",
+            "message": "What is Mumble?",
+            "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
+            "message": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
+            "translation": "TRANSLATE ME"
         }
     ]
 }

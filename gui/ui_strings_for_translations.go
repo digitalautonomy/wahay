@@ -135,4 +135,24 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt4() {
 	_ = i18n.Sprintf("Ex. 9800")
 	_ = i18n.Sprintf("If you want to set up a custom port to run the Mumble service, " +
 		"please a port number between 1 and 65535")
+	_ = i18n.Sprintf("What is Wahay?")
+	_ = i18n.Sprintf("Communication is a basic need of the human being, in its beginnings it is carried out verbally " +
+		"from person to person through the use of technology, various tools have been developed for this purpose stories " +
+		"such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered " +
+		"in the development of these solutions: centralized servers, proprietary technology, security, are some aspects " +
+		"that have not been contemplated or have been partially implemented.")
+	_ = i18n.Sprintf("Wahay (https://wahay.org) has been developed as a tool for conducting voice " +
+		"conferences in an easy, extremely secure and decentralized manner (without the need for " +
+		"any centralized server or service). Internally it uses TOR (https://www.torproject.org/) " +
+		"as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a " +
+		"client to establish voice over IP.")
+	_ = i18n.Sprintf("What is TOR?")
+	_ = i18n.Sprintf("Tor is a free and open source tool that allows you to establish anonymous " +
+		"and distributed communications. TOR directs its internet traffic through a series of " +
+		"routers called 'onion routers' allowing anonymous communication between its nodes, " +
+		"this network works from a set of organizations and individuals that donate their " +
+		"bandwidth and processing power.")
+	_ = i18n.Sprintf("What is Mumble?")
+	_ = i18n.Sprintf("Mumble is a free and open source application that allows voice over " +
+		"IP conferences between users with high sound quality and low latency.")
 }
