@@ -7,6 +7,13 @@
     @extend .btn;
     @extend .btn-sm;
   }
+
+  .main-window-btn-help {
+    border-radius: 10em;
+
+    @extend .btn;
+    @extend .btn-sm;
+  }
 }
 
 .main-window-actions {
