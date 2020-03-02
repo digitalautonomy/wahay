@@ -35,12 +35,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 	}
 
 	u.hideMainWindow()
-	u.displayLoadingWindowWithCallback(func() {
-		if h.service != nil {
-			h.service.Close()
-		}
-		u.switchToMainWindow()
-	})
+	u.displayLoadingWindow()
 
 	err := make(chan error)
 
@@ -102,7 +97,7 @@ func (h *hostData) showMeetingControls() {
 }
 
 func (h *hostData) joinMeetingHost() {
-	h.u.displayLoadingWindowWithCallback(h.u.switchToMainWindow)
+	h.u.displayLoadingWindow()
 
 	var err error
 	validOpChannel := make(chan bool)
