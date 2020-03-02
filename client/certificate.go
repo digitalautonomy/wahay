@@ -77,6 +77,10 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 func (c *client) getDB() (*dbData, error) {
 	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
 	if !fileExists(sqlFile) {
+		log.WithFields(log.Fields{
+			"filepath": sqlFile,
+		}).Debug("Creating Mumble sqlite database")
+
 		data := c.databaseProvider()
 		err := ioutil.WriteFile(sqlFile, data, 0644)
 		if err != nil {
@@ -93,22 +97,31 @@ func (c *client) getDB() (*dbData, error) {
 }
 
 const (
-	defaultHostToReplace   = "ffaaffaabbddaabbddeeaaddccaaffeebbaabbeeddeeaaddbbeeeeff"
+	defaultHostToReplace   = "ffaaffaabbddaabbddeeaaddccaaffeebbaabbeeddeeaaddbbeeeeff.onion"
 	defaultPortToReplace   = 64738
 	defaultDigestToReplace = "AAABACADAFBABBBCBDBEBFCACBCCCDCECFDADBDC"
 )
 
 func (c *client) storeCertificateInDB(id string, port int, digest string) error {
-	d, err := c.getDB()
+	db, err := c.getDB()
 	if err != nil {
 		return err
 	}
 
-	d.replaceString(defaultHostToReplace, id)
-	d.replaceInteger(defaultPortToReplace, port)
-	d.replaceString(defaultDigestToReplace, digest)
+	log.WithFields(log.Fields{
+		"defaultHost":   defaultHostToReplace,
+		"defaultPort":   defaultPortToReplace,
+		"defaultDigest": defaultDigestToReplace,
+		"newHost":       id,
+		"newPort":       port,
+		"newDigest":     digest,
+	}).Debug("Replacing content in Mumble sqlite database")
 
-	return d.write()
+	db.replaceString(defaultHostToReplace, id)
+	db.replaceString(defaultDigestToReplace, digest)
+	db.replaceInteger(defaultPortToReplace, port)
+
+	return db.write()
 }
 
 func (c *client) isTheCertificateInDB(serviceID string) bool {

@@ -6,6 +6,8 @@ import (
 	b "encoding/binary"
 	"io/ioutil"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type dbData struct {
@@ -49,6 +51,10 @@ func intToStringToSearch(n int) string {
 }
 
 func loadDBFromFile(filename string) (*dbData, error) {
+	log.WithFields(log.Fields{
+		"filepath": filename,
+	}).Debug("Loading Mumble sqlite database")
+
 	content, err := readBinaryContent(filename)
 	if err != nil {
 		return nil, err
