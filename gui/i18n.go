@@ -48,8 +48,6 @@ func (b *uiBuilder) i18nProperty(id, property string) {
 		property = "label"
 	case "tooltip":
 		property = "tooltip_text"
-	case "toolbutton":
-		property = "label"
 	}
 
 	currentVal, e := obj.GetProperty(property)
