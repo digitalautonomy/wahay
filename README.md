@@ -32,6 +32,7 @@ Windows, but at this moment we have not tested this. We are planning on adding o
 Wahay is developed by the NGO [Centro de Autonomía Digital](https://autonomia.digital), based in Quito, Ecuador.
 
 
+
 ## License
 
 Wahay is licensed under the GPL version 3.
