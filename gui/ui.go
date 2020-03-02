@@ -120,15 +120,18 @@ func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 	builder := u.g.uiBuilderFor("MainWindow")
 
 	builder.i18nProperties(
-		"toolbutton", "tbWelcome",
-		"toolbutton", "tbSettings",
+		"button", "btnSettings",
+		"button", "btnHelp",
 		"button", "btnJoinMeeting",
-		"tooltip", "btnJoinMeeting",
 		"button", "btnHostMeeting",
-		"tooltip", "btnHostMeeting",
-		"label", "lblApplicationStatus",
 		"button", "btnStatusShowErrors",
-		"button", "btnErrorsAccept")
+		"button", "btnErrorsAccept",
+		"tooltip", "btnSettings",
+		"tooltip", "btnHelp",
+		"tooltip", "btnJoinMeeting",
+		"tooltip", "btnHostMeeting",
+		"label", "lblWelcome",
+		"label", "lblApplicationStatus")
 
 	imgHostMeeting := builder.get("imgHostMeeting").(gtki.Image)
 	imgJoinMeeting := builder.get("imgJoinMeeting").(gtki.Image)
