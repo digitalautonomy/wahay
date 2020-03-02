@@ -48,6 +48,14 @@ func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error)
 		return nil, ErrNoService
 	}
 
+	s.OnClose(func() {
+		c.Cleanup()
+
+		if onClose != nil {
+			onClose()
+		}
+	})
+
 	if onClose != nil {
 		s.OnClose(onClose)
 	}

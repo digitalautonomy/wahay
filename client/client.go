@@ -19,10 +19,10 @@ type Instance interface {
 	CanBeUsed() bool
 	GetBinaryPath() string
 	GetLastError() error
-	EnsureConfiguration() error
 	LoadCertificateFrom(serviceID string, servicePort int, cert []byte, webPort int) error
 	GetTorCommandModifier() tor.ModifyCommand
 	Log()
+	Cleanup()
 	Destroy()
 }
 
@@ -87,7 +87,7 @@ func InitSystem(conf *config.ApplicationConfig) Instance {
 		return currentInstance
 	}
 
-	err = currentInstance.EnsureConfiguration()
+	err = currentInstance.ensureConfiguration()
 	if err != nil {
 		currentInstance.invalidate(err)
 	}
@@ -176,6 +176,13 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 func (c *client) Log() {
 	log.Infof("Using Mumble located at: %s\n", c.GetBinaryPath())
 	log.Infof("Using Mumble environment variables: %s\n", c.getBinaryEnv())
+}
+
+func (c *client) Cleanup() {
+	err := c.regenerateConfiguration()
+	if err != nil {
+		log.Errorf("Mumble client Cleanup(): %s", err.Error())
+	}
 }
 
 func (c *client) Destroy() {

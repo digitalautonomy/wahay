@@ -4,10 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/digitalautonomy/wahay/config"
 )
@@ -24,16 +25,41 @@ var (
 	}
 )
 
-func (c *client) EnsureConfiguration() error {
-	c.Lock()
-	defer c.Unlock()
+func (c *client) regenerateConfiguration() error {
+	var err error
 
 	binaryDir := c.GetBinaryPath()
 	if !isADirectory(binaryDir) {
 		binaryDir = filepath.Dir(binaryDir)
 	}
 
-	err := createDir(binaryDir)
+	// Removes the configuration file (.ini)
+	err = os.Remove(filepath.Join(binaryDir, configFileName))
+	if err != nil {
+		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
+	}
+
+	// Removes the Murmur sqlite database
+	err = os.Remove(filepath.Join(binaryDir, configDataName))
+	if err != nil {
+		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
+	}
+
+	return c.ensureConfiguration()
+}
+
+func (c *client) ensureConfiguration() error {
+	c.Lock()
+	defer c.Unlock()
+
+	var err error
+
+	binaryDir := c.GetBinaryPath()
+	if !isADirectory(binaryDir) {
+		binaryDir = filepath.Dir(binaryDir)
+	}
+
+	err = createDir(binaryDir)
 	if err != nil {
 		return errInvalidConfigDirectory
 	}

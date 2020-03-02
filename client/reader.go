@@ -16,6 +16,10 @@ func getIniFileContent() string {
 }
 
 func createDir(path string) error {
+	if directoryExists(path) {
+		return nil
+	}
+
 	return os.MkdirAll(path, 0700)
 }
 
