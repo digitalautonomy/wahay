@@ -155,4 +155,19 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt4() {
 	_ = i18n.Sprintf("What is Mumble?")
 	_ = i18n.Sprintf("Mumble is a free and open source application that allows voice over " +
 		"IP conferences between users with high sound quality and low latency.")
+	_ = i18n.Sprintf("Functionalities")
+	_ = i18n.Sprintf("Wahay allows you to host a meeting or join an existing meeting, " +
+		"for this you establish an ID that will serve as the identifier of the meeting to use.")
+	_ = i18n.Sprintf("Host a meeting")
+	_ = i18n.Sprintf("This option allows starting the server that will support the connection " +
+		"of users to a meeting which is defined by its ID (meeting identifier), this ID must be " +
+		"used by the rest of users who wish to access it. Additionally it is possible to define " +
+		"the user name (not mandatory) that will be used to identify the user in the meeting, it " +
+		"is also possible to configure the password to access the meeting, which will be required " +
+		"by users who wish to access Wahay.")
+	_ = i18n.Sprintf("The option to automatically join this meeting allows you to start the server and " +
+		"enter it, if you do not select it, you can access it later by selecting the join button. It is " +
+		"also possible to copy the meeting ID and send the invitation by the most used email clients.")
+	_ = i18n.Sprintf("This option allows the user to access a meeting if already exist, for this you must " +
+		"enter the meeting id (required), username (not required) and password (if was set).")
 }

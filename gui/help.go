@@ -13,6 +13,13 @@ func (u *gtkUI) openHelpWindow() {
 		"label", "lblDescWhatIsTor",
 		"label", "lblWhatIsMumble",
 		"label", "lblDescWhatIsMumble",
+		"label", "lblFunctionalities",
+		"label", "lblDescFunctionalities",
+		"label", "lblHostMeeting",
+		"label", "lblDescHostMeeting1",
+		"label", "lblDescHostMeeting2",
+		"label", "lblJoinMeeting",
+		"label", "lblDescJoinMeeting",
 	)
 
 	dialog := builder.get("helpWindow").(gtki.ApplicationWindow)

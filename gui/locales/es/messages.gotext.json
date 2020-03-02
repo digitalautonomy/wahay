@@ -806,6 +806,36 @@
             "id": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
             "message": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
             "translation": "Mumble es una aplicación libre y de código abierto que permite establecer conferencias de voz sobre IP entre usuarios con alta calidad de sonido y baja latencia."
+        },
+        {
+            "id": "Functionalities",
+            "message": "Functionalities",
+            "translation": "Funcionalidades"
+        },
+        {
+            "id": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
+            "message": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
+            "translation": "Wahay permite organizar una reunión o unirse a una reunión existente, para esto establece un ID que servirá como el identificador de la reunión a utilizar."
+        },
+        {
+            "id": "Host a meeting",
+            "message": "Host a meeting",
+            "translation": "Alojar una reunión"
+        },
+        {
+            "id": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
+            "message": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
+            "translation": "Esta opción permite iniciar el servidor que soportará la conexión de usuarios a una reunión la cual se encuentra definida por su ID (identificador de reunión), este ID deberá ser usado por el resto de usuarios que deseen acceder a la misma. Adicionalmente es posible definir el nombre de usuario (no obligatorio) que se usará para identificar al usuario en la reunión, también es posible configurar la clave para acceder a la reunión, la misma que será requerida por los usuarios que deseen acceder a Wahay."
+        },
+        {
+            "id": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
+            "message": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
+            "translation": "La opción unirse automáticamente a esta reunión permite iniciar el servidor y ingresar a la misma, en caso de no seleccinarla se podrá acceder posteriormente mediante la selección del botón unirse. También es posible copiar el ID de la reunión y enviar la invitación por los clientes de correo más usados."
+        },
+        {
+            "id": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
+            "message": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
+            "translation": "Esta opción permite al usuario acceder a una reunión ya existente, para esto debe ingresar la identificación de la reunión (requerido), el nombre de usuario (no requerido) y la contraseña (si fue configurada previamente)."
         }
     ]
 }

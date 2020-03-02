@@ -41,7 +41,7 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"%sMeeting ID: %s":                    123,
+	"%sMeeting ID: %s":                    129,
 	"A valid port is between 1 and 65535": 92,
 	"Accept":                              22,
 	"Allow the host to automatically join a newly created meeting": 23,
@@ -79,8 +79,10 @@ var messageKeyToIndex = map[string]int{
 	"Ex. 9800":                                                113,
 	"Executable Mumble location":                              109,
 	"Finish":                                                  48,
+	"Functionalities":                                         122,
 	"General":                                                 51,
 	"Gmail":                                                   52,
+	"Host a meeting":                                          124,
 	"Host a new meeting":                                      53,
 	"Host meeting":                                            55,
 	"Hosting":                                                 54,
@@ -90,7 +92,7 @@ var messageKeyToIndex = map[string]int{
 	"If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535":         114,
 	"If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.": 111,
 	"Invalid configuration file":                58,
-	"Invalid meeting ID provided":               125,
+	"Invalid meeting ID provided":               131,
 	"Invalid password. Please, try again.":      59,
 	"Invite others":                             60,
 	"Join":                                      61,
@@ -127,7 +129,7 @@ var messageKeyToIndex = map[string]int{
 	"Security":                           86,
 	"Settings":                           87,
 	"Show":                               88,
-	"Something went wrong: %s":           122,
+	"Something went wrong: %s":           128,
 	"Specify a password for the meeting": 89,
 	"Start Meeting":                      8,
 	"Start Meeting & Join":               7,
@@ -139,9 +141,12 @@ var messageKeyToIndex = map[string]int{
 	"The meeting ID has been copied to the clipboard":       3,
 	"The meeting ID is invalid":                             12,
 	"The meeting can't be closed: %s":                       2,
-	"The provided meeting ID is invalid: \n\n%s":            124,
-	"This action cannot be undone":                          93,
-	"Toggle password visibility":                            94,
+	"The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.": 126,
+	"The provided meeting ID is invalid: \n\n%s": 130,
+	"This action cannot be undone":               93,
+	"This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.": 125,
+	"This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).": 127,
+	"Toggle password visibility": 94,
 	"Tor is a free and open source tool that allows you to establish anonymous and distributed communications. TOR directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.": 119,
 	"Type the Meeting ID (normally a .onion address)": 95,
 	"Type the password":                     96,
@@ -150,6 +155,7 @@ var messageKeyToIndex = map[string]int{
 	"Type your screen name":                 99,
 	"Username":                              100,
 	"Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses TOR (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.": 117,
+	"Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.":                                                                                                                                                                                                                                  123,
 	"Wahay is ready to use": 101,
 	"We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?": 102,
 	"We've found errors": 21,
@@ -166,11 +172,11 @@ var messageKeyToIndex = map[string]int{
 	"enter the password confirmation":                                        14,
 	"passwords do not match":                                                 15,
 	"please enter a valid password":                                          13,
-	"the Mumble client can not be used because: %s":                          126,
+	"the Mumble client can not be used because: %s":                          132,
 	"we couldn't start the meeting":                                          1,
 }
 
-var arIndex = []uint32{ // 128 elements
+var arIndex = []uint32{ // 134 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -205,11 +211,14 @@ var arIndex = []uint32{ // 128 elements
 	0x0000059f, 0x000005ac, 0x000005b9, 0x000005c6,
 	0x000005d3, 0x000005e0, 0x000005ed, 0x000005fa,
 	0x00000607, 0x00000614, 0x00000621, 0x0000062e,
-	0x0000063b, 0x00000648, 0x00000655, 0x00000655,
-	0x00000655, 0x00000655, 0x00000655, 0x00000655,
-} // Size: 536 bytes
+	0x0000063b, 0x00000648, 0x00000655, 0x00000662,
+	0x0000066f, 0x0000067c, 0x00000689, 0x00000696,
+	// Entry 80 - 9F
+	0x000006a3, 0x000006a3, 0x000006a3, 0x000006a3,
+	0x000006a3, 0x000006a3,
+} // Size: 560 bytes
 
-const arData string = "" + // Size: 1621 bytes
+const arData string = "" + // Size: 1699 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -237,9 +246,10 @@ const arData string = "" + // Size: 1621 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME"
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-var enIndex = []uint32{ // 128 elements
+var enIndex = []uint32{ // 134 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x00000024, 0x00000047,
 	0x00000077, 0x000000ad, 0x000000c0, 0x000000fa,
@@ -274,11 +284,14 @@ var enIndex = []uint32{ // 128 elements
 	0x00000c85, 0x00000ccc, 0x00000ce7, 0x00000d04,
 	0x00000d74, 0x00000d88, 0x00000d91, 0x00000df9,
 	0x00000e08, 0x00000ff7, 0x0000116e, 0x0000117b,
-	0x000012de, 0x000012ee, 0x00001378, 0x00001394,
-	0x000013ab, 0x000013d7, 0x000013f3, 0x00001424,
-} // Size: 536 bytes
+	0x000012de, 0x000012ee, 0x00001378, 0x00001388,
+	0x0000141e, 0x0000142d, 0x000015f7, 0x00001704,
+	// Entry 80 - 9F
+	0x000017ac, 0x000017c8, 0x000017df, 0x0000180b,
+	0x00001827, 0x00001858,
+} // Size: 560 bytes
 
-const enData string = "" + // Size: 5156 bytes
+const enData string = "" + // Size: 6232 bytes
 	"\x02Error\x02we couldn't start the meeting\x02The meeting can't be close" +
 	"d: %[1]s\x02The meeting ID has been copied to the clipboard\x02The invit" +
 	"ation email has been copied to the clipboard\x02Join Wahay Meeting\x02Pl" +
@@ -353,12 +366,27 @@ const enData string = "" + // Size: 5156 bytes
 	"om a set of organizations and individuals that donate their bandwidth an" +
 	"d processing power.\x02What is Mumble?\x02Mumble is a free and open sour" +
 	"ce application that allows voice over IP conferences between users with " +
-	"high sound quality and low latency.\x02Something went wrong: %[1]s\x02%[" +
-	"1]sMeeting ID: %[2]s\x02The provided meeting ID is invalid: \x0a\x0a%[1]" +
-	"s\x02Invalid meeting ID provided\x02the Mumble client can not be used be" +
-	"cause: %[1]s"
+	"high sound quality and low latency.\x02Functionalities\x02Wahay allows y" +
+	"ou to host a meeting or join an existing meeting, for this you establish" +
+	" an ID that will serve as the identifier of the meeting to use.\x02Host " +
+	"a meeting\x02This option allows starting the server that will support th" +
+	"e connection of users to a meeting which is defined by its ID (meeting i" +
+	"dentifier), this ID must be used by the rest of users who wish to access" +
+	" it. Additionally it is possible to define the user name (not mandatory)" +
+	" that will be used to identify the user in the meeting, it is also possi" +
+	"ble to configure the password to access the meeting, which will be requi" +
+	"red by users who wish to access Wahay.\x02The option to automatically jo" +
+	"in this meeting allows you to start the server and enter it, if you do n" +
+	"ot select it, you can access it later by selecting the join button. It i" +
+	"s also possible to copy the meeting ID and send the invitation by the mo" +
+	"st used email clients.\x02This option allows the user to access a meetin" +
+	"g if already exist, for this you must enter the meeting id (required), u" +
+	"sername (not required) and password (if was set).\x02Something went wron" +
+	"g: %[1]s\x02%[1]sMeeting ID: %[2]s\x02The provided meeting ID is invalid" +
+	": \x0a\x0a%[1]s\x02Invalid meeting ID provided\x02the Mumble client can " +
+	"not be used because: %[1]s"
 
-var esIndex = []uint32{ // 128 elements
+var esIndex = []uint32{ // 134 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x00000026, 0x0000004b,
 	0x0000007f, 0x000000b8, 0x000000e1, 0x00000130,
@@ -393,11 +421,14 @@ var esIndex = []uint32{ // 128 elements
 	0x00000fb5, 0x00000ffe, 0x00001022, 0x0000103f,
 	0x000010b3, 0x000010cd, 0x000010d6, 0x00001151,
 	0x00001160, 0x00001372, 0x00001508, 0x00001515,
-	0x000016b4, 0x000016c4, 0x00001768, 0x00001768,
-	0x00001768, 0x00001768, 0x00001768, 0x00001768,
-} // Size: 536 bytes
+	0x000016b4, 0x000016c4, 0x00001768, 0x00001778,
+	0x00001818, 0x0000182c, 0x00001a33, 0x00001b6f,
+	// Entry 80 - 9F
+	0x00001c52, 0x00001c52, 0x00001c52, 0x00001c52,
+	0x00001c52, 0x00001c52,
+} // Size: 560 bytes
 
-const esData string = "" + // Size: 5992 bytes
+const esData string = "" + // Size: 7250 bytes
 	"\x02Error\x02no se pudo comenzar la reunión\x02La reunión no se pudo cer" +
 	"rar: %[1]s\x02El ID de la reunion ha sido copiado al portapapeles\x02El " +
 	"correo de invitación ha sido copiado al portapapeles\x02Unirse a una reu" +
@@ -484,9 +515,26 @@ const esData string = "" + // Size: 5992 bytes
 	" ancho de banda y poder de procesamiento.\x02Qué es Mumble?\x02Mumble es" +
 	" una aplicación libre y de código abierto que permite establecer confere" +
 	"ncias de voz sobre IP entre usuarios con alta calidad de sonido y baja l" +
-	"atencia."
+	"atencia.\x02Funcionalidades\x02Wahay permite organizar una reunión o uni" +
+	"rse a una reunión existente, para esto establece un ID que servirá como " +
+	"el identificador de la reunión a utilizar.\x02Alojar una reunión\x02Esta" +
+	" opción permite iniciar el servidor que soportará la conexión de usuario" +
+	"s a una reunión la cual se encuentra definida por su ID (identificador d" +
+	"e reunión), este ID deberá ser usado por el resto de usuarios que deseen" +
+	" acceder a la misma. Adicionalmente es posible definir el nombre de usua" +
+	"rio (no obligatorio) que se usará para identificar al usuario en la reun" +
+	"ión, también es posible configurar la clave para acceder a la reunión, l" +
+	"a misma que será requerida por los usuarios que deseen acceder a Wahay." +
+	"\x02La opción unirse automáticamente a esta reunión permite iniciar el s" +
+	"ervidor y ingresar a la misma, en caso de no seleccinarla se podrá acced" +
+	"er posteriormente mediante la selección del botón unirse. También es pos" +
+	"ible copiar el ID de la reunión y enviar la invitación por los clientes " +
+	"de correo más usados.\x02Esta opción permite al usuario acceder a una re" +
+	"unión ya existente, para esto debe ingresar la identificación de la reun" +
+	"ión (requerido), el nombre de usuario (no requerido) y la contraseña (si" +
+	" fue configurada previamente)."
 
-var svIndex = []uint32{ // 128 elements
+var svIndex = []uint32{ // 134 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -521,11 +569,14 @@ var svIndex = []uint32{ // 128 elements
 	0x0000058b, 0x00000598, 0x000005a5, 0x000005b2,
 	0x000005bf, 0x000005cc, 0x000005d9, 0x000005e6,
 	0x000005f3, 0x00000600, 0x0000060d, 0x0000061a,
-	0x00000627, 0x00000634, 0x00000641, 0x00000641,
-	0x00000641, 0x00000641, 0x00000641, 0x00000641,
-} // Size: 536 bytes
+	0x00000627, 0x00000634, 0x00000641, 0x0000064e,
+	0x0000065b, 0x00000668, 0x00000675, 0x00000682,
+	// Entry 80 - 9F
+	0x0000068f, 0x0000068f, 0x0000068f, 0x0000068f,
+	0x0000068f, 0x0000068f,
+} // Size: 560 bytes
 
-const svData string = "" + // Size: 1601 bytes
+const svData string = "" + // Size: 1679 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -553,6 +604,7 @@ const svData string = "" + // Size: 1601 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
-	"SLATE ME\x02TRANSLATE ME"
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 16514 bytes (16KiB); checksum: E0648928
+	// Total table size 19100 bytes (18KiB); checksum: DC224288
