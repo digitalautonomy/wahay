@@ -2,7 +2,7 @@
 
 set -x
 
-CURRENT_VERSION=$(echo 0~$(date "+%y%m%d%H%M%S"))
+CURRENT_VERSION=$(echo 0~$(date "+%Y%m%d%H%M%S"))
 
 rm -f ubuntu/ubuntu/usr/bin/wahay
 
