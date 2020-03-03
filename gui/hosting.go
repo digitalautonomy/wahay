@@ -58,6 +58,9 @@ func (h *hostData) showMeetingControls() {
 	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 
+	btnCopyURL := builder.get("btnCopyUrl").(gtki.Button)
+	btnCopyURL.SetSensitive(h.u.isCopyToClipboardSupported())
+
 	builder.i18nProperties(
 		"label", "lblHostMeeting",
 		"label", "lblMeetingID",

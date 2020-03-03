@@ -41,7 +41,7 @@ func (u *gtkUI) copyToClipboard(text string) error {
 }
 
 func (u *gtkUI) isCopyToClipboardSupported() bool {
-	return clipboard.Unsupported
+	return !clipboard.Unsupported
 }
 
 func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
