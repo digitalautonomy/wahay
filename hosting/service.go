@@ -16,10 +16,6 @@ var collection Servers
 func ensureServerCollection() error {
 	var err error
 
-	if collection != nil {
-		return nil
-	}
-
 	collection, err = Create()
 	if err != nil {
 		return err
@@ -188,6 +184,8 @@ func (s *service) Close() error {
 			return ErrServerOnionDelete
 		}
 	}
+
+	collection.Cleanup()
 
 	return nil
 }

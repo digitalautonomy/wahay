@@ -20,6 +20,7 @@ type Servers interface {
 	DestroyServer(Server) error
 	Shutdown() error
 	GetDataDir() string
+	Cleanup()
 }
 
 // MeetingData is an structure for storing meeting info
@@ -178,4 +179,11 @@ func (s *servers) Shutdown() error {
 
 func (s *servers) GetDataDir() string {
 	return s.dataDir
+}
+
+func (s *servers) Cleanup() {
+	err := os.RemoveAll(s.dataDir)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "WARNING: Error cleaning up temporaries: "+err.Error())
+	}
 }
