@@ -290,7 +290,7 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
 
 	err := h.u.copyToClipboard(h.service.GetURL())
 	if err != nil {
-		fatal("clipboard copying error")
+		fatal(fmt.Sprintf("clipboard copying error: %s", err.Error()))
 	}
 
 	go func() {
