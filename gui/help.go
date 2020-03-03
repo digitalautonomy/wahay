@@ -22,9 +22,9 @@ func (u *gtkUI) openHelpWindow() {
 		"label", "lblDescJoinMeeting",
 	)
 
-	u.setImage(builder, "help/wahay.png", "imgWahay")
-	u.setImage(builder, "help/wahay_hosting.png", "imgWahayHosting")
-	u.setImage(builder, "help/wahay_join.png", "imgWahayJoin")
+	u.setImage(builder, "help/wahay.svg", "imgWahay")
+	u.setImage(builder, "help/wahay_hosting.svg", "imgWahayHosting")
+	u.setImage(builder, "help/wahay_join.svg", "imgWahayJoin")
 
 	dialog := builder.get("helpWindow").(gtki.ApplicationWindow)
 
