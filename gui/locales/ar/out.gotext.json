@@ -775,6 +775,11 @@
             "id": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
             "message": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
             "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Help",
+            "message": "Help",
+            "translation": "TRANSLATE ME"
         }
     ]
 }

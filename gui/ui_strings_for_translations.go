@@ -170,4 +170,5 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt4() {
 		"also possible to copy the meeting ID and send the invitation by the most used email clients.")
 	_ = i18n.Sprintf("This option allows the user to access a meeting if already exist, for this you must " +
 		"enter the meeting id (required), username (not required) and password (if was set).")
+	_ = i18n.Sprintf("Help")
 }
