@@ -40,6 +40,10 @@ func (u *gtkUI) copyToClipboard(text string) error {
 	return clipboard.WriteAll(text)
 }
 
+func (u *gtkUI) isCopyToClipboardSupported() bool {
+	return clipboard.Unsupported
+}
+
 func (u *gtkUI) messageToLabel(label gtki.Label, message string, seconds int) {
 	u.doInUIThread(func() {
 		label.SetVisible(true)

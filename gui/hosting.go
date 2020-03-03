@@ -290,7 +290,8 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
 
 	err := h.u.copyToClipboard(h.service.GetURL())
 	if err != nil {
-		fatal(fmt.Sprintf("clipboard copying error: %s", err.Error()))
+		h.u.reportError(err.Error())
+		return
 	}
 
 	go func() {
@@ -424,6 +425,9 @@ func (h *hostData) showMeetingConfiguration() {
 	chkAutoJoin.SetActive(h.autoJoin)
 	h.changeStartButtonText(btnStart)
 
+	btnCopyMeetingID := builder.get("btnCopyMeetingID").(gtki.Button)
+	btnCopyMeetingID.SetSensitive(h.u.isCopyToClipboardSupported())
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_copy_meeting_id": func() {
 			h.copyMeetingIDToClipboard(builder, "")
@@ -493,8 +497,14 @@ func (h *hostData) startMeetingRoutine() {
 	}
 }
 
-func (h *hostData) onInviteParticipants() {
+func (h *hostData) getInvitePeopleBuilder() *uiBuilder {
 	builder := h.u.g.uiBuilderFor("InvitePeopleWindow")
+
+	btnCopyMeetingID := builder.get("btnCopyMeetingID").(gtki.Button)
+	btnCopyMeetingID.SetSensitive(h.u.isCopyToClipboardSupported())
+
+	btnCopyInvitation := builder.get("btnCopyInvitation").(gtki.Button)
+	btnCopyInvitation.SetSensitive(h.u.isCopyToClipboardSupported())
 
 	builder.i18nProperties(
 		"label", "lblDescription",
@@ -504,8 +514,6 @@ func (h *hostData) onInviteParticipants() {
 		"label", "lblOutlook",
 		"button", "btnCopyMeetingID",
 		"button", "btnCopyInvitation")
-
-	dialog := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
 
 	btnEmail := builder.get("btnEmail").(gtki.LinkButton)
 	btnGmail := builder.get("btnGmail").(gtki.LinkButton)
@@ -532,6 +540,14 @@ func (h *hostData) onInviteParticipants() {
 	imagePixBuf, _ = h.u.g.getImagePixbufForSize("outlook.png", 100)
 	widgetImage, _ = h.u.g.gtk.ImageNewFromPixbuf(imagePixBuf)
 	btnOutlook.SetImage(widgetImage)
+
+	return builder
+}
+
+func (h *hostData) onInviteParticipants() {
+	builder := h.getInvitePeopleBuilder()
+
+	dialog := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
 
 	cleanup := func() {
 		dialog.Hide()
