@@ -148,21 +148,21 @@ var messageKeyToIndex = map[string]int{
 	"This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.": 125,
 	"This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).": 127,
 	"Toggle password visibility": 94,
-	"Tor is a free and open source tool that allows you to establish anonymous and distributed communications. TOR directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.": 119,
+	"Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.": 119,
 	"Type the Meeting ID (normally a .onion address)": 95,
 	"Type the password":                     96,
 	"Type the password to join the meeting": 97,
 	"Type your preferred screen name":       98,
 	"Type your screen name":                 99,
 	"Username":                              100,
-	"Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses TOR (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.": 117,
+	"Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.": 117,
 	"Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.":                                                                                                                                                                                                                                  123,
 	"Wahay is ready to use": 101,
 	"We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?": 102,
 	"We've found errors": 21,
 	"Welcome":            103,
 	"What is Mumble?":    120,
-	"What is TOR?":       118,
+	"What is Tor?":       118,
 	"What is Wahay?":     115,
 	"When this option is checked, the configuration settings will be stored in the device.": 104,
 	"Yahoo Mail":                     105,
@@ -357,11 +357,11 @@ const enData string = "" + // Size: 6237 bytes
 	"e not been contemplated or have been partially implemented.\x02Wahay (ht" +
 	"tps://wahay.org) has been developed as a tool for conducting voice confe" +
 	"rences in an easy, extremely secure and decentralized manner (without th" +
-	"e need for any centralized server or service). Internally it uses TOR (h" +
+	"e need for any centralized server or service). Internally it uses Tor (h" +
 	"ttps://www.torproject.org/) as a tool to establish secure communications" +
 	" and Mumble (https://www.mumble.com/) as a client to establish voice ove" +
-	"r IP.\x02What is TOR?\x02Tor is a free and open source tool that allows " +
-	"you to establish anonymous and distributed communications. TOR directs i" +
+	"r IP.\x02What is Tor?\x02Tor is a free and open source tool that allows " +
+	"you to establish anonymous and distributed communications. Tor directs i" +
 	"ts internet traffic through a series of routers called 'onion routers' a" +
 	"llowing anonymous communication between its nodes, this network works fr" +
 	"om a set of organizations and individuals that donate their bandwidth an" +
@@ -505,11 +505,11 @@ const esData string = "" + // Size: 7256 bytes
 	"al.\x02Wahay (https://wahay.org) se ha desarrollado como una herramienta" +
 	" para realizar conferencias de voz de forma fácil, extremedamente segura" +
 	" y decentralizada (sin la necesidad de ningún servicio o servidor centra" +
-	"lizado).  Internamente usa TOR (https://www.torproject.org/) como herram" +
+	"lizado).  Internamente usa Tor (https://www.torproject.org/) como herram" +
 	"ienta para establecer comunicaciones seguras y Mumble (https://www.mumbl" +
-	"e.com/) como cliente para establecer voz sobre IP.\x02Qué es TOR?\x02Tor" +
+	"e.com/) como cliente para establecer voz sobre IP.\x02Qué es Tor?\x02Tor" +
 	" es una herramienta libre y de código abierto que permite establecer com" +
-	"unicaciones anónimas y distribuidas. TOR dirige su tráfico de internet a" +
+	"unicaciones anónimas y distribuidas. Tor dirige su tráfico de internet a" +
 	" través de una serie de routers llamados ‘routers cebolla’ permitiendo m" +
 	"antener anónima la comunicación entre sus nodos , esta red funciona func" +
 	"iona a partir de un conjunto de organizaciones e individuos que donan su" +
@@ -608,4 +608,4 @@ const svData string = "" + // Size: 1692 bytes
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 19153 bytes (18KiB); checksum: 1BAFAC4C
+	// Total table size 19153 bytes (18KiB); checksum: 7B60490C

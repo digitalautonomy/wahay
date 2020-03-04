@@ -722,18 +722,18 @@
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses TOR (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
-            "message": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses TOR (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
+            "id": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
+            "message": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "What is TOR?",
-            "message": "What is TOR?",
+            "id": "What is Tor?",
+            "message": "What is Tor?",
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. TOR directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
-            "message": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. TOR directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
+            "id": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
+            "message": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
             "translation": "TRANSLATE ME"
         },
         {

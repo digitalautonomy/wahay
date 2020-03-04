@@ -84,7 +84,7 @@
                     <property name="can_focus">False</property>
                     <property name="margin_left">5</property>
                     <property name="margin_right">10</property>
-                    <property name="label" translatable="yes">Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses TOR (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.</property>
+                    <property name="label" translatable="yes">Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.</property>
                     <property name="wrap">True</property>
                     <property name="selectable">True</property>
                     <property name="track_visited_links">False</property>
@@ -108,7 +108,7 @@
                     <property name="margin_left">5</property>
                     <property name="margin_right">10</property>
                     <property name="margin_top">10</property>
-                    <property name="label" translatable="yes">What is TOR?</property>
+                    <property name="label" translatable="yes">What is Tor?</property>
                     <property name="selectable">True</property>
                     <property name="track_visited_links">False</property>
                     <property name="xalign">0</property>
@@ -130,7 +130,7 @@
                     <property name="can_focus">False</property>
                     <property name="margin_left">5</property>
                     <property name="margin_right">10</property>
-                    <property name="label" translatable="yes">Tor is a free and open source tool that allows you to establish anonymous and distributed communications. TOR directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.</property>
+                    <property name="label" translatable="yes">Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.</property>
                     <property name="wrap">True</property>
                     <property name="selectable">True</property>
                     <property name="track_visited_links">False</property>
@@ -259,7 +259,7 @@
                     <property name="label" translatable="yes">Host a meeting</property>
                     <property name="xalign">0</property>
                     <style>
-                      <class name="help-title"/>
+                      <class name="help-primary"/>
                     </style>
                   </object>
                   <packing>
@@ -334,7 +334,7 @@
                     <property name="label" translatable="yes">Join meeting</property>
                     <property name="xalign">0</property>
                     <style>
-                      <class name="help-title"/>
+                      <class name="help-primary"/>
                     </style>
                   </object>
                   <packing>
