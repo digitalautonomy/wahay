@@ -40,8 +40,7 @@ def generate_bundle_list(filename, isLatest)
 
     File.read("#$TMP_DIR/supported-bundle-distros.txt").each_line do |distro_name|
         distro_name.strip!
-
-        if isLatest
+        if isLatest == true
             bundle = File.basename(Dir["*#{distro_name}*latest*.bz2"].first)
             puts <<ENDOFHTML
   <tr>
@@ -54,7 +53,6 @@ ENDOFHTML
             # This will be of the form:
             # wahay-ubuntu-18_04-wahay-2020-02-13-500dfe5.tar.bz2
             bundle = File.basename(Dir["bundles/#{filename}/*#{distro_name}*.bz2"].first)
-
             puts <<ENDOFHTML
   <tr>
     <td><a href="downloads/bundles/#{filename}/#{bundle}">#{distro_name}</a></td>
@@ -100,6 +98,7 @@ ENDOFHTML
         generate_linux_packages_list filename, false
         puts "</td>"
         puts "</tr>"
+        puts "</table>"
     end
 end
 
