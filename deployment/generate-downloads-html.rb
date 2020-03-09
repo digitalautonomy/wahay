@@ -9,7 +9,7 @@ def generate_linux_packages_list(filename, isLatest)
     puts "<table class='table-bundled' cellpadding='0' cellspacing='0'>"
     File.read("#$TMP_DIR/supported-packages-distros.txt").each_line do |package_name|
         package_name.strip!
-        if isLatest
+        if isLatest == true
             package = "wahay-#{package_name}-latest.deb"
             puts <<ENDOFHTML
   <tr>
@@ -90,16 +90,14 @@ Dir["wahay*"].sort_by{|fname|File.mtime(fname)}.reverse.each do |filename|
     <td><a href="downloads/#{filename}.sha256sum.asc">GPG signature</a></td>
     <td>
 ENDOFHTML
-
         generate_bundle_list filename, false
-
         puts "</td>"
         puts "<td valign='top'>"
         generate_linux_packages_list filename, false
         puts "</td>"
         puts "</tr>"
-        puts "</table>"
     end
 end
+puts "</table>"
 
 puts File.read(File.join(__dir__, "template_footer.html"))
