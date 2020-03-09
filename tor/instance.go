@@ -198,6 +198,14 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 	ensureWahayDataDir()
 
+	t, err := runningOnTails()
+	if err != nil {
+		return nil, err
+	}
+	if t {
+		log.Debug("Running on tails...")
+	}
+
 	b, err := findTorBinary(conf)
 	if b == nil || err != nil {
 		return nil, ErrTorBinaryNotFound

@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 
@@ -386,4 +387,21 @@ func (b *binary) start(configFile string) (*runningTor, error) {
 	}
 
 	return state, nil
+}
+
+func runningOnTails() (bool, error) {
+	command := exec.Command("lsb_release", "-i")
+
+	output, err := command.Output()
+	if err != nil {
+		return false, err
+	}
+
+	o := strings.Split(string(output), ":")
+
+	if strings.TrimSpace(o[1]) == "Tails" {
+		return true, nil
+	}
+
+	return false, nil
 }
