@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 
@@ -307,4 +308,21 @@ func checkLibsDependenciesInPath(path string) (isBundle bool, env []string) {
 	}
 
 	return
+}
+
+func runningOnTails() (bool, error) {
+	command := exec.Command("lsb_release", "-i")
+
+	output, err := command.Output()
+	if err != nil {
+		return false, err
+	}
+
+	o := strings.Split(string(output), ":")
+
+	if strings.TrimSpace(o[1]) == "Tails" {
+		return true, nil
+	}
+
+	return false, nil
 }
