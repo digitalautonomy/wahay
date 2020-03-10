@@ -223,6 +223,7 @@ func extractURLAndPort(urlToParse string) (host string, port int, err error) {
 	}
 
 	host = u.Host
+	port = hosting.DefaultPort
 
 	return host, port, err
 }

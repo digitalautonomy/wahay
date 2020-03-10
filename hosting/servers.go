@@ -50,17 +50,10 @@ type servers struct {
 
 // GenerateURL is a helper function for creating Mumble valid URLs
 func (d *MeetingData) GenerateURL() string {
-	var host string
-	if d.Port != 0 {
-		host = fmt.Sprintf("%s:%d", d.MeetingID, d.Port)
-	} else {
-		host = d.MeetingID
-	}
-
 	u := url.URL{
 		Scheme: "mumble",
 		User:   url.UserPassword(d.Username, d.Password),
-		Host:   host,
+		Host:   fmt.Sprintf("%s:%d", d.MeetingID, d.Port),
 	}
 
 	return u.String()
