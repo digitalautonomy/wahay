@@ -1,6 +1,9 @@
 package gui
 
-import . "gopkg.in/check.v1"
+import (
+	"github.com/digitalautonomy/wahay/hosting"
+	. "gopkg.in/check.v1"
+)
 
 type WahayInviteMeetingSuite struct{}
 
@@ -11,7 +14,7 @@ func (s *WahayInviteMeetingSuite) Test_InviteMeeting_extractMeetingIDandPort_Suc
 	h2, p2, e2 := extractMeetingIDandPort("qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion:8080")
 
 	c.Assert(h1, Equals, "qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion")
-	c.Assert(p1, Equals, 0)
+	c.Assert(p1, Equals, hosting.DefaultPort)
 	c.Assert(e1, Equals, nil)
 
 	c.Assert(h2, Equals, "qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion")
