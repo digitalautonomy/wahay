@@ -202,9 +202,6 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 	if err != nil {
 		return nil, err
 	}
-	if t {
-		log.Debug("Running on tails...")
-	}
 
 	b, err := findTorBinary(conf)
 	if b == nil || err != nil {
@@ -213,10 +210,16 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 	log.Printf("Using Tor binary found in: %s", b.path)
 
-	i, err = getOurInstance(b, conf)
-	if err != nil {
-		log.Debugf("tor.GetInstance() error: %s", err)
-		return nil, err
+	if t {
+		//Tails
+		i = getTailsInstance()
+	} else {
+		//Other SO
+		i, err = getOurInstance(b, conf)
+		if err != nil {
+			log.Debugf("tor.GetInstance() error: %s", err)
+			return nil, err
+		}
 	}
 
 	setSingleInstance(i)
@@ -253,6 +256,25 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 			return i, nil
 		}
 	}
+}
+
+func getTailsInstance() *instance {
+	i := &instance{
+		started:       true,
+		configFile:    "/etc/tor/torrc",
+		controlHost:   "127.0.0.1",
+		controlPort:   9051,
+		socksPort:     9050,
+		dataDirectory: "/var/lib/tor",
+		password:      "",
+		useCookie:     false,
+		isLocal:       false,
+		controller:    nil,
+		pathTorsocks:  "",
+		binary:        nil,
+	}
+
+	return i
 }
 
 func newInstance(b *binary, torsocksPath string) (*instance, error) {
@@ -385,6 +407,7 @@ func ensureWahayDataDir() {
 
 func createOurInstance(b *binary, torsocksPath string) *instance {
 	d, _ := ioutil.TempDir(wahayDataDir, "tor")
+
 	controlPort, routePort := findAvailableTorPorts()
 
 	i := &instance{

@@ -399,6 +399,8 @@ func runningOnTails() (bool, error) {
 
 	o := strings.Split(string(output), ":")
 
+	log.Debugf("Wahay on... %s", o[1])
+
 	if strings.TrimSpace(o[1]) == "Tails" {
 		return true, nil
 	}
