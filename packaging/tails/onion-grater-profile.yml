@@ -1,0 +1,13 @@
+---
+- apparmor-profiles:
+    - '/usr/bin/wahay'
+  users:
+    - 'amnesia'
+  commands:
+    ADD_ONION:
+      - '.*'
+    DEL_ONION:
+      - '.+'
+  events:
+    STREAM:
+  restrict-stream-events: false
