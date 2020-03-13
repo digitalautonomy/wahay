@@ -23,8 +23,8 @@ import (
 const (
 	torConfigName      = "torrc"
 	torConfigData      = "data"
-	defaultSocksPort   = 9950
-	defaultControlPort = 9951
+	defaultSocksPort   = 9050
+	defaultControlPort = 9051
 	defaultControlHost = "127.0.0.1"
 )
 
@@ -418,7 +418,7 @@ func createOurInstance(b *binary, torsocksPath string) *instance {
 		socksPort:     routePort,
 		dataDirectory: filepath.Join(d, torConfigData),
 		password:      "", // our instance don't use authentication with password
-		useCookie:     true,
+		useCookie:     false,
 		isLocal:       false,
 		controller:    nil,
 		pathTorsocks:  torsocksPath,
