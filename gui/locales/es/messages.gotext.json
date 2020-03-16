@@ -22,8 +22,8 @@
                 {
                     "id": "Err",
                     "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
                     "argNum": 1,
                     "expr": "err"
                 }
@@ -117,9 +117,9 @@
             "fuzzy": true
         },
         {
-            "id": "{It}Meeting ID: {ServiceID}",
-            "message": "{It}Meeting ID: {ServiceID}",
-            "translation": "{It}ID de la reunión: {ServiceID}",
+            "id": "{It}Meeting ID: {URL}",
+            "message": "{It}Meeting ID: {URL}",
+            "translation": "{It}ID de la reunión: {URL}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -131,12 +131,12 @@
                     "expr": "it"
                 },
                 {
-                    "id": "ServiceID",
+                    "id": "URL",
                     "string": "%[2]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 2,
-                    "expr": "h.serviceID"
+                    "expr": "h.service.GetURL()"
                 }
             ],
             "fuzzy": true
@@ -168,6 +168,21 @@
             "translation": "El ID de la reunión no puede ser vacío",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "El ID de la reunión proporcionada no es válida: \n\n{MeetingID}",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ]
         },
         {
             "id": "An error occurred\n\n{Error}",
@@ -204,6 +219,11 @@
             "fuzzy": true
         },
         {
+            "id": "Invalid meeting ID provided",
+            "message": "Invalid meeting ID provided",
+            "translation": "ID de reunión no válido proporcionado"
+        },
+        {
             "id": "The meeting ID is invalid",
             "message": "The meeting ID is invalid",
             "translation": "El ID de la reunión es inválido",
@@ -211,18 +231,18 @@
             "fuzzy": true
         },
         {
-            "id": "the Mumble client can not be used because: {LastError}",
-            "message": "the Mumble client can not be used because: {LastError}",
-            "translation": "El cliente Mumble no se puede usar porque: {LastError}",
+            "id": "the Mumble client can not be used because: {Error}",
+            "message": "the Mumble client can not be used because: {Error}",
+            "translation": "El cliente Mumble no se puede usar porque: {Error}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "LastError",
+                    "id": "Error",
                     "string": "%[1]s",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
+                    "type": "string",
+                    "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "c.GetLastError()"
+                    "expr": "err.Error()"
                 }
             ],
             "fuzzy": true

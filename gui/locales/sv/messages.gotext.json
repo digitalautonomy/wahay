@@ -4,26 +4,26 @@
         {
             "id": "The meeting ID has been copied to the clipboard",
             "message": "The meeting ID has been copied to the clipboard",
-            "translation": "TRANSLATE ME"
+            "translation": "Mötes-koden har kopierats till din clipboard"
         },
         {
             "id": "Error",
             "message": "Error",
-            "translation": "TRANSLATE ME",
+            "translation": "Fel",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Something went wrong: {Err}",
             "message": "Something went wrong: {Err}",
-            "translation": "TRANSLATE ME",
+            "translation": "Något gick fel: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Err",
                     "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
                     "argNum": 1,
                     "expr": "err"
                 }
@@ -33,14 +33,14 @@
         {
             "id": "we couldn't start the meeting",
             "message": "we couldn't start the meeting",
-            "translation": "TRANSLATE ME",
+            "translation": "vi kunde inte start mötet",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Configured Mumble port is not valid: {PortMumble}",
             "message": "Configured Mumble port is not valid: {PortMumble}",
-            "translation": "TRANSLATE ME",
+            "translation": "Den inställda Mumble-porten är inte giltig: {PortMumble}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -57,7 +57,7 @@
         {
             "id": "The meeting can't be closed: {Err}",
             "message": "The meeting can't be closed: {Err}",
-            "translation": "TRANSLATE ME",
+            "translation": "Mötet kan inte stängas: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -74,14 +74,14 @@
         {
             "id": "internal Tor instance has already been closed",
             "message": "internal Tor instance has already been closed",
-            "translation": "TRANSLATE ME",
+            "translation": "den interna Tor-instansen har redan blivit stängd",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "The onion service can't be deleted: {Err}",
             "message": "The onion service can't be deleted: {Err}",
-            "translation": "TRANSLATE ME",
+            "translation": "Onion-tjänsten kan inte tas bort: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -98,28 +98,28 @@
         {
             "id": "The invitation email has been copied to the clipboard",
             "message": "The invitation email has been copied to the clipboard",
-            "translation": "TRANSLATE ME",
+            "translation": "Emailet med inbjudan har koperiats till din clipboard",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Join Wahay Meeting",
             "message": "Join Wahay Meeting",
-            "translation": "TRANSLATE ME",
+            "translation": "Anslut dig till ett Wahay-möte",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Please join the Wahay meeting with the following details:",
             "message": "Please join the Wahay meeting with the following details:",
-            "translation": "TRANSLATE ME",
+            "translation": "Var god anslut dig till Wahay-mötet med dessa detaljer:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
-            "id": "{It}Meeting ID: {ServiceID}",
-            "message": "{It}Meeting ID: {ServiceID}",
-            "translation": "TRANSLATE ME",
+            "id": "{It}Meeting ID: {URL}",
+            "message": "{It}Meeting ID: {URL}",
+            "translation": "{It}Mötes-koden: {URL}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -131,12 +131,12 @@
                     "expr": "it"
                 },
                 {
-                    "id": "ServiceID",
+                    "id": "URL",
                     "string": "%[2]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 2,
-                    "expr": "h.serviceID"
+                    "expr": "h.service.GetURL()"
                 }
             ],
             "fuzzy": true
@@ -144,35 +144,50 @@
         {
             "id": "Start Meeting \u0026 Join",
             "message": "Start Meeting \u0026 Join",
-            "translation": "TRANSLATE ME",
+            "translation": "Starta mötet \u0026 anslut",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Start Meeting",
             "message": "Start Meeting",
-            "translation": "TRANSLATE ME",
+            "translation": "Starta mötet",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "The Mumble process is down",
             "message": "The Mumble process is down",
-            "translation": "TRANSLATE ME",
+            "translation": "Mumble-processen är inte aktiv",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "The Meeting ID cannot be blank",
             "message": "The Meeting ID cannot be blank",
-            "translation": "TRANSLATE ME",
+            "translation": "Mötes-koden kan inte vara tom",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
+            "id": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "Den angivna mötes-koden är inte giltig: \n\n{MeetingID}",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ]
+        },
+        {
             "id": "An error occurred\n\n{Error}",
             "message": "An error occurred\n\n{Error}",
-            "translation": "TRANSLATE ME",
+            "translation": "Ett fel uppstod\n\n{Error}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -189,7 +204,7 @@
         {
             "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
             "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
-            "translation": "TRANSLATE ME",
+            "translation": "den angivna mötes-koden är inte giltig: \n\n{MeetingID}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -204,25 +219,30 @@
             "fuzzy": true
         },
         {
+            "id": "Invalid meeting ID provided",
+            "message": "Invalid meeting ID provided",
+            "translation": "Ogiltig mötes-kod angiven"
+        },
+        {
             "id": "The meeting ID is invalid",
             "message": "The meeting ID is invalid",
-            "translation": "TRANSLATE ME",
+            "translation": "Mötes-koden är ogiltig",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
-            "id": "the Mumble client can not be used because: {LastError}",
-            "message": "the Mumble client can not be used because: {LastError}",
-            "translation": "TRANSLATE ME",
+            "id": "the Mumble client can not be used because: {Error}",
+            "message": "the Mumble client can not be used because: {Error}",
+            "translation": "Mumble-klienten kan inte användas pga: {Error}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "LastError",
+                    "id": "Error",
                     "string": "%[1]s",
-                    "type": "error",
-                    "underlyingType": "interface{Error() string}",
+                    "type": "string",
+                    "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "c.GetLastError()"
+                    "expr": "err.Error()"
                 }
             ],
             "fuzzy": true
@@ -230,162 +250,162 @@
         {
             "id": "please enter a valid password",
             "message": "please enter a valid password",
-            "translation": "TRANSLATE ME",
+            "translation": "var god ange ett giltigt lösenord",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "enter the password confirmation",
             "message": "enter the password confirmation",
-            "translation": "TRANSLATE ME",
+            "translation": "ange lösenordsbekräftelse",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "passwords do not match",
             "message": "passwords do not match",
-            "translation": "TRANSLATE ME",
+            "translation": "lösenorden stämmer inte överens",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "enter a password at least 6 characters long",
             "message": "enter a password at least 6 characters long",
-            "translation": "TRANSLATE ME",
+            "translation": "ange ett lösenord med åtminstonde 6 tecken",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "If you disable this option, anyone could read your configuration settings",
             "message": "If you disable this option, anyone could read your configuration settings",
-            "translation": "TRANSLATE ME",
+            "translation": "Om du inaktiverar detta alternativ, kan vem som helst läsa din konfiguration",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Open file",
             "message": "Open file",
-            "translation": "TRANSLATE ME",
+            "translation": "Öppna fil",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Cancel",
             "message": "Cancel",
-            "translation": "TRANSLATE ME",
+            "translation": "Avbryt",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Open",
             "message": "Open",
-            "translation": "TRANSLATE ME",
+            "translation": "Öppna",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "tor can't be used",
             "message": "tor can't be used",
-            "translation": "TRANSLATE ME",
+            "translation": "tor kan inte användas",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "We've found errors",
             "message": "We've found errors",
-            "translation": "TRANSLATE ME",
+            "translation": "Vi har stött på fel",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "Accept",
             "message": "Accept",
-            "translation": "TRANSLATE ME"
+            "translation": "Godkänn"
         },
         {
             "id": "Allow the host to automatically join a newly created meeting",
             "message": "Allow the host to automatically join a newly created meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Tillåt värden att automatiskt ansluta till ett nyligen skapat möte"
         },
         {
             "id": "Are you sure you want to do this action?",
             "message": "Are you sure you want to do this action?",
-            "translation": "TRANSLATE ME"
+            "translation": "Är du säker på att du vill göra detta?"
         },
         {
             "id": "Are you sure you want to end this meeting?",
             "message": "Are you sure you want to end this meeting?",
-            "translation": "TRANSLATE ME"
+            "translation": "Är du säker på att du vill avsluta detta möte?"
         },
         {
             "id": "Are you sure you want to leave this meeting?",
             "message": "Are you sure you want to leave this meeting?",
-            "translation": "TRANSLATE ME"
+            "translation": "Är du säker på att du vill lämna detta möte?"
         },
         {
             "id": "Automatically join this meeting",
             "message": "Automatically join this meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut automatiskt till detta möte"
         },
         {
             "id": "Automatically join a meeting",
             "message": "Automatically join a meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut automatiskt till ett möte"
         },
         {
             "id": "Automatically join this meeting when starting it",
             "message": "Automatically join this meeting when starting it",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut automatiskt till detta möte när det startats"
         },
         {
             "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
             "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
-            "translation": "TRANSLATE ME"
+            "translation": "Var väldigt försiktig. Denna information är känslig och kan möjligen innehålla väldigt privat information. Sätt enbart på dessa inställningar om du absolut behöver göra det för debugging."
         },
         {
             "id": "Browse",
             "message": "Browse",
-            "translation": "TRANSLATE ME"
+            "translation": "Bläddra"
         },
         {
             "id": "By clicking Yes, this meeting will end.",
             "message": "By clicking Yes, this meeting will end.",
-            "translation": "TRANSLATE ME"
+            "translation": "Genom att trycka på Ja kommer mötet avslutas."
         },
         {
             "id": "By clicking Yes, you will leave this meeting.",
             "message": "By clicking Yes, you will leave this meeting.",
-            "translation": "TRANSLATE ME"
+            "translation": "Genom att trycka på Ja kommer du lämna mötet."
         },
         {
             "id": "Check this option to automatically join every meeting you host",
             "message": "Check this option to automatically join every meeting you host",
-            "translation": "TRANSLATE ME"
+            "translation": "Välj detta alterntiv för att automatiskt ansluta till varje möte du är värd för"
         },
         {
             "id": "Choose your email service to send invitation",
             "message": "Choose your email service to send invitation",
-            "translation": "TRANSLATE ME"
+            "translation": "Välj din epost-tjänst för att skicka inbjudan"
         },
         {
             "id": "Client binary location",
             "message": "Client binary location",
-            "translation": "TRANSLATE ME"
+            "translation": "Plats för klient-binären"
         },
         {
             "id": "Configuration settings will be lost in the next session",
             "message": "Configuration settings will be lost in the next session",
-            "translation": "TRANSLATE ME"
+            "translation": "Inställningarna kommer förloras under nästa session"
         },
         {
             "id": "Configure master password",
             "message": "Configure master password",
-            "translation": "TRANSLATE ME"
+            "translation": "Konfigurera huvudlösenordet"
         },
         {
             "id": "Confirmation",
             "message": "Confirmation",
-            "translation": "TRANSLATE ME"
+            "translation": "Bekräftelse"
         },
         {
             "id": "Connecting, please wait...",
@@ -395,452 +415,452 @@
         {
             "id": "Continue",
             "message": "Continue",
-            "translation": "TRANSLATE ME"
+            "translation": "Fortsätt"
         },
         {
             "id": "Copy Invitation",
             "message": "Copy Invitation",
-            "translation": "TRANSLATE ME"
+            "translation": "Kopiera inbjudan"
         },
         {
             "id": "Copy Meeting ID",
             "message": "Copy Meeting ID",
-            "translation": "TRANSLATE ME"
+            "translation": "Kopiera mötes-kod"
         },
         {
             "id": "Copy URL",
             "message": "Copy URL",
-            "translation": "TRANSLATE ME"
+            "translation": "Koperia länk"
         },
         {
             "id": "Debugging",
             "message": "Debugging",
-            "translation": "TRANSLATE ME"
+            "translation": "Debugging"
         },
         {
             "id": "Default Email",
             "message": "Default Email",
-            "translation": "TRANSLATE ME"
+            "translation": "Standardepost"
         },
         {
             "id": "Encrypt the configuration file",
             "message": "Encrypt the configuration file",
-            "translation": "TRANSLATE ME"
+            "translation": "Kryptera konfigurationsfilen"
         },
         {
             "id": "Finish",
             "message": "Finish",
-            "translation": "TRANSLATE ME"
+            "translation": "Avsluta"
         },
         {
             "id": "End this meeting",
             "message": "End this meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Avsluta detta möte"
         },
         {
             "id": "End this meeting for all",
             "message": "End this meeting for all",
-            "translation": "TRANSLATE ME"
+            "translation": "Avsluta detta möte för alla"
         },
         {
             "id": "General",
             "message": "General",
-            "translation": "TRANSLATE ME"
+            "translation": "Allmäna"
         },
         {
             "id": "Gmail",
             "message": "Gmail",
-            "translation": "TRANSLATE ME"
+            "translation": "Gmail"
         },
         {
             "id": "Host a new meeting",
             "message": "Host a new meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Skapa ett nytt möte"
         },
         {
             "id": "Hosting",
             "message": "Hosting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anordna"
         },
         {
             "id": "Host meeting",
             "message": "Host meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Skapa möte"
         },
         {
             "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
             "message": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
-            "translation": "TRANSLATE ME"
+            "translation": "Om du säkerhetskopierar konfigurationsfilen kommer vi återställa inställningarna och fortsätta normalt. Om konfigurationsfilen är krypterad kommer vi be om ett lösenorder för att kryptera den nya filen."
         },
         {
             "id": "If you set this option to a file name, low level information will be logged there.",
             "message": "If you set this option to a file name, low level information will be logged there.",
-            "translation": "TRANSLATE ME"
+            "translation": "Om du sätter den här inställningen till ett filnamn kommer lågnivåinformation bli loggad där."
         },
         {
             "id": "Invalid configuration file",
             "message": "Invalid configuration file",
-            "translation": "TRANSLATE ME"
+            "translation": "Ogiltig konfigurationsfil"
         },
         {
             "id": "Invalid password. Please, try again.",
             "message": "Invalid password. Please, try again.",
-            "translation": "TRANSLATE ME"
+            "translation": "Ogiltigt lösenord, var god försök igen."
         },
         {
             "id": "Invite others",
             "message": "Invite others",
-            "translation": "TRANSLATE ME"
+            "translation": "Bjud in andra"
         },
         {
             "id": "Join",
             "message": "Join",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut"
         },
         {
             "id": "Join a meeting",
             "message": "Join a meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut till ett möte"
         },
         {
             "id": "Join meeting",
             "message": "Join meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut till möte"
         },
         {
             "id": "Join the meeting",
             "message": "Join the meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut till mötet"
         },
         {
             "id": "Join this meeting",
             "message": "Join this meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anslut till detta möte"
         },
         {
             "id": "Keep configuration file when Wahay closes",
             "message": "Keep configuration file when Wahay closes",
-            "translation": "TRANSLATE ME"
+            "translation": "Behåll konfigurationsfilen tills Wahay stängs"
         },
         {
             "id": "Leave",
             "message": "Leave",
-            "translation": "TRANSLATE ME"
+            "translation": "Lämna"
         },
         {
             "id": "Leave this meeting",
             "message": "Leave this meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Lämna detta möte"
         },
         {
             "id": "Log debug info",
             "message": "Log debug info",
-            "translation": "TRANSLATE ME"
+            "translation": "Logga debuginformation"
         },
         {
             "id": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
             "message": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
-            "translation": "TRANSLATE ME"
+            "translation": "Logga debugutmatning till den valda loggfilen. Om ingen fil är val kommer utmatningen skrivas till standardloggfilen."
         },
         {
             "id": "Master password",
             "message": "Master password",
-            "translation": "TRANSLATE ME"
+            "translation": "Huvudlösenord"
         },
         {
             "id": "Meeting ID",
             "message": "Meeting ID",
-            "translation": "TRANSLATE ME"
+            "translation": "Mötes-kod"
         },
         {
             "id": "Meeting ID:",
             "message": "Meeting ID:",
-            "translation": "TRANSLATE ME"
+            "translation": "Mötes-kod:"
         },
         {
             "id": "Meeting password",
             "message": "Meeting password",
-            "translation": "TRANSLATE ME"
+            "translation": "Möteslösenord"
         },
         {
             "id": "Mumble",
             "message": "Mumble",
-            "translation": "TRANSLATE ME"
+            "translation": "Mumble"
         },
         {
             "id": "No, cancel",
             "message": "No, cancel",
-            "translation": "TRANSLATE ME"
+            "translation": "Nej, avbryt"
         },
         {
             "id": "Now you are hosting a meeting.",
             "message": "Now you are hosting a meeting.",
-            "translation": "TRANSLATE ME"
+            "translation": "Du är nu värd för ett möte."
         },
         {
             "id": "Ok, try again",
             "message": "Ok, try again",
-            "translation": "TRANSLATE ME"
+            "translation": "OK, försök igen"
         },
         {
             "id": "Outlook",
             "message": "Outlook",
-            "translation": "TRANSLATE ME"
+            "translation": "Outlook"
         },
         {
             "id": "Password",
             "message": "Password",
-            "translation": "TRANSLATE ME"
+            "translation": "Lösenord"
         },
         {
             "id": "Please enter the master password for the configuration file.",
             "message": "Please enter the master password for the configuration file.",
-            "translation": "TRANSLATE ME"
+            "translation": "Var god skriv in huvudlösenordet för konfigurationsfilen."
         },
         {
             "id": "Port",
             "message": "Port",
-            "translation": "TRANSLATE ME"
+            "translation": "Port"
         },
         {
             "id": "Port out of range",
             "message": "Port out of range",
-            "translation": "TRANSLATE ME"
+            "translation": "Porten är utanför giltiga värden"
         },
         {
             "id": "Executable Mumble location",
             "message": "Executable Mumble location",
-            "translation": "TRANSLATE ME"
+            "translation": "Plats för Mumble-programfilen"
         },
         {
             "id": "Ex. /home/user/mumble/mumble",
             "message": "Ex. /home/user/mumble/mumble",
-            "translation": "TRANSLATE ME"
+            "translation": "Ex. /home/user/mumble/mumble"
         },
         {
             "id": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
             "message": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
-            "translation": "TRANSLATE ME"
+            "translation": "Om du vill använda din egen Mumble-instans, var god ange platsen där Mumble finns på ditt system"
         },
         {
             "id": "Mumble service port",
             "message": "Mumble service port",
-            "translation": "TRANSLATE ME"
+            "translation": "Mumble tjänsteport"
         },
         {
             "id": "Ex. 9800",
             "message": "Ex. 9800",
-            "translation": "TRANSLATE ME"
+            "translation": "Ex. 9800"
         },
         {
             "id": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
             "message": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
-            "translation": "TRANSLATE ME"
+            "translation": "Om du vill använda en egen port för Mumble-tjänsten, var god ange ett nummer mellan 1 och 65535"
         },
         {
             "id": "Raw log file",
             "message": "Raw log file",
-            "translation": "TRANSLATE ME"
+            "translation": "Rå loggfil"
         },
         {
             "id": "Repeat the password",
             "message": "Repeat the password",
-            "translation": "TRANSLATE ME"
+            "translation": "Repetera lösenordet"
         },
         {
             "id": "Save changes",
             "message": "Save changes",
-            "translation": "TRANSLATE ME"
+            "translation": "Spara ändringar"
         },
         {
             "id": "Security",
             "message": "Security",
-            "translation": "TRANSLATE ME"
+            "translation": "Säkerhet"
         },
         {
             "id": "Settings",
             "message": "Settings",
-            "translation": "TRANSLATE ME"
+            "translation": "Inställningar"
         },
         {
             "id": "Show",
             "message": "Show",
-            "translation": "TRANSLATE ME"
+            "translation": "Visa"
         },
         {
             "id": "Specify a password for the meeting",
             "message": "Specify a password for the meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Ange ett möteslösenord"
         },
         {
             "id": "Start meeting",
             "message": "Start meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Starta mötet"
         },
         {
             "id": "The error message",
             "message": "The error message",
-            "translation": "TRANSLATE ME"
+            "translation": "Felmeddelandet"
         },
         {
             "id": "The meeting ID is invalid, please check it.",
             "message": "The meeting ID is invalid, please check it.",
-            "translation": "TRANSLATE ME"
+            "translation": "Mötes-koden är ogiltig, var god kontrollera den"
         },
         {
             "id": "A valid port is between 1 and 65535",
             "message": "A valid port is between 1 and 65535",
-            "translation": "TRANSLATE ME"
+            "translation": "En giltig port är mellan 1 och 65535"
         },
         {
             "id": "This action cannot be undone",
             "message": "This action cannot be undone",
-            "translation": "TRANSLATE ME"
+            "translation": "Denna åtgärd kan inte ångras"
         },
         {
             "id": "Toggle password visibility",
             "message": "Toggle password visibility",
-            "translation": "TRANSLATE ME"
+            "translation": "Växla lösenordsvisning"
         },
         {
             "id": "Type the Meeting ID (normally a .onion address)",
             "message": "Type the Meeting ID (normally a .onion address)",
-            "translation": "TRANSLATE ME"
+            "translation": "Ange mötes-koden (normalt en .onion-adress)"
         },
         {
             "id": "Type the password",
             "message": "Type the password",
-            "translation": "TRANSLATE ME"
+            "translation": "Ange lösenordet"
         },
         {
             "id": "Type the password to join the meeting",
             "message": "Type the password to join the meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Ange lösenordet för att ansluta till mötet"
         },
         {
             "id": "Type your preferred screen name",
             "message": "Type your preferred screen name",
-            "translation": "TRANSLATE ME"
+            "translation": "Ange ditt önskade skärmnamn"
         },
         {
             "id": "Type your screen name",
             "message": "Type your screen name",
-            "translation": "TRANSLATE ME"
+            "translation": "Ange ditt skärmnamn"
         },
         {
             "id": "Username",
             "message": "Username",
-            "translation": "TRANSLATE ME"
+            "translation": "Användarnamn"
         },
         {
             "id": "Wahay is ready to use",
             "message": "Wahay is ready to use",
-            "translation": "TRANSLATE ME"
+            "translation": "Wahay är redo att användas"
         },
         {
             "id": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
             "message": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
-            "translation": "TRANSLATE ME"
+            "translation": "Vi har noterat att konfigurationsfilen är ogiltig eller korrupt. Vill du skapa en säkerhetskopia av den och fortsätta?"
         },
         {
             "id": "Welcome",
             "message": "Welcome",
-            "translation": "TRANSLATE ME"
+            "translation": "Välkommen"
         },
         {
             "id": "When this option is checked, the configuration settings will be stored in the device.",
             "message": "When this option is checked, the configuration settings will be stored in the device.",
-            "translation": "TRANSLATE ME"
+            "translation": "När det här alternativet är valt kommer inställningarna sparas på maskinen."
         },
         {
             "id": "Yahoo Mail",
             "message": "Yahoo Mail",
-            "translation": "TRANSLATE ME"
+            "translation": "Yahoo Mail"
         },
         {
             "id": "Yes, back it up &amp; continue",
             "message": "Yes, back it up &amp; continue",
-            "translation": "TRANSLATE ME"
+            "translation": "Ja, säkerhetskopiera &amp; fortsätt"
         },
         {
             "id": "Yes, confirm",
             "message": "Yes, confirm",
-            "translation": "TRANSLATE ME"
+            "translation": "Ja, bekräfta"
         },
         {
             "id": "You will not be asked for this password again until you restart Wahay.",
             "message": "You will not be asked for this password again until you restart Wahay.",
-            "translation": "TRANSLATE ME"
+            "translation": "Du kommer inte bli tillfrågad om lösenord igen tills du startar om Wahay."
         },
         {
             "id": "What is Wahay?",
             "message": "What is Wahay?",
-            "translation": "TRANSLATE ME"
+            "translation": "Vad är Wahay?"
         },
         {
             "id": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
             "message": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
-            "translation": "TRANSLATE ME"
+            "translation": "Kommunikation är ett grundläggande behöv för människor. Vi har under en längre tid använt röst-kommunikation via teknologi, genom olika verktyg som har utvecklats, såsom Skype, Zoom, Google Hangouts och många andra. Tyvärr finns det ett antal aspekter av dessa verktyg som inte har varit i fokus: centraliserade servrar, proprietär teknologi, säkerhet. Dessa problem finns med de flesta lösningar där ute."
         },
         {
             "id": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
             "message": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
-            "translation": "TRANSLATE ME"
+            "translation": "Wahay (https://wahay.org) har utvecklats som ett verktyg för att skapa röst-samtal enkelt, säkert och decentraliserat (utan behov av en centraliserad server eller tjänst). Internt använder Wahay Tor (https://www.torproject.org/) som ett verktyg för säker kommunikation och Mumble (https://www.mumble.com/) som en klient för röst-samtal."
         },
         {
             "id": "What is Tor?",
             "message": "What is Tor?",
-            "translation": "TRANSLATE ME"
+            "translation": "Vad är Tor?"
         },
         {
             "id": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
             "message": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
-            "translation": "TRANSLATE ME"
+            "translation": "Tor är ett verktyg med fri och öppen källkod som tillåter dig att etablera anonyma och distribuerade kommunikationskanaler. Tor leder din internet-trafik genom ett antal routrar som kallas 'onion-routers', vilket tillåter anonym kommunikation mellan deras noder. Detta nätverk är sammansatt av många organisationer och individer som donerar sin bandbredd och datorkraft."
         },
         {
             "id": "What is Mumble?",
             "message": "What is Mumble?",
-            "translation": "TRANSLATE ME"
+            "translation": "Vad är Mumble?"
         },
         {
             "id": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
             "message": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
-            "translation": "TRANSLATE ME"
+            "translation": "Mumble är ett program med fri och öppen källkod som tillåter röst-samtal med en eller flera parter med hög ljudkvalitet och låg latens."
         },
         {
             "id": "Functionalities",
             "message": "Functionalities",
-            "translation": "TRANSLATE ME"
+            "translation": "Funktionaliteter"
         },
         {
             "id": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
             "message": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
-            "translation": "TRANSLATE ME"
+            "translation": "Wahay tillåter dig att anordna möten eller ansluta till existerande möten. För detta behöver du etablera en kod som tjänar till att identifiera mötet du vill delta i."
         },
         {
             "id": "Host a meeting",
             "message": "Host a meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "Anordna ett möte"
         },
         {
             "id": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
             "message": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
-            "translation": "TRANSLATE ME"
+            "translation": "Detta alternativ tillåter dig att starta en server som kommer att tillåta att användare ansluter till ett möte, vilket är definierat genom en mötes-kod. Denna mötes-kod måste användas av resten av användarna somm vill delta i mötet. Det är också möjligt att definiera ett användarnamn som kan identifiera användaren i ett möte - men detta är inte nödvändigt. Det är även möjligt att sätta ett lösenord för att ansluta till mötet - i sådana fall måste all användare ange detta lösenord för att kunna ansluta till Wahay."
         },
         {
             "id": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
             "message": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
-            "translation": "TRANSLATE ME"
+            "translation": "Alternativet att automatiskt ansluta till ett möte tillåter dig att start mötet och omedelbart bli ansluten till det. Om du inte väljer det kan du också ansluta senare till mötet genom att trycka på knappen som säger 'anslut'. Det är även möjligt att kopiera mötes-koden och skicka en inbjudan genom de flesta epost-klienter."
         },
         {
             "id": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
             "message": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
-            "translation": "TRANSLATE ME"
+            "translation": "Detta alternativ gör det möjligt för en användare att ansluta till ett möte som redan existerar. För detta behöver du ange en mötes-kod, ett användarnamn (inte nödvändigt) och ett lösenord (om ett var konfigurerar för mötet)."
         },
         {
             "id": "Help",
             "message": "Help",
-            "translation": "TRANSLATE ME"
+            "translation": "Hjälp"
         }
     ]
 }

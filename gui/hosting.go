@@ -37,16 +37,16 @@ func (u *gtkUI) realHostMeetingHandler() {
 	u.hideMainWindow()
 	u.displayLoadingWindow()
 
-	err := make(chan error)
+	echan := make(chan error)
 
-	go h.createNewService(err)
+	go h.createNewService(echan)
 
-	e := <-err
+	err := <-echan
 
 	u.hideLoadingWindow()
 
-	if e != nil {
-		h.u.reportError(i18n.Sprintf("Something went wrong: %s", e))
+	if err != nil {
+		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
 		u.switchToMainWindow()
 		return
 	}

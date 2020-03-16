@@ -9,19 +9,21 @@
             "fuzzy": true
         },
         {
-            "id": "Something went wrong: {Error}",
-            "message": "Something went wrong: {Error}",
-            "translation": "",
+            "id": "Something went wrong: {Err}",
+            "message": "Something went wrong: {Err}",
+            "translation": "Algo salió mal: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "Error",
+                    "id": "Err",
                     "string": "%[1]s",
                     "type": "error",
                     "underlyingType": "interface{Error() string}",
                     "argNum": 1,
-                    "expr": "e"
+                    "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "we couldn't start the meeting",
@@ -76,7 +78,8 @@
         {
             "id": "{It}Meeting ID: {URL}",
             "message": "{It}Meeting ID: {URL}",
-            "translation": "",
+            "translation": "{It}ID de la reunión: {URL}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "It",
@@ -94,7 +97,8 @@
                     "argNum": 2,
                     "expr": "h.service.GetURL()"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Start Meeting \u0026 Join",
@@ -127,7 +131,7 @@
         {
             "id": "The provided meeting ID is invalid: \n\n{MeetingID}",
             "message": "The provided meeting ID is invalid: \n\n{MeetingID}",
-            "translation": "",
+            "translation": "El ID de la reunión proporcionada no es válida: \n\n{MeetingID}",
             "placeholders": [
                 {
                     "id": "MeetingID",
@@ -159,7 +163,7 @@
         {
             "id": "Invalid meeting ID provided",
             "message": "Invalid meeting ID provided",
-            "translation": ""
+            "translation": "ID de reunión no válido proporcionado"
         },
         {
             "id": "The meeting ID is invalid",
@@ -171,7 +175,8 @@
         {
             "id": "the Mumble client can not be used because: {Error}",
             "message": "the Mumble client can not be used because: {Error}",
-            "translation": "",
+            "translation": "El cliente Mumble no se puede usar porque: {Error}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Error",
@@ -181,7 +186,8 @@
                     "argNum": 1,
                     "expr": "err.Error()"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "please enter a valid password",

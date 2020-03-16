@@ -9,18 +9,18 @@
             "fuzzy": true
         },
         {
-            "id": "Something went wrong: {Error}",
-            "message": "Something went wrong: {Error}",
-            "translation": "Something went wrong: {Error}",
+            "id": "Something went wrong: {Err}",
+            "message": "Something went wrong: {Err}",
+            "translation": "Something went wrong: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "Error",
+                    "id": "Err",
                     "string": "%[1]s",
                     "type": "error",
                     "underlyingType": "interface{Error() string}",
                     "argNum": 1,
-                    "expr": "e"
+                    "expr": "err"
                 }
             ],
             "fuzzy": true
