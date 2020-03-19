@@ -14,6 +14,12 @@ import (
 	"github.com/digitalautonomy/wahay/tor"
 )
 
+// TODO[OB]: Why does the GUI manage the certificate?
+// TODO[OB]: Why does the GUI care about the binary path?
+
+// TODO[OB]: What's the difference between cleanup and destroy?
+// TODO[OB]: What does the Log() method do?
+
 // Instance is a representation of the Mumble client for Wahay
 type Instance interface {
 	CanBeUsed() bool
@@ -69,6 +75,7 @@ func InitSystem(conf *config.ApplicationConfig) Instance {
 	b := getMumbleBinary(conf)
 
 	if b == nil {
+		// TODO[OB]: I'm not a huge fan of this pattern. Better to create a new instance that is invalid.
 		currentInstance.invalidate(errors.New("a valid binary of Mumble is no available in your system"))
 		return currentInstance
 	}
@@ -125,6 +132,8 @@ func (c *client) CanBeUsed() bool {
 	return c.isValid && c.err == nil
 }
 
+// TODO[OB]: Lots of getters. This is discouraged in Golang.
+
 func (c *client) GetBinaryPath() string {
 	if c.isValid && c.binary != nil {
 		return c.binary.getPath()
@@ -177,6 +186,8 @@ func (c *client) Log() {
 	log.Infof("Using Mumble located at: %s\n", c.GetBinaryPath())
 	log.Infof("Using Mumble environment variables: %s\n", c.getBinaryEnv())
 }
+
+// TODO[OB]: These two confuse me a lot. Destroy calls cleanup on the client, but Cleanup does NOT call cleanup on the binary?
 
 func (c *client) Cleanup() {
 	err := c.regenerateConfiguration()

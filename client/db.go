@@ -39,6 +39,8 @@ func (d *dbData) write() error {
 	return nil
 }
 
+// TODO[OB]: This should really take a int16 or uint16
+
 func intToStringToSearch(n int) string {
 	n1 := n >> 8
 	n2 := n % 256
@@ -67,6 +69,9 @@ func loadDBFromFile(filename string) (*dbData, error) {
 
 	return d, nil
 }
+
+// TODO[OB]: It would be much better to just use ioutil.ReadAll
+// This function is quite ineffective
 
 func readBinaryContent(filename string) ([]byte, error) {
 	file, err := os.Open(filename)

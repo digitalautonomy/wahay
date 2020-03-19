@@ -17,6 +17,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// TODO[OB]: I'm confused about the arguments to this method, especially the cert argument
+
 func (c *client) LoadCertificateFrom(
 	serviceID string,
 	servicePort int,
@@ -26,6 +28,7 @@ func (c *client) LoadCertificateFrom(
 		return nil
 	}
 
+	// TODO[OB]: No point in declaring these here
 	var err error
 	var content string
 

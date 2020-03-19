@@ -16,6 +16,8 @@ var (
 	ErrNoService = errors.New("error: the service can't be started")
 )
 
+// TODO[OB]: Is there a reason this isn't a method on the client?
+
 // LaunchClient executes the current Mumble client instance
 func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error) {
 	c := GetMumbleInstance()

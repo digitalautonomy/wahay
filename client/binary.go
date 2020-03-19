@@ -27,6 +27,8 @@ const (
 	wahayMumbleBundlePath = "wahay/mumble/mumble"
 )
 
+// TODO[OB]: It might be a good idea to write some documentation about what some of
+// these mean - for example isValid and isTemporary are definitely not clear
 type binary struct {
 	path           string
 	env            []string
@@ -37,10 +39,12 @@ type binary struct {
 	shouldBeCopied bool
 }
 
+// TODO[OB]: This is not really necessary
 func (b *binary) getPath() string {
 	return b.path
 }
 
+// TODO[OB]: "getters" is discouraged in Golang
 func (b *binary) getEnv() []string {
 	if !b.isBundle {
 		return nil
@@ -66,10 +70,12 @@ func (b *binary) copyTo(path string) error {
 		return errInvalidBinaryFile
 	}
 
+	// TODO[OB]: is checking the length really necessary? Wouldn't isADirectory return false for the empty string?
 	if len(path) == 0 || !isADirectory(path) {
 		return errDestinationIsNotADirectory
 	}
 
+	// TODO[OB]: Not sure if I like this variable name
 	mumbleCopyFile := filepath.Join(path, "mumble")
 
 	if fileExists(mumbleCopyFile) {
@@ -91,6 +97,7 @@ func (b *binary) cleanup() {
 	b.remove()
 }
 
+// TODO[OB]: Does this helper function really help in understanding?
 func (b *binary) shouldBeRemoved() bool {
 	return b.isTemporary
 }
@@ -106,6 +113,8 @@ func (b *binary) remove() {
 
 func (b *binary) copyBinaryToDir(destination string) error {
 	var err error
+
+	// TODO[OB]: Not real reason to define these variables at the top
 	var srcfd *os.File
 	var dstfd *os.File
 	var srcinfo os.FileInfo
@@ -130,6 +139,9 @@ func (b *binary) copyBinaryToDir(destination string) error {
 
 	return os.Chmod(destination, srcinfo.Mode())
 }
+
+// TODO[OB]: I really don't like how the empty path is used as a sentinel value in
+// this package.
 
 func newMumbleBinary(path string) *binary {
 	b := &binary{
@@ -169,6 +181,8 @@ func getRealMumbleBinaryPath(path string) (string, error) {
 
 	return path, nil
 }
+
+// TODO[OB]: Lots of "getters" in this code. That's discouraged in Golang.
 
 func getMumbleBinary(conf *config.ApplicationConfig) *binary {
 	callbacks := []func() (*binary, error){

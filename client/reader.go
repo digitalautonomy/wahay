@@ -6,6 +6,8 @@ import (
 	"github.com/digitalautonomy/wahay/codegen"
 )
 
+// TODO[OB]: Lots of getters
+
 func getDBFileContent() []byte {
 	content := codegen.GetFileWithFallback(".mumble.sqlite", "client/files", FSString)
 	return []byte(content)
@@ -37,6 +39,8 @@ func createFile(filename string) error {
 	return nil
 }
 
+// TODO[OB]: These functions do not do what their name says they do. That's not great.
+
 func directoryExists(dir string) bool {
 	return dirOrFileExists(dir)
 }
@@ -64,6 +68,8 @@ func isADirectory(path string) bool {
 
 	return dir.IsDir()
 }
+
+// TODO[OB]: Are there not other things than files or directories in all the file systems on the planet?
 
 func isAFile(filename string) bool {
 	return !isADirectory(filename)

@@ -33,7 +33,6 @@ func (c *client) regenerateConfiguration() error {
 		binaryDir = filepath.Dir(binaryDir)
 	}
 
-	// Removes the configuration file (.ini)
 	err = os.Remove(filepath.Join(binaryDir, configFileName))
 	if err != nil {
 		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
