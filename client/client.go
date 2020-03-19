@@ -187,7 +187,8 @@ func (c *client) Log() {
 	log.Infof("Using Mumble environment variables: %s\n", c.getBinaryEnv())
 }
 
-// TODO[OB]: These two confuse me a lot. Destroy calls cleanup on the client, but Cleanup does NOT call cleanup on the binary?
+// TODO[OB]: These two confuse me a lot. Destroy calls cleanup on the client,
+// but Cleanup does NOT call cleanup on the binary?
 
 func (c *client) Cleanup() {
 	err := c.regenerateConfiguration()
