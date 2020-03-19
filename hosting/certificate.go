@@ -18,6 +18,7 @@ import (
 	"github.com/digitalautonomy/wahay/config"
 )
 
+// TODO[OB] - this doesn't really make sense. Why do we have this still?
 func (s *service) GetCertificate() ([]byte, error) {
 	if s.httpServer == nil {
 		return nil, errors.New("the certificate server hasn't been initialized")
@@ -30,6 +31,9 @@ func (s *service) GetCertificate() ([]byte, error) {
 
 	return ioutil.ReadFile(certFile)
 }
+
+// TODO[OB] - why do we have the host when it's hard coded?
+// TODO[OB] - why do we store the port? it doesn't seem to be used
 
 type webserver struct {
 	sync.WaitGroup
@@ -65,11 +69,14 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 		// Set sensible timeouts, in case no reverse proxy is in front of Grumble.
 		// Non-conforming (or malicious) clients may otherwise block indefinitely and cause
 		// file descriptors (or handles, depending on your OS) to leak and/or be exhausted
+		// TODO[OB] - I think these timeouts are too low. Remember that we are doing this over
+		// Tor hidden services
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  2 * time.Minute,
 	}
 
+	// TODO[OB] - I'm not sure if it makes sense to log these as info
 	log.WithFields(log.Fields{
 		"address": address,
 		"dir":     dir,
@@ -80,22 +87,27 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 
 func (h *webserver) start() {
 	if h.running {
+		// TODO[OB] - why is this not an error?
 		log.Warning("http server is already running")
 		return
 	}
 
 	go func() {
+		// TODO[OB] - not sure it makese sense to log as info
 		log.WithFields(log.Fields{
 			"address": h.address,
 			"dir":     h.dir,
 		}).Info("Starting Mumble certificate server directory")
 
+		// TODO[OB] - There's no way for the caller to know that this failed...
 		err := h.server.ListenAndServe()
 		if err != http.ErrServerClosed {
 			log.Fatalf("Fatal HTTP server error: %v", err)
 		}
 	}()
 
+	// TODO[OB] - There's a race condition here - the h.running can be set
+	// before the server is listenting.
 	h.running = true
 }
 
@@ -110,6 +122,7 @@ func (h *webserver) stop() error {
 		return nil
 	}
 
+	// TODO[OB] - I'm confused about this pattern
 	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(15*time.Second))
 	err := h.server.Shutdown(ctx)
 	cancel()
@@ -132,6 +145,7 @@ func (h *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Requ
 		"dir": h.dir,
 	}).Debug("handleCertificateRequest(): serving cert file")
 
+	// TODO[OB] - Why do we serve this from a file, and not from memory?
 	if !fileExists(filepath.Join(h.dir, "cert.pem")) {
 		http.Error(
 			w,

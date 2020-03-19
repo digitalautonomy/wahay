@@ -14,6 +14,8 @@ import (
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 )
 
+// TODO[OB] - What's the difference between Shutdown and Cleanup?
+
 // Servers serves
 type Servers interface {
 	CreateServer(port string, password string) (Server, error)
@@ -22,6 +24,9 @@ type Servers interface {
 	GetDataDir() string
 	Cleanup()
 }
+
+// TODO[OB] - I don't think this documentation is correct. Clearly
+// the certificate is not part of the Mumble URL
 
 // MeetingData is an structure for storing meeting info
 // for creating the mumble url

@@ -36,6 +36,8 @@ const (
 
 var errInvalidPort = errors.New("invalid port supplied")
 
+// TODO[OB] - We should get rid of the Get-naming here
+
 // Service is a representation of our custom Mumble server
 type Service interface {
 	GetID() string
