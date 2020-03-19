@@ -199,6 +199,7 @@ func (h *hostData) openHostJoinMeetingWindow() {
 		},
 		"on_leave_meeting":  h.leaveHostMeeting,
 		"on_finish_meeting": h.finishMeetingMumble,
+		"on_invite_others":  h.onInviteParticipants,
 	})
 
 	h.u.switchToWindow(win)
