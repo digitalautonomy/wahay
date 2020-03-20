@@ -112,6 +112,8 @@ func (h *hostData) joinMeetingHost() {
 		return
 	}
 
+	// TODO[OB]: Something is weird here. err will ALWAYS be nil...
+
 	if err == nil {
 		err = errors.New(i18n.Sprintf("we couldn't start the meeting"))
 	}
@@ -289,6 +291,9 @@ func (h *hostData) leaveHostMeeting() {
 var uiHostingLock sync.Mutex
 
 func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
+	// TODO[OB]: What's the purpose of this mutex? It doesn't
+	// seem to serve much of a purpose at all
+
 	uiHostingLock.Lock()
 	defer uiHostingLock.Unlock()
 

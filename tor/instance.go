@@ -53,6 +53,11 @@ type instance struct {
 	binary        *binary
 }
 
+// TODO[OB] - This design is _very_ specific to the needs of the certificate getter
+// It would be better if the instance could return a dialer - then anyone/anything
+// could easily use it to do Tor network traffic, and this HTTP specific stuff
+// could be done in the certificate package
+
 func (i *instance) HTTPrequest(u string) (string, error) {
 	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(i.controlHost, strconv.Itoa(i.socksPort)))
 	if err != nil {
@@ -101,6 +106,8 @@ func setSingleInstance(i Instance) {
 	currentInstance = i
 }
 
+// TODO[OB] - Lots of getters here...
+
 func getSingleInstance() (Instance, error) {
 	if currentInstance == nil {
 		return nil, errors.New("no instance initialized")
@@ -123,6 +130,8 @@ func GetController() (Control, error) {
 
 	return i.GetController(), nil
 }
+
+// TODO[OB] - Why is this function exposed? It isn't used anywhere outside
 
 // DeleteOnionService deletes a specific ONION service for the
 // current Tor instance controller
@@ -426,6 +435,9 @@ func (i *instance) getConfigFileContents() []byte {
 	if !i.useCookie {
 		cookieFile = 0
 	}
+
+	// TODO[OB] - This should probably be exported into
+	// its own file, and then use esc to include it
 
 	content := fmt.Sprintf(
 		`## Configuration file for a typical Tor user

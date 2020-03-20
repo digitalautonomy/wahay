@@ -88,11 +88,16 @@ func (u *gtkUI) closeStatusErrorsWindow() {
 }
 
 type errGroupType string
+
+// TODO[OB]: this is not a parser, so this naming is a bit confusing.
 type errGroupParser func(err error) string
 type errGroupData struct {
 	errorList []string
 	parser    errGroupParser
 }
+
+// TODO[OB]: It seems like all these things, including the muxes and the flag
+// should be in its own struct instad of floating free like this.
 
 var startupErrors = map[errGroupType]*errGroupData{}
 

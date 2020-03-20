@@ -243,6 +243,8 @@ func isAValidMeetingID(meetingID string) bool {
 		return false
 	}
 
+	// TODO[OB]: this one is very confusing to me. It can NEVER be true
+	// since this code is dead
 	if len(meetingID) > onionServiceLength &&
 		len(meetingID[:onionServiceLength]) < onionServiceLength {
 		return false

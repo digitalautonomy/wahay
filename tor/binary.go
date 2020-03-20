@@ -71,6 +71,8 @@ func findTorBinary(conf *config.ApplicationConfig) (b *binary, err error) {
 	for _, cb := range functions {
 		b, err = cb()
 		if (b != nil && b.isValid) || err != nil {
+			// TODO[OB] - should this really be a log println?
+			// Especially if it's nil...
 			log.Println(err)
 			return
 		}
@@ -302,6 +304,9 @@ func allLibDirs() []string {
 	}
 	return result
 }
+
+// TODO[OB] - why is this function exposed? Seems like a very
+// internal need for the tor package...
 
 // FindLibTorsocks returns the path of libtorsocks if exist
 func FindLibTorsocks(filePath string) (string, error) {

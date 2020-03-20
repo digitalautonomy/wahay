@@ -11,6 +11,9 @@ import (
 	"github.com/wybiral/torgo"
 )
 
+// TODO[OB] - It seems the interface should be unified so
+// CreateNewOnionService also takes an OnionPort
+
 // Control is the interface for controlling the Tor instance on this system
 type Control interface {
 	SetPassword(string)
@@ -29,6 +32,9 @@ type controller struct {
 	c        torgoController
 	tc       func(string) (torgoController, error)
 }
+
+// TODO[OB] - I'm not a huge fan of this being global
+// Is there any reason why this is not on the controller?
 
 var onions = []string{}
 
@@ -70,6 +76,9 @@ type OnionPort struct {
 	DestinationPort int
 	DestinationHost string
 }
+
+// TODO[OB] - It seems this would be nicer if there was just one interface
+// method, and then it could take variable number of arguments
 
 func (cntrl *controller) CreateNewOnionServiceWithMultiplePorts(ports []OnionPort) (serviceID string, err error) {
 	tc, err := cntrl.getTorController()
@@ -137,6 +146,9 @@ func (cntrl *controller) DeleteOnionService(serviceID string) error {
 		return err
 	}
 
+	// TODO[OB] - In order to avoid this messy code, it might be
+	// easier to make the onions variable a map instead of a list.
+
 	for i := range onions {
 		if onions[i] == serviceID {
 			onions[i] = onions[len(onions)-1]
@@ -150,11 +162,14 @@ func (cntrl *controller) DeleteOnionService(serviceID string) error {
 }
 
 func (cntrl *controller) DeleteOnionServices() {
+	// TODO[OB] - This if statement is completely useless
 	if len(onions) > 0 {
 		for i := range onions {
 			_ = cntrl.DeleteOnionService(onions[i])
 		}
 	}
+
+	// TODO[OB] - This line is also completely useless
 	onions = []string{}
 }
 

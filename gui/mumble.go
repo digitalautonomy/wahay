@@ -45,6 +45,8 @@ func init() {
 	initStartupErrorGroup(errGroupMumble, parseMumbleError)
 }
 
+// TODO[OB]: this is definitely not a parser...
+
 func parseMumbleError(err error) string {
 	return i18n.Sprintf("the Mumble client can not be used because: %s", err.Error())
 }

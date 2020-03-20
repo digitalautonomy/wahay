@@ -35,6 +35,8 @@ func init() {
 	initStartupErrorGroup(errGroupTor, parseTorError)
 }
 
+// TODO[OB]: this is definitely not a parser, so the function name is confusing
+
 func parseTorError(err error) string {
 	switch err {
 	case tor.ErrTorBinaryNotFound:

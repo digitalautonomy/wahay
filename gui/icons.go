@@ -80,6 +80,8 @@ func (i *icon) createPixBufWithSize(width, height int) (gdki.Pixbuf, error) {
 		log.Error("createPixBufWithSize(): Graphics hasn't been initialized correctly")
 	}
 
+	// TODO[OB]: no point in using a waitgroup for only one thing
+	// Just use a bool channel
 	var w sync.WaitGroup
 
 	pl, err := i.g.gdk.PixbufLoaderNew()
