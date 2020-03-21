@@ -49,10 +49,12 @@ dialog {
       background-color: #fff; }
 
 .form-control {
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #fff;
   border: 1px solid rgba(27, 31, 35, 0.3);
   box-shadow: inset 0 2px 2px rgba(27, 31, 35, 0.1);
-  font-size: 18px;
+  font-size: 16px;
+  color: #035cc2;
   border-radius: 4px;
   padding: 7.1428571429px 20px; }
   .form-control.append {
