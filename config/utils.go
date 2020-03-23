@@ -84,10 +84,6 @@ func XdgDataDirs() []string {
 func IsPortAvailable(port int) bool {
 	ln, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 
-	if (port == DefaultControlPort || port == DefaultRoutePort) && err != nil {
-		return true
-	}
-
 	if err != nil {
 		return false
 	}

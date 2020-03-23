@@ -308,15 +308,14 @@ func allLibDirs() []string {
 // TODO[OB] - why is this function exposed? Seems like a very
 // internal need for the tor package...
 
-// FindLibTorsocks returns the path of libtorsocks if exist
-func FindLibTorsocks(filePath string) (string, error) {
+func findLibTorsocks(filePath string) (string, error) {
 	//Search in user config path
 	f := filepath.Join(filePath, libTorsocks)
 	if config.FileExists(f) {
 		return f, nil
 	}
 
-	//Search in local directories
+	// Search in local directories
 	for _, ld := range allLibDirs() {
 		f = filepath.Join(ld, libTorsocks)
 		if config.FileExists(f) {
@@ -324,7 +323,7 @@ func FindLibTorsocks(filePath string) (string, error) {
 		}
 	}
 
-	//Search in bundle path
+	// Search in bundle path
 	pathCWD, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err == nil {
 		c := filepath.Join(pathCWD, "tor/")

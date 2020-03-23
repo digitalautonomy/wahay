@@ -12,9 +12,6 @@ import (
 	"golang.org/x/net/proxy"
 )
 
-/*const UsrBinPath = "/usr/bin/tor"
-const UsrLocalBinPath = "/usr/local/bin/tor"*/
-
 // Connectivity is used to check whether Tor can connect in different ways
 type Connectivity interface {
 	Check() (errTotal error, errPartial error)
@@ -27,14 +24,17 @@ type connectivity struct {
 	password    string
 }
 
-// NewCustomChecker returns a Tor checker for our custom Tor instance
-func NewCustomChecker(host string, routePort, controlPort int) Connectivity {
-	return NewChecker(host, routePort, controlPort, "")
+func newCustomChecker(host string, routePort, controlPort int) Connectivity {
+	return newChecker(host, routePort, controlPort, "")
 }
 
-// NewChecker can check connectivity on custom ports, and optionally
+func newDefaultChecker() Connectivity {
+	return newChecker(defaultControlHost, defaultSocksPort, defaultControlPort, "")
+}
+
+// newChecker can check connectivity on custom ports, and optionally
 // avoid checking for binary compatibility
-func NewChecker(host string, routePort, controlPort int, password string) Connectivity {
+func newChecker(host string, routePort, controlPort int, password string) Connectivity {
 	return &connectivity{
 		host:        host,
 		routePort:   routePort,

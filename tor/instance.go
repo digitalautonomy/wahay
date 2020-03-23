@@ -205,6 +205,16 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 		return i, nil
 	}
 
+	// Checking if the system Tor can be used.
+	// This should work for system like Tails, where Tor is
+	// already available in the system.
+	i, err = systemInstance()
+	if err == nil {
+		setSingleInstance(i)
+		return i, nil
+	}
+
+	// Proceed to initialize our Tor instance
 	ensureWahayDataDir()
 
 	b, err := findTorBinary(conf)
@@ -227,6 +237,27 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 const torStartupTimeout = 2 * time.Minute
 
+func systemInstance() (Instance, error) {
+	checker := newDefaultChecker()
+
+	total, partial := checker.Check()
+
+	if total != nil || partial != nil {
+		return nil, errors.New("error: we can't use system Tor instance")
+	}
+
+	i := &instance{
+		started:     true,
+		controlHost: defaultControlHost,
+		controlPort: defaultControlPort,
+		socksPort:   defaultSocksPort,
+		useCookie:   false,
+		isLocal:     true,
+	}
+
+	return i, nil
+}
+
 func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error) {
 	i, _ := newInstance(b, conf.GetPathTorSocks())
 
@@ -235,7 +266,7 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 		return nil, err
 	}
 
-	checker := NewCustomChecker(i.controlHost, i.socksPort, i.controlPort)
+	checker := newCustomChecker(i.controlHost, i.socksPort, i.controlPort)
 
 	timeout := time.Now().Add(torStartupTimeout)
 	for {
@@ -253,6 +284,10 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 		if errPartial == nil {
 			return i, nil
 		}
+
+		log.WithFields(log.Fields{
+			"time": time.Now(),
+		}).Error(fmt.Sprintf("The following error occurred while checking Tor connectivity: %s", errPartial.Error()))
 	}
 }
 
@@ -340,7 +375,7 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cmd := exec.CommandContext(ctx, command, args...)
 
-	pathTorsocks, err := FindLibTorsocks(i.pathTorsocks)
+	pathTorsocks, err := findLibTorsocks(i.pathTorsocks)
 	if err != nil {
 		cancelFunc()
 		return nil, errors.New("error: libtorsocks.so was not found")
@@ -397,7 +432,7 @@ func createOurInstance(b *binary, torsocksPath string) *instance {
 		socksPort:     routePort,
 		dataDirectory: filepath.Join(d, torConfigData),
 		password:      "", // our instance don't use authentication with password
-		useCookie:     false,
+		useCookie:     true,
 		isLocal:       false,
 		controller:    nil,
 		pathTorsocks:  torsocksPath,
