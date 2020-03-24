@@ -28,17 +28,13 @@ func (c *client) LoadCertificateFrom(
 		return nil
 	}
 
-	// TODO[OB]: No point in declaring these here
-	var err error
-	var content string
-
 	if cert == nil {
 		u := &url.URL{
 			Scheme: "http",
 			Host:   net.JoinHostPort(serviceID, strconv.Itoa(webPort)),
 		}
 
-		content, err = tor.GetCurrentInstance().HTTPrequest(u.String())
+		content, err := tor.GetCurrentInstance().HTTPrequest(u.String())
 		if err != nil {
 			return err
 		}
@@ -46,7 +42,7 @@ func (c *client) LoadCertificateFrom(
 		cert = []byte(content)
 	}
 
-	err = c.storeCertificate(serviceID, servicePort, cert)
+	err := c.storeCertificate(serviceID, servicePort, cert)
 	if err != nil {
 		return err
 	}
@@ -122,7 +118,7 @@ func (c *client) storeCertificateInDB(id string, port int, digest string) error 
 
 	db.replaceString(defaultHostToReplace, id)
 	db.replaceString(defaultDigestToReplace, digest)
-	db.replaceInteger(defaultPortToReplace, port)
+	db.replaceInteger(uint16(defaultPortToReplace), uint16(port))
 
 	return db.write()
 }

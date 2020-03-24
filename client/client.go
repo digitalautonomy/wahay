@@ -17,18 +17,13 @@ import (
 // TODO[OB]: Why does the GUI manage the certificate?
 // TODO[OB]: Why does the GUI care about the binary path?
 
-// TODO[OB]: What's the difference between cleanup and destroy?
-// TODO[OB]: What does the Log() method do?
-
 // Instance is a representation of the Mumble client for Wahay
 type Instance interface {
 	CanBeUsed() bool
-	GetBinaryPath() string
 	GetLastError() error
+	Execute(args []string, onClose func()) (tor.Service, error)
 	LoadCertificateFrom(serviceID string, servicePort int, cert []byte, webPort int) error
 	GetTorCommandModifier() tor.ModifyCommand
-	Log()
-	Cleanup()
 	Destroy()
 }
 
@@ -55,13 +50,14 @@ func newMumbleClient(p mumbleIniProvider, d databaseProvider) *client {
 	return c
 }
 
+// TODO: implement a proper way to do this singleton
 var currentInstance *client
 
 type mumbleIniProvider func() string
 type databaseProvider func() []byte
 
-// GetMumbleInstance returns the current Mumble instance
-func GetMumbleInstance() Instance {
+// Mumble returns the current Mumble instance
+func Mumble() Instance {
 	return currentInstance
 }
 
@@ -70,41 +66,71 @@ func GetMumbleInstance() Instance {
 func InitSystem(conf *config.ApplicationConfig) Instance {
 	var err error
 
-	currentInstance = newMumbleClient(getIniFileContent, getDBFileContent)
+	currentInstance = newMumbleClient(rederMumbleIniConfig, readerMumbleDB)
+	invalidInstance := &client{
+		isValid: false,
+	}
 
-	b := getMumbleBinary(conf)
+	b := searchBinary(conf)
 
 	if b == nil {
-		// TODO[OB]: I'm not a huge fan of this pattern. Better to create a new instance that is invalid.
-		currentInstance.invalidate(errors.New("a valid binary of Mumble is no available in your system"))
+		currentInstance = invalidInstance
+		currentInstance.err = errors.New("a valid binary of Mumble is no available in your system")
 		return currentInstance
 	}
 
 	if b.shouldBeCopied {
 		err = b.copyTo(getTemporaryDestinationForMumble())
 		if err != nil {
-			currentInstance.invalidate(err)
+			currentInstance = invalidInstance
+			currentInstance.err = err
 			return currentInstance
 		}
 	}
 
 	err = currentInstance.setBinary(b)
 	if err != nil {
-		currentInstance.invalidate(err)
+		currentInstance = invalidInstance
+		currentInstance.err = err
 		return currentInstance
 	}
 
 	err = currentInstance.ensureConfiguration()
 	if err != nil {
-		currentInstance.invalidate(err)
+		currentInstance = invalidInstance
+		currentInstance.err = err
 	}
+
+	log.Infof("Using Mumble located at: %s\n", currentInstance.pathToBinary())
+	log.Infof("Using Mumble environment variables: %s\n", currentInstance.binaryEnv())
 
 	return currentInstance
 }
 
-func (c *client) invalidate(err error) {
-	c.isValid = false
-	c.err = err
+func (c *client) Execute(args []string, onClose func()) (tor.Service, error) {
+	cm := tor.Command{
+		Cmd:      c.pathToBinary(),
+		Args:     args,
+		Modifier: c.GetTorCommandModifier(),
+	}
+
+	s, err := tor.NewService(cm)
+	if err != nil {
+		return nil, ErrNoService
+	}
+
+	s.OnClose(func() {
+		err := c.regenerateConfiguration()
+		if err != nil {
+			log.Errorf("Mumble client Destroy(): %s", err.Error())
+		}
+
+		if onClose != nil {
+			onClose()
+		}
+	})
+
+	return s, nil
 }
 
 var errInvalidBinary = errors.New("invalid client binary")
@@ -132,18 +158,16 @@ func (c *client) CanBeUsed() bool {
 	return c.isValid && c.err == nil
 }
 
-// TODO[OB]: Lots of getters. This is discouraged in Golang.
-
-func (c *client) GetBinaryPath() string {
+func (c *client) pathToBinary() string {
 	if c.isValid && c.binary != nil {
-		return c.binary.getPath()
+		return c.binary.path
 	}
 	return ""
 }
 
-func (c *client) getBinaryEnv() []string {
+func (c *client) binaryEnv() []string {
 	if c.isValid && c.binary != nil {
-		return c.binary.getEnv()
+		return c.binary.envIfBundle()
 	}
 	return nil
 }
@@ -170,7 +194,7 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 		return c.torCommandModifier
 	}
 
-	env := c.getBinaryEnv()
+	env := c.binaryEnv()
 	if len(env) == 0 {
 		return nil
 	}
@@ -182,23 +206,8 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 	return c.torCommandModifier
 }
 
-func (c *client) Log() {
-	log.Infof("Using Mumble located at: %s\n", c.GetBinaryPath())
-	log.Infof("Using Mumble environment variables: %s\n", c.getBinaryEnv())
-}
-
-// TODO[OB]: These two confuse me a lot. Destroy calls cleanup on the client,
-// but Cleanup does NOT call cleanup on the binary?
-
-func (c *client) Cleanup() {
-	err := c.regenerateConfiguration()
-	if err != nil {
-		log.Errorf("Mumble client Cleanup(): %s", err.Error())
-	}
-}
-
 func (c *client) Destroy() {
-	c.binary.cleanup()
+	c.binary.destroy()
 }
 
 func getTemporaryDestinationForMumble() string {

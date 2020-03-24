@@ -21,8 +21,6 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 		}
 
 		u.client = c
-
-		u.client.Log()
 	}()
 }
 

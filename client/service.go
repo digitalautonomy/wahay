@@ -18,9 +18,9 @@ var (
 
 // TODO[OB]: Is there a reason this isn't a method on the client?
 
-// LaunchClient executes the current Mumble client instance
+// LaunchClient execute the current Mumble client instance
 func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error) {
-	c := GetMumbleInstance()
+	c := Mumble()
 
 	if !c.CanBeUsed() {
 		return nil, ErrNoClient
@@ -39,28 +39,5 @@ func LaunchClient(data hosting.MeetingData, onClose func()) (tor.Service, error)
 		return nil, err
 	}
 
-	cm := tor.Command{
-		Cmd:      c.GetBinaryPath(),
-		Args:     []string{data.GenerateURL()},
-		Modifier: c.GetTorCommandModifier(),
-	}
-
-	s, err := tor.NewService(cm)
-	if err != nil {
-		return nil, ErrNoService
-	}
-
-	s.OnClose(func() {
-		c.Cleanup()
-
-		if onClose != nil {
-			onClose()
-		}
-	})
-
-	if onClose != nil {
-		s.OnClose(onClose)
-	}
-
-	return s, nil
+	return c.Execute([]string{data.GenerateURL()}, onClose)
 }

@@ -27,25 +27,35 @@ const (
 	wahayMumbleBundlePath = "wahay/mumble/mumble"
 )
 
-// TODO[OB]: It might be a good idea to write some documentation about what some of
-// these mean - for example isValid and isTemporary are definitely not clear
 type binary struct {
-	path           string
-	env            []string
-	isValid        bool
-	isBundle       bool
-	lastError      error
-	isTemporary    bool
+	// The full path to the found Mumble binary
+	path string
+
+	// isValid is to indicate if a Mumble binary is found but can't be used by
+	// Wahay in some way
+	isValid bool
+
+	// isBundle indicates if we are using a Mumble client that is bundled
+	// with Wahay or not
+	isBundle bool
+
+	// shouldBeCopied is a boolean indicating if the detected Mumble client
+	// should be copied or not to a temporary directory
 	shouldBeCopied bool
+
+	// isTemporary is a boolean indicating were the Mumble client has been
+	// copied or not to a temporary directory and we should remove it when
+	// Wahay has finished using it
+	isTemporary bool
+
+	// env contains the Mumble binary required environment variables
+	env []string
+
+	// The last occurred error during Mumble binary detection
+	lastError error
 }
 
-// TODO[OB]: This is not really necessary
-func (b *binary) getPath() string {
-	return b.path
-}
-
-// TODO[OB]: "getters" is discouraged in Golang
-func (b *binary) getEnv() []string {
+func (b *binary) envIfBundle() []string {
 	if !b.isBundle {
 		return nil
 	}
@@ -70,40 +80,33 @@ func (b *binary) copyTo(path string) error {
 		return errInvalidBinaryFile
 	}
 
-	// TODO[OB]: is checking the length really necessary? Wouldn't isADirectory return false for the empty string?
-	if len(path) == 0 || !isADirectory(path) {
+	if !isADirectory(path) {
 		return errDestinationIsNotADirectory
 	}
 
-	// TODO[OB]: Not sure if I like this variable name
-	mumbleCopyFile := filepath.Join(path, "mumble")
+	destination := filepath.Join(path, "mumble")
 
-	if fileExists(mumbleCopyFile) {
+	if fileExists(destination) {
 		return errBinaryAlreadyExists
 	}
 
-	err := b.copyBinaryToDir(mumbleCopyFile)
+	err := b.copyBinaryToDir(destination)
 	if err != nil {
 		return errInvalidBinaryFile
 	}
 
-	b.path = filepath.Join(mumbleCopyFile)
+	b.path = filepath.Join(destination)
 	b.isTemporary = true
 
 	return nil
 }
 
-func (b *binary) cleanup() {
+func (b *binary) destroy() {
 	b.remove()
 }
 
-// TODO[OB]: Does this helper function really help in understanding?
-func (b *binary) shouldBeRemoved() bool {
-	return b.isTemporary
-}
-
 func (b *binary) remove() {
-	if b.shouldBeRemoved() {
+	if b.isTemporary {
 		err := os.RemoveAll(filepath.Dir(b.path))
 		if err != nil {
 			log.Errorf("An error occurred while removing Mumble temp directory: %s", err.Error())
@@ -113,16 +116,14 @@ func (b *binary) remove() {
 
 func (b *binary) copyBinaryToDir(destination string) error {
 	var err error
-
-	// TODO[OB]: Not real reason to define these variables at the top
 	var srcfd *os.File
-	var dstfd *os.File
-	var srcinfo os.FileInfo
 
 	if srcfd, err = os.Open(b.path); err != nil {
 		return err
 	}
 	defer srcfd.Close()
+
+	var dstfd *os.File
 
 	if dstfd, err = os.Create(destination); err != nil {
 		return err
@@ -132,6 +133,8 @@ func (b *binary) copyBinaryToDir(destination string) error {
 	if _, err = io.Copy(dstfd, srcfd); err != nil {
 		return err
 	}
+
+	var srcinfo os.FileInfo
 
 	if srcinfo, err = os.Stat(b.path); err != nil {
 		return err
@@ -182,19 +185,17 @@ func getRealMumbleBinaryPath(path string) (string, error) {
 	return path, nil
 }
 
-// TODO[OB]: Lots of "getters" in this code. That's discouraged in Golang.
-
-func getMumbleBinary(conf *config.ApplicationConfig) *binary {
+func searchBinary(conf *config.ApplicationConfig) *binary {
 	callbacks := []func() (*binary, error){
-		getMumbleBinaryInConf(conf),
-		getMumbleBinaryInLocalDir,
-		getMumbleBinaryInCurrentWorkingDir,
-		getMumbleBinaryInDataDir,
-		getMumbleBinaryInSystem,
+		searchBinaryInConf(conf),
+		searchBinaryInLocalDir,
+		searchBinaryInCurrentWorkingDir,
+		searchBinaryInDataDir,
+		searchBinaryInSystem,
 	}
 
-	for _, getBinary := range callbacks {
-		b, err := getBinary()
+	for _, c := range callbacks {
+		b, err := c()
 
 		if err != nil {
 			log.Debugf("Mumble binary error: %s", err)
@@ -221,7 +222,7 @@ func getMumbleBinary(conf *config.ApplicationConfig) *binary {
 	return nil
 }
 
-func getMumbleBinaryInConf(conf *config.ApplicationConfig) func() (*binary, error) {
+func searchBinaryInConf(conf *config.ApplicationConfig) func() (*binary, error) {
 	return func() (*binary, error) {
 		b := isAnAvailableMumbleBinary(conf.GetPathMumble())
 		if b == nil || b.lastError != nil {
@@ -232,7 +233,7 @@ func getMumbleBinaryInConf(conf *config.ApplicationConfig) func() (*binary, erro
 	}
 }
 
-func getMumbleBinaryInLocalDir() (*binary, error) {
+func searchBinaryInLocalDir() (*binary, error) {
 	localDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return nil, nil
@@ -243,7 +244,7 @@ func getMumbleBinaryInLocalDir() (*binary, error) {
 	return b, nil
 }
 
-func getMumbleBinaryInCurrentWorkingDir() (*binary, error) {
+func searchBinaryInCurrentWorkingDir() (*binary, error) {
 	cwDir, err := os.Getwd()
 	if err != nil {
 		return nil, nil
@@ -254,7 +255,7 @@ func getMumbleBinaryInCurrentWorkingDir() (*binary, error) {
 	return b, nil
 }
 
-func getMumbleBinaryInDataDir() (*binary, error) {
+func searchBinaryInDataDir() (*binary, error) {
 	dataDir := config.XdgDataHome()
 	dirs := []string{
 		filepath.Join(dataDir, mumbleBundlePath),
@@ -271,7 +272,7 @@ func getMumbleBinaryInDataDir() (*binary, error) {
 	return nil, nil
 }
 
-func getMumbleBinaryInSystem() (*binary, error) {
+func searchBinaryInSystem() (*binary, error) {
 	path, err := exec.LookPath("mumble")
 	if err != nil {
 		return nil, nil

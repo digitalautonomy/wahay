@@ -28,7 +28,7 @@ var (
 func (c *client) regenerateConfiguration() error {
 	var err error
 
-	binaryDir := c.GetBinaryPath()
+	binaryDir := c.pathToBinary()
 	if !isADirectory(binaryDir) {
 		binaryDir = filepath.Dir(binaryDir)
 	}
@@ -53,7 +53,7 @@ func (c *client) ensureConfiguration() error {
 
 	var err error
 
-	binaryDir := c.GetBinaryPath()
+	binaryDir := c.pathToBinary()
 	if !isADirectory(binaryDir) {
 		binaryDir = filepath.Dir(binaryDir)
 	}

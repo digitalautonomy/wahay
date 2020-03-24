@@ -24,7 +24,7 @@ func (d *dbData) replaceString(find, replace string) {
 	d.content = newContent
 }
 
-func (d *dbData) replaceInteger(find, replace int) {
+func (d *dbData) replaceInteger(find, replace uint16) {
 	d.replaceString(
 		intToStringToSearch(find),
 		intToStringToSearch(replace),
@@ -39,9 +39,7 @@ func (d *dbData) write() error {
 	return nil
 }
 
-// TODO[OB]: This should really take a int16 or uint16
-
-func intToStringToSearch(n int) string {
+func intToStringToSearch(n uint16) string {
 	n1 := n >> 8
 	n2 := n % 256
 

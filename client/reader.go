@@ -6,14 +6,12 @@ import (
 	"github.com/digitalautonomy/wahay/codegen"
 )
 
-// TODO[OB]: Lots of getters
-
-func getDBFileContent() []byte {
+func readerMumbleDB() []byte {
 	content := codegen.GetFileWithFallback(".mumble.sqlite", "client/files", FSString)
 	return []byte(content)
 }
 
-func getIniFileContent() string {
+func rederMumbleIniConfig() string {
 	return codegen.GetFileWithFallback("mumble.ini", "client/files", FSString)
 }
 
@@ -39,25 +37,20 @@ func createFile(filename string) error {
 	return nil
 }
 
-// TODO[OB]: These functions do not do what their name says they do. That's not great.
-
 func directoryExists(dir string) bool {
-	return dirOrFileExists(dir)
+	_, err := os.Stat(dir)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return err == nil
 }
 
 func fileExists(filename string) bool {
-	return dirOrFileExists(filename)
-}
-
-func dirOrFileExists(path string) bool {
-	if _, err := os.Stat(path); err == nil {
-		return true
-	} else if os.IsNotExist(err) {
+	_, err := os.Stat(filename)
+	if os.IsNotExist(err) {
 		return false
 	}
-
-	// TODO: file may or may not exist. We should see err for details.
-	return false
+	return err == nil
 }
 
 func isADirectory(path string) bool {
@@ -65,12 +58,12 @@ func isADirectory(path string) bool {
 	if err != nil {
 		return false
 	}
-
 	return dir.IsDir()
 }
 
-// TODO[OB]: Are there not other things than files or directories in all the file systems on the planet?
-
 func isAFile(filename string) bool {
-	return !isADirectory(filename)
+	if _, err := os.Stat(filename); err == nil {
+		return true
+	}
+	return false
 }
