@@ -74,6 +74,9 @@ func InitSystem(conf *config.ApplicationConfig) Instance {
 	b := searchBinary(conf)
 
 	if b == nil {
+		// TODO[OB] - To be honest, I don't like this either. why not
+		// create a function invalidInstance that takes an error and returns an
+		// invalid instance?
 		currentInstance = invalidInstance
 		currentInstance.err = errors.New("a valid binary of Mumble is no available in your system")
 		return currentInstance

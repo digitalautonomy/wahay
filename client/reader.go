@@ -37,6 +37,10 @@ func createFile(filename string) error {
 	return nil
 }
 
+// TODO[OB]: sorry, but these functions STILL Doesn't do
+// what their names say. The clue is that directoryExists and fileExists
+// have the same implementation.
+
 func directoryExists(dir string) bool {
 	_, err := os.Stat(dir)
 	if os.IsNotExist(err) {
