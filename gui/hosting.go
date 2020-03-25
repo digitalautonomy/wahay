@@ -58,17 +58,12 @@ func (h *hostData) showMeetingControls() {
 	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 
-	btnCopyURL := builder.get("btnCopyUrl").(gtki.Button)
-	btnCopyURL.SetSensitive(h.u.isCopyToClipboardSupported())
-
 	builder.i18nProperties(
 		"label", "lblHostMeeting",
-		"label", "lblMeetingID",
-		"label", "lblCopyUrlMessage",
 		"button", "btnFinishMeeting",
 		"button", "btnJoinMeeting",
 		"button", "btnJoinMeeting",
-		"button", "btnCopyUrl",
+		"button", "btnInviteOthers",
 		"tooltip", "btnJoinMeeting")
 
 	builder.ConnectSignals(map[string]interface{}{
@@ -85,16 +80,7 @@ func (h *hostData) showMeetingControls() {
 		"on_send_by_email": func() {
 			h.sendInvitationByEmail(builder)
 		},
-		"on_copy_meeting_url": func() {
-			h.copyMeetingIDToClipboard(builder, "lblCopyUrlMessage")
-		},
 	})
-
-	meetingID, err := builder.GetObject("lblMeetingIDValue")
-	if err != nil {
-		log.Printf("meeting id error: %s", err)
-	}
-	_ = meetingID.SetProperty("label", h.service.GetURL())
 
 	h.u.switchToWindow(win)
 }
