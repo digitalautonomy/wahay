@@ -36,15 +36,13 @@ const (
 
 var errInvalidPort = errors.New("invalid port supplied")
 
-// TODO[OB] - We should get rid of the Get-naming here
-
 // Service is a representation of our custom Mumble server
 type Service interface {
-	GetID() string
-	GetURL() string
-	GetPort() int
-	GetServicePort() int
-	GetCertificate() ([]byte, error)
+	ID() string
+	URL() string
+	Port() int
+	ServicePort() int
+	Certificate() ([]byte, error)
 	NewConferenceRoom(password string) error
 	Close() error
 }
@@ -57,22 +55,22 @@ type service struct {
 	httpServer *webserver
 }
 
-func (s *service) GetID() string {
+func (s *service) ID() string {
 	return s.onion.GetID()
 }
 
-func (s *service) GetURL() string {
-	if s.GetServicePort() != DefaultPort {
-		return net.JoinHostPort(s.GetID(), strconv.Itoa(s.GetServicePort()))
+func (s *service) URL() string {
+	if s.ServicePort() != DefaultPort {
+		return net.JoinHostPort(s.ID(), strconv.Itoa(s.ServicePort()))
 	}
-	return s.GetID()
+	return s.ID()
 }
 
-func (s *service) GetPort() int {
+func (s *service) Port() int {
 	return s.port
 }
 
-func (s *service) GetServicePort() int {
+func (s *service) ServicePort() int {
 	return s.mumblePort
 }
 
@@ -114,7 +112,7 @@ func NewService(port string) (Service, error) {
 
 	var onionPorts []tor.OnionPort
 
-	httpServer, err := ensureCertificateServer(DefaultCertificateServerPort, collection.GetDataDir())
+	httpServer, err := ensureCertificateServer(DefaultCertificateServerPort, collection.DataDir())
 	if err != nil {
 		return nil, err
 	}

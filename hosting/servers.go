@@ -18,7 +18,7 @@ import (
 type Servers interface {
 	CreateServer(port string, password string) (Server, error)
 	DestroyServer(Server) error
-	GetDataDir() string
+	DataDir() string
 	Cleanup()
 }
 
@@ -171,7 +171,7 @@ func (s *servers) DestroyServer(Server) error {
 	return nil
 }
 
-func (s *servers) GetDataDir() string {
+func (s *servers) DataDir() string {
 	return s.dataDir
 }
 

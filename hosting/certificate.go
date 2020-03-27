@@ -19,7 +19,7 @@ import (
 )
 
 // TODO[OB] - this doesn't really make sense. Why do we have this still?
-func (s *service) GetCertificate() ([]byte, error) {
+func (s *service) Certificate() ([]byte, error) {
 	if s.httpServer == nil {
 		return nil, errors.New("the certificate server hasn't been initialized")
 	}
