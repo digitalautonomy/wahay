@@ -14,13 +14,10 @@ import (
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 )
 
-// TODO[OB] - What's the difference between Shutdown and Cleanup?
-
 // Servers serves
 type Servers interface {
 	CreateServer(port string, password string) (Server, error)
 	DestroyServer(Server) error
-	Shutdown() error
 	GetDataDir() string
 	Cleanup()
 }
@@ -172,10 +169,6 @@ func (s *servers) DestroyServer(Server) error {
 	// For now, this function will do nothing. We will still call it,
 	// in case we need it in the server
 	return nil
-}
-
-func (s *servers) Shutdown() error {
-	return os.RemoveAll(s.dataDir)
 }
 
 func (s *servers) GetDataDir() string {
