@@ -184,17 +184,17 @@ func searchBinary(conf *config.ApplicationConfig) *binary {
 		b, err := c()
 
 		if err != nil {
-			log.Debugf("Mumble binary error: %s", err)
+			log.Debugf("searchBinary() fatal error: %s", err)
 			break
 		}
 
 		if b == nil {
-			log.Debugf("Mumble binary error: Not found")
+			log.Debug("searchBinary(): binary not found")
 			continue
 		}
 
 		if b.lastError != nil {
-			log.Debugf("Mumble binary error: %s", b.lastError)
+			log.Debugf("searchBinary(): %s", b.lastError)
 			continue
 		}
 
@@ -210,7 +210,14 @@ func searchBinary(conf *config.ApplicationConfig) *binary {
 
 func searchBinaryInConf(conf *config.ApplicationConfig) func() (*binary, error) {
 	return func() (*binary, error) {
-		b := isAnAvailableMumbleBinary(conf.GetPathMumble())
+		configuredPath := conf.GetPathMumble()
+
+		if len(configuredPath) == 0 {
+			// No client path has been configured
+			return nil, nil
+		}
+
+		b := isThereAnAvailableBinary(configuredPath)
 		if b == nil || b.lastError != nil {
 			return nil, errNoClientInConfiguredPath
 		}
@@ -225,7 +232,7 @@ func searchBinaryInLocalDir() (*binary, error) {
 		return nil, nil
 	}
 
-	b := isAnAvailableMumbleBinary(filepath.Join(localDir, mumbleBundlePath))
+	b := isThereAnAvailableBinary(filepath.Join(localDir, mumbleBundlePath))
 
 	return b, nil
 }
@@ -236,7 +243,7 @@ func searchBinaryInCurrentWorkingDir() (*binary, error) {
 		return nil, nil
 	}
 
-	b := isAnAvailableMumbleBinary(filepath.Join(cwDir, mumbleBundlePath))
+	b := isThereAnAvailableBinary(filepath.Join(cwDir, mumbleBundlePath))
 
 	return b, nil
 }
@@ -249,7 +256,7 @@ func searchBinaryInDataDir() (*binary, error) {
 	}
 
 	for _, d := range dirs {
-		b := isAnAvailableMumbleBinary(d)
+		b := isThereAnAvailableBinary(d)
 		if b != nil && b.isValid {
 			return b, nil
 		}
@@ -264,13 +271,15 @@ func searchBinaryInSystem() (*binary, error) {
 		return nil, nil
 	}
 
-	b := isAnAvailableMumbleBinary(path)
+	b := isThereAnAvailableBinary(path)
 
 	return b, nil
 }
 
-func isAnAvailableMumbleBinary(path string) *binary {
-	log.Debugf("Checking Mumble binary in: <%s>", path)
+func isThereAnAvailableBinary(path string) *binary {
+	log.WithFields(log.Fields{
+		"path": path,
+	}).Debug("isThereAnAvailableBinary()")
 
 	b := newBinary(path)
 	if !b.isValid {
