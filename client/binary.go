@@ -142,7 +142,7 @@ func (b *binary) copyBinaryToDir(destination string) error {
 // TODO[OB]: I really don't like how the empty path is used as a sentinel value in
 // this package.
 
-func newMumbleBinary(path string) *binary {
+func newBinary(path string) *binary {
 	b := &binary{
 		isValid:        true,
 		isBundle:       false,
@@ -152,22 +152,16 @@ func newMumbleBinary(path string) *binary {
 		isTemporary:    false,
 	}
 
-	p, err := getRealMumbleBinaryPath(path)
-	if len(p) == 0 || err != nil {
+	b.path = realBinaryPath(path)
+	if !pathExists(b.path) {
 		b.isValid = false
-		return b
+		b.lastError = errors.New("not valid binary path")
 	}
-
-	b.path = p
 
 	return b
 }
 
-func getRealMumbleBinaryPath(path string) (string, error) {
-	if len(path) == 0 {
-		return "", errors.New("invalid binary path")
-	}
-
+func realBinaryPath(path string) string {
 	if isADirectory(path) {
 		// TODO: should we find all the Mumble binary possibilities inside the directory?
 		// Examples:
@@ -175,10 +169,9 @@ func getRealMumbleBinaryPath(path string) (string, error) {
 		//   - mumble-0.1.0.4
 		//   - mumble-beta
 		//   - mumble-bin
-		return filepath.Join(path, mumbleBundlePath), nil
+		return filepath.Join(path, mumbleBundlePath)
 	}
-
-	return path, nil
+	return path
 }
 
 func searchBinary(conf *config.ApplicationConfig) *binary {
@@ -282,7 +275,7 @@ func searchBinaryInSystem() (*binary, error) {
 func isAnAvailableMumbleBinary(path string) *binary {
 	log.Debugf("Checking Mumble binary in: <%s>", path)
 
-	b := newMumbleBinary(path)
+	b := newBinary(path)
 	if !b.isValid {
 		return b
 	}
