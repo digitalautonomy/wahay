@@ -25,17 +25,13 @@ type Servers interface {
 	Cleanup()
 }
 
-// TODO[OB] - I don't think this documentation is correct. Clearly
-// the certificate is not part of the Mumble URL
-
-// MeetingData is an structure for storing meeting info
-// for creating the mumble url
+// MeetingData is a representation of the data used to create a Mumble url
+// More information at https://wiki.mumble.info/wiki/Mumble_URL
 type MeetingData struct {
 	MeetingID string
 	Port      int
 	Password  string
 	Username  string
-	Cert      []byte
 }
 
 // Create creates

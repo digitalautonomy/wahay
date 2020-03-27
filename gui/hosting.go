@@ -109,21 +109,16 @@ func (h *hostData) joinMeetingHost() {
 }
 
 func (h *hostData) joinMeetingHostHelper(validOpChannel chan bool) {
-	cert, err := h.service.GetCertificate()
-	if err != nil {
-		// TODO: should we skip the join meeting action here?
-		log.Info("The host certificate is not valid. The system will ask for it again on connnecting.")
-	}
-
 	data := hosting.MeetingData{
 		MeetingID: h.service.GetID(),
 		Port:      h.service.GetServicePort(),
-		Cert:      cert,
 		Password:  h.meetingPassword,
 		Username:  h.meetingUsername,
 	}
 
+	var err error
 	var mumble tor.Service
+
 	finish := make(chan bool)
 
 	go func() {
@@ -140,7 +135,7 @@ func (h *hostData) joinMeetingHostHelper(validOpChannel chan bool) {
 		finish <- true
 	}()
 
-	<-finish // wait until the Mumble client has started
+	<-finish // Wait for Mumble to start
 
 	h.u.hideLoadingWindow()
 
