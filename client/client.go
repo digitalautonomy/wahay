@@ -70,7 +70,7 @@ func InitSystem(conf *config.ApplicationConfig) Instance {
 	}
 
 	if b.shouldBeCopied {
-		err = b.copyTo(getTemporaryDestinationForMumble())
+		err = b.copyTo(getTempFolder())
 		if err != nil {
 			return invalidInstance(err)
 		}
@@ -215,10 +215,10 @@ func (c *client) Destroy() {
 	c.binary.destroy()
 }
 
-func getTemporaryDestinationForMumble() string {
+func getTempFolder() string {
 	dir, err := ioutil.TempDir("", "mumble")
 	if err != nil {
-		return ""
+		panic(err)
 	}
 
 	return dir
