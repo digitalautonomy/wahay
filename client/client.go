@@ -19,11 +19,9 @@ import (
 
 // Instance is a representation of the Mumble client for Wahay
 type Instance interface {
-	CanBeUsed() bool
-	GetLastError() error
-	Execute(args []string, onClose func()) (tor.Service, error)
-	LoadCertificateFrom(serviceID string, servicePort int, cert []byte, webPort int) error
-	GetTorCommandModifier() tor.ModifyCommand
+	IsValid() bool
+	LastError() error
+	Launch(url string, onClose func()) (tor.Service, error)
 	Destroy()
 }
 
@@ -35,7 +33,7 @@ type client struct {
 	configContentProvider mumbleIniProvider
 	databaseProvider      databaseProvider
 	err                   error
-	torCommandModifier    tor.ModifyCommand
+	torCmdModifier        tor.ModifyCommand
 }
 
 func newMumbleClient(p mumbleIniProvider, d databaseProvider) *client {
@@ -106,11 +104,22 @@ func invalidInstance(err error) Instance {
 	return invalidInstance
 }
 
-func (c *client) Execute(args []string, onClose func()) (tor.Service, error) {
+func (c *client) Launch(url string, onClose func()) (tor.Service, error) {
+	// First, we load the certificate from the remote server and if a
+	// valid certificate is found then we execute the client through Tor
+	err := c.requestCertificate(url)
+	if err != nil {
+		log.WithFields(log.Fields{"url": url}).Errorf("Launch() client: %s", err.Error())
+	}
+
+	return c.execute([]string{url}, onClose)
+}
+
+func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
 	cm := tor.Command{
 		Cmd:      c.pathToBinary(),
 		Args:     args,
-		Modifier: c.GetTorCommandModifier(),
+		Modifier: c.torCommandModifier(),
 	}
 
 	s, err := tor.NewService(cm)
@@ -153,7 +162,7 @@ func (c *client) validate() error {
 	return nil
 }
 
-func (c *client) CanBeUsed() bool {
+func (c *client) IsValid() bool {
 	return c.isValid && c.err == nil
 }
 
@@ -171,7 +180,7 @@ func (c *client) binaryEnv() []string {
 	return nil
 }
 
-func (c *client) GetLastError() error {
+func (c *client) LastError() error {
 	return c.err
 }
 
@@ -184,13 +193,13 @@ func (c *client) setBinary(b *binary) error {
 	return c.validate()
 }
 
-func (c *client) GetTorCommandModifier() tor.ModifyCommand {
-	if !c.CanBeUsed() {
+func (c *client) torCommandModifier() tor.ModifyCommand {
+	if !c.IsValid() {
 		return nil
 	}
 
-	if c.torCommandModifier != nil {
-		return c.torCommandModifier
+	if c.torCmdModifier != nil {
+		return c.torCmdModifier
 	}
 
 	env := c.binaryEnv()
@@ -198,11 +207,11 @@ func (c *client) GetTorCommandModifier() tor.ModifyCommand {
 		return nil
 	}
 
-	c.torCommandModifier = func(command *exec.Cmd) {
+	c.torCmdModifier = func(command *exec.Cmd) {
 		command.Env = append(command.Env, env...)
 	}
 
-	return c.torCommandModifier
+	return c.torCmdModifier
 }
 
 func (c *client) Destroy() {
