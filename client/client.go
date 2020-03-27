@@ -70,7 +70,7 @@ func InitSystem(conf *config.ApplicationConfig) Instance {
 	}
 
 	if b.shouldBeCopied {
-		err = b.copyTo(getTempFolder())
+		err = b.copyTo(tempFolder())
 		if err != nil {
 			return invalidInstance(err)
 		}
@@ -215,7 +215,7 @@ func (c *client) Destroy() {
 	c.binary.destroy()
 }
 
-func getTempFolder() string {
+func tempFolder() string {
 	dir, err := ioutil.TempDir("", "mumble")
 	if err != nil {
 		panic(err)
