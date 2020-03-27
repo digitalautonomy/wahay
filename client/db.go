@@ -6,9 +6,33 @@ import (
 	b "encoding/binary"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	log "github.com/sirupsen/logrus"
 )
+
+func (c *client) sqliteDB() (*dbData, error) {
+	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
+
+	if !pathExists(sqlFile) {
+		log.WithFields(log.Fields{
+			"filepath": sqlFile,
+		}).Debug("Creating Mumble sqlite database")
+
+		data := c.databaseProvider()
+		err := ioutil.WriteFile(sqlFile, data, 0644)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	d, err := loadDBFromFile(sqlFile)
+	if err != nil {
+		return nil, err
+	}
+
+	return d, nil
+}
 
 type dbData struct {
 	filename string
