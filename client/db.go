@@ -1,7 +1,6 @@
 package client
 
 import (
-	"bufio"
 	"bytes"
 	b "encoding/binary"
 	"io/ioutil"
@@ -92,9 +91,6 @@ func loadDBFromFile(filename string) (*dbData, error) {
 	return d, nil
 }
 
-// TODO[OB]: It would be much better to just use ioutil.ReadAll
-// This function is quite ineffective
-
 func readBinaryContent(filename string) ([]byte, error) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -102,19 +98,5 @@ func readBinaryContent(filename string) ([]byte, error) {
 	}
 	defer file.Close()
 
-	info, err := file.Stat()
-	if err != nil {
-		return nil, err
-	}
-
-	size := info.Size()
-	bytes := make([]byte, size)
-
-	buffer := bufio.NewReader(file)
-	_, err = buffer.Read(bytes)
-	if err != nil {
-		return nil, err
-	}
-
-	return bytes, nil
+	return ioutil.ReadAll(file)
 }
