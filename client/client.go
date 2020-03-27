@@ -67,47 +67,43 @@ func InitSystem(conf *config.ApplicationConfig) Instance {
 	var err error
 
 	currentInstance = newMumbleClient(rederMumbleIniConfig, readerMumbleDB)
-	invalidInstance := &client{
-		isValid: false,
-	}
 
 	b := searchBinary(conf)
 
 	if b == nil {
-		// TODO[OB] - To be honest, I don't like this either. why not
-		// create a function invalidInstance that takes an error and returns an
-		// invalid instance?
-		currentInstance = invalidInstance
-		currentInstance.err = errors.New("a valid binary of Mumble is no available in your system")
-		return currentInstance
+		return invalidInstance(errors.New("a valid binary of Mumble is no available in your system"))
 	}
 
 	if b.shouldBeCopied {
 		err = b.copyTo(getTemporaryDestinationForMumble())
 		if err != nil {
-			currentInstance = invalidInstance
-			currentInstance.err = err
-			return currentInstance
+			return invalidInstance(err)
 		}
 	}
 
 	err = currentInstance.setBinary(b)
 	if err != nil {
-		currentInstance = invalidInstance
-		currentInstance.err = err
-		return currentInstance
+		return invalidInstance(err)
 	}
 
 	err = currentInstance.ensureConfiguration()
 	if err != nil {
-		currentInstance = invalidInstance
-		currentInstance.err = err
+		return invalidInstance(err)
 	}
 
 	log.Infof("Using Mumble located at: %s\n", currentInstance.pathToBinary())
 	log.Infof("Using Mumble environment variables: %s\n", currentInstance.binaryEnv())
 
 	return currentInstance
+}
+
+func invalidInstance(err error) Instance {
+	invalidInstance := &client{
+		isValid: false,
+		err:     err,
+	}
+
+	return invalidInstance
 }
 
 func (c *client) Execute(args []string, onClose func()) (tor.Service, error) {
