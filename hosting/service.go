@@ -114,7 +114,7 @@ func NewService(port string) (Service, error) {
 
 	var onionPorts []tor.OnionPort
 
-	httpServer, err := ensureCertificateServer(config.RandomPort(), collection.GetDataDir())
+	httpServer, err := ensureCertificateServer(DefaultCertificateServerPort, collection.GetDataDir())
 	if err != nil {
 		return nil, err
 	}
