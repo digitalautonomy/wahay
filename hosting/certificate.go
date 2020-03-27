@@ -2,9 +2,7 @@ package hosting
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -17,20 +15,6 @@ import (
 
 	"github.com/digitalautonomy/wahay/config"
 )
-
-// TODO[OB] - this doesn't really make sense. Why do we have this still?
-func (s *service) Certificate() ([]byte, error) {
-	if s.httpServer == nil {
-		return nil, errors.New("the certificate server hasn't been initialized")
-	}
-
-	certFile := filepath.Join(s.httpServer.dir, "cert.pem")
-	if !fileExists(certFile) {
-		return nil, errors.New("the certificate file doesn't exists")
-	}
-
-	return ioutil.ReadFile(certFile)
-}
 
 // TODO[OB] - why do we have the host when it's hard coded?
 // TODO[OB] - why do we store the port? it doesn't seem to be used

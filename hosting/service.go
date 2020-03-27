@@ -42,7 +42,6 @@ type Service interface {
 	URL() string
 	Port() int
 	ServicePort() int
-	Certificate() ([]byte, error)
 	NewConferenceRoom(password string) error
 	Close() error
 }
