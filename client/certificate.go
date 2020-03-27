@@ -6,10 +6,8 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/url"
-	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -17,82 +15,71 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// TODO[OB]: I'm confused about the arguments to this method, especially the cert argument
+const certServerPort = 8181
 
-func (c *client) LoadCertificateFrom(
-	serviceID string,
-	servicePort int,
-	cert []byte,
-	webPort int) error {
-	if c.isTheCertificateInDB(serviceID) {
-		return nil
+func (c *client) requestCertificate(s string) error {
+	hostname, port, err := extractHostAndPort(s)
+	if err != nil {
+		return errors.New("invalid certificate url")
 	}
 
-	if cert == nil {
-		u := &url.URL{
-			Scheme: "http",
-			Host:   net.JoinHostPort(serviceID, strconv.Itoa(webPort)),
-		}
-
-		content, err := tor.GetCurrentInstance().HTTPrequest(u.String())
-		if err != nil {
-			return err
-		}
-
-		cert = []byte(content)
+	u := &url.URL{
+		Scheme: "http",
+		Host:   net.JoinHostPort(hostname, strconv.Itoa(certServerPort)),
 	}
 
-	err := c.storeCertificate(serviceID, servicePort, cert)
+	content, err := tor.GetCurrentInstance().HTTPrequest(u.String())
 	if err != nil {
 		return err
 	}
 
-	certContent := escapeByteString(arrayByteToString(cert))
+	cert := []byte(content)
+	p, _ := strconv.Atoi(port)
+	err = c.storeCertificate(hostname, p, cert)
+	if err != nil {
+		return err
+	}
 
-	// TODO: should we maintain this?
-	return c.saveCertificateConfigFile(certContent)
+	// TODO: Should we maintain this?
+	return c.saveCertificateConfigFile(cert)
 }
 
-func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte) error {
+func extractHostAndPort(s string) (host string, port string, err error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return
+	}
+
+	host, port, err = net.SplitHostPort(u.Host)
+	if err != nil {
+		return
+	}
+
+	return host, port, nil
+}
+
+func (c *client) storeCertificate(hostname string, port int, cert []byte) error {
+	if c.isTheCertificateInDB(hostname) {
+		return nil
+	}
+
 	block, _ := pem.Decode(cert)
 	if block == nil || block.Type != "CERTIFICATE" {
 		return errors.New("invalid certificate")
 	}
 
-	digest, err := getDigestForCert(block.Bytes)
+	digest, err := digestForCertificate(block.Bytes)
 	if err != nil {
 		return err
 	}
 
 	log.WithFields(log.Fields{
-		"hostname": serviceID,
-		"port":     servicePort,
+		"hostname": hostname,
+		"port":     port,
 		"digest":   digest,
-	}).Info("Loading certificate")
+	}).Info("Storing Mumble client certificate")
 
-	return c.storeCertificateInDB(serviceID, servicePort, digest)
-}
-
-func (c *client) getDB() (*dbData, error) {
-	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
-	if !pathExists(sqlFile) {
-		log.WithFields(log.Fields{
-			"filepath": sqlFile,
-		}).Debug("Creating Mumble sqlite database")
-
-		data := c.databaseProvider()
-		err := ioutil.WriteFile(sqlFile, data, 0644)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	d, err := loadDBFromFile(sqlFile)
-	if err != nil {
-		return nil, err
-	}
-
-	return d, nil
+	return c.storeCertificateInDB(hostname, port, digest)
 }
 
 const (
@@ -102,7 +89,7 @@ const (
 )
 
 func (c *client) storeCertificateInDB(id string, port int, digest string) error {
-	db, err := c.getDB()
+	db, err := c.sqliteDB()
 	if err != nil {
 		return err
 	}
@@ -123,16 +110,16 @@ func (c *client) storeCertificateInDB(id string, port int, digest string) error 
 	return db.write()
 }
 
-func (c *client) isTheCertificateInDB(serviceID string) bool {
-	d, err := c.getDB()
+func (c *client) isTheCertificateInDB(hostname string) bool {
+	d, err := c.sqliteDB()
 	if err != nil {
 		return false
 	}
 
-	return d.exists(serviceID)
+	return d.exists(hostname)
 }
 
-func getDigestForCert(cert []byte) (string, error) {
+func digestForCertificate(cert []byte) (string, error) {
 	// #nosec
 	h := sha1.New()
 	_, err := h.Write(cert)
