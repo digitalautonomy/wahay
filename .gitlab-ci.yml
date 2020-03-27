@@ -90,7 +90,6 @@ deploy_staging:
    - 'scp -P${SSH_PORT} publish-linux-packages/* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - '$DO_SSH bin/publish-downloads.sh'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@staging.wahay.app:$DEPLOY_DIR'
-   - '$DO_SSH "bin/generate-downloads-html.rb /usr/local/www/wahay/downloads $DEPLOY_DIR/ > /usr/local/www/wahay/downloads.html"'
 
 deploy_production:
   image: rbonifaz/wahay-deploy:latest
@@ -128,4 +127,3 @@ deploy_production:
    - 'scp -P${SSH_PORT} publish-linux-packages/* wahay@wahay.app:$DEPLOY_DIR/'
    - '$DO_SSH bin/publish-downloads.sh'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@wahay.app:$DEPLOY_DIR'
-   - '$DO_SSH "bin/generate-downloads-html.rb /usr/local/www/wahay/downloads $DEPLOY_DIR/ > /usr/local/www/wahay/downloads.html"'
