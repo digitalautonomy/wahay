@@ -139,9 +139,6 @@ func (b *binary) copyBinaryToDir(destination string) error {
 	return os.Chmod(destination, srcinfo.Mode())
 }
 
-// TODO[OB]: I really don't like how the empty path is used as a sentinel value in
-// this package.
-
 func newBinary(path string) *binary {
 	b := &binary{
 		isValid:        true,
