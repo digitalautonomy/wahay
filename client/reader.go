@@ -16,7 +16,7 @@ func rederMumbleIniConfig() string {
 }
 
 func createDir(path string) error {
-	if directoryExists(path) {
+	if pathExists(path) {
 		return nil
 	}
 
@@ -24,7 +24,7 @@ func createDir(path string) error {
 }
 
 func createFile(filename string) error {
-	if fileExists(filename) {
+	if pathExists(filename) {
 		return nil
 	}
 
@@ -37,11 +37,7 @@ func createFile(filename string) error {
 	return nil
 }
 
-// TODO[OB]: sorry, but these functions STILL Doesn't do
-// what their names say. The clue is that directoryExists and fileExists
-// have the same implementation.
-
-func directoryExists(dir string) bool {
+func pathExists(dir string) bool {
 	_, err := os.Stat(dir)
 	if os.IsNotExist(err) {
 		return false
@@ -49,20 +45,12 @@ func directoryExists(dir string) bool {
 	return err == nil
 }
 
-func fileExists(filename string) bool {
-	_, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return err == nil
-}
-
 func isADirectory(path string) bool {
-	dir, err := os.Stat(path)
-	if err != nil {
+	if info, err := os.Stat(path); err != nil || !info.IsDir() {
 		return false
 	}
-	return dir.IsDir()
+
+	return true
 }
 
 func isAFile(filename string) bool {

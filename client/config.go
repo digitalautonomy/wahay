@@ -102,8 +102,11 @@ const (
 )
 
 func (c *client) writeConfigToFile(path string) error {
-	if len(c.configFile) > 0 && fileExists(c.configFile) {
-		_ = os.Remove(c.configFile)
+	if pathExists(c.configFile) {
+		err := os.Remove(c.configFile)
+		if err != nil {
+			log.Debug(fmt.Sprintf("writeConfigToFile(): %s", err.Error()))
+		}
 	}
 
 	var configFile string
@@ -113,7 +116,7 @@ func (c *client) writeConfigToFile(path string) error {
 		configFile = filepath.Join(filepath.Dir(path), configFileName)
 	}
 
-	if !isAFile(configFile) || !fileExists(configFile) {
+	if !pathExists(configFile) || !isAFile(configFile) {
 		err := createFile(configFile)
 		if err != nil {
 			return errInvalidDataFile
@@ -132,7 +135,7 @@ func (c *client) writeConfigToFile(path string) error {
 
 // TODO: this function needs revision
 func (c *client) saveCertificateConfigFile(cert string) error {
-	if len(c.configFile) == 0 || !fileExists(c.configFile) {
+	if !pathExists(c.configFile) {
 		return errors.New("invalid mumble.ini file")
 	}
 

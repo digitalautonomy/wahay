@@ -75,7 +75,7 @@ func (c *client) storeCertificate(serviceID string, servicePort int, cert []byte
 
 func (c *client) getDB() (*dbData, error) {
 	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
-	if !fileExists(sqlFile) {
+	if !pathExists(sqlFile) {
 		log.WithFields(log.Fields{
 			"filepath": sqlFile,
 		}).Debug("Creating Mumble sqlite database")

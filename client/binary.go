@@ -71,12 +71,8 @@ func (b *binary) envIfBundle() []string {
 	return b.env
 }
 
-func (b *binary) binaryExists() bool {
-	return fileExists(b.path)
-}
-
 func (b *binary) copyTo(path string) error {
-	if !b.isValid || !b.binaryExists() {
+	if !b.isValid || !pathExists(b.path) {
 		return errInvalidBinaryFile
 	}
 
@@ -86,7 +82,7 @@ func (b *binary) copyTo(path string) error {
 
 	destination := filepath.Join(path, "mumble")
 
-	if fileExists(destination) {
+	if pathExists(destination) {
 		return errBinaryAlreadyExists
 	}
 
@@ -316,7 +312,7 @@ func isAnAvailableMumbleBinary(path string) *binary {
 func checkLibsDependenciesInPath(path string) (isBundle bool, env []string) {
 	libsDir := filepath.Join(filepath.Dir(path), mumbleBundleLibsDir)
 
-	if directoryExists(libsDir) {
+	if pathExists(libsDir) {
 		env = append(env, fmt.Sprintf("LD_LIBRARY_PATH=%s", libsDir))
 		isBundle = true
 	}
