@@ -115,7 +115,7 @@ func (c *client) Execute(args []string, onClose func()) (tor.Service, error) {
 
 	s, err := tor.NewService(cm)
 	if err != nil {
-		return nil, ErrNoService
+		return nil, errors.New("error: the service can't be started")
 	}
 
 	s.OnClose(func() {

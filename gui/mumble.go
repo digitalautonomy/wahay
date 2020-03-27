@@ -1,11 +1,14 @@
 package gui
 
 import (
+	"errors"
 	"sync"
 
 	"github.com/digitalautonomy/wahay/client"
 	"github.com/digitalautonomy/wahay/hosting"
 	"github.com/digitalautonomy/wahay/tor"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
@@ -25,11 +28,26 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, onClose func()) (tor.Service, error) {
-	s, err := client.LaunchClient(data, onClose)
+	c := client.Mumble()
+
+	if !c.CanBeUsed() {
+		return nil, errors.New("error: no client to run")
+	}
+
+	err := c.LoadCertificateFrom(
+		data.MeetingID,
+		data.Port,
+		data.Cert,
+		hosting.DefaultCertificateServerPort)
 	if err != nil {
+		log.WithFields(log.Fields{
+			"serviceID": data.MeetingID,
+			"port":      hosting.DefaultCertificateServerPort,
+		}).Errorf("No valid Mumble certificate available: %s", err)
 		return nil, err
 	}
-	return s, nil
+
+	return c.Execute([]string{data.GenerateURL()}, onClose)
 }
 
 func (u *gtkUI) switchContextWhenMumbleFinish() {
