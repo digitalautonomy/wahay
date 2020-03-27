@@ -14,7 +14,6 @@ import (
 	"github.com/digitalautonomy/wahay/tor"
 )
 
-// TODO[OB]: Why does the GUI manage the certificate?
 // TODO[OB]: Why does the GUI care about the binary path?
 
 // Instance is a representation of the Mumble client for Wahay
