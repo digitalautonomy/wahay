@@ -17,8 +17,8 @@ import (
 
 const certServerPort = 8181
 
-func (c *client) requestCertificate(s string) error {
-	hostname, port, err := extractHostAndPort(s)
+func (c *client) requestCertificate(address string) error {
+	hostname, port, err := extractHostAndPort(address)
 	if err != nil {
 		return errors.New("invalid certificate url")
 	}
@@ -44,8 +44,8 @@ func (c *client) requestCertificate(s string) error {
 	return c.saveCertificateConfigFile(cert)
 }
 
-func extractHostAndPort(s string) (host string, port string, err error) {
-	u, err := url.Parse(s)
+func extractHostAndPort(address string) (host string, port string, err error) {
+	u, err := url.Parse(address)
 	if err != nil {
 		return
 	}
