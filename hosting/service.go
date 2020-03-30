@@ -90,7 +90,10 @@ func (s *service) NewConferenceRoom(password string) error {
 	}
 
 	// Start our certification http server
-	s.httpServer.start()
+	s.httpServer.start(func(err error) {
+		// TODO: We must inform the user about this error in a proper way
+		log.Fatalf("Mumble certificate HTTP server: %v", err)
+	})
 
 	return nil
 }

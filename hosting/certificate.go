@@ -72,7 +72,7 @@ func newCertificateServer(dir string) (*webserver, error) {
 	return s, nil
 }
 
-func (h *webserver) start() {
+func (h *webserver) start(onFails func(error)) {
 	if h.running {
 		log.Error("Certificate HTTP server is already running")
 		return
@@ -83,13 +83,16 @@ func (h *webserver) start() {
 			"address": h.address,
 		}).Debug("Starting Mumble certificate HTTP server")
 
-		// TODO[OB] - There's no way for the caller to know that this failed...
+		h.running = true
+
 		err := h.server.ListenAndServe()
 		if err != http.ErrServerClosed {
-			log.Fatalf("Mumble certificate HTTP server: %v", err)
+			if onFails != nil {
+				onFails(err)
+			}
 		}
 
-		h.running = true
+		h.running = false
 	}()
 }
 
