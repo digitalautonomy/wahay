@@ -184,7 +184,7 @@ func searchBinary(conf *config.ApplicationConfig) *binary {
 		b, err := c()
 
 		if err != nil {
-			log.Debugf("searchBinary() fatal error: %s", err)
+			log.Fatalf("searchBinary() fatal error: %s", err)
 			break
 		}
 
