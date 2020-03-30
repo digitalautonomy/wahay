@@ -16,9 +16,18 @@ import (
 
 // Instance is a representation of the Mumble client for Wahay
 type Instance interface {
+	// IsValid returns a boolean indicating if the found client is valid to be used.
+	// In case it returns true, the client last error should be checked.
 	IsValid() bool
+
+	// LastError returns the last error registered during client initialization
 	LastError() error
+
+	// Launch runs the found client through the Tor proxy with the given Mumble URL.
+	// Before running the client the system will make a request of the certificate to the origin
+	// based on the given url.
 	Launch(url string, onClose func()) (tor.Service, error)
+
 	Destroy()
 }
 
