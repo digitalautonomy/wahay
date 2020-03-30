@@ -2,6 +2,9 @@ package hosting
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -19,21 +22,31 @@ type webserver struct {
 	sync.WaitGroup
 	port    int
 	address string
-	dir     string
+	cert    []byte
 	running bool
 	server  *http.Server
 }
 
 const certServerPort = 8181
 
-func newCertificateServer(dir string) *webserver {
+func newCertificateServer(dir string) (*webserver, error) {
+	certFile := filepath.Join(dir, "cert.pem")
+	if !fileExists(certFile) {
+		return nil, errors.New("the certificate file do not exists")
+	}
+
+	cert, err := ioutil.ReadFile(certFile)
+	if err != nil {
+		return nil, err
+	}
+
 	port := config.GetRandomPort()
 	address := net.JoinHostPort(defaultHost, strconv.Itoa(port))
 
 	s := &webserver{
 		port:    port,
 		address: address,
-		dir:     dir,
+		cert:    cert,
 	}
 
 	h := http.NewServeMux()
@@ -56,7 +69,7 @@ func newCertificateServer(dir string) *webserver {
 		"dir":     dir,
 	}).Debug("Creating Mumble certificate HTTP server")
 
-	return s
+	return s, nil
 }
 
 func (h *webserver) start() {
@@ -68,13 +81,12 @@ func (h *webserver) start() {
 	go func() {
 		log.WithFields(log.Fields{
 			"address": h.address,
-			"dir":     h.dir,
-		}).Debug("Starting Mumble certificate HTTP server directory")
+		}).Debug("Starting Mumble certificate HTTP server")
 
 		// TODO[OB] - There's no way for the caller to know that this failed...
 		err := h.server.ListenAndServe()
 		if err != http.ErrServerClosed {
-			log.Fatalf("Fatal Mumble certificate HTTP server error: %v", err)
+			log.Fatalf("Mumble certificate HTTP server: %v", err)
 		}
 	}()
 
@@ -113,21 +125,8 @@ func (h *webserver) stop() error {
 }
 
 func (h *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Request) {
-	log.WithFields(log.Fields{
-		"dir": h.dir,
-	}).Debug("handleCertificateRequest(): serving certificate file")
-
-	// TODO[OB] - Why do we serve this from a file, and not from memory?
-	if !fileExists(filepath.Join(h.dir, "cert.pem")) {
-		http.Error(
-			w,
-			"The requested certificate is invalid",
-			http.StatusInternalServerError,
-		)
-		return
-	}
-
-	http.ServeFile(w, r, filepath.Join(h.dir, "cert.pem"))
+	log.Debug("handleCertificateRequest(): serving certificate content")
+	fmt.Fprint(w, string(h.cert))
 }
 
 func fileExists(filename string) bool {

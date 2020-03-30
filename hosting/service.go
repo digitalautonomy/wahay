@@ -108,7 +108,10 @@ func NewService(port string) (Service, error) {
 
 	var onionPorts []tor.OnionPort
 
-	httpServer := newCertificateServer(collection.DataDir())
+	httpServer, err := newCertificateServer(collection.DataDir())
+	if err != nil {
+		return nil, err
+	}
 
 	onionPorts = append(onionPorts, tor.OnionPort{
 		DestinationHost: defaultHost,
