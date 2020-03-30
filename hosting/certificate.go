@@ -58,33 +58,30 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 		IdleTimeout:  4 * time.Minute,
 	}
 
-	// TODO[OB] - I'm not sure if it makes sense to log these as info
 	log.WithFields(log.Fields{
 		"address": address,
 		"dir":     dir,
-	}).Info("Creating Mumble certificate server")
+	}).Debug("Creating Mumble certificate HTTP server")
 
 	return s, nil
 }
 
 func (h *webserver) start() {
 	if h.running {
-		// TODO[OB] - why is this not an error?
-		log.Warning("http server is already running")
+		log.Error("Certificate HTTP server is already running")
 		return
 	}
 
 	go func() {
-		// TODO[OB] - not sure it makese sense to log as info
 		log.WithFields(log.Fields{
 			"address": h.address,
 			"dir":     h.dir,
-		}).Info("Starting Mumble certificate server directory")
+		}).Debug("Starting Mumble certificate HTTP server directory")
 
 		// TODO[OB] - There's no way for the caller to know that this failed...
 		err := h.server.ListenAndServe()
 		if err != http.ErrServerClosed {
-			log.Fatalf("Fatal HTTP server error: %v", err)
+			log.Fatalf("Fatal Mumble certificate HTTP server error: %v", err)
 		}
 	}()
 
@@ -125,7 +122,7 @@ func (h *webserver) stop() error {
 func (h *webserver) handleCertificateRequest(w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
 		"dir": h.dir,
-	}).Debug("handleCertificateRequest(): serving cert file")
+	}).Debug("handleCertificateRequest(): serving certificate file")
 
 	// TODO[OB] - Why do we serve this from a file, and not from memory?
 	if !fileExists(filepath.Join(h.dir, "cert.pem")) {
