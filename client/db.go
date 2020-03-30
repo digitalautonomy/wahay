@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func (c *client) sqliteDB() (*dbData, error) {
+func (c *client) db() (*dbData, error) {
 	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
 
 	if !pathExists(sqlFile) {

@@ -89,7 +89,7 @@ const (
 )
 
 func (c *client) storeCertificateInDB(id string, port int, digest string) error {
-	db, err := c.sqliteDB()
+	db, err := c.db()
 	if err != nil {
 		return err
 	}
@@ -111,7 +111,7 @@ func (c *client) storeCertificateInDB(id string, port int, digest string) error 
 }
 
 func (c *client) isTheCertificateInDB(hostname string) bool {
-	d, err := c.sqliteDB()
+	d, err := c.db()
 	if err != nil {
 		return false
 	}
