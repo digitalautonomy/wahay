@@ -17,7 +17,7 @@ import (
 // Instance is a representation of the Mumble client for Wahay
 type Instance interface {
 	// IsValid returns a boolean indicating if the found client is valid to be used.
-	// In case it returns true, the client last error should be checked.
+	// In case it returns false, the client last error should be checked.
 	IsValid() bool
 
 	// LastError returns the last error registered during client initialization
