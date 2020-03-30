@@ -146,7 +146,7 @@ func DeleteOnionService(serviceID string) error {
 
 // Onion is a representation of a Tor Onion Service
 type Onion interface {
-	GetID() string
+	ID() string
 	Delete() error
 }
 
@@ -155,7 +155,7 @@ type onion struct {
 	ports []OnionPort
 }
 
-func (s *onion) GetID() string {
+func (s *onion) ID() string {
 	return s.id
 }
 

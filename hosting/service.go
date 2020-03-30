@@ -55,7 +55,7 @@ type service struct {
 }
 
 func (s *service) ID() string {
-	return s.onion.GetID()
+	return s.onion.ID()
 }
 
 func (s *service) URL() string {
