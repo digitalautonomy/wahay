@@ -88,11 +88,9 @@ func (h *webserver) start() {
 		if err != http.ErrServerClosed {
 			log.Fatalf("Mumble certificate HTTP server: %v", err)
 		}
-	}()
 
-	// TODO[OB] - There's a race condition here - the h.running can be set
-	// before the server is listenting.
-	h.running = true
+		h.running = true
+	}()
 }
 
 func (h *webserver) stop() error {
