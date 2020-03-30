@@ -79,7 +79,12 @@ func InitSystem(conf *config.ApplicationConfig) Instance {
 	}
 
 	if b.shouldBeCopied {
-		err = b.copyTo(tempFolder())
+		tempDir, err := tempFolder()
+		if err != nil {
+			return invalidInstance(err)
+		}
+
+		err = b.copyTo(tempDir)
 		if err != nil {
 			return invalidInstance(err)
 		}
@@ -224,12 +229,11 @@ func (c *client) Destroy() {
 	c.binary.destroy()
 }
 
-func tempFolder() string {
+func tempFolder() (string, error) {
 	dir, err := ioutil.TempDir("", "mumble")
 	if err != nil {
-		// TODO: Inform the user in a proper way instead of just crashing badly.
-		log.Fatal(err)
+		return "", err
 	}
 
-	return dir
+	return dir, nil
 }
