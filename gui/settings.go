@@ -84,7 +84,7 @@ func (s *settings) init() {
 	s.rawLogFile.SetSensitive(s.logOriginalValue)
 	s.btnRawLogFile.SetSensitive(s.logOriginalValue)
 
-	s.mumbleBinaryOriginalValue = conf.GetPathMumble()
+	s.mumbleBinaryOriginalValue = conf.MumbleBinaryPath()
 	s.mumbleBinaryLocation.SetText(s.mumbleBinaryOriginalValue)
 	s.mumblePortOriginalValue = conf.GetPortMumble()
 	s.mumblePort.SetText(s.mumblePortOriginalValue)
@@ -309,7 +309,7 @@ func (s *settings) setCustomPathForMumble() {
 		s.mumbleBinaryLocation,
 		s.mumbleBinaryOriginalValue,
 		func(f string) {
-			s.u.config.SetPathMumble(f)
+			s.u.config.SetMumbleBinaryPath(f)
 		})
 }
 

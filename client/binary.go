@@ -210,7 +210,7 @@ func searchBinary(conf *config.ApplicationConfig) *binary {
 
 func searchBinaryInConf(conf *config.ApplicationConfig) func() (*binary, error) {
 	return func() (*binary, error) {
-		configuredPath := conf.GetPathMumble()
+		configuredPath := conf.MumbleBinaryPath()
 
 		if len(configuredPath) == 0 {
 			// No client path has been configured
