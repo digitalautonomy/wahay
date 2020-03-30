@@ -115,14 +115,14 @@ func getSingleInstance() (Instance, error) {
 	return currentInstance, nil
 }
 
-// GetCurrentInstance returns the current Tor instance
-func GetCurrentInstance() Instance {
+// CurrentInstance returns the current Tor instance
+func CurrentInstance() Instance {
 	return currentInstance
 }
 
 // GetController returns the Tor controller for the current instance
 func GetController() (Control, error) {
-	i := GetCurrentInstance()
+	i := CurrentInstance()
 
 	if i == nil {
 		return nil, errors.New("tor hasn't been initialized")

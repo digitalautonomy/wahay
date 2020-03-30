@@ -28,7 +28,7 @@ func (c *client) requestCertificate(address string) error {
 		Host:   net.JoinHostPort(hostname, strconv.Itoa(certServerPort)),
 	}
 
-	content, err := tor.GetCurrentInstance().HTTPrequest(u.String())
+	content, err := tor.CurrentInstance().HTTPrequest(u.String())
 	if err != nil {
 		return err
 	}
