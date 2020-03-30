@@ -2,7 +2,6 @@ package hosting
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"net/http"
 	"os"
@@ -18,6 +17,7 @@ import (
 
 type webserver struct {
 	sync.WaitGroup
+	port    int
 	address string
 	dir     string
 	running bool
@@ -27,13 +27,11 @@ type webserver struct {
 const certServerPort = 8181
 
 func ensureCertificateServer(dir string) (*webserver, error) {
-	if !config.IsPortAvailable(certServerPort) {
-		return nil, fmt.Errorf("the web server port is in use: %d", certServerPort)
-	}
-
-	address := net.JoinHostPort(defaultHost, strconv.Itoa(certServerPort))
+	port := config.GetRandomPort()
+	address := net.JoinHostPort(defaultHost, strconv.Itoa(port))
 
 	s := &webserver{
+		port:    port,
 		address: address,
 		dir:     dir,
 	}
@@ -59,14 +57,6 @@ func ensureCertificateServer(dir string) (*webserver, error) {
 	}).Debug("Creating Mumble certificate HTTP server")
 
 	return s, nil
-}
-
-func (h *webserver) host() string {
-	return defaultHost
-}
-
-func (h *webserver) port() int {
-	return certServerPort
 }
 
 func (h *webserver) start() {

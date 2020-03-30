@@ -114,8 +114,8 @@ func NewService(port string) (Service, error) {
 	}
 
 	onionPorts = append(onionPorts, tor.OnionPort{
-		DestinationHost: httpServer.host(),
-		DestinationPort: httpServer.port(),
+		DestinationHost: defaultHost,
+		DestinationPort: httpServer.port,
 		ServicePort:     certServerPort,
 	})
 
