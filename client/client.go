@@ -227,7 +227,8 @@ func (c *client) Destroy() {
 func tempFolder() string {
 	dir, err := ioutil.TempDir("", "mumble")
 	if err != nil {
-		panic(err)
+		// TODO: Inform the user in a proper way instead of just crashing badly.
+		log.Fatal(err)
 	}
 
 	return dir
