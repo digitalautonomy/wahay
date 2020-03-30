@@ -16,29 +16,24 @@ import (
 	"github.com/digitalautonomy/wahay/config"
 )
 
-// TODO[OB] - why do we have the host when it's hard coded?
-// TODO[OB] - why do we store the port? it doesn't seem to be used
-
 type webserver struct {
 	sync.WaitGroup
-	host    string
-	port    int
 	address string
 	dir     string
 	running bool
 	server  *http.Server
 }
 
-func ensureCertificateServer(port int, dir string) (*webserver, error) {
-	if !config.IsPortAvailable(port) {
-		return nil, fmt.Errorf("the web server port is in use: %d", port)
+const certServerPort = 8181
+
+func ensureCertificateServer(dir string) (*webserver, error) {
+	if !config.IsPortAvailable(certServerPort) {
+		return nil, fmt.Errorf("the web server port is in use: %d", certServerPort)
 	}
 
-	address := net.JoinHostPort("127.0.0.1", strconv.Itoa(port))
+	address := net.JoinHostPort(defaultHost, strconv.Itoa(certServerPort))
 
 	s := &webserver{
-		host:    "127.0.0.1",
-		port:    port,
 		address: address,
 		dir:     dir,
 	}
@@ -64,6 +59,14 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 	}).Debug("Creating Mumble certificate HTTP server")
 
 	return s, nil
+}
+
+func (h *webserver) host() string {
+	return defaultHost
+}
+
+func (h *webserver) port() int {
+	return certServerPort
 }
 
 func (h *webserver) start() {

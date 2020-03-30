@@ -29,9 +29,6 @@ const (
 	DefaultPort = 64738
 
 	defaultHost = "127.0.0.1"
-
-	// DefaultCertificateServerPort is the default port for the certificate web server
-	DefaultCertificateServerPort = 8181
 )
 
 var errInvalidPort = errors.New("invalid port supplied")
@@ -111,15 +108,15 @@ func NewService(port string) (Service, error) {
 
 	var onionPorts []tor.OnionPort
 
-	httpServer, err := ensureCertificateServer(DefaultCertificateServerPort, collection.DataDir())
+	httpServer, err := ensureCertificateServer(collection.DataDir())
 	if err != nil {
 		return nil, err
 	}
 
 	onionPorts = append(onionPorts, tor.OnionPort{
-		DestinationHost: httpServer.host,
-		DestinationPort: httpServer.port,
-		ServicePort:     DefaultCertificateServerPort,
+		DestinationHost: httpServer.host(),
+		DestinationPort: httpServer.port(),
+		ServicePort:     certServerPort,
 	})
 
 	p := DefaultPort
