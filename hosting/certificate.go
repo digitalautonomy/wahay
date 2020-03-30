@@ -53,11 +53,9 @@ func ensureCertificateServer(port int, dir string) (*webserver, error) {
 		// Set sensible timeouts, in case no reverse proxy is in front of Grumble.
 		// Non-conforming (or malicious) clients may otherwise block indefinitely and cause
 		// file descriptors (or handles, depending on your OS) to leak and/or be exhausted
-		// TODO[OB] - I think these timeouts are too low. Remember that we are doing this over
-		// Tor hidden services
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		IdleTimeout:  2 * time.Minute,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 20 * time.Second,
+		IdleTimeout:  4 * time.Minute,
 	}
 
 	// TODO[OB] - I'm not sure if it makes sense to log these as info
