@@ -26,7 +26,7 @@ type webserver struct {
 
 const certServerPort = 8181
 
-func ensureCertificateServer(dir string) (*webserver, error) {
+func newCertificateServer(dir string) *webserver {
 	port := config.GetRandomPort()
 	address := net.JoinHostPort(defaultHost, strconv.Itoa(port))
 
@@ -56,7 +56,7 @@ func ensureCertificateServer(dir string) (*webserver, error) {
 		"dir":     dir,
 	}).Debug("Creating Mumble certificate HTTP server")
 
-	return s, nil
+	return s
 }
 
 func (h *webserver) start() {
