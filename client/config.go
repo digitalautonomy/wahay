@@ -14,9 +14,9 @@ import (
 )
 
 var (
-	errInvalidConfigDirectory = errors.New("invalid client configuration directory")
-	errInvalidDataFile        = errors.New("invalid client data file")
-	errInvalidConfig          = errors.New("invalid client configuration")
+	errInvalidConfigFileDir    = errors.New("invalid client configuration directory")
+	errInvalidConfigFileDBFile = errors.New("invalid client data file")
+	errInvalidConfigFile       = errors.New("invalid client configuration")
 
 	mumbleFolders = []string{
 		"Overlay",
@@ -39,7 +39,7 @@ func (c *client) regenerateConfiguration() error {
 	}
 
 	// Removes the Murmur sqlite database
-	err = os.Remove(filepath.Join(binaryDir, configDataName))
+	err = os.Remove(filepath.Join(binaryDir, configDBName))
 	if err != nil {
 		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
 	}
@@ -53,44 +53,74 @@ func (c *client) ensureConfiguration() error {
 
 	var err error
 
-	binaryDir := c.pathToBinary()
-	if !isADirectory(binaryDir) {
-		binaryDir = filepath.Dir(binaryDir)
+	c.configDir, err = c.ensureConfigurationDir()
+	if err != nil {
+		return errInvalidConfigFileDir
 	}
 
-	err = createDir(binaryDir)
+	err = c.ensureConfigurationDBFile()
 	if err != nil {
-		return errInvalidConfigDirectory
+		return errInvalidConfigFileDBFile
+	}
+
+	err = c.ensureConfigurationFile()
+	if err != nil {
+		return errInvalidConfigFile
+	}
+
+	return nil
+}
+
+func (c *client) ensureConfigurationDir() (string, error) {
+	location := c.pathToBinary()
+	if !isADirectory(location) {
+		location = filepath.Dir(location)
+	}
+
+	err := createDir(location)
+	if err != nil {
+		log.Errorf("Error creating config directory: %s", location)
+		return "", err
 	}
 
 	for _, dir := range mumbleFolders {
-		err = createDir(filepath.Join(binaryDir, dir))
+		err = createDir(filepath.Join(location, dir))
 		if err != nil {
-			log.Printf("Error creating Mumble folder: %s", filepath.Join(binaryDir, dir))
+			log.Debugf("Error creating Mumble folder: %s", filepath.Join(location, dir))
+			return location, err
 		}
 	}
 
-	err = createFile(filepath.Join(binaryDir, configDataName))
+	return location, nil
+}
+
+func (c *client) ensureConfigurationDBFile() error {
+	err := createFile(filepath.Join(c.configDir, configDBName))
 	if err != nil {
-		log.Println("The Mumble data file could not be created")
+		log.Debugf("The Mumble data file could not be created: %s", err)
+		return err
 	}
 
 	configData := c.databaseProvider()
-	err = ioutil.WriteFile(filepath.Join(binaryDir, configDataName), configData, 0644)
+	err = ioutil.WriteFile(filepath.Join(c.configDir, configDBName), configData, 0644)
 	if err != nil {
 		return err
 	}
 
-	filename := filepath.Join(binaryDir, configFileName)
+	return nil
+}
 
-	err = createFile(filename)
+func (c *client) ensureConfigurationFile() error {
+	filename := filepath.Join(c.configDir, configFileName)
+
+	err := createFile(filename)
 	if err != nil {
-		return errInvalidDataFile
+		return errInvalidConfigFileDBFile
 	}
 
 	err = c.writeConfigToFile(filename)
 	if err != nil {
-		return errInvalidConfig
+		return errInvalidConfigFile
 	}
 
 	return nil
@@ -98,7 +128,7 @@ func (c *client) ensureConfiguration() error {
 
 const (
 	configFileName = "mumble.ini"
-	configDataName = ".mumble.sqlite"
+	configDBName   = ".mumble.sqlite"
 )
 
 func (c *client) writeConfigToFile(path string) error {
@@ -119,7 +149,7 @@ func (c *client) writeConfigToFile(path string) error {
 	if !pathExists(configFile) || !isAFile(configFile) {
 		err := createFile(configFile)
 		if err != nil {
-			return errInvalidDataFile
+			return errInvalidConfigFileDBFile
 		}
 	}
 

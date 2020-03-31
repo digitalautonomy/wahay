@@ -36,6 +36,7 @@ type client struct {
 	binary                *binary
 	isValid               bool
 	configFile            string
+	configDir             string
 	configContentProvider mumbleIniProvider
 	databaseProvider      databaseProvider
 	err                   error
