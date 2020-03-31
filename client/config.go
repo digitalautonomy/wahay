@@ -25,21 +25,26 @@ var (
 	}
 )
 
-func (c *client) regenerateConfiguration() error {
-	var err error
-
-	binaryDir := c.pathToBinary()
-	if !isADirectory(binaryDir) {
-		binaryDir = filepath.Dir(binaryDir)
+func (c *client) pathToConfig() string {
+	if len(c.configDir) == 0 {
+		location := c.pathToBinary()
+		if !isADirectory(location) {
+			location = filepath.Dir(location)
+		}
+		c.configDir = location
 	}
+	return c.configDir
+}
 
-	err = os.Remove(filepath.Join(binaryDir, configFileName))
+func (c *client) regenerateConfiguration() error {
+	location := c.pathToConfig()
+
+	err := os.Remove(filepath.Join(location, configFileName))
 	if err != nil {
 		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
 	}
 
-	// Removes the Murmur sqlite database
-	err = os.Remove(filepath.Join(binaryDir, configDBName))
+	err = os.Remove(filepath.Join(location, configDBName))
 	if err != nil {
 		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
 	}
@@ -53,7 +58,7 @@ func (c *client) ensureConfiguration() error {
 
 	var err error
 
-	c.configDir, err = c.ensureConfigurationDir()
+	err = c.ensureConfigurationDir()
 	if err != nil {
 		return errInvalidConfigFileDir
 	}
@@ -71,27 +76,26 @@ func (c *client) ensureConfiguration() error {
 	return nil
 }
 
-func (c *client) ensureConfigurationDir() (string, error) {
-	location := c.pathToBinary()
-	if !isADirectory(location) {
-		location = filepath.Dir(location)
-	}
+func (c *client) ensureConfigurationDir() error {
+	location := c.pathToConfig()
 
 	err := createDir(location)
 	if err != nil {
 		log.Errorf("Error creating config directory: %s", location)
-		return "", err
+		return err
 	}
 
 	for _, dir := range mumbleFolders {
 		err = createDir(filepath.Join(location, dir))
 		if err != nil {
 			log.Debugf("Error creating Mumble folder: %s", filepath.Join(location, dir))
-			return location, err
+			return err
 		}
 	}
 
-	return location, nil
+	c.configDir = location
+
+	return nil
 }
 
 func (c *client) ensureConfigurationDBFile() error {
