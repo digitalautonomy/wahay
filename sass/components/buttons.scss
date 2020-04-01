@@ -2,7 +2,6 @@
   padding: 12px 20px;
   font-size: $body-font-size;
   font-weight: $font-weight-normal;
-  background-repeat: repeat-x;
   border: $border-width $border-style $border-color-button;
   box-shadow: none;
   border-radius: 0.25em;
@@ -12,19 +11,11 @@
     border-bottom-left-radius: 0;
     border-left-width: 0;
   }
-
-  &:hover {
-    background-repeat: repeat-x;
-  }
-
-  &:active {
-    background-image: none;
-  }
 }
 
 .btn           { @include btn-solid($text-gray-dark, $gray-000, darken($gray-100, 2%)); }
-.btn-primary   { @include btn-solid($text-white, $green-400, $green-500); }
-.btn-secondary { @include btn-inverse($gray-900, $gray-000, darken($gray-100, 2%)); }
+.btn-primary   { @include btn-solid($text-white, $blue-500, $blue-500); }
+.btn-secondary { @include btn-solid($text-white, $green-500, $green-600); }
 .btn-blue      { @include btn-solid($text-white, lighten($blue-500, 8%), darken($blue-500, 2%)); }
 .btn-danger    { @include btn-inverse($red-600, $gray-000, darken($gray-100, 2%)); }
 .btn-orange    { @include btn-solid($text-white, $orange-600, darken($orange-600, 2%)); }

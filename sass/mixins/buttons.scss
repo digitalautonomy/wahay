@@ -3,8 +3,7 @@
 // New button hotness
 @mixin btn-solid($color, $bg, $bg2) {
   color: $color;
-  background-color: $bg2;
-  background-image: linear-gradient(-180deg, $bg 0%, $bg2 90%);
+  background: $bg2;
 
   @if $bg == $gray-000 {
     &:focus {
@@ -13,20 +12,17 @@
 
     &:hover {
       background-color: darken($bg2, 3%);
-      background-image: linear-gradient(-180deg, darken($bg, 3%) 0%, darken($bg2, 3%) 90%);
       border-color: rgba($black, 0.35);
     }
 
     &:active {
       background-color: darken(desaturate($bg, 10%), 6%);
-      background-image: none;
       border-color: rgba($black, 0.35); // repeat to avoid shift on click-drag off of button
       box-shadow: $btn-active-shadow;
     }
 
     &:checked {
       background-color: darken(desaturate($bg, 10%), 6%);
-      background-image: none;
       border-color: rgba($black, 0.35); // repeat to avoid shift on click-drag off of button
       box-shadow: $btn-checked-shadow;
     }
@@ -34,7 +30,6 @@
     &:disabled {
       color: rgba($color, 0.4);
       background-color: $bg2;
-      background-image: none;
       border-color: $border-color-button;
       box-shadow: none;
     }
@@ -49,13 +44,11 @@
 
     &:hover {
       background-color: darken($bg2, 2%);
-      background-image: linear-gradient(-180deg, darken($bg, 2%) 0%, darken($bg2, 2%) 90%);
       border-color: darken($bg2, 2%);
     }
 
     &:active {
       background-color: darken(mix($bg, $bg2, 50%), 7%);
-      background-image: none;
       border-color: darken($bg2, 2%);
       box-shadow: $btn-active-shadow;
     }
@@ -63,7 +56,6 @@
     &:disabled {
       color: rgba($white, 0.65);
       background-color: mix($bg2, $white, 50%);
-      background-image: none;
       border-color: transparent;
       box-shadow: none;
     }
@@ -74,7 +66,6 @@
 @mixin btn-inverse($color, $bg, $bg2) {
   color: $color;
   background-color: $bg;
-  background-image: linear-gradient(-180deg, $bg 0%, $bg2 90%);
 
   &:focus {
     box-shadow: 0 0 0 0.2em rgba($color, 0.4);
@@ -83,14 +74,12 @@
   &:hover {
     color: $text-white;
     background-color: $color;
-    background-image: linear-gradient(-180deg, lighten($color, 10%) 0%, $color 90%);
     border-color: $black-fade-50;
   }
 
   &:active {
     color: $text-white;
     background-color: darken($color, 5%);
-    background-image: none;
     border-color: $black-fade-50;
     box-shadow: $btn-active-shadow;
   }
@@ -98,7 +87,6 @@
   &:disabled {
     color: rgba($color, 0.4);
     background-color: $bg2;
-    background-image: none;
     border-color: $border-color-button;
     box-shadow: none;
   }
@@ -108,13 +96,11 @@
 @mixin btn-outline($text-color: $text-blue, $bg-color: $bg-white) {
   color: $text-color;
   background-color: $bg-color;
-  background-image: none;
 
   &:hover,
   &:active {
     color: $bg-color;
     background-color: $text-color;
-    background-image: none;
     border-color: $text-color;
   }
 

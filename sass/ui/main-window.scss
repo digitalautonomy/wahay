@@ -1,18 +1,27 @@
 .main-window-top-bar {
   padding: $spacing;
+  background-color: $gray-100;
+  border-bottom: 1px solid $gray-300;
 
-  .main-window-btn-settings {
-    border-radius: 10em;
-
-    @extend .btn;
-    @extend .btn-sm;
+  .main-window-title {
+    color: $gray-900;
+    font-size: $font-size-large;
+    font-weight: $font-weight-bold;
   }
 
+  .main-window-btn-settings,
   .main-window-btn-help {
     border-radius: 10em;
+    background-color: $white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 
     @extend .btn;
     @extend .btn-sm;
+
+    &:hover {
+      color: $white;
+      background-color: $gray-900;
+    }
   }
 }
 
@@ -28,11 +37,11 @@
   }
 
   .btn-host-meeting {
-    @extend .btn-blue;
+    @extend .btn-primary;
   }
 
   .btn-join-meeting {
-    @extend .btn-orange;
+    @extend .btn-secondary;
   }
 }
 
@@ -41,7 +50,7 @@
   padding: $spacing/2 $spacing;
   border-width: 0;
   background-color: $gray-900;
-  background-image: linear-gradient(-180deg, darken($gray-800, 3%) 0%, darken($black, 3%) 90%);
+  background-image: linear-gradient(-180deg, darken($gray-900, 3%) 0%, darken($black, 3%) 90%);
 
   &.error {
     background-color: $red-900;
