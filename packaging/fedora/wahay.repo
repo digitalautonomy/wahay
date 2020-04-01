@@ -1,0 +1,34 @@
+[wahay]
+name=Fedora $releasever - $basearch
+baseurl=https://dl.autonomia.digital/fedora/f$releasever/?repo=fedora-$releasever&arch=$basearch
+enabled=1
+metadata_expire=7d
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+skip_if_unavailable=False
+gpgkey=https://dl.autonomia.digital/fedora/key.asc
+
+
+[wahay-debuginfo]
+name=Fedora $releasever - $basearch
+baseurl=https://dl.autonomia.digital/fedora/f$releasever/?repo=fedora-$releasever&arch=$basearch
+enabled=1
+metadata_expire=7d
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+skip_if_unavailable=False
+gpgkey=https://dl.autonomia.digital/fedora/key.asc
+
+[wahay-source]
+name=Fedora $releasever - $basearch
+baseurl=https://dl.autonomia.digital/fedora/f$releasever/?repo=fedora-$releasever&arch=$basearch
+enabled=1
+metadata_expire=7d
+repo_gpgcheck=0
+type=rpm
+gpgcheck=1
+skip_if_unavailable=False
+gpgkey=https://dl.autonomia.digital/fedora/key.asc
+
