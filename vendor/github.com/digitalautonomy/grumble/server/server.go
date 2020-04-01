@@ -401,11 +401,13 @@ func (server *Server) handlerLoop() {
 		case vb := <-server.voicebroadcast:
 			if vb.target == 0 { // Current channel
 				channel := vb.client.Channel
-				for _, client := range channel.clients {
-					if client != vb.client {
-						err := client.SendUDP(vb.buf)
-						if err != nil {
-							client.Panicf("Unable to send UDP: %v", err)
+				if channel != nil {
+					for _, client := range channel.clients {
+						if client != vb.client {
+							err := client.SendUDP(vb.buf)
+							if err != nil {
+								client.Panicf("Unable to send UDP: %v", err)
+							}
 						}
 					}
 				}

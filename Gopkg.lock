@@ -36,7 +36,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d86d221cec0ea1b42edbd2cb578c860102632bf0bff88d539f7aedddb9bd809e"
+  digest = "1:5e1c3553a3b3f46e9b2ccf94d333403a5449ae739c0a5048bdf1eb606c48cc0d"
   name = "github.com/digitalautonomy/grumble"
   packages = [
     "pkg/acl",
@@ -56,7 +56,7 @@
     "server",
   ]
   pruneopts = "UT"
-  revision = "c109af8d88b4b9cb77afe1f18572c66027cf8c0b"
+  revision = "ebe189c52491c38eea0917f688e20ce9d673f674"
 
 [[projects]]
   digest = "1:d1e35b720b5f5156502ffdd174000c81295919293735342da78582e4dc7a8bcd"
