@@ -40,7 +40,7 @@ func (c *client) requestCertificate(address string) error {
 		return err
 	}
 
-	return nil
+	return c.saveCertificateConfigFile(cert)
 }
 
 func extractHostAndPort(address string) (host string, port string, err error) {
