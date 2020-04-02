@@ -25,6 +25,7 @@ do
  mkdir $DISTRO_DIR
  tar xf mumble-${DISTRO_NAME}.tar.bz2 --directory $DISTRO_DIR
  cp -r tor $DISTRO_DIR
+ cp -r ../packaging/bundles/* $DISTRO_DIR
  cp ../$BINARY_NAME $DISTRO_DIR
  cd $DISTRO_DIR
  ln -s $BINARY_BASE_NAME $APP_NAME
