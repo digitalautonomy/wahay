@@ -167,8 +167,7 @@ func (c *client) writeConfigToFile(path string) error {
 	return nil
 }
 
-// TODO: this function needs revision
-func (c *client) saveCertificateConfigFile(cert []byte) error {
+func (c *client) saveCertificateConfigFile() error {
 	if !pathExists(c.configFile) {
 		return errors.New("invalid mumble.ini file")
 	}
@@ -178,10 +177,16 @@ func (c *client) saveCertificateConfigFile(cert []byte) error {
 		return err
 	}
 
+	tmc, err := generateTemporaryMumbleCertificate()
+	if err != nil {
+		log.Debugf("Error generating temporary mumble certificate: %v, assigning empty string", err)
+		tmc = ""
+	}
+
 	certSectionProp := strings.Replace(
 		string(content),
 		"#CERTIFICATE",
-		fmt.Sprintf("certificate=%s", escapeByteString(arrayByteToString(cert))),
+		fmt.Sprintf("certificate=\"%s\"", tmc),
 		1,
 	)
 
