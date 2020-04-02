@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 DISTRO_FILE="../deployment/supported-bundle-distros.txt"
 APP_NAME=wahay
 BINARY_BASE_NAME=$(basename $BINARY_NAME)
@@ -17,6 +19,10 @@ rclone copy --config rclone.conf  $APP_NAME:$APP_NAME-bundles .
 
 #extract tor
 tar xf tor-0.4.2.5.tar.bz2
+
+pwd
+
+ls ..
 
 # Create distro bundles
 while IFS= read -r DISTRO_NAME
