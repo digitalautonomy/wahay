@@ -861,6 +861,11 @@
             "id": "Help",
             "message": "Help",
             "translation": "Ayuda"
+        },
+        {
+            "id": "Tip: Push right control to talk",
+            "message": "Tip: Push right control to talk",
+            "translation": "Tip: Presione el botón control derecho para hablar"
         }
     ]
 }

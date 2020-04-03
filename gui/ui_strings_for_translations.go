@@ -83,6 +83,8 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt2() {
 		"selected then the log output will be written to the default log file.")
 	_ = i18n.Sprintf("Master password")
 	_ = i18n.Sprintf("Meeting ID")
+	_ = i18n.Sprintf("Tip: Push right control to talk")
+	_ = i18n.Sprintf("Invite others")
 }
 
 func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3() {

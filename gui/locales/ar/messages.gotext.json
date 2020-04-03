@@ -861,6 +861,11 @@
             "id": "Help",
             "message": "Help",
             "translation": "TRANSLATE ME"
+        },
+        {
+            "id": "Tip: Push right control to talk",
+            "message": "Tip: Push right control to talk",
+            "translation": "TRANSLATE ME"
         }
     ]
 }

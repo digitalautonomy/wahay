@@ -95,7 +95,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 2,
-                    "expr": "h.service.GetURL()"
+                    "expr": "h.service.URL()"
                 }
             ],
             "fuzzy": true
@@ -506,6 +506,11 @@
             "id": "Meeting ID",
             "message": "Meeting ID",
             "translation": "ID de la reunión"
+        },
+        {
+            "id": "Tip: Push right control to talk",
+            "message": "Tip: Push right control to talk",
+            "translation": "Tip: Presione el botón control derecho para hablar"
         },
         {
             "id": "Meeting ID:",
