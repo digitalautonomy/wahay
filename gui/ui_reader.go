@@ -77,20 +77,39 @@ func getActualDefsFolder() string {
 	return "gui/definitions"
 }
 
+func isCSSVersionSufficient(gg gtki.Gtk) bool {
+	major := gg.GetMajorVersion()
+	minor := gg.GetMinorVersion()
+
+	return major > uint(3) || (major == uint(3) && minor > uint(18))
+}
+
 func (g *Graphics) loadCSSFor(cssFile string) gtki.CssProvider {
-	cssData := getCSSFileWithFallback(cssFile)
+	if isCSSVersionSufficient(g.gtk) {
+		cssData := getCSSFileWithFallback(cssFile)
 
-	builderMutex.Lock()
-	defer builderMutex.Unlock()
+		builderMutex.Lock()
+		defer builderMutex.Unlock()
 
+		cssProvider, err := g.gtk.CssProviderNew()
+		if err != nil {
+			fatal(err)
+		}
+
+		err = cssProvider.LoadFromData(cssData)
+		if err != nil {
+			fatalf("gui: failed load %s: %s", cssFile, err.Error())
+		}
+
+		return cssProvider
+	}
+
+	// We just return an empty css provider if we don't have a
+	// late enough version of GTK. Later we can fallback
+	// to other CSS versions or something like that
 	cssProvider, err := g.gtk.CssProviderNew()
 	if err != nil {
 		fatal(err)
-	}
-
-	err = cssProvider.LoadFromData(cssData)
-	if err != nil {
-		fatalf("gui: failed load %s: %s", cssFile, err.Error())
 	}
 
 	return cssProvider
