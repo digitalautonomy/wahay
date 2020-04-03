@@ -71,9 +71,6 @@ func findTorBinary(conf *config.ApplicationConfig) (b *binary, err error) {
 	for _, cb := range functions {
 		b, err = cb()
 		if (b != nil && b.isValid) || err != nil {
-			// TODO[OB] - should this really be a log println?
-			// Especially if it's nil...
-			log.Println(err)
 			return
 		}
 	}
