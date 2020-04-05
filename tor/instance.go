@@ -8,7 +8,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
@@ -334,7 +333,7 @@ func (i *instance) GetController() Control {
 // Destroy close our instance running
 func (i *instance) Destroy() {
 	log.Debugf("Removing custom Tor temp dir: %s", filepath.Dir(i.configFile))
-	err := os.RemoveAll(filepath.Dir(i.configFile))
+	err := osf.RemoveAll(filepath.Dir(i.configFile))
 	if err != nil {
 		log.Debug(err)
 	}
@@ -381,7 +380,7 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 	pwd := [32]byte{}
 	_ = config.RandomString(pwd[:])
 
-	cmd.Env = os.Environ()
+	cmd.Env = osf.Environ()
 	cmd.Env = append(cmd.Env, fmt.Sprintf("LD_PRELOAD=%s", pathTorsocks))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_PASSWORD=%s", string(pwd[:])))
 	cmd.Env = append(cmd.Env, fmt.Sprintf("TORSOCKS_TOR_ADDRESS=%s", i.controlHost))
@@ -392,8 +391,8 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 	}
 
 	if *config.Debug {
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+		cmd.Stdout = osf.Stdout()
+		cmd.Stderr = osf.Stderr()
 	}
 
 	if err := cmd.Start(); err != nil {
@@ -413,7 +412,7 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 var wahayDataDir = filepath.Join(config.XdgDataHome(), "wahay")
 
 func ensureWahayDataDir() {
-	_ = os.MkdirAll(wahayDataDir, 0700)
+	_ = osf.MkdirAll(wahayDataDir, 0700)
 }
 
 func createOurInstance(b *binary, torsocksPath string) *instance {

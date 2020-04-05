@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
@@ -129,7 +128,7 @@ func findTorBinaryInDataDir() (b *binary, fatalErr error) {
 func findTorBinaryInCurrentWorkingDir() (b *binary, fatalErr error) {
 	log.Debugf("findTorBinaryInCurrentWorkingDir()")
 
-	pathCWD, err := os.Getwd()
+	pathCWD, err := osf.Getwd()
 	if err != nil {
 		return nil, nil
 	}
@@ -152,7 +151,7 @@ func findTorBinaryInCurrentWorkingDir() (b *binary, fatalErr error) {
 }
 
 func findTorBinaryInWahayDir() (b *binary, fatalErr error) {
-	abs, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	abs, err := filepath.Abs(filepath.Dir(osf.Args()[0]))
 	if err != nil {
 		return nil, nil
 	}
@@ -165,7 +164,7 @@ func findTorBinaryInWahayDir() (b *binary, fatalErr error) {
 }
 
 func findTorBinaryInSystem() (b *binary, fatalErr error) {
-	path, err := exec.LookPath("tor")
+	path, err := execf.LookPath("tor")
 	if err != nil {
 		return nil, nil
 	}
@@ -180,7 +179,7 @@ func isThereConfiguredTorBinary(path string) (b *binary, err error) {
 		return b, ErrInvalidTorPath
 	}
 
-	if !isADirectory(path) {
+	if !filesystemf.IsADirectory(path) {
 		// We ommit the error here because it's ok while
 		// we are checking multiple possible paths where
 		// the Tor binary can be
@@ -232,7 +231,7 @@ func checkIfBinaryIsBundled(b *binary) bool {
 
 	found := 0
 	for _, l := range libs {
-		matches, err := filepath.Glob(filepath.Join(filepath.Dir(b.path), l))
+		matches, err := filepathf.Glob(filepath.Join(filepath.Dir(b.path), l))
 		if err != nil {
 			continue
 		}
@@ -265,13 +264,7 @@ func checkTorVersionCompatibility(b *binary) bool {
 }
 
 func execTorCommand(bin string, args []string, cm ModifyCommand) ([]byte, error) {
-	cmd := exec.Command(bin, args...)
-
-	if cm != nil {
-		cm(cmd)
-	}
-
-	output, err := cmd.Output()
+	output, err := execf.ExecWithModify(bin, args, cm)
 	if len(output) == 0 || err != nil {
 		return nil, errInvalidCommand
 	}
@@ -302,30 +295,27 @@ func allLibDirs() []string {
 	return result
 }
 
-// TODO[OB] - why is this function exposed? Seems like a very
-// internal need for the tor package...
-
 func findLibTorsocks(filePath string) (string, error) {
 	//Search in user config path
 	f := filepath.Join(filePath, libTorsocks)
-	if config.FileExists(f) {
+	if filesystemf.FileExists(f) {
 		return f, nil
 	}
 
 	// Search in local directories
 	for _, ld := range allLibDirs() {
 		f = filepath.Join(ld, libTorsocks)
-		if config.FileExists(f) {
+		if filesystemf.FileExists(f) {
 			return f, nil
 		}
 	}
 
 	// Search in bundle path
-	pathCWD, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	pathCWD, err := filepath.Abs(filepath.Dir(osf.Args()[0]))
 	if err == nil {
 		c := filepath.Join(pathCWD, "tor/")
 		f = filepath.Join(c, libTorsocks)
-		if config.FileExists(f) {
+		if filesystemf.FileExists(f) {
 			return f, nil
 		}
 	}
@@ -333,19 +323,10 @@ func findLibTorsocks(filePath string) (string, error) {
 	return "", errors.New("libtorsocks not found")
 }
 
-func isADirectory(path string) bool {
-	dir, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-
-	return dir.IsDir()
-}
-
 func listPossibleTorBinary(path string) []string {
 	result := make([]string, 0)
 
-	matches, _ := filepath.Glob(filepath.Join(path, "tor*"))
+	matches, _ := filepathf.Glob(filepath.Join(path, "tor*"))
 
 	for _, match := range matches {
 		filename := filepath.Base(match)
@@ -369,10 +350,10 @@ func (b *binary) start(configFile string) (*runningTor, error) {
 
 	if b.isBundle && len(b.env) > 0 {
 		log.Debugf("Tor is bundled with environment variables: %s", b.env)
-		cmd.Env = append(os.Environ(), b.env...)
+		cmd.Env = append(osf.Environ(), b.env...)
 	}
 
-	if err := cmd.Start(); err != nil {
+	if err := execf.StartCommand(cmd); err != nil {
 		cancelFunc()
 		return nil, err
 	}
