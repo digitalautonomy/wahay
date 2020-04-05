@@ -4,17 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io/ioutil"
-	"net"
-	"net/http"
-	"net/url"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	log "github.com/sirupsen/logrus"
-	"golang.org/x/net/proxy"
 
 	"github.com/digitalautonomy/wahay/config"
 )
@@ -58,36 +52,7 @@ type instance struct {
 // could be done in the certificate package
 
 func (i *instance) HTTPrequest(u string) (string, error) {
-	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(i.controlHost, strconv.Itoa(i.socksPort)))
-	if err != nil {
-		return "", err
-	}
-
-	dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
-	if err != nil {
-		return "", err
-	}
-
-	t := &http.Transport{Dial: dialer.Dial}
-	client := &http.Client{Transport: t}
-
-	resp, err := client.Get(u)
-	if err != nil {
-		return "", err
-	}
-
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return "", errors.New("invalid request")
-	}
-
-	content, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-
-	return string(content), nil
+	return httpf.HTTPRequest(i.controlHost, i.socksPort, u)
 }
 
 type runningTor struct {
@@ -395,7 +360,7 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 		cmd.Stderr = osf.Stderr()
 	}
 
-	if err := cmd.Start(); err != nil {
+	if err := execf.StartCommand(cmd); err != nil {
 		cancelFunc()
 		return nil, err
 	}
@@ -416,7 +381,7 @@ func ensureWahayDataDir() {
 }
 
 func createOurInstance(b *binary, torsocksPath string) *instance {
-	d, _ := ioutil.TempDir(wahayDataDir, "tor")
+	d, _ := filesystemf.TempDir(wahayDataDir, "tor")
 
 	controlPort, routePort := findAvailableTorPorts()
 
@@ -440,8 +405,8 @@ func createOurInstance(b *binary, torsocksPath string) *instance {
 
 func findAvailablePort(initial int) int {
 	port := initial
-	for !config.IsPortAvailable(port) {
-		port = config.GetRandomPort()
+	for !osf.IsPortAvailable(port) {
+		port = osf.GetRandomPort()
 	}
 	return port
 }
@@ -453,7 +418,7 @@ func findAvailableTorPorts() (controlPort, routePort int) {
 }
 
 func (i *instance) createConfigFile() error {
-	config.EnsureDir(i.dataDirectory, 0700)
+	filesystemf.EnsureDir(i.dataDirectory, 0700)
 	log.Printf("Saving the config file to: %s\n", i.configFile)
 	return i.writeToFile()
 }
@@ -506,7 +471,7 @@ Log debug file %s`,
 }
 
 func (i *instance) writeToFile() error {
-	return ioutil.WriteFile(i.configFile, i.getConfigFileContents(), 0600)
+	return filesystemf.WriteFile(i.configFile, i.getConfigFileContents(), 0600)
 }
 
 func (r *runningTor) closeTorService() {
@@ -514,7 +479,7 @@ func (r *runningTor) closeTorService() {
 }
 
 func (r *runningTor) waitForFinish() {
-	e := r.cmd.Wait()
+	e := execf.WaitCommand(r.cmd)
 	r.finished = true
 	r.finishedWithError = e
 	// TODO: Maybe here, we should check if the failure was because

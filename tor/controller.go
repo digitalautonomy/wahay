@@ -43,7 +43,7 @@ var onions = []string{}
 // and returns a controlling interface
 func createController(torHost string, torPort int) Control {
 	f := func(v string) (torgoController, error) {
-		return torgo.NewController(v)
+		return torgof.NewController(v)
 	}
 
 	var a authenticationMethod = authenticateNone

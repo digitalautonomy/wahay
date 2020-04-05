@@ -2,6 +2,8 @@ package tor
 
 import (
 	"encoding/json"
+	"errors"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -30,6 +32,8 @@ type osFacade interface {
 	MkdirAll(string, os.FileMode) error
 	Stdout() *os.File
 	Stderr() *os.File
+	IsPortAvailable(port int) bool
+	GetRandomPort() int
 }
 
 type filepathFacade interface {
@@ -40,11 +44,15 @@ type execFacade interface {
 	LookPath(string) (string, error)
 	ExecWithModify(bin string, args []string, cm ModifyCommand) ([]byte, error)
 	StartCommand(*exec.Cmd) error
+	WaitCommand(*exec.Cmd) error
 }
 
 type filesystemFacade interface {
 	FileExists(string) bool
 	IsADirectory(string) bool
+	TempDir(where, suffix string) (string, error)
+	EnsureDir(string, os.FileMode)
+	WriteFile(string, []byte, os.FileMode) error
 }
 
 type torgoFacade interface {
@@ -53,6 +61,7 @@ type torgoFacade interface {
 
 type httpFacade interface {
 	CheckConnectionOverTor(host string, port int) bool
+	HTTPRequest(host string, port int, url string) (string, error)
 }
 
 var osf osFacade
@@ -101,6 +110,14 @@ func (*realOsImplementation) Stderr() *os.File {
 	return os.Stderr
 }
 
+func (*realOsImplementation) IsPortAvailable(port int) bool {
+	return config.IsPortAvailable(port)
+}
+
+func (*realOsImplementation) GetRandomPort() int {
+	return config.GetRandomPort()
+}
+
 type realFilepathImplementation struct{}
 
 func (*realFilepathImplementation) Glob(p string) ([]string, error) {
@@ -127,6 +144,10 @@ func (*realExecImplementation) StartCommand(cmd *exec.Cmd) error {
 	return cmd.Start()
 }
 
+func (*realExecImplementation) WaitCommand(cmd *exec.Cmd) error {
+	return cmd.Wait()
+}
+
 type realFilesystemImplementation struct{}
 
 func (*realFilesystemImplementation) FileExists(path string) bool {
@@ -140,6 +161,18 @@ func (*realFilesystemImplementation) IsADirectory(path string) bool {
 	}
 
 	return dir.IsDir()
+}
+
+func (*realFilesystemImplementation) TempDir(where, suffix string) (string, error) {
+	return ioutil.TempDir(where, suffix)
+}
+
+func (*realFilesystemImplementation) EnsureDir(name string, mode os.FileMode) {
+	config.EnsureDir(name, mode)
+}
+
+func (*realFilesystemImplementation) WriteFile(name string, content []byte, mode os.FileMode) error {
+	return ioutil.WriteFile(name, content, mode)
 }
 
 type realTorgoImplementation struct{}
@@ -178,4 +211,37 @@ func (*realHttpImplementation) CheckConnectionOverTor(host string, port int) boo
 	}
 
 	return v.IsTor
+}
+
+func (*realHttpImplementation) HTTPRequest(host string, port int, u string) (string, error) {
+	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(host, strconv.Itoa(port)))
+	if err != nil {
+		return "", err
+	}
+
+	dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
+	if err != nil {
+		return "", err
+	}
+
+	t := &http.Transport{Dial: dialer.Dial}
+	client := &http.Client{Transport: t}
+
+	resp, err := client.Get(u)
+	if err != nil {
+		return "", err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", errors.New("invalid request")
+	}
+
+	content, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(content), nil
 }
