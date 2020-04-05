@@ -39,9 +39,9 @@ type controller struct {
 
 var onions = []string{}
 
-// CreateController takes the Tor information given
+// createController takes the Tor information given
 // and returns a controlling interface
-func CreateController(torHost string, torPort int) Control {
+func createController(torHost string, torPort int) Control {
 	f := func(v string) (torgoController, error) {
 		return torgo.NewController(v)
 	}

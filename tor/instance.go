@@ -120,8 +120,8 @@ func CurrentInstance() Instance {
 	return currentInstance
 }
 
-// GetController returns the Tor controller for the current instance
-func GetController() (Control, error) {
+// getController returns the Tor controller for the current instance
+func getController() (Control, error) {
 	i := CurrentInstance()
 
 	if i == nil {
@@ -147,7 +147,7 @@ func (s *onion) ID() string {
 }
 
 func (s *onion) Delete() error {
-	controller, err := GetController()
+	controller, err := getController()
 	if err != nil {
 		return err
 	}
@@ -158,7 +158,7 @@ func (s *onion) Delete() error {
 // NewOnionServiceWithMultiplePorts creates a new Onion service for the current Tor controller
 func NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, error) {
 	log.Debugf("NewOnionServiceWithMultiplePorts(%v)", ports)
-	controller, err := GetController()
+	controller, err := getController()
 	if err != nil {
 		return nil, err
 	}
@@ -314,10 +314,11 @@ func (i *instance) Start() error {
 }
 
 // GetController returns a controller for the instance `i`
+
 func (i *instance) GetController() Control {
 	log.Debugf("instance(%#v).GetController()", i)
 	if i.controller == nil {
-		i.controller = CreateController(i.controlHost, i.controlPort)
+		i.controller = createController(i.controlHost, i.controlPort)
 
 		if len(i.password) != 0 {
 			i.controller.SetPassword(i.password)
