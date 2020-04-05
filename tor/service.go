@@ -53,7 +53,7 @@ func (s *service) listenToFinish() {
 	s.closeWhenFinish()
 
 	go func() {
-		e := s.rc.Cmd.Wait()
+		e := execf.WaitCommand(s.rc.Cmd)
 		s.finished = true
 		s.finishedWithError = e
 		s.finishChannel <- true

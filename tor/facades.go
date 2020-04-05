@@ -71,13 +71,17 @@ var filesystemf filesystemFacade
 var torgof torgoFacade
 var httpf httpFacade
 
-func init() {
+func setDefaultFacades() {
 	osf = &realOsImplementation{}
 	filepathf = &realFilepathImplementation{}
 	execf = &realExecImplementation{}
 	filesystemf = &realFilesystemImplementation{}
 	torgof = &realTorgoImplementation{}
 	httpf = &realHttpImplementation{}
+}
+
+func init() {
+	setDefaultFacades()
 }
 
 type realOsImplementation struct{}
