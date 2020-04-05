@@ -5,6 +5,7 @@ import (
 	"net"
 	"strconv"
 
+	"github.com/digitalautonomy/wahay/config"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -25,7 +26,7 @@ func newCustomChecker(host string, routePort, controlPort int) basicConnectivity
 }
 
 func newDefaultChecker() basicConnectivity {
-	return newChecker(defaultControlHost, defaultSocksPort, defaultControlPort, "")
+	return newChecker(defaultControlHost, defaultSocksPort, defaultControlPort, *config.TorControlPassword)
 }
 
 // newChecker can check connectivity on custom ports, and optionally
