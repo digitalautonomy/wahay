@@ -2,10 +2,10 @@
 
 
 [[projects]]
-  digest = "1:323ef1c999160d12fafa4074b5a5706511baf1cd91a935ae62494791c94abaf4"
+  digest = "1:219909788b0841d292c7c97ee042c44c95587c9ff2d4b1a12cf45bd69e41f88d"
   name = "github.com/atotto/clipboard"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "579379fa8ff8a6d3fa979cec107f8f6d7f8fde90"
   version = "v0.1.2"
 
@@ -23,20 +23,20 @@
     "gtka",
     "gtki",
   ]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "728d69a7102fc174d4d7ef16eaf527e2601f0c69"
 
 [[projects]]
   branch = "master"
-  digest = "1:5b2204ad5712e6f3b8414fcb9203a03f907ea295724cdd7e1982b35b8ce9d2af"
+  digest = "1:65473378eaee3fc0038c5031bcceb2708bbe955fd41ab690b9a22512ec4d9529"
   name = "github.com/cubiest/jibberjabber"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "1351aa3fb4de4dc6935fa3daa6e89c1e94566168"
 
 [[projects]]
   branch = "master"
-  digest = "1:5e1c3553a3b3f46e9b2ccf94d333403a5449ae739c0a5048bdf1eb606c48cc0d"
+  digest = "1:3a03c82cdeb0924a5fc430d46edb6d43a00520bec04d6fa1d950c0d413ce35a1"
   name = "github.com/digitalautonomy/grumble"
   packages = [
     "pkg/acl",
@@ -55,27 +55,27 @@
     "pkg/web",
     "server",
   ]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "ebe189c52491c38eea0917f688e20ce9d673f674"
 
 [[projects]]
-  digest = "1:d1e35b720b5f5156502ffdd174000c81295919293735342da78582e4dc7a8bcd"
+  digest = "1:1d9e91a431c77be89b21a0bfb572e66a00c99a384dc9d9c32e573b97b546bfc3"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "5d5b4c10bd43f85e63bd9e4a3fa9b1ea2ef88af2"
   version = "v1.3.4"
 
 [[projects]]
-  digest = "1:e62657cca9badaa308d86e7716083e4c5933bb78e30a17743fc67f50be26f6f4"
+  digest = "1:a9afd15a0638ffd84f1a769b7bad253844416f492104319aa909a425e2a1018f"
   name = "github.com/gorilla/websocket"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "c3e18be99d19e6b3e8f1559eea2c161a665c4b6b"
   version = "v1.4.1"
 
 [[projects]]
-  digest = "1:ddf66fdcdb1ec703fa6316f0735dc287290f6e0123037f59972f5fe9202e09d4"
+  digest = "1:474313a007597e92321b7a920706bc1c7f4d8158032de8fc165c5f03bec953cd"
   name = "github.com/gotk3/gotk3"
   packages = [
     "cairo",
@@ -84,61 +84,64 @@
     "gtk",
     "pango",
   ]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "f7e85ed33fd290bcfbf4ce56dcdae192647f42c1"
   version = "v0.4.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:f433da6fbabb0bd1bd730fd340782015c644123d02eb78c20c69ce03352daad1"
+  digest = "1:e71cc6b377264002aec0d9c235087e51ad7a3c1fb341bb4baa84709308b94fe8"
   name = "github.com/kardianos/osext"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "2bc1f35cddc0cc527b4bc3dce8578fc2a6c11384"
 
 [[projects]]
-  digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
+  digest = "1:0f51cee70b0d254dbc93c22666ea2abf211af81c1701a96d04e2284b408621db"
   name = "github.com/konsorten/go-windows-terminal-sequences"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
   version = "v1.0.2"
 
 [[projects]]
-  digest = "1:7218fd69ff5436d016101bbc6183cdc289aa45ac37b48e78846318e4ef389bea"
+  digest = "1:84434ce3428869b7ddf7b3e3cc52ea864b2366deb2c69d4e314f88a239ba29cc"
   name = "github.com/kr/text"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "702c74938df48b97370179f33ce2107bd7ff3b3e"
   version = "v0.2.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:4454a22e87e1aacfb4c7e9550ab98c711a5285a0cc7f9ff8952c44a9b0dbbb05"
+  digest = "1:f3b21ce101a334d52b7ff931ec122d0ab6efe6bb6bab0cdc7e426f6cc2baee0e"
   name = "github.com/niemeyer/pretty"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "a10e7caefd8e0d600cea437f5c3613aeb1553d56"
 
 [[projects]]
-  digest = "1:04457f9f6f3ffc5fea48e71d62f2ca256637dee0a04d710288e27e05c8b41976"
+  digest = "1:05a1e794c2894ef1d663a200ec3af7f8d6612a011cbf44d22e549a597602feda"
   name = "github.com/sirupsen/logrus"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "839c75faf7f98a33d445d181f3018b5c3409a45e"
-  version = "v1.4.2"
+  packages = [
+    ".",
+    "hooks/test",
+  ]
+  pruneopts = "U"
+  revision = "d417be0fe654de640a82370515129985b407c7e3"
+  version = "v1.5.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:f270cec410cc52b9560705ad4dc2f4338ac9049b0e0bce0ff5a1905a1367d398"
+  digest = "1:2ca3d7cd4ee7c2bff2ef32a4824dac28923aa8c42a3d19f23ae52b1e20fb271f"
   name = "github.com/wybiral/torgo"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "a19a6c8a50489e2fdf37223edc5f1284bb965308"
 
 [[projects]]
   branch = "master"
-  digest = "1:fcc72469858c87677fecf3ffe6494711bee501c6671b212e65156a52096a82ae"
+  digest = "1:741ae6c54aa0d6f0914357a9ca638387aa73897c41d756a61d84bdd1e1369340"
   name = "golang.org/x/crypto"
   packages = [
     "ed25519",
@@ -151,34 +154,34 @@
     "scrypt",
     "sha3",
   ]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "2aa609cf4a9d7d1126360de73b55b6002f9e052a"
 
 [[projects]]
   branch = "master"
-  digest = "1:3587bbb18e3d5299dc0020733e2839138afb0a29456ffd4073a3962bb9966556"
+  digest = "1:7de45de174717b4f3e187fb9e8436c4165ae7ce63d394ea47120137770b4089d"
   name = "golang.org/x/net"
   packages = [
     "internal/socks",
     "proxy",
   ]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "0de0cce0169b09b364e001f108dc0399ea8630b3"
 
 [[projects]]
   branch = "master"
-  digest = "1:fbf6d19600d4293ff5aa1417c773e7dfe8ed62a7956c16e98195555ca447db67"
+  digest = "1:dd8673c5ff2a34665a9f90c17c379e048eb57fc85ba9d62afd582ae47f8fe21a"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
     "windows",
   ]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "d5e6a3e2c0ae16fc7480523ebcb7fd4dd3215489"
 
 [[projects]]
-  digest = "1:137714ae7838cec8b48918205cb3cd96b17afebaa715e35a8213e6e0cc739d56"
+  digest = "1:785ceb06263966bb6e74cca120a361b22f0426e500230ea89832b2ab2cf8c948"
   name = "golang.org/x/text"
   packages = [
     "feature/plural",
@@ -196,16 +199,16 @@
     "message/catalog",
     "unicode/cldr",
   ]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
   version = "v0.3.2"
 
 [[projects]]
   branch = "v1"
-  digest = "1:95c723aeb49b28a44330cd94e0272e23ad6ad6e3fb2945a556b72d71fd7b8c65"
+  digest = "1:e18db724576f6b038e30ed9dfe6de804af6b270f3c37ad9e276d2d9915ade954"
   name = "gopkg.in/check.v1"
   packages = ["."]
-  pruneopts = "UT"
+  pruneopts = "U"
   revision = "8fa46927fb4f5b54d48bde78c6c08db205b2298c"
 
 [solve-meta]
@@ -226,6 +229,7 @@
     "github.com/digitalautonomy/grumble/server",
     "github.com/kardianos/osext",
     "github.com/sirupsen/logrus",
+    "github.com/sirupsen/logrus/hooks/test",
     "github.com/wybiral/torgo",
     "golang.org/x/crypto/scrypt",
     "golang.org/x/net/proxy",

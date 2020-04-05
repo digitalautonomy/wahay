@@ -26,8 +26,8 @@
 
 
 [prune]
-  go-tests = true
-  unused-packages = true
+    go-tests = true
+    unused-packages = true
 
 [[constraint]]
   branch = "v1"
