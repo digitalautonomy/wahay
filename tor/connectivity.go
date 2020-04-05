@@ -1,16 +1,11 @@
 package tor
 
 import (
-	"encoding/json"
 	"errors"
 	"net"
-	"net/http"
-	"net/url"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/wybiral/torgo"
-	"golang.org/x/net/proxy"
 )
 
 // basicConnectivity is used to check whether Tor can connect in different ways
@@ -45,13 +40,13 @@ func newChecker(host string, routePort, controlPort int, password string) basicC
 }
 
 func (c *connectivity) checkTorControlPortExists() bool {
-	_, err := torgo.NewController(net.JoinHostPort(c.host, strconv.Itoa(c.controlPort)))
+	_, err := torgof.NewController(net.JoinHostPort(c.host, strconv.Itoa(c.controlPort)))
 	return err == nil
 }
 
 func withNewTorgoController(where string, a authenticationMethod) authenticationMethod {
 	return func(torgoController) error {
-		tc, err := torgo.NewController(where)
+		tc, err := torgof.NewController(where)
 		if err != nil {
 			return err
 		}
@@ -84,33 +79,7 @@ type checkTorResult struct {
 }
 
 func (c *connectivity) checkConnectionOverTor() bool {
-	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(c.host, strconv.Itoa(c.routePort)))
-	if err != nil {
-		return false
-	}
-
-	dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
-	if err != nil {
-		return false
-	}
-
-	t := &http.Transport{Dial: dialer.Dial}
-	client := &http.Client{Transport: t}
-
-	resp, err := client.Get("https://check.torproject.org/api/ip")
-	if err != nil {
-		return false
-	}
-
-	defer resp.Body.Close()
-
-	var v checkTorResult
-	err = json.NewDecoder(resp.Body).Decode(&v)
-	if err != nil {
-		return false
-	}
-
-	return v.IsTor
+	return httpf.CheckConnectionOverTor(c.host, c.routePort)
 }
 
 var (

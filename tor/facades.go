@@ -1,11 +1,18 @@
 package tor
 
 import (
+	"encoding/json"
+	"net"
+	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 
 	"github.com/digitalautonomy/wahay/config"
+	"github.com/wybiral/torgo"
+	"golang.org/x/net/proxy"
 )
 
 // This file contains internal interfaces used to abstract
@@ -40,16 +47,28 @@ type filesystemFacade interface {
 	IsADirectory(string) bool
 }
 
+type torgoFacade interface {
+	NewController(string) (torgoController, error)
+}
+
+type httpFacade interface {
+	CheckConnectionOverTor(host string, port int) bool
+}
+
 var osf osFacade
 var filepathf filepathFacade
 var execf execFacade
 var filesystemf filesystemFacade
+var torgof torgoFacade
+var httpf httpFacade
 
 func init() {
 	osf = &realOsImplementation{}
 	filepathf = &realFilepathImplementation{}
 	execf = &realExecImplementation{}
 	filesystemf = &realFilesystemImplementation{}
+	torgof = &realTorgoImplementation{}
+	httpf = &realHttpImplementation{}
 }
 
 type realOsImplementation struct{}
@@ -121,4 +140,42 @@ func (*realFilesystemImplementation) IsADirectory(path string) bool {
 	}
 
 	return dir.IsDir()
+}
+
+type realTorgoImplementation struct{}
+
+func (*realTorgoImplementation) NewController(a string) (torgoController, error) {
+	return torgo.NewController(a)
+}
+
+type realHttpImplementation struct{}
+
+func (*realHttpImplementation) CheckConnectionOverTor(host string, port int) bool {
+	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(host, strconv.Itoa(port)))
+	if err != nil {
+		return false
+	}
+
+	dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
+	if err != nil {
+		return false
+	}
+
+	t := &http.Transport{Dial: dialer.Dial}
+	client := &http.Client{Transport: t}
+
+	resp, err := client.Get("https://check.torproject.org/api/ip")
+	if err != nil {
+		return false
+	}
+
+	defer resp.Body.Close()
+
+	var v checkTorResult
+	err = json.NewDecoder(resp.Body).Decode(&v)
+	if err != nil {
+		return false
+	}
+
+	return v.IsTor
 }
