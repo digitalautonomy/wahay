@@ -190,9 +190,9 @@ var (
 	ErrTorConnectionTimeout = errors.New("connection over Tor timeout")
 )
 
-// GetInstance returns the Instance for working with Tor
+// InitializeInstance initialized and returns the Instance for working with Tor
 // This function should be called only once during the system initialization
-func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
+func InitializeInstance(conf *config.ApplicationConfig) (Instance, error) {
 	i, err := getSingleInstance()
 	if err == nil {
 		return i, nil
@@ -220,7 +220,7 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 	i, err = getOurInstance(b, conf)
 	if err != nil {
-		log.Debugf("tor.GetInstance() error: %s", err)
+		log.Debugf("tor.InitializeInstance() error: %s", err)
 		return nil, err
 	}
 
