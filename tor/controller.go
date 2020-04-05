@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/digitalautonomy/wahay/config"
+	log "github.com/sirupsen/logrus"
 	"github.com/wybiral/torgo"
 )
 
@@ -81,11 +82,13 @@ type OnionPort struct {
 // method, and then it could take variable number of arguments
 
 func (cntrl *controller) CreateNewOnionServiceWithMultiplePorts(ports []OnionPort) (serviceID string, err error) {
+	log.Debugf("CreateNewOnionServiceWithMultiplePorts(%v)", ports)
 	tc, err := cntrl.getTorController()
 	if err != nil {
 		return
 	}
 
+	log.Debug("CreateNewOnionServiceWithMultiplePorts() - authenticating")
 	if cntrl.authType != nil {
 		err = (*cntrl.authType)(tc)
 		if err != nil {

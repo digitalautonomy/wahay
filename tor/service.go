@@ -1,12 +1,5 @@
 package tor
 
-// Command is a representation of a Tor command parameters
-type Command struct {
-	Cmd      string
-	Args     []string
-	Modifier ModifyCommand
-}
-
 // Service is a representation of a service running through Tor
 type Service interface {
 	Close()
@@ -25,8 +18,8 @@ type service struct {
 }
 
 // NewService creates a new Tor command service
-func NewService(c Command) (Service, error) {
-	rc, err := CurrentInstance().Exec(c.Cmd, c.Args, c.Modifier)
+func NewService(cmd string, args []string, modifier ModifyCommand) (Service, error) {
+	rc, err := CurrentInstance().Exec(cmd, args, modifier)
 	if err != nil {
 		return nil, err
 	}

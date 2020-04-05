@@ -128,13 +128,7 @@ func (c *client) Launch(url string, onClose func()) (tor.Service, error) {
 }
 
 func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
-	cm := tor.Command{
-		Cmd:      c.pathToBinary(),
-		Args:     args,
-		Modifier: c.torCommandModifier(),
-	}
-
-	s, err := tor.NewService(cm)
+	s, err := tor.NewService(c.pathToBinary(), args, c.torCommandModifier())
 	if err != nil {
 		return nil, errors.New("error: the service can't be started")
 	}

@@ -131,19 +131,6 @@ func GetController() (Control, error) {
 	return i.GetController(), nil
 }
 
-// TODO[OB] - Why is this function exposed? It isn't used anywhere outside
-
-// DeleteOnionService deletes a specific ONION service for the
-// current Tor instance controller
-func DeleteOnionService(serviceID string) error {
-	controller, err := GetController()
-	if err != nil {
-		return err
-	}
-
-	return controller.DeleteOnionService(serviceID)
-}
-
 // Onion is a representation of a Tor Onion Service
 type Onion interface {
 	ID() string
@@ -160,11 +147,17 @@ func (s *onion) ID() string {
 }
 
 func (s *onion) Delete() error {
-	return DeleteOnionService(s.id)
+	controller, err := GetController()
+	if err != nil {
+		return err
+	}
+
+	return controller.DeleteOnionService(s.id)
 }
 
 // NewOnionServiceWithMultiplePorts creates a new Onion service for the current Tor controller
 func NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, error) {
+	log.Debugf("NewOnionServiceWithMultiplePorts(%v)", ports)
 	controller, err := GetController()
 	if err != nil {
 		return nil, err
@@ -210,6 +203,7 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 	// already available in the system.
 	i, err = systemInstance()
 	if err == nil {
+		log.Infof("Using System Tor")
 		setSingleInstance(i)
 		return i, nil
 	}
@@ -222,7 +216,7 @@ func GetInstance(conf *config.ApplicationConfig) (Instance, error) {
 		return nil, ErrTorBinaryNotFound
 	}
 
-	log.Printf("Using Tor binary found in: %s", b.path)
+	log.Infof("Using Tor binary found in: %s", b.path)
 
 	i, err = getOurInstance(b, conf)
 	if err != nil {
@@ -240,6 +234,7 @@ const torStartupTimeout = 2 * time.Minute
 func systemInstance() (Instance, error) {
 	checker := newDefaultChecker()
 
+	log.Debugf("checking system instance...")
 	total, partial := checker.Check()
 
 	if total != nil || partial != nil {
@@ -320,6 +315,7 @@ func (i *instance) Start() error {
 
 // GetController returns a controller for the instance `i`
 func (i *instance) GetController() Control {
+	log.Debugf("instance(%#v).GetController()", i)
 	if i.controller == nil {
 		i.controller = CreateController(i.controlHost, i.controlPort)
 

@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-// MinSupportedVersion is the TOR minimun supported version
-const MinSupportedVersion = "0.3.2"
+// minSupportedVersion is the Tor minimun supported version
+const minSupportedVersion = "0.3.2"
 
 // Simple utilities to manage version comparisons
 

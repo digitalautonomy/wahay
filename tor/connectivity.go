@@ -8,12 +8,13 @@ import (
 	"net/url"
 	"strconv"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/wybiral/torgo"
 	"golang.org/x/net/proxy"
 )
 
-// Connectivity is used to check whether Tor can connect in different ways
-type Connectivity interface {
+// basicConnectivity is used to check whether Tor can connect in different ways
+type basicConnectivity interface {
 	Check() (errTotal error, errPartial error)
 }
 
@@ -24,17 +25,17 @@ type connectivity struct {
 	password    string
 }
 
-func newCustomChecker(host string, routePort, controlPort int) Connectivity {
+func newCustomChecker(host string, routePort, controlPort int) basicConnectivity {
 	return newChecker(host, routePort, controlPort, "")
 }
 
-func newDefaultChecker() Connectivity {
+func newDefaultChecker() basicConnectivity {
 	return newChecker(defaultControlHost, defaultSocksPort, defaultControlPort, "")
 }
 
 // newChecker can check connectivity on custom ports, and optionally
 // avoid checking for binary compatibility
-func newChecker(host string, routePort, controlPort int, password string) Connectivity {
+func newChecker(host string, routePort, controlPort int, password string) basicConnectivity {
 	return &connectivity{
 		host:        host,
 		routePort:   routePort,
@@ -58,13 +59,21 @@ func withNewTorgoController(where string, a authenticationMethod) authentication
 	}
 }
 
+func debuggingAuth(name string, a authenticationMethod) authenticationMethod {
+	return func(tc torgoController) error {
+		log.Debugf("Running auth test(%s)", name)
+		res := a(tc)
+		log.Debugf(" -- result of running auth test (%s) - %v", name, res)
+		return res
+	}
+}
 func (c *connectivity) checkTorControlAuth() bool {
 	where := net.JoinHostPort(c.host, strconv.Itoa(c.controlPort))
 
 	authCallback := authenticateAny(
-		withNewTorgoController(where, authenticateNone),
-		withNewTorgoController(where, authenticateCookie),
-		withNewTorgoController(where, authenticatePassword(c.password)))
+		withNewTorgoController(where, debuggingAuth("none", authenticateNone)),
+		withNewTorgoController(where, debuggingAuth("cookie", authenticateCookie)),
+		withNewTorgoController(where, debuggingAuth("password", authenticatePassword(c.password))))
 
 	return authCallback(nil) == nil
 }

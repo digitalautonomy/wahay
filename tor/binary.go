@@ -256,7 +256,7 @@ func checkTorVersionCompatibility(b *binary) bool {
 		return false
 	}
 
-	diff, err := compareVersions(extractVersionFrom(output), MinSupportedVersion)
+	diff, err := compareVersions(extractVersionFrom(output), minSupportedVersion)
 	if err != nil {
 		return false
 	}
@@ -353,7 +353,7 @@ func listPossibleTorBinary(path string) []string {
 		if filename == "tor" {
 			result = append(result, match)
 		} else {
-			diff, err := compareVersions(extractVersionFrom([]byte(filename)), MinSupportedVersion)
+			diff, err := compareVersions(extractVersionFrom([]byte(filename)), minSupportedVersion)
 			if err == nil && diff >= 0 {
 				result = append(result, match)
 			}
