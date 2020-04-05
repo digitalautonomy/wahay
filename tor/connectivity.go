@@ -11,7 +11,7 @@ import (
 
 // basicConnectivity is used to check whether Tor can connect in different ways
 type basicConnectivity interface {
-	Check() (errTotal error, errPartial error)
+	Check() (errTotal error, errPartial error, authType string)
 }
 
 type connectivity struct {
@@ -19,6 +19,7 @@ type connectivity struct {
 	routePort   int
 	controlPort int
 	password    string
+	authType    string
 }
 
 func newCustomChecker(host string, routePort, controlPort int) basicConnectivity {
@@ -63,13 +64,24 @@ func debuggingAuth(name string, a authenticationMethod) authenticationMethod {
 		return res
 	}
 }
+
+func (c *connectivity) settingAuthType(tp string, a authenticationMethod) authenticationMethod {
+	return func(tc torgoController) error {
+		res := a(tc)
+		if res == nil {
+			c.authType = tp
+		}
+		return res
+	}
+}
+
 func (c *connectivity) checkTorControlAuth() bool {
 	where := net.JoinHostPort(c.host, strconv.Itoa(c.controlPort))
 
 	authCallback := authenticateAny(
-		withNewTorgoController(where, debuggingAuth("none", authenticateNone)),
-		withNewTorgoController(where, debuggingAuth("cookie", authenticateCookie)),
-		withNewTorgoController(where, debuggingAuth("password", authenticatePassword(c.password))))
+		withNewTorgoController(where, c.settingAuthType("none", authenticateNone)),
+		withNewTorgoController(where, c.settingAuthType("cookie", authenticateCookie)),
+		withNewTorgoController(where, c.settingAuthType("password", authenticatePassword(c.password))))
 
 	return authCallback(nil) == nil
 }
@@ -97,18 +109,22 @@ var (
 	ErrFatalTorNoConnectionAllowed = errors.New("no connection over Tor allowed")
 )
 
-func (c *connectivity) Check() (errTotal error, errPartial error) {
+func (c *connectivity) AuthenticationType() string {
+	return c.authType
+}
+
+func (c *connectivity) Check() (errTotal error, errPartial error, authType string) {
 	if !c.checkTorControlPortExists() {
-		return nil, ErrPartialTorNoControlPort
+		return nil, ErrPartialTorNoControlPort, ""
 	}
 
 	if !c.checkTorControlAuth() {
-		return nil, ErrPartialTorNoValidAuth
+		return nil, ErrPartialTorNoValidAuth, ""
 	}
 
 	if !c.checkConnectionOverTor() {
-		return ErrFatalTorNoConnectionAllowed, nil
+		return ErrFatalTorNoConnectionAllowed, nil, ""
 	}
 
-	return nil, nil
+	return nil, nil, c.authType
 }

@@ -152,8 +152,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailab
 	c.Assert(i.controlHost, Equals, "127.0.0.1")
 	c.Assert(i.controlPort, Equals, 9051)
 
-	// BUG(ola): TODO - this should not fail. It's a bug
-	//c.Assert(i.useCookie, Equals, true)
+	c.Assert(i.useCookie, Equals, true)
 	c.Assert(i.isLocal, Equals, true)
 	c.Assert(i.runningTor, IsNil)
 	c.Assert(i.binary, IsNil)
@@ -212,8 +211,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailab
 	c.Assert(i.isLocal, Equals, true)
 	c.Assert(i.runningTor, IsNil)
 	c.Assert(i.binary, IsNil)
-	// BUG(ola): TODO - this is another bug, this should pass
-	//	c.Assert(i.password, Equals, "super secret samosa")
+	c.Assert(i.password, Equals, "super secret samosa")
 }
 
 func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeShutDown_whenSystemTorIsUsed(c *C) {

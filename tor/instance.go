@@ -199,7 +199,7 @@ func systemInstance() (Instance, error) {
 	checker := newDefaultChecker()
 
 	log.Debugf("checking system instance...")
-	total, partial := checker.Check()
+	total, partial, authType := checker.Check()
 
 	if total != nil || partial != nil {
 		return nil, errors.New("error: we can't use system Tor instance")
@@ -212,6 +212,12 @@ func systemInstance() (Instance, error) {
 		socksPort:   defaultSocksPort,
 		useCookie:   false,
 		isLocal:     true,
+	}
+
+	if authType == "cookie" {
+		i.useCookie = true
+	} else if authType == "password" {
+		i.password = *config.TorControlPassword
 	}
 
 	return i, nil
@@ -231,7 +237,7 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 	for {
 		time.Sleep(3 * time.Second)
 
-		errTotal, errPartial := checker.Check()
+		errTotal, errPartial, _ := checker.Check()
 		if errTotal != nil {
 			return nil, errTotal
 		}
