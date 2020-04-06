@@ -14,7 +14,7 @@
   box-shadow: none; }
 
 .text-danger {
-  color: #cb2431; }
+  color: #e53e3e; }
 
 window {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -185,21 +185,21 @@ dialog {
     box-shadow: none; }
 
 .btn-danger {
-  color: #cb2431;
+  color: #e53e3e;
   background-color: #fafbfc; }
   .btn-danger:focus {
-    box-shadow: 0 0 0 0.2em rgba(203, 36, 49, 0.4); }
+    box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
   .btn-danger:hover {
     color: #fff;
-    background-color: #cb2431;
+    background-color: #e53e3e;
     border-color: rgba(0, 0, 0, 0.5); }
   .btn-danger:active {
     color: #fff;
-    background-color: #b5202c;
+    background-color: #e22828;
     border-color: rgba(0, 0, 0, 0.5);
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-danger:disabled {
-    color: rgba(203, 36, 49, 0.4);
+    color: rgba(229, 62, 62, 0.4);
     background-color: #f0f5f9;
     border-color: rgba(0, 0, 0, 0.2);
     box-shadow: none; }
@@ -307,8 +307,8 @@ label.label-text {
   background-color: #fff5b1; }
 
 .label-warning, .label-settings-warning {
-  color: #86181d;
-  background-color: #ffdce0; }
+  color: #742a2a;
+  background-color: #fff5f5; }
 
 .main-window-top-bar {
   background-color: #f7fafc;
@@ -343,8 +343,8 @@ label.label-text {
   background-color: #1a202c;
   background-image: linear-gradient(-180deg, #141922 0%, black 90%); }
   .main-window-status-bar.error {
-    background-color: #86181d;
-    background-image: linear-gradient(-180deg, #d42d3d 0%, #79161a 90%); }
+    background-color: #742a2a;
+    background-image: linear-gradient(-180deg, #f45757 0%, #692626 90%); }
   .main-window-status-bar .status-label {
     font-size: 16px; }
   .main-window-status-bar .status-show-errors {
@@ -356,8 +356,8 @@ label.label-text {
     border: 2px solid rgba(255, 255, 255, 0.1); }
     .main-window-status-bar .status-show-errors:hover {
       color: #fff;
-      background: #9e1c23;
-      border-color: #9e1c23; }
+      background: #9b2c2c;
+      border-color: #9b2c2c; }
 
 .help-content {
   padding: 20px; }
@@ -423,20 +423,20 @@ window.meeting-controls {
       box-shadow: none; }
   window.meeting-controls .control-finish-call {
     color: #fff;
-    background: #9e1c23;
-    border-color: #9e1c23; }
+    background: #9b2c2c;
+    border-color: #9b2c2c; }
     window.meeting-controls .control-finish-call:focus {
-      box-shadow: 0 0 0 0.2em rgba(203, 36, 49, 0.4); }
+      box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
     window.meeting-controls .control-finish-call:hover {
-      background-color: #951a21;
-      border-color: #951a21; }
+      background-color: #932a2a;
+      border-color: #932a2a; }
     window.meeting-controls .control-finish-call:active {
-      background-color: #971b23;
-      border-color: #951a21;
+      background-color: #a42d2d;
+      border-color: #932a2a;
       box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
     window.meeting-controls .control-finish-call:disabled {
       color: rgba(255, 255, 255, 0.65);
-      background-color: #cf8e91;
+      background-color: #cd9696;
       border-color: transparent;
       box-shadow: none; }
 
