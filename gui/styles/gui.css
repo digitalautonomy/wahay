@@ -22,11 +22,8 @@ window {
   font-size: 14px; }
   window .window-content {
     padding: 20px; }
-  window .window-actions {
-    padding: 20px; }
-    window .window-actions.bordered {
-      border-top: 1px solid #d1d5da;
-      background-color: #f6f8fa; }
+  window .window-actions.bordered {
+    border-top: 1px solid #d1d5da; }
   window.light {
     background-color: #f6f8fa; }
     window.light .window-actions.bordered {
@@ -314,7 +311,6 @@ label.label-text {
   background-color: #ffdce0; }
 
 .main-window-top-bar {
-  padding: 20px;
   background-color: #f6f8fa;
   border-bottom: 1px solid #d1d5da; }
   .main-window-top-bar .main-window-title {
@@ -336,10 +332,13 @@ label.label-text {
   .main-window-actions .btn-host-meeting,
   .main-window-actions .btn-join-meeting {
     text-shadow: none; }
+    .main-window-actions .btn-host-meeting label,
+    .main-window-actions .btn-join-meeting label {
+      font-size: 18px;
+      font-weight: 500; }
 
 .main-window-status-bar {
   color: #e1e4e8;
-  padding: 10px 20px;
   border-width: 0;
   background-color: #24292e;
   background-image: linear-gradient(-180deg, #1d2125 0%, #14171a 90%); }

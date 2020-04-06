@@ -1,5 +1,4 @@
 .main-window-top-bar {
-  padding: $spacing;
   background-color: $gray-100;
   border-bottom: 1px solid $gray-300;
 
@@ -34,6 +33,11 @@
 
     @extend .btn;
     @extend .btn-lg;
+
+    label {
+      font-size: $font-size-large;
+      font-weight: $font-weight-semibold;
+    }
   }
 
   .btn-host-meeting {
@@ -47,7 +51,6 @@
 
 .main-window-status-bar {
   color: $gray-200;
-  padding: $spacing/2 $spacing;
   border-width: 0;
   background-color: $gray-900;
   background-image: linear-gradient(-180deg, darken($gray-900, 3%) 0%, darken($black, 3%) 90%);

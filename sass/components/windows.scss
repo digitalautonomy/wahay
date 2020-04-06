@@ -8,11 +8,8 @@ window {
   }
 
   .window-actions {
-    padding: $spacing;
-
     &.bordered {
       border-top: 1px solid $gray-300;
-      background-color: $gray-100;
     }
   }
 

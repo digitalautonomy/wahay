@@ -1,18 +1,18 @@
 .help-content {
-    padding: $spacing;
+  padding: $spacing;
 }
 
 .help-title {
-    font-size: $h3-size;
+  font-size: $h3-size;
 }
 
 .help-primary {
-    font-weight: $font-weight-bold;
-    font-size: $h3-size;
+  font-weight: $font-weight-bold;
+  font-size: $h3-size;
 
-    @extend .help-title;
+  @extend .help-title;
 }
 
 .help-text {
-    font-size: $font-size-medium;
+  font-size: $font-size-medium;
 }
