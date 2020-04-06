@@ -148,20 +148,20 @@ dialog {
 
 .btn-secondary, .main-window-actions .btn-join-meeting {
   color: #fff;
-  background: #22863a;
-  border-color: #22863a; }
+  background: #38a169;
+  border-color: #38a169; }
   .btn-secondary:focus, .main-window-actions .btn-join-meeting:focus {
-    box-shadow: 0 0 0 0.2em rgba(40, 167, 69, 0.4); }
+    box-shadow: 0 0 0 0.2em rgba(72, 187, 120, 0.4); }
   .btn-secondary:hover, .main-window-actions .btn-join-meeting:hover {
-    background-color: #207e36;
-    border-color: #207e36; }
+    background-color: #359964;
+    border-color: #359964; }
   .btn-secondary:active, .main-window-actions .btn-join-meeting:active {
-    background-color: #1e7a34;
-    border-color: #207e36;
+    background-color: #369460;
+    border-color: #359964;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-secondary:disabled, .main-window-actions .btn-join-meeting:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #91c39d;
+    background-color: #9cd0b4;
     border-color: transparent;
     box-shadow: none; }
 
@@ -390,7 +390,7 @@ label.label-text {
   padding-right: 20px; }
 
 .host-meeting-toolbar {
-  background-color: #28a745;
+  background-color: #48bb78;
   padding: 20px;
   font-size: 18px;
   color: #fff; }
