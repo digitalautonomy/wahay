@@ -76,6 +76,44 @@ func (c *connectivity) checkTorControlAuth() bool {
 	return authCallback(nil) == nil
 }
 
+func (c *connectivity) tryAuthenticate(tc torgoController) error {
+	switch c.authType {
+	case "none":
+		return authenticateNone(tc)
+	case "password":
+		return authenticatePassword(c.password)(tc)
+	case "cookie":
+		return authenticateCookie(tc)
+	default:
+		return errors.New("no valid authentication type")
+	}
+}
+
+func (c *connectivity) checkControlPortVersion() bool {
+	where := net.JoinHostPort(c.host, strconv.Itoa(c.controlPort))
+
+	tc, err := torgof.NewController(where)
+	if err != nil {
+		return false
+	}
+	err = c.tryAuthenticate(tc)
+	if err != nil {
+		return false
+	}
+
+	v, err := tc.GetVersion()
+	if err != nil {
+		return false
+	}
+
+	diff, err := compareVersions(v, minSupportedVersion)
+	if err != nil {
+		return false
+	}
+
+	return diff >= 0
+}
+
 type checkTorResult struct {
 	IsTor bool
 	IP    string
@@ -94,6 +132,10 @@ var (
 	// cannot authenticate to the Tor control port
 	ErrPartialTorNoValidAuth = errors.New("no Tor control port valid authentication")
 
+	// ErrPartialTorTooOld is an error that shows that the control port is running
+	// a version that is too old
+	ErrPartialTorTooOld = errors.New("the Tor control port is running a too old version of Tor")
+
 	// ErrFatalTorNoConnectionAllowed is a fatal error that it's trown when
 	// the system cannot make a connection over the Tor network
 	ErrFatalTorNoConnectionAllowed = errors.New("no connection over Tor allowed")
@@ -110,6 +152,10 @@ func (c *connectivity) Check() (authType string, errTotal error, errPartial erro
 
 	if !c.checkTorControlAuth() {
 		return "", nil, ErrPartialTorNoValidAuth
+	}
+
+	if !c.checkControlPortVersion() {
+		return "", nil, ErrPartialTorTooOld
 	}
 
 	if !c.checkConnectionOverTor() {

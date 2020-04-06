@@ -88,12 +88,11 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithN
 
 	c.Assert(mocktorgof.newControllerArg, Equals, "127.0.0.1:9051")
 
-	c.Assert(tc.authNoneCalled, Equals, 1)
+	c.Assert(tc.authNoneCalled, Equals, 2)
 	c.Assert(tc.authPassCalled, Equals, 0)
 	c.Assert(tc.authCookieCalled, Equals, 0)
 
-	// BUG(ola): TODO - this needs to be fixed. For some reason something is wrong here
-	//c.Assert(tc.getVersionCalled, Equals, 1)
+	c.Assert(tc.getVersionCalled, Equals, 1)
 
 	c.Assert(mockhttpf.checkConnectionArg1, Equals, "127.0.0.1")
 	c.Assert(mockhttpf.checkConnectionArg2, Equals, 9050)
@@ -138,10 +137,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorIsUsed_whenSystemTorIsOKWithCooki
 
 	c.Assert(tc.authNoneCalled, Equals, 1)
 	c.Assert(tc.authPassCalled, Equals, 0)
-	c.Assert(tc.authCookieCalled, Equals, 1)
+	c.Assert(tc.authCookieCalled, Equals, 2)
 
-	// BUG(ola): TODO - this needs to be fixed. For some reason something is wrong here
-	//c.Assert(tc.getVersionCalled, Equals, 1)
+	c.Assert(tc.getVersionCalled, Equals, 1)
 
 	c.Assert(mockhttpf.checkConnectionArg1, Equals, "127.0.0.1")
 	c.Assert(mockhttpf.checkConnectionArg2, Equals, 9050)
@@ -191,12 +189,11 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithP
 	c.Assert(mocktorgof.newControllerArg, Equals, "127.0.0.1:9051")
 
 	c.Assert(tc.authNoneCalled, Equals, 1)
-	c.Assert(tc.authPassCalled, Equals, 1)
+	c.Assert(tc.authPassCalled, Equals, 2)
 	c.Assert(tc.authCookieCalled, Equals, 1)
 	c.Assert(tc.authPassArg, Equals, "super secret samosa")
 
-	// BUG(ola): TODO - this needs to be fixed. For some reason something is wrong here
-	//c.Assert(tc.getVersionCalled, Equals, 1)
+	c.Assert(tc.getVersionCalled, Equals, 1)
 
 	c.Assert(mockhttpf.checkConnectionArg1, Equals, "127.0.0.1")
 	c.Assert(mockhttpf.checkConnectionArg2, Equals, 9050)
@@ -244,8 +241,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenItsNotConnected
 	c.Assert(e, ErrorMatches, "no Tor binary found")
 }
 
-// BUG(ola): TODO - this is another bug, this test case should pass
-func (s *TorAcceptanceSuite) DisabledTestXthatSystemTorWillNotBeUsedXwhenTheVersionIsTooOld(c *C) {
+func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenTheVersionIsTooOld(c *C) {
 	mockAll()
 	defer setDefaultFacades()
 	defer func() {
@@ -259,7 +255,7 @@ func (s *TorAcceptanceSuite) DisabledTestXthatSystemTorWillNotBeUsedXwhenTheVers
 	tc.authNoneReturn = nil
 	tc.authPassReturn = errors.New("couldn't auth")
 	tc.authCookieReturn = errors.New("couldn't auth")
-	tc.getVersionReturn1 = "2.1.1"
+	tc.getVersionReturn1 = "0.2.1.1"
 	tc.getVersionReturn2 = nil
 
 	mocktorgof.newControllerReturn1 = tc
