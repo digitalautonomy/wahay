@@ -61,7 +61,7 @@ var _ = Suite(&TorAcceptanceSuite{})
 //   At the end of Wahay, when running a custom Tor instance, stop the Tor
 //   instance. Also clean up and destroy the created data directory
 
-func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailableWithNoAuthenticationAndProperVersion(c *C) {
+func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithNoAuthenticationAndProperVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
 	defer func() {
@@ -73,8 +73,8 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailab
 
 	tc := &mockTorgoController{}
 	tc.authNoneReturn = nil
-	tc.authPassReturn = errors.New("couldn't...")
-	tc.authCookieReturn = errors.New("couldn't...")
+	tc.authPassReturn = errors.New("couldn't auth")
+	tc.authCookieReturn = errors.New("couldn't auth")
 	tc.getVersionReturn1 = "4.0.1"
 	tc.getVersionReturn2 = nil
 
@@ -109,7 +109,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailab
 	c.Assert(i.binary, IsNil)
 }
 
-func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailableWithCookieAuthenticationAndProperVersion(c *C) {
+func (s *TorAcceptanceSuite) Test_thatSystemTorIsUsed_whenSystemTorIsOKWithCookieAuthAndProperVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
 	defer func() {
@@ -121,9 +121,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailab
 
 	tc := &mockTorgoController{}
 	tc.authNoneReturn = errors.New("couldn't authenticate")
-	tc.authPassReturn = errors.New("couldn't...")
+	tc.authPassReturn = errors.New("couldn't auth")
 	tc.authCookieReturn = nil
-	tc.getVersionReturn1 = "4.0.1"
+	tc.getVersionReturn1 = "4.0.2"
 	tc.getVersionReturn2 = nil
 
 	mocktorgof.newControllerReturn1 = tc
@@ -158,7 +158,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailab
 	c.Assert(i.binary, IsNil)
 }
 
-func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailableWithPasswordAuthenticationAndProperVersion(c *C) {
+func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithPasswordAuthAndOKVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
 	defer func() {
@@ -177,7 +177,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsAvailab
 	tc.authNoneReturn = errors.New("couldn't authenticate")
 	tc.authPassReturn = nil
 	tc.authCookieReturn = errors.New("couldn't authenticate")
-	tc.getVersionReturn1 = "4.0.1"
+	tc.getVersionReturn1 = "4.0.3"
 	tc.getVersionReturn2 = nil
 
 	mocktorgof.newControllerReturn1 = tc
@@ -230,9 +230,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenItsNotConnected
 
 	tc := &mockTorgoController{}
 	tc.authNoneReturn = nil
-	tc.authPassReturn = errors.New("couldn't...")
-	tc.authCookieReturn = errors.New("couldn't...")
-	tc.getVersionReturn1 = "4.0.1"
+	tc.authPassReturn = errors.New("couldn't auth")
+	tc.authCookieReturn = errors.New("couldn't auth")
+	tc.getVersionReturn1 = "4.0.4"
 	tc.getVersionReturn2 = nil
 
 	mocktorgof.newControllerReturn1 = tc
@@ -245,7 +245,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenItsNotConnected
 }
 
 // BUG(ola): TODO - this is another bug, this test case should pass
-func (s *TorAcceptanceSuite) _Test_thatSystemTorWillNotBeUsed_whenTheVersionIsTooOld(c *C) {
+func (s *TorAcceptanceSuite) DisabledTestXthatSystemTorWillNotBeUsedXwhenTheVersionIsTooOld(c *C) {
 	mockAll()
 	defer setDefaultFacades()
 	defer func() {
@@ -257,8 +257,8 @@ func (s *TorAcceptanceSuite) _Test_thatSystemTorWillNotBeUsed_whenTheVersionIsTo
 
 	tc := &mockTorgoController{}
 	tc.authNoneReturn = nil
-	tc.authPassReturn = errors.New("couldn't...")
-	tc.authCookieReturn = errors.New("couldn't...")
+	tc.authPassReturn = errors.New("couldn't auth")
+	tc.authCookieReturn = errors.New("couldn't auth")
 	tc.getVersionReturn1 = "2.1.1"
 	tc.getVersionReturn2 = nil
 
@@ -289,7 +289,7 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresNoSystemTor(c *C) {
 }
 
 // BUG(ola): TODO - this is another bug, this test case should pass
-func (s *TorAcceptanceSuite) _Test_thatThingsWillFailIfTheresASystemTorWithOldVersion(c *C) {
+func (s *TorAcceptanceSuite) DisabledTestXthatThingsWillFailIfTheresASystemTorWithOldVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
 	defer func() {
@@ -344,7 +344,7 @@ var mockfilepathf *mockFilepathImplementation
 var mockexecf *mockExecImplementation
 var mockfilesystemf *mockFilesystemImplementation
 var mocktorgof *mockTorgoImplementation
-var mockhttpf *mockHttpImplementation
+var mockhttpf *mockHTTPImplementation
 
 func mockAll() {
 	mockosf = &mockOsImplementation{}
@@ -352,7 +352,7 @@ func mockAll() {
 	mockexecf = &mockExecImplementation{}
 	mockfilesystemf = &mockFilesystemImplementation{}
 	mocktorgof = &mockTorgoImplementation{}
-	mockhttpf = &mockHttpImplementation{}
+	mockhttpf = &mockHTTPImplementation{}
 
 	osf = mockosf
 	filepathf = mockfilepathf
@@ -530,20 +530,20 @@ func (m *mockTorgoImplementation) NewController(a string) (torgoController, erro
 	return m.newControllerReturn1, m.newControllerReturn2
 }
 
-type mockHttpImplementation struct {
+type mockHTTPImplementation struct {
 	checkConnectionArg1   string
 	checkConnectionArg2   int
 	checkConnectionReturn bool
 }
 
-func (m *mockHttpImplementation) CheckConnectionOverTor(host string, port int) bool {
+func (m *mockHTTPImplementation) CheckConnectionOverTor(host string, port int) bool {
 	testPrint("CheckConnectionOverTor(%v, %v)\n", host, port)
 	m.checkConnectionArg1 = host
 	m.checkConnectionArg2 = port
 	return m.checkConnectionReturn
 }
 
-func (m *mockHttpImplementation) HTTPRequest(host string, port int, u string) (string, error) {
+func (m *mockHTTPImplementation) HTTPRequest(host string, port int, u string) (string, error) {
 	testPrint("HTTPRequest(%v, %v, %v)\n", host, port, u)
 	return "", nil
 }

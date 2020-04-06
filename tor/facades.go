@@ -77,7 +77,7 @@ func setDefaultFacades() {
 	execf = &realExecImplementation{}
 	filesystemf = &realFilesystemImplementation{}
 	torgof = &realTorgoImplementation{}
-	httpf = &realHttpImplementation{}
+	httpf = &realHTTPImplementation{}
 }
 
 func init() {
@@ -185,9 +185,9 @@ func (*realTorgoImplementation) NewController(a string) (torgoController, error)
 	return torgo.NewController(a)
 }
 
-type realHttpImplementation struct{}
+type realHTTPImplementation struct{}
 
-func (*realHttpImplementation) CheckConnectionOverTor(host string, port int) bool {
+func (*realHTTPImplementation) CheckConnectionOverTor(host string, port int) bool {
 	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(host, strconv.Itoa(port)))
 	if err != nil {
 		return false
@@ -217,7 +217,7 @@ func (*realHttpImplementation) CheckConnectionOverTor(host string, port int) boo
 	return v.IsTor
 }
 
-func (*realHttpImplementation) HTTPRequest(host string, port int, u string) (string, error) {
+func (*realHTTPImplementation) HTTPRequest(host string, port int, u string) (string, error) {
 	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(host, strconv.Itoa(port)))
 	if err != nil {
 		return "", err

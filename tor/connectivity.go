@@ -6,12 +6,11 @@ import (
 	"strconv"
 
 	"github.com/digitalautonomy/wahay/config"
-	log "github.com/sirupsen/logrus"
 )
 
 // basicConnectivity is used to check whether Tor can connect in different ways
 type basicConnectivity interface {
-	Check() (errTotal error, errPartial error, authType string)
+	Check() (authType string, errTotal error, errPartial error)
 }
 
 type connectivity struct {
@@ -53,15 +52,6 @@ func withNewTorgoController(where string, a authenticationMethod) authentication
 			return err
 		}
 		return a(tc)
-	}
-}
-
-func debuggingAuth(name string, a authenticationMethod) authenticationMethod {
-	return func(tc torgoController) error {
-		log.Debugf("Running auth test(%s)", name)
-		res := a(tc)
-		log.Debugf(" -- result of running auth test (%s) - %v", name, res)
-		return res
 	}
 }
 
@@ -113,18 +103,18 @@ func (c *connectivity) AuthenticationType() string {
 	return c.authType
 }
 
-func (c *connectivity) Check() (errTotal error, errPartial error, authType string) {
+func (c *connectivity) Check() (authType string, errTotal error, errPartial error) {
 	if !c.checkTorControlPortExists() {
-		return nil, ErrPartialTorNoControlPort, ""
+		return "", nil, ErrPartialTorNoControlPort
 	}
 
 	if !c.checkTorControlAuth() {
-		return nil, ErrPartialTorNoValidAuth, ""
+		return "", nil, ErrPartialTorNoValidAuth
 	}
 
 	if !c.checkConnectionOverTor() {
-		return ErrFatalTorNoConnectionAllowed, nil, ""
+		return "", ErrFatalTorNoConnectionAllowed, nil
 	}
 
-	return nil, nil, c.authType
+	return c.authType, nil, nil
 }
