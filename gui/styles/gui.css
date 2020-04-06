@@ -396,6 +396,12 @@ label.label-text {
   font-size: 18px;
   color: #fff; }
 
+.meeting-id-control {
+  background-color: #fff;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  padding: 1rem; }
+
 window.meeting-controls {
   border-radius: 2px; }
   window.meeting-controls .control-leave-call, window.meeting-controls .control-finish-call {

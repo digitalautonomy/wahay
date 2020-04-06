@@ -446,11 +446,11 @@ func (h *hostData) showMeetingConfiguration() {
 		},
 	})
 
-	meetingID, err := builder.GetObject("inpMeetingID")
+	meetingID, err := builder.GetObject("lblMeetingID")
 	if err != nil {
 		log.Printf("meeting id error: %s", err)
 	}
-	_ = meetingID.SetProperty("text", h.service.URL())
+	_ = meetingID.SetProperty("label", h.service.URL())
 
 	h.u.switchToWindow(win)
 }
