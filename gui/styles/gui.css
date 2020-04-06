@@ -206,20 +206,20 @@ dialog {
 
 .btn-orange {
   color: #fff;
-  background: #d95e09;
-  border-color: #d95e09; }
+  background: #d4671f;
+  border-color: #d4671f; }
   .btn-orange:focus {
-    box-shadow: 0 0 0 0.2em rgba(227, 98, 9, 0.4); }
+    box-shadow: 0 0 0 0.2em rgba(221, 107, 32, 0.4); }
   .btn-orange:hover {
-    background-color: #cf5a08;
-    border-color: #cf5a08; }
+    background-color: #cb621d;
+    border-color: #cb621d; }
   .btn-orange:active {
-    background-color: #bc5108;
-    border-color: #cf5a08;
+    background-color: #ba5a1b;
+    border-color: #cb621d;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-orange:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #ecaf84;
+    background-color: #eab38f;
     border-color: transparent;
     box-shadow: none; }
 
@@ -405,20 +405,20 @@ window.meeting-controls {
     border-width: 0; }
   window.meeting-controls .control-leave-call {
     color: #fff;
-    background: #c24e00;
-    border-color: #c24e00; }
+    background: #9c4221;
+    border-color: #9c4221; }
     window.meeting-controls .control-leave-call:focus {
-      box-shadow: 0 0 0 0.2em rgba(227, 98, 9, 0.4); }
+      box-shadow: 0 0 0 0.2em rgba(221, 107, 32, 0.4); }
     window.meeting-controls .control-leave-call:hover {
-      background-color: #b84a00;
-      border-color: #b84a00; }
+      background-color: #943e1f;
+      border-color: #943e1f; }
     window.meeting-controls .control-leave-call:active {
-      background-color: #b04904;
-      border-color: #b84a00;
+      background-color: #9f491c;
+      border-color: #943e1f;
       box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
     window.meeting-controls .control-leave-call:disabled {
       color: rgba(255, 255, 255, 0.65);
-      background-color: #e1a780;
+      background-color: #cea190;
       border-color: transparent;
       box-shadow: none; }
   window.meeting-controls .control-finish-call {
