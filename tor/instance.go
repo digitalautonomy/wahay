@@ -199,7 +199,7 @@ func systemInstance() (Instance, error) {
 	checker := newDefaultChecker()
 
 	log.Debugf("checking system instance...")
-	authType, total, partial := checker.Check()
+	authType, total, partial := checker.check()
 
 	if total != nil || partial != nil {
 		return nil, errors.New("error: we can't use system Tor instance")
@@ -237,7 +237,7 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 	for {
 		time.Sleep(3 * time.Second)
 
-		_, errTotal, errPartial := checker.Check()
+		_, errTotal, errPartial := checker.check()
 		if errTotal != nil {
 			return nil, errTotal
 		}

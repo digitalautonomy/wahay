@@ -10,7 +10,7 @@ import (
 
 // basicConnectivity is used to check whether Tor can connect in different ways
 type basicConnectivity interface {
-	Check() (authType string, errTotal error, errPartial error)
+	check() (authType string, errTotal error, errPartial error)
 }
 
 type connectivity struct {
@@ -141,11 +141,7 @@ var (
 	ErrFatalTorNoConnectionAllowed = errors.New("no connection over Tor allowed")
 )
 
-func (c *connectivity) AuthenticationType() string {
-	return c.authType
-}
-
-func (c *connectivity) Check() (authType string, errTotal error, errPartial error) {
+func (c *connectivity) check() (authType string, errTotal error, errPartial error) {
 	if !c.checkTorControlPortExists() {
 		return "", nil, ErrPartialTorNoControlPort
 	}
