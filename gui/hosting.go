@@ -177,6 +177,18 @@ func (h *hostData) openHostJoinMeetingWindow() {
 	builder := h.u.getCurrentHostMeetingWindow()
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
 
+	onInviteOpen := func(d gtki.ApplicationWindow) {
+		h.currentWindow = d
+		// Hide the current window because we don't want
+		// lot of windows there in the user's screen
+		win.Hide()
+	}
+
+	onInviteClose := func(d gtki.ApplicationWindow) {
+		win.Show()
+		h.currentWindow = nil
+	}
+
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
 			h.leaveHostMeeting()
@@ -184,7 +196,9 @@ func (h *hostData) openHostJoinMeetingWindow() {
 		},
 		"on_leave_meeting":  h.leaveHostMeeting,
 		"on_finish_meeting": h.finishMeetingMumble,
-		"on_invite_others":  h.onInviteParticipants,
+		"on_invite_others": func() {
+			h.onInviteParticipants(onInviteOpen, onInviteClose)
+		},
 	})
 
 	h.u.switchToWindow(win)
@@ -536,14 +550,21 @@ func (h *hostData) getInvitePeopleBuilder() *uiBuilder {
 	return builder
 }
 
-func (h *hostData) onInviteParticipants() {
+// TODO: review this function and make a more pretty solution
+func (h *hostData) onInviteParticipants(onOpen func(d gtki.ApplicationWindow), onClose func(d gtki.ApplicationWindow)) {
 	builder := h.getInvitePeopleBuilder()
 
 	dialog := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
 
+	if onClose == nil {
+		onClose = func(d gtki.ApplicationWindow) {
+			h.u.enableCurrentWindow()
+		}
+	}
+
 	cleanup := func() {
 		dialog.Hide()
-		h.u.enableCurrentWindow()
+		onClose(dialog)
 	}
 
 	builder.ConnectSignals(map[string]interface{}{
@@ -557,8 +578,16 @@ func (h *hostData) onInviteParticipants() {
 		},
 	})
 
+	if onOpen == nil {
+		onOpen = func(d gtki.ApplicationWindow) {
+			h.u.disableCurrentWindow()
+		}
+	}
+
 	h.u.doInUIThread(func() {
-		h.u.disableCurrentWindow()
+		dialog.Present()
 		dialog.Show()
+
+		onOpen(dialog)
 	})
 }
