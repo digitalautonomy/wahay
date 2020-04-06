@@ -154,6 +154,11 @@ func (c *connectivity) check() (authType string, errTotal error, errPartial erro
 		return "", nil, ErrPartialTorTooOld
 	}
 
+	// While this returns ErrFatalTorNoConnectionAllowed as a total error
+	// the System Tor checking will ignore this and not try to stop the
+	// process. Thus the distinction between total and partial is only really
+	// relevant for custom instances.
+
 	if !c.checkConnectionOverTor() {
 		return "", ErrFatalTorNoConnectionAllowed, nil
 	}
