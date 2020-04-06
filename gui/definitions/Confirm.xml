@@ -27,6 +27,10 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
@@ -46,6 +50,9 @@
                     <property name="wrap">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
                     <style>
                       <class name="label-title"/>
                     </style>
@@ -95,6 +102,10 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
@@ -109,6 +120,7 @@
                     <property name="receives_default">True</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
+                    <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_cancel" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -129,7 +141,7 @@
                     <property name="receives_default">True</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
-                    <property name="margin_left">20</property>
+                    <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_confirm" swapped="no"/>
                     <style>
                       <class name="btn"/>

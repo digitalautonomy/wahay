@@ -46,6 +46,9 @@
                 <property name="label" translatable="yes">Welcome</property>
                 <property name="xalign">0</property>
                 <property name="yalign">0</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
                 <style>
                   <class name="main-window-title"/>
                 </style>
@@ -53,6 +56,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
+                <property name="padding">20</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -102,6 +106,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="padding">20</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -112,6 +117,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">20</property>
             <property name="position">0</property>
           </packing>
         </child>
@@ -119,6 +125,9 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="valign">center</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
             <property name="margin_top">100</property>
             <property name="margin_bottom">100</property>
             <property name="orientation">vertical</property>
@@ -178,6 +187,7 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
+            <property name="padding">20</property>
             <property name="position">2</property>
           </packing>
         </child>
@@ -185,6 +195,10 @@
           <object class="GtkBox" id="boxApplicationStatus">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>

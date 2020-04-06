@@ -21,6 +21,8 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
             <property name="margin_top">20</property>
             <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
@@ -205,6 +207,10 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <property name="baseline_position">bottom</property>
             <child>
               <object class="GtkBox">
@@ -234,7 +240,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="margin_left">20</property>
+                    <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_join" swapped="no"/>
                     <style>
                       <class name="btn"/>

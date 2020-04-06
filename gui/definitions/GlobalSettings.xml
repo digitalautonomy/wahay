@@ -31,12 +31,17 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">20</property>
+                <property name="margin_right">20</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkFrame">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
+                    <property name="label_yalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment">
@@ -109,7 +114,11 @@
                       <object class="GtkLabel" id="lblHostingGroup">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="margin_bottom">10</property>
                         <property name="label" translatable="yes">Hosting</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                         <style>
                           <class name="form-legend-title"/>
                         </style>
@@ -121,7 +130,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">True</property>
+                    <property name="fill">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -144,6 +153,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">20</property>
+                <property name="margin_right">20</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
@@ -260,6 +273,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">20</property>
+                <property name="margin_right">20</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
@@ -512,6 +529,10 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">20</property>
+                <property name="margin_right">20</property>
+                <property name="margin_top">20</property>
+                <property name="margin_bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
@@ -805,6 +826,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_close_window" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -822,7 +844,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="margin_left">20</property>
+                    <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_save" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -839,6 +861,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
+                <property name="padding">20</property>
                 <property name="pack_type">end</property>
                 <property name="position">0</property>
               </packing>
@@ -851,6 +874,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="padding">20</property>
             <property name="position">2</property>
           </packing>
         </child>
@@ -878,6 +902,10 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
@@ -896,6 +924,9 @@
                     <property name="label" translatable="yes">Invalid configuration file</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
                     <style>
                       <class name="label-title"/>
                     </style>
@@ -969,6 +1000,10 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">20</property>
+            <property name="margin_right">20</property>
+            <property name="margin_top">20</property>
+            <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
@@ -982,6 +1017,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
+                    <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_cancel" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -999,7 +1035,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="receives_default">True</property>
-                    <property name="margin_left">20</property>
+                    <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_delete" swapped="no"/>
                     <style>
                       <class name="btn"/>
