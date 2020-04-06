@@ -318,7 +318,112 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVer
 	c.Assert(calledAfter, Equals, 0)
 }
 
-// - there is no system tor running, but executable of proper version
+func (s *TorAcceptanceSuite) Test_thatASystemTorBinaryWillBeStartedIfProperVersion(c *C) {
+	mockAll()
+	defer setDefaultFacades()
+	defer func() {
+		currentInstance = nil
+	}()
+	hook := logtest.NewGlobal()
+	defer hook.Reset()
+	log.SetOutput(ioutil.Discard)
+
+	tc := &mockTorgoController{}
+	tc.authNoneReturn = errors.New("couldn't authenticate")
+	tc.authPassReturn = errors.New("couldn't auth")
+	tc.authCookieReturn = nil
+	tc.getVersionReturn1 = "4.0.2"
+	tc.getVersionReturn2 = nil
+
+	mocktorgof.onNewController = func(a string) (torgoController, error) {
+		if a == "127.0.0.1:4215" {
+			return tc, nil
+		}
+		return nil, errors.New("no connection possible")
+	}
+
+	mockhttpf.checkConnectionReturn = true
+
+	mockexecf.lookPathReturn1 = "/usr/sbin/tor"
+
+	mockexecf.onExecWithModify = func(s string, a []string, mm ModifyCommand) ([]byte, error) {
+		if s == "/usr/sbin/tor" && len(a) > 0 && a[0] == "--version" {
+			return []byte("Tor version 0.4.2.1."), nil
+		}
+		return nil, nil
+	}
+
+	mockfilesystemf.onTempDir = func(s, s2 string) (string, error) {
+		if s == "/home/amnesia/.local/share/wahay" {
+			return "/home/amnesia/.local/share/wahay/4215-tor", nil
+		}
+		return "", nil
+	}
+
+	mockosf.onIsPortAvailable = func(p int) bool {
+		return p == 4215 || p == 4666
+	}
+
+	portCalled := 0
+	mockosf.onGetRandomPort = func() int {
+		portCalled++
+		switch portCalled {
+		case 1:
+			return 4215
+		case 2:
+			return 12234
+		case 3:
+			return 4666
+		default:
+			return 0
+		}
+	}
+
+	finishWaiting := make(chan bool)
+	mockexecf.onWaitCommand = func(c *exec.Cmd) error {
+		<-finishWaiting
+		return nil
+	}
+
+	ix, e := InitializeInstance(&config.ApplicationConfig{})
+
+	c.Assert(e, IsNil)
+
+	c.Assert(tc.authNoneCalled, Equals, 1)
+	c.Assert(tc.authPassCalled, Equals, 0)
+	c.Assert(tc.authCookieCalled, Equals, 2)
+
+	c.Assert(tc.getVersionCalled, Equals, 1)
+
+	c.Assert(mockhttpf.checkConnectionArg1, Equals, "127.0.0.1")
+	c.Assert(mockhttpf.checkConnectionArg2, Equals, 4666)
+
+	i := ix.(*instance)
+	c.Assert(i.started, Equals, true)
+	c.Assert(i.socksPort, Equals, 4666)
+	c.Assert(i.controlHost, Equals, "127.0.0.1")
+	c.Assert(i.controlPort, Equals, 4215)
+
+	c.Assert(i.useCookie, Equals, true)
+	c.Assert(i.isLocal, Equals, false)
+	c.Assert(i.password, Equals, "")
+	c.Assert(i.configFile, Equals, "/home/amnesia/.local/share/wahay/4215-tor/torrc")
+	c.Assert(i.dataDirectory, Equals, "/home/amnesia/.local/share/wahay/4215-tor/data")
+
+	c.Assert(i.runningTor.cmd.Path, Equals, "/usr/sbin/tor")
+	c.Assert(i.runningTor.cmd.Args, DeepEquals, []string{"/usr/sbin/tor", "-f", "/home/amnesia/.local/share/wahay/4215-tor/torrc"})
+	c.Assert(i.runningTor.cmd.Env, IsNil)
+	c.Assert(i.runningTor.cmd.Dir, Equals, "")
+	c.Assert(i.runningTor.finished, Equals, false)
+	c.Assert(i.runningTor.finishedWithError, IsNil)
+
+	c.Assert(i.binary.path, Equals, "/usr/sbin/tor")
+	c.Assert(i.binary.env, DeepEquals, []string{})
+	c.Assert(i.binary.isValid, Equals, true)
+	c.Assert(i.binary.isBundle, Equals, false)
+
+	finishWaiting <- true
+}
 
 // WHEN system tor instance can't be used:
 // ---------------------------------------
@@ -357,7 +462,10 @@ func mockAll() {
 	httpf = mockhttpf
 }
 
-type mockOsImplementation struct{}
+type mockOsImplementation struct {
+	onIsPortAvailable func(int) bool
+	onGetRandomPort   func() int
+}
 
 func (*mockOsImplementation) Getwd() (string, error) {
 	testPrint("Getwd()\n")
@@ -394,13 +502,19 @@ func (*mockOsImplementation) Stderr() *os.File {
 	return nil
 }
 
-func (*mockOsImplementation) IsPortAvailable(port int) bool {
+func (m *mockOsImplementation) IsPortAvailable(port int) bool {
 	testPrint("IsPortAvailable(%v)\n", port)
+	if m.onIsPortAvailable != nil {
+		return m.onIsPortAvailable(port)
+	}
 	return true
 }
 
-func (*mockOsImplementation) GetRandomPort() int {
+func (m *mockOsImplementation) GetRandomPort() int {
 	testPrint("GetRandomPort()\n")
+	if m.onGetRandomPort != nil {
+		return m.onGetRandomPort()
+	}
 	return 0
 }
 
@@ -416,6 +530,8 @@ type mockExecImplementation struct {
 	lookPathReturn2 error
 
 	onExecWithModify func(string, []string, ModifyCommand) ([]byte, error)
+	onStartCommand   func(cmd *exec.Cmd) error
+	onWaitCommand    func(cmd *exec.Cmd) error
 }
 
 func (m *mockExecImplementation) LookPath(s string) (string, error) {
@@ -433,15 +549,25 @@ func (m *mockExecImplementation) ExecWithModify(bin string, args []string, cm Mo
 
 func (m *mockExecImplementation) StartCommand(cmd *exec.Cmd) error {
 	testPrint("StartCommand(%v)\n", cmd)
+	if m.onStartCommand != nil {
+		return m.onStartCommand(cmd)
+	}
 	return nil
 }
 
 func (m *mockExecImplementation) WaitCommand(cmd *exec.Cmd) error {
 	testPrint("WaitCommand(%v)\n", cmd)
+	if m.onWaitCommand != nil {
+		return m.onWaitCommand(cmd)
+	}
 	return nil
 }
 
-type mockFilesystemImplementation struct{}
+type mockFilesystemImplementation struct {
+	onTempDir   func(string, string) (string, error)
+	onEnsureDir func(string, os.FileMode)
+	onWriteFile func(string, []byte, os.FileMode) error
+}
 
 func (*mockFilesystemImplementation) FileExists(path string) bool {
 	testPrint("FileExists(%v)\n", path)
@@ -453,17 +579,26 @@ func (*mockFilesystemImplementation) IsADirectory(path string) bool {
 	return false
 }
 
-func (*mockFilesystemImplementation) TempDir(where, suffix string) (string, error) {
+func (m *mockFilesystemImplementation) TempDir(where, suffix string) (string, error) {
 	testPrint("TempDir(%v, %v)\n", where, suffix)
+	if m.onTempDir != nil {
+		return m.onTempDir(where, suffix)
+	}
 	return "", nil
 }
 
-func (*mockFilesystemImplementation) EnsureDir(name string, mode os.FileMode) {
+func (m *mockFilesystemImplementation) EnsureDir(name string, mode os.FileMode) {
 	testPrint("EnsureDir(%v, %v)\n", name, mode)
+	if m.onEnsureDir != nil {
+		m.onEnsureDir(name, mode)
+	}
 }
 
-func (*mockFilesystemImplementation) WriteFile(name string, content []byte, mode os.FileMode) error {
+func (m *mockFilesystemImplementation) WriteFile(name string, content []byte, mode os.FileMode) error {
 	testPrint("WriteFile(%v, %v, %v)\n", name, content, mode)
+	if m.onWriteFile != nil {
+		return m.onWriteFile(name, content, mode)
+	}
 	return nil
 }
 
@@ -517,10 +652,15 @@ type mockTorgoImplementation struct {
 	newControllerArg     string
 	newControllerReturn1 torgoController
 	newControllerReturn2 error
+
+	onNewController func(a string) (torgoController, error)
 }
 
 func (m *mockTorgoImplementation) NewController(a string) (torgoController, error) {
 	testPrint("NewController(%v)\n", a)
+	if m.onNewController != nil {
+		return m.onNewController(a)
+	}
 	m.newControllerArg = a
 	return m.newControllerReturn1, m.newControllerReturn2
 }
