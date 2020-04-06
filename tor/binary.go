@@ -74,6 +74,11 @@ func findTorBinary(conf *config.ApplicationConfig) (b *binary, err error) {
 		}
 	}
 
+	// We only reach this point if we couldn't find a valid binary
+	// It would be rude to return a binary that is invalid...
+	b = nil
+	err = ErrTorBinaryNotFound
+
 	return
 }
 
@@ -214,8 +219,8 @@ func getBinaryForPath(path string) (b *binary, err error) {
 		b.env = append(b.env, fmt.Sprintf("LD_LIBRARY_PATH=%s", filepath.Dir(path)))
 	}
 
-	if checkTorVersionCompatibility(b) {
-		b.isValid = true
+	b.isValid = isTorVersionCompatible(b)
+	if !b.isValid {
 		err = ErrTorVersionNotCompatible
 	}
 
@@ -244,7 +249,7 @@ func checkIfBinaryIsBundled(b *binary) bool {
 	return found >= len(libs)
 }
 
-func checkTorVersionCompatibility(b *binary) bool {
+func isTorVersionCompatible(b *binary) bool {
 	output, err := execTorCommand(b.path, []string{"--version"}, func(cmd *exec.Cmd) {
 		if b.isBundle {
 			cmd.Env = append(cmd.Env, b.env...)

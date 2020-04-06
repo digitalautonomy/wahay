@@ -284,8 +284,7 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresNoSystemTor(c *C) {
 	c.Assert(e, ErrorMatches, "no Tor binary found")
 }
 
-// BUG(ola): TODO - this is another bug, this test case should pass
-func (s *TorAcceptanceSuite) DisabledTestXthatThingsWillFailIfTheresASystemTorWithOldVersion(c *C) {
+func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
 	defer func() {
