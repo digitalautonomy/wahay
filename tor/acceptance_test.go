@@ -61,6 +61,8 @@ var _ = Suite(&TorAcceptanceSuite{})
 //   At the end of Wahay, when running a custom Tor instance, stop the Tor
 //   instance. Also clean up and destroy the created data directory
 
+const systemTorBinary = "/usr/sbin/tor"
+
 func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithNoAuthenticationAndProperVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
@@ -296,7 +298,7 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVer
 
 	mocktorgof.newControllerReturn2 = errors.New("no connection possible")
 
-	mockexecf.lookPathReturn1 = "/usr/sbin/tor"
+	mockexecf.lookPathReturn1 = systemTorBinary
 
 	calledAfter := 0
 	called := false
@@ -304,7 +306,7 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVer
 		if called {
 			calledAfter++
 		}
-		if s == "/usr/sbin/tor" && len(a) > 0 && a[0] == "--version" && !called {
+		if s == systemTorBinary && len(a) > 0 && a[0] == "--version" && !called {
 			called = true
 			return []byte("Tor version 0.2.2.6."), nil
 		}
@@ -344,10 +346,26 @@ func (s *TorAcceptanceSuite) Test_thatASystemTorBinaryWillBeStartedIfProperVersi
 
 	mockhttpf.checkConnectionReturn = true
 
-	mockexecf.lookPathReturn1 = "/usr/sbin/tor"
+	setupSomeBasicMocks()
+
+	finishWaiting := make(chan bool)
+	mockexecf.onWaitCommand = func(c *exec.Cmd) error {
+		<-finishWaiting
+		return nil
+	}
+
+	ix, e := InitializeInstance(&config.ApplicationConfig{})
+
+	verifyAllAssertions(c, e, tc, ix.(*instance))
+
+	finishWaiting <- true
+}
+
+func setupSomeBasicMocks() {
+	mockexecf.lookPathReturn1 = systemTorBinary
 
 	mockexecf.onExecWithModify = func(s string, a []string, mm ModifyCommand) ([]byte, error) {
-		if s == "/usr/sbin/tor" && len(a) > 0 && a[0] == "--version" {
+		if s == systemTorBinary && len(a) > 0 && a[0] == "--version" {
 			return []byte("Tor version 0.4.2.1."), nil
 		}
 		return nil, nil
@@ -378,15 +396,9 @@ func (s *TorAcceptanceSuite) Test_thatASystemTorBinaryWillBeStartedIfProperVersi
 			return 0
 		}
 	}
+}
 
-	finishWaiting := make(chan bool)
-	mockexecf.onWaitCommand = func(c *exec.Cmd) error {
-		<-finishWaiting
-		return nil
-	}
-
-	ix, e := InitializeInstance(&config.ApplicationConfig{})
-
+func verifyAllAssertions(c *C, e error, tc *mockTorgoController, i *instance) {
 	c.Assert(e, IsNil)
 
 	c.Assert(tc.authNoneCalled, Equals, 1)
@@ -398,7 +410,6 @@ func (s *TorAcceptanceSuite) Test_thatASystemTorBinaryWillBeStartedIfProperVersi
 	c.Assert(mockhttpf.checkConnectionArg1, Equals, "127.0.0.1")
 	c.Assert(mockhttpf.checkConnectionArg2, Equals, 4666)
 
-	i := ix.(*instance)
 	c.Assert(i.started, Equals, true)
 	c.Assert(i.socksPort, Equals, 4666)
 	c.Assert(i.controlHost, Equals, "127.0.0.1")
@@ -410,19 +421,18 @@ func (s *TorAcceptanceSuite) Test_thatASystemTorBinaryWillBeStartedIfProperVersi
 	c.Assert(i.configFile, Equals, "/home/amnesia/.local/share/wahay/4215-tor/torrc")
 	c.Assert(i.dataDirectory, Equals, "/home/amnesia/.local/share/wahay/4215-tor/data")
 
-	c.Assert(i.runningTor.cmd.Path, Equals, "/usr/sbin/tor")
-	c.Assert(i.runningTor.cmd.Args, DeepEquals, []string{"/usr/sbin/tor", "-f", "/home/amnesia/.local/share/wahay/4215-tor/torrc"})
+	c.Assert(i.runningTor.cmd.Path, Equals, systemTorBinary)
+	c.Assert(i.runningTor.cmd.Args, DeepEquals, []string{systemTorBinary, "-f",
+		"/home/amnesia/.local/share/wahay/4215-tor/torrc"})
 	c.Assert(i.runningTor.cmd.Env, IsNil)
 	c.Assert(i.runningTor.cmd.Dir, Equals, "")
 	c.Assert(i.runningTor.finished, Equals, false)
 	c.Assert(i.runningTor.finishedWithError, IsNil)
 
-	c.Assert(i.binary.path, Equals, "/usr/sbin/tor")
+	c.Assert(i.binary.path, Equals, systemTorBinary)
 	c.Assert(i.binary.env, DeepEquals, []string{})
 	c.Assert(i.binary.isValid, Equals, true)
 	c.Assert(i.binary.isBundle, Equals, false)
-
-	finishWaiting <- true
 }
 
 // WHEN system tor instance can't be used:
