@@ -101,7 +101,7 @@ dialog {
   .btn:focus, .main-window-top-bar .main-window-btn-settings:focus,
   .main-window-top-bar .main-window-btn-help:focus, .main-window-actions .btn-host-meeting:focus,
   .main-window-actions .btn-join-meeting:focus, .invite-email-link:focus, .invite-window-btn:focus {
-    box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0.3); }
+    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.3); }
   .btn:hover, .main-window-top-bar .main-window-btn-settings:hover,
   .main-window-top-bar .main-window-btn-help:hover, .main-window-actions .btn-host-meeting:hover,
   .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
@@ -129,20 +129,20 @@ dialog {
 
 .btn-primary, .main-window-actions .btn-host-meeting {
   color: #fff;
-  background: #0366d6;
-  border-color: #0366d6; }
+  background: #4299e1;
+  border-color: #4299e1; }
   .btn-primary:focus, .main-window-actions .btn-host-meeting:focus {
-    box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0.4); }
+    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
   .btn-primary:hover, .main-window-actions .btn-host-meeting:hover {
-    background-color: #0361cc;
-    border-color: #0361cc; }
+    background-color: #3994e0;
+    border-color: #3994e0; }
   .btn-primary:active, .main-window-actions .btn-host-meeting:active {
-    background-color: #0355b3;
-    border-color: #0361cc;
+    background-color: #2388dc;
+    border-color: #3994e0;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-primary:disabled, .main-window-actions .btn-host-meeting:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #81b3eb;
+    background-color: #a1ccf0;
     border-color: transparent;
     box-shadow: none; }
 
@@ -167,20 +167,20 @@ dialog {
 
 .btn-blue {
   color: #fff;
-  background: #0361cc;
-  border-color: #0361cc; }
+  background: #3994e0;
+  border-color: #3994e0; }
   .btn-blue:focus {
-    box-shadow: 0 0 0 0.2em rgba(6, 121, 252, 0.4); }
+    box-shadow: 0 0 0 0.2em rgba(101, 172, 231, 0.4); }
   .btn-blue:hover {
-    background-color: #035cc2;
-    border-color: #035cc2; }
+    background-color: #308fde;
+    border-color: #308fde; }
   .btn-blue:active {
-    background-color: #045cc1;
-    border-color: #035cc2;
+    background-color: #308fdf;
+    border-color: #308fde;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-blue:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #81b0e6;
+    background-color: #9ccaf0;
     border-color: transparent;
     box-shadow: none; }
 
@@ -224,15 +224,15 @@ dialog {
     box-shadow: none; }
 
 .btn-outline {
-  color: #0366d6;
+  color: #4299e1;
   background-color: #fff; }
   .btn-outline:hover, .btn-outline:active {
     color: #fff;
-    background-color: #0366d6;
-    border-color: #0366d6; }
+    background-color: #4299e1;
+    border-color: #4299e1; }
   .btn-outline:focus {
-    border-color: #0366d6;
-    box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0.4); }
+    border-color: #4299e1;
+    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
   .btn-outline:disabled {
     color: rgba(0, 0, 0, 0.3);
     background-color: #fff;
@@ -262,13 +262,13 @@ dialog {
   border-radius: 6px; }
 
 .btn-invisible, .main-window-status-bar .status-show-errors {
-  color: #0366d6;
+  color: #4299e1;
   background: none;
   border-width: 0;
   border-color: transparent;
   box-shadow: none; }
   .btn-invisible:hover, .main-window-status-bar .status-show-errors:hover, .btn-invisible:active, .main-window-status-bar .status-show-errors:active, .btn-invisible:focus, .main-window-status-bar .status-show-errors:focus {
-    color: #0366d6;
+    color: #4299e1;
     background: none;
     box-shadow: none; }
 
