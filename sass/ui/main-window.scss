@@ -18,8 +18,8 @@
     @extend .btn-sm;
 
     &:hover {
-      color: $white;
-      background-color: $gray-900;
+      color: $gray-900;
+      background-color: $gray-200;
     }
   }
 }
@@ -30,6 +30,7 @@
   .btn-host-meeting,
   .btn-join-meeting {
     text-shadow: none;
+    font-size: $font-size-large * 1.02;
 
     @extend .btn;
     @extend .btn-lg;

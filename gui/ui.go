@@ -120,8 +120,6 @@ func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 	builder := u.g.uiBuilderFor("MainWindow")
 
 	builder.i18nProperties(
-		"button", "btnSettings",
-		"button", "btnHelp",
 		"button", "btnStatusShowErrors",
 		"button", "btnErrorsAccept",
 		"tooltip", "btnSettings",
@@ -131,16 +129,24 @@ func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 		"label", "lblWelcome",
 		"label", "lblApplicationStatus",
 		"label", "lblHostMeeting",
-		"label", "lblJoinMeeting")
+		"label", "lblJoinMeeting",
+		"label", "lblSettings",
+		"label", "lblHelp")
 
 	imgHostMeeting := builder.get("imgHostMeeting").(gtki.Image)
 	imgJoinMeeting := builder.get("imgJoinMeeting").(gtki.Image)
+	imgSettings := builder.get("imgSettings").(gtki.Image)
+	imgHelp := builder.get("imgHelp").(gtki.Image)
 
 	icon1, _ := u.g.getImagePixbufForSize("host-meeting.svg", 32)
 	icon2, _ := u.g.getImagePixbufForSize("join-meeting.svg", 32)
+	icon3, _ := u.g.getImagePixbufForSize("settings.svg", 24)
+	icon4, _ := u.g.getImagePixbufForSize("help.svg", 24)
 
 	imgHostMeeting.SetFromPixbuf(icon1)
 	imgJoinMeeting.SetFromPixbuf(icon2)
+	imgSettings.SetFromPixbuf(icon3)
+	imgHelp.SetFromPixbuf(icon4)
 
 	return builder
 }
