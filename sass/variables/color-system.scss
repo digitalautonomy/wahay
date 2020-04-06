@@ -1,20 +1,20 @@
 // Black based on same hue as $gray-900
-$black: #1b1f23 !default;
+$black: #000 !default;
 $white: #fff !default;
 
 //
 //
 // -------- Grays --------
 $gray-000:        #fafbfc !default;
-$gray-100:        #f6f8fa !default;
-$gray-200:        #e1e4e8 !default;
-$gray-300:        #d1d5da !default;
-$gray-400:        #959da5 !default;
-$gray-500:        #6a737d !default;
-$gray-600:        #586069 !default;
-$gray-700:        #444d56 !default;
-$gray-800:        #2f363d !default;
-$gray-900:        #24292e !default; // body font color
+$gray-100:        #f7fafc !default;
+$gray-200:        #edf2f7 !default;
+$gray-300:        #e2e8f0 !default;
+$gray-400:        #cbd5e0 !default;
+$gray-500:        #a0aec0 !default;
+$gray-600:        #718096 !default;
+$gray-700:        #4a5568 !default;
+$gray-800:        #2d3748 !default;
+$gray-900:        #1a202c !default; // body font color
 
 // -------- Blue --------
 $blue-000:        #f1f8ff !default;
