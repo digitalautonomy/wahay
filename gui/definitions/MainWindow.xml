@@ -297,8 +297,8 @@
                 <property name="valign">center</property>
                 <property name="margin_left">20</property>
                 <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
+                <property name="margin_top">10</property>
+                <property name="margin_bottom">10</property>
                 <child>
                   <object class="GtkLabel" id="lblApplicationStatus">
                     <property name="visible">True</property>
@@ -331,8 +331,8 @@
                 <property name="valign">center</property>
                 <property name="margin_left">20</property>
                 <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
+                <property name="margin_top">10</property>
+                <property name="margin_bottom">10</property>
                 <child>
                   <object class="GtkButton" id="btnStatusShowErrors">
                     <property name="label" translatable="yes">Show</property>
