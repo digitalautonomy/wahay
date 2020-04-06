@@ -372,8 +372,8 @@ func setupSomeBasicMocks() {
 	}
 
 	mockfilesystemf.onTempDir = func(s, s2 string) (string, error) {
-		if s == "/home/amnesia/.local/share/wahay" {
-			return "/home/amnesia/.local/share/wahay/4215-tor", nil
+		if s == config.WithHome(".local/share/wahay") {
+			return config.WithHome(".local/share/wahay/4215-tor"), nil
 		}
 		return "", nil
 	}
@@ -418,12 +418,12 @@ func verifyAllAssertions(c *C, e error, tc *mockTorgoController, i *instance) {
 	c.Assert(i.useCookie, Equals, true)
 	c.Assert(i.isLocal, Equals, false)
 	c.Assert(i.password, Equals, "")
-	c.Assert(i.configFile, Equals, "/home/amnesia/.local/share/wahay/4215-tor/torrc")
-	c.Assert(i.dataDirectory, Equals, "/home/amnesia/.local/share/wahay/4215-tor/data")
+	c.Assert(i.configFile, Equals, config.WithHome(".local/share/wahay/4215-tor/torrc"))
+	c.Assert(i.dataDirectory, Equals, config.WithHome(".local/share/wahay/4215-tor/data"))
 
 	c.Assert(i.runningTor.cmd.Path, Equals, systemTorBinary)
 	c.Assert(i.runningTor.cmd.Args, DeepEquals, []string{systemTorBinary, "-f",
-		"/home/amnesia/.local/share/wahay/4215-tor/torrc"})
+		config.WithHome(".local/share/wahay/4215-tor/torrc")})
 	c.Assert(i.runningTor.cmd.Env, IsNil)
 	c.Assert(i.runningTor.cmd.Dir, Equals, "")
 	c.Assert(i.runningTor.finished, Equals, false)
