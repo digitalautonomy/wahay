@@ -184,7 +184,7 @@ func (h *hostData) openHostJoinMeetingWindow() {
 		win.Hide()
 	}
 
-	onInviteClose := func(d gtki.ApplicationWindow) {
+	onInviteClose := func(gtki.ApplicationWindow) {
 		win.Show()
 		h.currentWindow = nil
 	}
@@ -557,7 +557,7 @@ func (h *hostData) onInviteParticipants(onOpen func(d gtki.ApplicationWindow), o
 	dialog := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
 
 	if onClose == nil {
-		onClose = func(d gtki.ApplicationWindow) {
+		onClose = func(gtki.ApplicationWindow) {
 			h.u.enableCurrentWindow()
 		}
 	}
@@ -579,7 +579,7 @@ func (h *hostData) onInviteParticipants(onOpen func(d gtki.ApplicationWindow), o
 	})
 
 	if onOpen == nil {
-		onOpen = func(d gtki.ApplicationWindow) {
+		onOpen = func(gtki.ApplicationWindow) {
 			h.u.disableCurrentWindow()
 		}
 	}
