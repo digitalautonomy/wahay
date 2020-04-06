@@ -418,7 +418,7 @@ func (h *hostData) showMeetingConfiguration() {
 	h.changeStartButtonText(btnStart)
 
 	btnCopyMeetingID := builder.get("btnCopyMeetingID").(gtki.Button)
-	btnCopyMeetingID.SetSensitive(h.u.isCopyToClipboardSupported())
+	btnCopyMeetingID.SetVisible(h.u.isCopyToClipboardSupported())
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_copy_meeting_id": func() {
@@ -493,10 +493,10 @@ func (h *hostData) getInvitePeopleBuilder() *uiBuilder {
 	builder := h.u.g.uiBuilderFor("InvitePeopleWindow")
 
 	btnCopyMeetingID := builder.get("btnCopyMeetingID").(gtki.Button)
-	btnCopyMeetingID.SetSensitive(h.u.isCopyToClipboardSupported())
+	btnCopyMeetingID.SetVisible(h.u.isCopyToClipboardSupported())
 
 	btnCopyInvitation := builder.get("btnCopyInvitation").(gtki.Button)
-	btnCopyInvitation.SetSensitive(h.u.isCopyToClipboardSupported())
+	btnCopyInvitation.SetVisible(h.u.isCopyToClipboardSupported())
 
 	builder.i18nProperties(
 		"label", "lblDescription",
