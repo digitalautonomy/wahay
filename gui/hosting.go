@@ -221,16 +221,18 @@ func (h *hostData) createNewService(err chan error) {
 		port = configuredPort
 	}
 
-	s, e := hosting.NewService(port)
-	if e != nil {
-		log.Errorf("createNewService(): %s", e)
-		err <- e
-		return
-	}
+	h.u.waitForTorInstance(func(t tor.Instance) {
+		s, e := hosting.NewService(port, t)
+		if e != nil {
+			log.Errorf("createNewService(): %s", e)
+			err <- e
+			return
+		}
 
-	h.service = s
+		h.service = s
 
-	err <- nil
+		err <- nil
+	})
 }
 
 func (h *hostData) createNewConferenceRoom(complete chan bool) {

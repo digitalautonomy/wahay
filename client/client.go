@@ -41,15 +41,17 @@ type client struct {
 	databaseProvider      databaseProvider
 	err                   error
 	torCmdModifier        tor.ModifyCommand
+	tor                   tor.Instance
 }
 
-func newMumbleClient(p mumbleIniProvider, d databaseProvider) *client {
+func newMumbleClient(p mumbleIniProvider, d databaseProvider, t tor.Instance) *client {
 	c := &client{
 		binary:                nil,
 		isValid:               false,
 		configContentProvider: p,
 		databaseProvider:      d,
 		err:                   nil,
+		tor:                   t,
 	}
 
 	return c
@@ -68,10 +70,10 @@ func Mumble() Instance {
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
-func InitSystem(conf *config.ApplicationConfig) Instance {
+func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
 	var err error
 
-	currentInstance = newMumbleClient(rederMumbleIniConfig, readerMumbleDB)
+	currentInstance = newMumbleClient(rederMumbleIniConfig, readerMumbleDB, tor)
 
 	b := searchBinary(conf)
 
@@ -128,7 +130,7 @@ func (c *client) Launch(url string, onClose func()) (tor.Service, error) {
 }
 
 func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
-	s, err := tor.NewService(c.pathToBinary(), args, c.torCommandModifier())
+	s, err := c.tor.NewService(c.pathToBinary(), args, c.torCommandModifier())
 	if err != nil {
 		return nil, errors.New("error: the service can't be started")
 	}

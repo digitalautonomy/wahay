@@ -26,8 +26,9 @@ type Instance interface {
 	Start() error
 	Destroy()
 	GetController() Control
-	Exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error)
 	HTTPrequest(url string) (string, error)
+	NewService(string, []string, ModifyCommand) (Service, error)
+	NewOnionServiceWithMultiplePorts([]OnionPort) (Onion, error)
 }
 
 type instance struct {
@@ -64,37 +65,6 @@ type runningTor struct {
 	finishChannel     chan bool
 }
 
-var currentInstance Instance
-
-func setSingleInstance(i Instance) {
-	currentInstance = i
-}
-
-// TODO[OB] - Lots of getters here...
-
-func getSingleInstance() (Instance, error) {
-	if currentInstance == nil {
-		return nil, errors.New("no instance initialized")
-	}
-	return currentInstance, nil
-}
-
-// CurrentInstance returns the current Tor instance
-func CurrentInstance() Instance {
-	return currentInstance
-}
-
-// getController returns the Tor controller for the current instance
-func getController() (Control, error) {
-	i := CurrentInstance()
-
-	if i == nil {
-		return nil, errors.New("tor hasn't been initialized")
-	}
-
-	return i.GetController(), nil
-}
-
 // Onion is a representation of a Tor Onion Service
 type Onion interface {
 	ID() string
@@ -104,6 +74,7 @@ type Onion interface {
 type onion struct {
 	id    string
 	ports []OnionPort
+	t     Instance
 }
 
 func (s *onion) ID() string {
@@ -111,21 +82,14 @@ func (s *onion) ID() string {
 }
 
 func (s *onion) Delete() error {
-	controller, err := getController()
-	if err != nil {
-		return err
-	}
-
-	return controller.DeleteOnionService(s.id)
+	c := s.t.GetController()
+	return c.DeleteOnionService(s.id)
 }
 
 // NewOnionServiceWithMultiplePorts creates a new Onion service for the current Tor controller
-func NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, error) {
+func (i *instance) NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, error) {
 	log.Debugf("NewOnionServiceWithMultiplePorts(%v)", ports)
-	controller, err := getController()
-	if err != nil {
-		return nil, err
-	}
+	controller := i.GetController()
 
 	serviceID, err := controller.CreateNewOnionServiceWithMultiplePorts(ports)
 	if err != nil {
@@ -135,6 +99,7 @@ func NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, error) {
 	s := &onion{
 		id:    serviceID,
 		ports: ports,
+		t:     i,
 	}
 
 	return s, nil
@@ -157,18 +122,12 @@ var (
 // InitializeInstance initialized and returns the Instance for working with Tor
 // This function should be called only once during the system initialization
 func InitializeInstance(conf *config.ApplicationConfig) (Instance, error) {
-	i, err := getSingleInstance()
-	if err == nil {
-		return i, nil
-	}
-
 	// Checking if the system Tor can be used.
 	// This should work for system like Tails, where Tor is
 	// already available in the system.
-	i, err = systemInstance()
+	i, err := systemInstance()
 	if err == nil {
 		log.Infof("Using System Tor")
-		setSingleInstance(i)
 		return i, nil
 	}
 
@@ -187,8 +146,6 @@ func InitializeInstance(conf *config.ApplicationConfig) (Instance, error) {
 		log.Debugf("tor.InitializeInstance() error: %s", err)
 		return nil, err
 	}
-
-	setSingleInstance(i)
 
 	return i, nil
 }
@@ -285,7 +242,6 @@ func (i *instance) Start() error {
 }
 
 // GetController returns a controller for the instance `i`
-
 func (i *instance) GetController() Control {
 	log.Debugf("instance(%#v).GetController()", i)
 	if i.controller == nil {
@@ -328,14 +284,6 @@ type RunningCommand struct {
 	Ctx        context.Context
 	Cmd        *exec.Cmd
 	CancelFunc context.CancelFunc
-}
-
-func (i *instance) Exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error) {
-	return i.runOurTorsocks(command, args, pre)
-}
-
-func (i *instance) runOurTorsocks(command string, args []string, pre ModifyCommand) (*RunningCommand, error) {
-	return i.exec(command, args, pre)
 }
 
 // ModifyCommand is a function that will potentially modify a command

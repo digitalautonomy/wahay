@@ -3,6 +3,7 @@ package gui
 import (
 	"os"
 	"runtime"
+	"sync"
 
 	log "github.com/sirupsen/logrus"
 
@@ -48,15 +49,16 @@ func argsWithApplicationName() *[]string {
 }
 
 type gtkUI struct {
-	app           gtki.Application
-	mainWindow    gtki.ApplicationWindow
-	currentWindow gtki.ApplicationWindow
-	loadingWindow gtki.ApplicationWindow
-	g             Graphics
-	tor           tor.Instance
-	client        client.Instance
-	keySupplier   config.KeySupplier
-	config        *config.ApplicationConfig
+	app            gtki.Application
+	mainWindow     gtki.ApplicationWindow
+	currentWindow  gtki.ApplicationWindow
+	loadingWindow  gtki.ApplicationWindow
+	g              Graphics
+	tor            tor.Instance
+	torInitialized *sync.WaitGroup
+	client         client.Instance
+	keySupplier    config.KeySupplier
+	config         *config.ApplicationConfig
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -70,9 +72,11 @@ func NewGTK(gx Graphics) UI {
 	}
 
 	ret := &gtkUI{
-		app: app,
-		g:   gx,
+		app:            app,
+		g:              gx,
+		torInitialized: &sync.WaitGroup{},
 	}
+	ret.torInitialized.Add(1)
 
 	// Creates the encryption key suplier for all the crypto-related
 	// functionalities of the configuration package

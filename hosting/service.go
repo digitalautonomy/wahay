@@ -103,7 +103,7 @@ func (r *conferenceRoom) close() error {
 }
 
 // NewService creates a new hosting service
-func NewService(port string) (Service, error) {
+func NewService(port string, t tor.Instance) (Service, error) {
 	err := ensureServerCollection()
 	if err != nil {
 		return nil, err
@@ -138,7 +138,7 @@ func NewService(port string) (Service, error) {
 		ServicePort:     p,
 	})
 
-	onion, err := tor.NewOnionServiceWithMultiplePorts(onionPorts)
+	onion, err := t.NewOnionServiceWithMultiplePorts(onionPorts)
 	if err != nil {
 		return nil, err
 	}

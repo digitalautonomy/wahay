@@ -11,18 +11,20 @@ import (
 
 func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	u.waitForTorInstance(func(t tor.Instance) {
+		go func() {
+			defer wg.Done()
 
-		c := client.InitSystem(u.config)
+			c := client.InitSystem(u.config, t)
 
-		if !c.IsValid() {
-			addNewStartupError(c.LastError(), errGroupMumble)
-			return
-		}
+			if !c.IsValid() {
+				addNewStartupError(c.LastError(), errGroupMumble)
+				return
+			}
 
-		u.client = c
-	}()
+			u.client = c
+		}()
+	})
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, onClose func()) (tor.Service, error) {

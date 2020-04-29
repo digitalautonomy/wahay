@@ -26,6 +26,14 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 		}
 
 		u.tor = instance
+		u.torInitialized.Done()
+	}()
+}
+
+func (u *gtkUI) waitForTorInstance(f func(tor.Instance)) {
+	go func() {
+		u.torInitialized.Wait()
+		f(u.tor)
 	}()
 }
 

@@ -23,7 +23,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/digitalautonomy/wahay/tor"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -40,7 +39,7 @@ func (c *client) requestCertificate(address string) error {
 		Host:   net.JoinHostPort(hostname, strconv.Itoa(certServerPort)),
 	}
 
-	content, err := tor.CurrentInstance().HTTPrequest(u.String())
+	content, err := c.tor.HTTPrequest(u.String())
 	if err != nil {
 		return err
 	}

@@ -66,9 +66,9 @@ const systemTorBinary = "/usr/sbin/tor"
 func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithNoAuthenticationAndProperVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)
@@ -113,9 +113,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithN
 func (s *TorAcceptanceSuite) Test_thatSystemTorIsUsed_whenSystemTorIsOKWithCookieAuthAndProperVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)
@@ -161,9 +161,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorIsUsed_whenSystemTorIsOKWithCooki
 func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithPasswordAuthAndOKVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)
@@ -220,9 +220,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeShutDown_whenSystemTorIs
 func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenItsNotConnectedToTheInternet(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)
@@ -246,9 +246,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenItsNotConnected
 func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenTheVersionIsTooOld(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)
@@ -272,9 +272,9 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenTheVersionIsToo
 func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresNoSystemTor(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)
@@ -289,9 +289,9 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresNoSystemTor(c *C) {
 func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)
@@ -323,9 +323,9 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVer
 func (s *TorAcceptanceSuite) Test_thatASystemTorBinaryWillBeStartedIfProperVersion(c *C) {
 	mockAll()
 	defer setDefaultFacades()
-	defer func() {
-		currentInstance = nil
-	}()
+	// defer func() {
+	// 	currentInstance = nil
+	// }()
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
 	log.SetOutput(ioutil.Discard)

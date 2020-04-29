@@ -18,8 +18,8 @@ type service struct {
 }
 
 // NewService creates a new Tor command service
-func NewService(cmd string, args []string, modifier ModifyCommand) (Service, error) {
-	rc, err := CurrentInstance().Exec(cmd, args, modifier)
+func (i *instance) NewService(cmd string, args []string, modifier ModifyCommand) (Service, error) {
+	rc, err := i.exec(cmd, args, modifier)
 	if err != nil {
 		return nil, err
 	}
