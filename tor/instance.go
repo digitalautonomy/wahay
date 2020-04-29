@@ -202,6 +202,7 @@ func systemInstance() (Instance, error) {
 	authType, total, partial := checker.check()
 
 	if total != nil || partial != nil {
+		log.Debugf("system instance not possible to use, because: %v - %v", total, partial)
 		return nil, errors.New("error: we can't use system Tor instance")
 	}
 
@@ -303,10 +304,12 @@ func (i *instance) GetController() Control {
 
 // Destroy close our instance running
 func (i *instance) Destroy() {
-	log.Debugf("Removing custom Tor temp dir: %s", filepath.Dir(i.configFile))
-	err := osf.RemoveAll(filepath.Dir(i.configFile))
-	if err != nil {
-		log.Debug(err)
+	if i.configFile != "" {
+		log.Debugf("Removing custom Tor temp dir: %s", filepath.Dir(i.configFile))
+		err := osf.RemoveAll(filepath.Dir(i.configFile))
+		if err != nil {
+			log.Debug(err)
+		}
 	}
 
 	if i.controller != nil {
