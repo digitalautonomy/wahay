@@ -1,30 +1,29 @@
 GTK_VERSION=$(shell pkg-config --modversion gtk+-3.0 | tr . _ | cut -d '_' -f 1-2)
 GTK_BUILD_TAG="gtk_$(GTK_VERSION)"
 
-GIT_VERSION=$(shell git rev-parse HEAD)
-GIT_SHORT_VERSION=$(shell git rev-parse --short HEAD)
-TAG_VERSION=$(shell git tag -l --contains $$GIT_VERSION | tail -1)
-CURRENT_DATE=$(shell date "+%Y-%m-%d")
+GIT_VERSION := $(shell git rev-parse HEAD)
+GIT_SHORT_VERSION := $(shell git rev-parse --short HEAD)
+TAG_VERSION := $(shell git tag -l --contains $$GIT_VERSION | tail -1)
+CURRENT_DATE := $(shell date "+%Y-%m-%d")
+BUILD_TIMESTAMP := $(shell TZ='America/Guayaquil' date '+%Y-%m-%d %H:%M:%S')
 
 GOPATH_SINGLE=$(shell echo $${GOPATH%%:*})
 
-BUILD_DIR=bin
+BUILD_DIR := bin
+BUILD_TOOLS_DIR := .build-tools
 
-.PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean run-coverage clean-cover cover cover-ci build build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
+PKGS := $(shell go list ./... | grep -v /vendor)
+SRC_DIRS := . $(addprefix .,$(subst github.com/digitalautonomy/wahay,,$(PKGS)))
+SRC_TEST := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*_test.go))
+SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
+SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
 
-default: gen-ui-defs build
+.PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean run-coverage clean-cover cover cover-ci build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
 
-check-deps:
-	@type esc >/dev/null 2>&1 || (echo "The program 'esc' is required but not available. Please install it by running 'make deps'." && exit 1)
+default: build
 
-gen-ui-defs: check-deps
-	cd gui && make generate-ui
-
-gen-ui-locale: check-deps
+gen-ui-locale:
 	cd gui && make generate-locale
-
-gen-client-files: check-deps
-	cd client && make
 
 deps:
 	go get -u github.com/modocache/gover
@@ -61,15 +60,36 @@ cover-ci: run-coverage
 	go tool cover -html=.coverprofiles/gover.coverprofile -o coverage.html
 	go tool cover -func=.coverprofiles/gover.coverprofile
 
-build:
-	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay
+$(BUILD_DIR)/wahay: gui/definitions.go client/gen_client_files.go $(SRC)
+	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay
 
-build-ci:
+build: $(BUILD_DIR)/wahay
+
+build-ci: $(BUILD_DIR)/wahay
 ifeq ($(TAG_VERSION),)
-	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay-$(CURRENT_DATE)-$(GIT_SHORT_VERSION)
+	cp $(BUILD_DIR)/wahay $(BUILD_DIR)/wahay-$(CURRENT_DATE)-$(GIT_SHORT_VERSION)
 else
-	go build -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay-$(TAG_VERSION)-$(GIT_SHORT_VERSION)
+	cp $(BUILD_DIR)/wahay $(BUILD_DIR)/wahay-$(TAG_VERSION)-$(GIT_SHORT_VERSION)
 endif
+
+
+clean:
+	$(RM) -rf $(BUILD_DIR)/wahay
+	$(RM) -rf $(BUILD_TOOLS_DIR)
+
+$(BUILD_TOOLS_DIR):
+	mkdir -p $@
+
+$(BUILD_TOOLS_DIR)/esc: $(BUILD_TOOLS_DIR)
+	@type esc >/dev/null 2>&1 || (echo "The program 'esc' is required but not available. Please install it by running 'make deps'." && exit 1)
+	@cp `which esc` $(BUILD_TOOLS_DIR)/esc
+
+client/gen_client_files.go: $(BUILD_TOOLS_DIR)/esc client/files/* client/files/.*
+	(cd client; go generate -x client.go)
+
+gui/definitions.go: $(BUILD_TOOLS_DIR)/esc gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/*
+	(cd gui; go generate -x ui_reader.go)
+
 
 # QUALITY TOOLS
 

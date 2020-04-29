@@ -10,3 +10,4 @@ current-short-git-version
 /mumble
 packaging/ubuntu/ubuntu/DEBIAN/control
 publish-linux-packages/wahay*
+/.build-tools

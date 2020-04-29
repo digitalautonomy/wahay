@@ -9,6 +9,18 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// BuildCommit contains which commit the build was based on
+var BuildCommit = "UNKNOWN"
+
+// BuildShortCommit contains which commit in short format the build was based on
+var BuildShortCommit = "UNKNOWN"
+
+// BuildTag contains which tag - if any - the build was based on
+var BuildTag = "(no tag)"
+
+// BuildTimestamp contains the timestamp in Ecuador time zone when the build was made
+var BuildTimestamp = "UNKNOWN"
+
 func initializeLogging() {
 	log.SetLevel(log.InfoLevel)
 	if *config.Debug {
