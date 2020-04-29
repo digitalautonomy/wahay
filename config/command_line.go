@@ -28,6 +28,8 @@ var (
 	Trace = flag.Bool("trace", false, "start Wahay in tracing mode")
 	// DebugFunctionCalls contains the command line argument given for debugging
 	DebugFunctionCalls = flag.Bool("debug-function-calls", false, "trace function calls in logging")
+	// Version contains the command line argument given for version
+	Version = flag.Bool("version", false, "display version information and exit")
 )
 
 // ProcessCommandLineArguments will parse the command line, check that

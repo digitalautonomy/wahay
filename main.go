@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/coyim/gotk3adapter/gdka"
 	"github.com/coyim/gotk3adapter/gliba"
 	"github.com/coyim/gotk3adapter/gtka"
@@ -34,6 +36,11 @@ func initializeLogging() {
 
 func main() {
 	config.ProcessCommandLineArguments()
+
+	if *config.Version {
+		fmt.Printf("Wahay (commit: %s (%s) tag: %s built: %s)\n", BuildShortCommit, BuildCommit, BuildTag, BuildTimestamp)
+		return
+	}
 
 	initializeLogging()
 
