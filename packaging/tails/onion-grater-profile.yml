@@ -8,6 +8,8 @@
       - '.*'
     DEL_ONION:
       - '.+'
+    GETINFO:
+      - 'version'
   events:
     STREAM:
   restrict-stream-events: false
