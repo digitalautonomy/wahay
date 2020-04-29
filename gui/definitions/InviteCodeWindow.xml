@@ -67,7 +67,7 @@
                     <property name="placeholder_text" translatable="yes">Type the Meeting ID (normally a .onion address)</property>
                     <property name="input_purpose">url</property>
                     <style>
-                      <class name="form-control"/>
+                      <class name="meeting-id-control"/>
                     </style>
                   </object>
                   <packing>
@@ -123,7 +123,7 @@
                     <property name="placeholder_text" translatable="yes">Type your screen name</property>
                     <property name="input_purpose">url</property>
                     <style>
-                      <class name="form-control"/>
+                      <class name="form-control-font"/>
                     </style>
                   </object>
                   <packing>
@@ -177,7 +177,7 @@
                     <property name="secondary_icon_sensitive">False</property>
                     <property name="placeholder_text" translatable="yes">Type the password to join the meeting</property>
                     <style>
-                      <class name="form-control"/>
+                      <class name="form-control-font"/>
                     </style>
                   </object>
                   <packing>
