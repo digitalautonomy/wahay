@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/digitalautonomy/wahay/config"
+	log "github.com/sirupsen/logrus"
 )
 
 // basicConnectivity is used to check whether Tor can connect in different ways
@@ -94,20 +95,24 @@ func (c *connectivity) checkControlPortVersion() bool {
 
 	tc, err := torgof.NewController(where)
 	if err != nil {
+		log.Debugf("checkControlPortVersion() - can't connect to control port: %v", err)
 		return false
 	}
 	err = c.tryAuthenticate(tc)
 	if err != nil {
+		log.Debugf("checkControlPortVersion() - can't authenticate: %v", err)
 		return false
 	}
 
 	v, err := tc.GetVersion()
 	if err != nil {
+		log.Debugf("checkControlPortVersion() - can't get version: %v", err)
 		return false
 	}
 
 	diff, err := compareVersions(v, minSupportedVersion)
 	if err != nil {
+		log.Debugf("checkControlPortVersion() - can't compare versions: %v", err)
 		return false
 	}
 
@@ -143,14 +148,17 @@ var (
 
 func (c *connectivity) check() (authType string, errTotal error, errPartial error) {
 	if !c.checkTorControlPortExists() {
+		log.Debugf(" - no control port exists")
 		return "", nil, ErrPartialTorNoControlPort
 	}
 
 	if !c.checkTorControlAuth() {
+		log.Debugf(" - no valid authentication for control port")
 		return "", nil, ErrPartialTorNoValidAuth
 	}
 
 	if !c.checkControlPortVersion() {
+		log.Debugf(" - no valid version of tor on control port")
 		return "", nil, ErrPartialTorTooOld
 	}
 
@@ -160,6 +168,7 @@ func (c *connectivity) check() (authType string, errTotal error, errPartial erro
 	// relevant for custom instances.
 
 	if !c.checkConnectionOverTor() {
+		log.Debugf(" - no connection over tor to the internet possible")
 		return "", ErrFatalTorNoConnectionAllowed, nil
 	}
 
