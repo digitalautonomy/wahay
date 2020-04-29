@@ -119,7 +119,7 @@ var (
 	ErrTorConnectionTimeout = errors.New("connection over Tor timeout")
 )
 
-// InitializeInstance initialized and returns the Instance for working with Tor
+// InitializeInstance initializes and returns the Instance for working with Tor.
 // This function should be called only once during the system initialization
 func InitializeInstance(conf *config.ApplicationConfig) (Instance, error) {
 	// Checking if the system Tor can be used.
