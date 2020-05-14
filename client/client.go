@@ -57,23 +57,13 @@ func newMumbleClient(p mumbleIniProvider, d databaseProvider, t tor.Instance) *c
 	return c
 }
 
-// TODO: implement a proper way to do this singleton
-var currentInstance *client
-
 type mumbleIniProvider func() string
 type databaseProvider func() []byte
-
-// Mumble returns the current Mumble instance
-func Mumble() Instance {
-	return currentInstance
-}
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
 func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
-	var err error
-
-	currentInstance = newMumbleClient(rederMumbleIniConfig, readerMumbleDB, tor)
+	i := newMumbleClient(rederMumbleIniConfig, readerMumbleDB, tor)
 
 	b := searchBinary(conf)
 
@@ -93,20 +83,20 @@ func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
 		}
 	}
 
-	err = currentInstance.setBinary(b)
+	err := i.setBinary(b)
 	if err != nil {
 		return invalidInstance(err)
 	}
 
-	err = currentInstance.ensureConfiguration()
+	err = i.ensureConfiguration()
 	if err != nil {
 		return invalidInstance(err)
 	}
 
-	log.Infof("Using Mumble located at: %s\n", currentInstance.pathToBinary())
-	log.Infof("Using Mumble environment variables: %s\n", currentInstance.binaryEnv())
+	log.Infof("Using Mumble located at: %s\n", i.pathToBinary())
+	log.Infof("Using Mumble environment variables: %s\n", i.binaryEnv())
 
-	return currentInstance
+	return i
 }
 
 func invalidInstance(err error) Instance {

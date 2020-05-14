@@ -28,7 +28,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 }
 
 func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, onClose func()) (tor.Service, error) {
-	c := client.Mumble()
+	c := u.client
 
 	if !c.IsValid() {
 		return nil, errors.New("error: no client to run")
