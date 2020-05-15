@@ -95,10 +95,10 @@ func (r *conferenceRoom) close() error {
 }
 
 // NewService creates a new hosting service
-func (collection *servers) NewService(port string, t tor.Instance) (Service, error) {
+func (s *servers) NewService(port string, t tor.Instance) (Service, error) {
 	var onionPorts []tor.OnionPort
 
-	httpServer, err := newCertificateServer(collection.DataDir())
+	httpServer, err := newCertificateServer(s.DataDir())
 	if err != nil {
 		return nil, err
 	}
@@ -130,15 +130,15 @@ func (collection *servers) NewService(port string, t tor.Instance) (Service, err
 		return nil, err
 	}
 
-	s := &service{
+	ss := &service{
 		port:       serverPort,
 		mumblePort: p,
 		onion:      onion,
 		httpServer: httpServer,
-		collection: collection,
+		collection: s,
 	}
 
-	return s, nil
+	return ss, nil
 }
 
 var (
