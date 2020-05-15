@@ -11,17 +11,8 @@ import (
 	"github.com/digitalautonomy/wahay/tor"
 )
 
-var collection Servers
-
-func ensureServerCollection() error {
-	var err error
-
-	collection, err = Create()
-	if err != nil {
-		return err
-	}
-
-	return nil
+func CreateServerCollection() (Servers, error) {
+	return create()
 }
 
 const (
@@ -49,6 +40,7 @@ type service struct {
 	onion      tor.Onion
 	room       *conferenceRoom
 	httpServer *webserver
+	collection Servers
 }
 
 func (s *service) ID() string {
@@ -75,7 +67,7 @@ type conferenceRoom struct {
 }
 
 func (s *service) NewConferenceRoom(password string) error {
-	serv, err := collection.CreateServer(strconv.Itoa(s.port), password)
+	serv, err := s.collection.CreateServer(strconv.Itoa(s.port), password)
 	if err != nil {
 		return err
 	}
@@ -103,12 +95,7 @@ func (r *conferenceRoom) close() error {
 }
 
 // NewService creates a new hosting service
-func NewService(port string, t tor.Instance) (Service, error) {
-	err := ensureServerCollection()
-	if err != nil {
-		return nil, err
-	}
-
+func (collection *servers) NewService(port string, t tor.Instance) (Service, error) {
 	var onionPorts []tor.OnionPort
 
 	httpServer, err := newCertificateServer(collection.DataDir())
@@ -148,6 +135,7 @@ func NewService(port string, t tor.Instance) (Service, error) {
 		mumblePort: p,
 		onion:      onion,
 		httpServer: httpServer,
+		collection: collection,
 	}
 
 	return s, nil
@@ -186,7 +174,7 @@ func (s *service) Close() error {
 		}
 	}
 
-	collection.Cleanup()
+	s.collection.Cleanup()
 
 	return nil
 }

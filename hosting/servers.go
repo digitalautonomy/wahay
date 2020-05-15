@@ -12,6 +12,7 @@ import (
 
 	"github.com/digitalautonomy/grumble/pkg/logtarget"
 	grumbleServer "github.com/digitalautonomy/grumble/server"
+	"github.com/digitalautonomy/wahay/tor"
 )
 
 // Servers serves
@@ -20,6 +21,7 @@ type Servers interface {
 	DestroyServer(Server) error
 	DataDir() string
 	Cleanup()
+	NewService(port string, t tor.Instance) (Service, error)
 }
 
 // MeetingData is a representation of the data used to create a Mumble url
@@ -31,8 +33,7 @@ type MeetingData struct {
 	Username  string
 }
 
-// Create creates
-func Create() (Servers, error) {
+func create() (Servers, error) {
 	s := &servers{}
 	e := s.create()
 	return s, e

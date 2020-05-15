@@ -12,6 +12,7 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 	"github.com/digitalautonomy/wahay/client"
 	"github.com/digitalautonomy/wahay/config"
+	"github.com/digitalautonomy/wahay/hosting"
 	"github.com/digitalautonomy/wahay/tor"
 )
 
@@ -59,6 +60,7 @@ type gtkUI struct {
 	client         client.Instance
 	keySupplier    config.KeySupplier
 	config         *config.ApplicationConfig
+	servers        hosting.Servers
 }
 
 // NewGTK returns a new client for a GTK ui

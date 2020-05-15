@@ -28,6 +28,16 @@ func (u *gtkUI) hostMeetingHandler() {
 }
 
 func (u *gtkUI) realHostMeetingHandler() {
+	if u.servers == nil {
+		var e error
+		u.servers, e = hosting.CreateServerCollection()
+		if e != nil {
+			u.reportError(i18n.Sprintf("Something went wrong: %s", e))
+			u.switchToMainWindow()
+			return
+		}
+	}
+
 	h := &hostData{
 		u:        u,
 		autoJoin: u.config.GetAutoJoin(),
@@ -222,7 +232,7 @@ func (h *hostData) createNewService(err chan error) {
 	}
 
 	h.u.waitForTorInstance(func(t tor.Instance) {
-		s, e := hosting.NewService(port, t)
+		s, e := h.u.servers.NewService(port, t)
 		if e != nil {
 			log.Errorf("createNewService(): %s", e)
 			err <- e
