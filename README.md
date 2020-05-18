@@ -20,6 +20,10 @@ installation there. If you are a developer, installing the application should be
 Wahay is currently under active development. There have been no security audits
 of the code, and you should currently not use this for anything sensitive.
 
+## Language
+
+The language to be used is the same configured under LANG environment variable.
+Example: export LANG="en_US.utf8"
 
 ## Compatibility
 
