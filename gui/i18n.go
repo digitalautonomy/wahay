@@ -5,24 +5,20 @@ package gui
 import (
 	"github.com/coyim/gotk3adapter/glibi"
 
-	"github.com/cubiest/jibberjabber"
-
+	"github.com/digitalautonomy/wahay/config"
 	// This is necessary because that's how the translation stuff works
 	_ "github.com/digitalautonomy/wahay/gui/catalog"
 
 	log "github.com/sirupsen/logrus"
 
-	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 )
 
 var i18n *message.Printer
 
 func init() {
-	tag, _ := jibberjabber.DetectLanguageTag()
-	if tag == language.Und {
-		tag = language.English
-	}
+	tag := config.DetectLanguage()
+
 	log.Infof("Detected language: %v\n", tag)
 	i18n = message.NewPrinter(tag, message.Catalog(message.DefaultCatalog))
 }

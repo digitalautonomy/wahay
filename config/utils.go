@@ -10,6 +10,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/cubiest/jibberjabber"
+	"golang.org/x/text/language"
 )
 
 // ParseYes returns true if the string is any combination of yes
@@ -111,4 +114,13 @@ func CheckPort(port int) bool {
 		return false
 	}
 	return true
+}
+
+// DetectLanguage determine the language used in the host computer
+func DetectLanguage() language.Tag {
+	tag, _ := jibberjabber.DetectLanguageTag()
+	if tag == language.Und {
+		tag = language.English
+	}
+	return tag
 }

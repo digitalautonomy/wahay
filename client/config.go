@@ -193,7 +193,7 @@ func (c *client) saveCertificateConfigFile() error {
 	langSection := strings.Replace(
 		certSectionProp,
 		"#LANGUAGE",
-		getLanguageConfigured(),
+		config.DetectLanguage().String(),
 		1,
 	)
 
@@ -203,12 +203,4 @@ func (c *client) saveCertificateConfigFile() error {
 	}
 
 	return nil
-}
-
-func getLanguageConfigured() string {
-	l := os.Getenv("LANG")
-	if l == "" {
-		l = "en_US.utf8"
-	}
-	return l
 }
