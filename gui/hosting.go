@@ -28,10 +28,14 @@ func (u *gtkUI) hostMeetingHandler() {
 }
 
 func (u *gtkUI) realHostMeetingHandler() {
+	u.hideMainWindow()
+	u.displayLoadingWindow()
+
 	if u.servers == nil {
 		var e error
 		u.servers, e = hosting.CreateServerCollection()
 		if e != nil {
+			// TODO: should we check if u.servers !== nil here?
 			u.reportError(i18n.Sprintf("Something went wrong: %s", e))
 			u.switchToMainWindow()
 			return
@@ -44,9 +48,6 @@ func (u *gtkUI) realHostMeetingHandler() {
 		next:     nil,
 	}
 
-	u.hideMainWindow()
-	u.displayLoadingWindow()
-
 	echan := make(chan error)
 
 	go h.createNewService(echan)
@@ -56,6 +57,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 	u.hideLoadingWindow()
 
 	if err != nil {
+		// TODO: we should check if u.servers !== nil to reset it
 		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
 		u.switchToMainWindow()
 		return
@@ -455,6 +457,7 @@ func (h *hostData) showMeetingConfiguration() {
 		},
 		"on_cancel": func() {
 			h.service.Close()
+			h.u.servers = nil
 			h.u.switchToMainWindow()
 		},
 		"on_start_meeting": func() {
