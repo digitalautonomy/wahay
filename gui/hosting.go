@@ -274,6 +274,8 @@ func (h *hostData) finishMeetingReal() {
 		h.currentWindow = nil
 	}
 
+	h.u.servers = nil
+
 	h.u.switchToMainWindow()
 }
 
