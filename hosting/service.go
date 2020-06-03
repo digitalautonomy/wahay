@@ -11,6 +11,7 @@ import (
 	"github.com/digitalautonomy/wahay/tor"
 )
 
+// CreateServerCollection creates the hosting server
 func CreateServerCollection() (Servers, error) {
 	return create()
 }
