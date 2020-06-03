@@ -67,12 +67,17 @@ func (s *servers) initializeDataDirectory() error {
 	var e error
 	s.dataDir, e = ioutil.TempDir("", "wahay")
 	if e != nil {
+		s.log.Debug(e.Error())
 		return e
 	}
 
 	grumbleServer.Args.DataDir = s.dataDir
 
-	_ = os.MkdirAll(filepath.Join(s.dataDir, "servers"), 0700)
+	e = os.MkdirAll(filepath.Join(s.dataDir, "servers"), 0700)
+	if e != nil {
+		s.log.Debug(e.Error())
+		return e
+	}
 
 	return nil
 }
