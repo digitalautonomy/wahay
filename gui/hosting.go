@@ -438,6 +438,18 @@ func (h *hostData) showMeetingConfiguration() {
 	chkAutoJoin := builder.get("chkAutoJoin").(gtki.CheckButton)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
 
+	onInviteOpen := func(d gtki.ApplicationWindow) {
+		h.currentWindow = d
+		// Hide the current window because we don't want
+		// lot of windows there in the user's screen
+		win.Hide()
+	}
+
+	onInviteClose := func(gtki.ApplicationWindow) {
+		win.Show()
+		h.currentWindow = nil
+	}
+
 	builder.i18nProperties(
 		"label", "labelMeetingID",
 		"label", "labelUsername",
@@ -451,12 +463,8 @@ func (h *hostData) showMeetingConfiguration() {
 	btnCopyMeetingID.SetVisible(h.u.isCopyToClipboardSupported())
 
 	builder.ConnectSignals(map[string]interface{}{
-		"on_copy_meeting_id": func() {
-			h.copyMeetingIDToClipboard(builder, "")
-		},
-		"on_send_by_email": func() {
-			h.sendInvitationByEmail(builder)
-		},
+		"on_copy_meeting_id": func() { h.copyMeetingIDToClipboard(builder, "") },
+		"on_send_by_email":   func() { h.sendInvitationByEmail(builder) },
 		"on_cancel": func() {
 			h.service.Close()
 			h.u.servers = nil
@@ -469,7 +477,7 @@ func (h *hostData) showMeetingConfiguration() {
 			h.meetingPassword, _ = password.GetText()
 			h.startMeetingHandler()
 		},
-		"on_invite_others": h.onInviteParticipants,
+		"on_invite_others": func() { h.onInviteParticipants(onInviteOpen, onInviteClose) },
 		"on_chkAutoJoin_toggled": func() {
 			h.autoJoin = chkAutoJoin.GetActive()
 			h.u.config.SetAutoJoin(h.autoJoin)
