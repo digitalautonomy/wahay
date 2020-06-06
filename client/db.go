@@ -19,7 +19,7 @@ func (c *client) db() (*dbData, error) {
 		}).Debug("Creating Mumble sqlite database")
 
 		data := c.databaseProvider()
-		err := ioutil.WriteFile(sqlFile, data, 0644)
+		err := ioutil.WriteFile(sqlFile, data, 0600)
 		if err != nil {
 			return nil, err
 		}
@@ -92,7 +92,7 @@ func loadDBFromFile(filename string) (*dbData, error) {
 }
 
 func readBinaryContent(filename string) ([]byte, error) {
-	file, err := os.Open(filename)
+	file, err := os.Open(filepath.Clean(filename))
 	if err != nil {
 		return nil, err
 	}

@@ -177,7 +177,7 @@ func genCertInto(certFilename, keyFilename string) error {
 		Bytes: keybuf,
 	}
 
-	file, err := os.OpenFile(certFilename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0700)
+	file, err := os.OpenFile(certFilename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0600)
 	if err != nil {
 		return err
 	}
@@ -187,7 +187,7 @@ func genCertInto(certFilename, keyFilename string) error {
 		return err
 	}
 
-	file, err = os.OpenFile(keyFilename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0700)
+	file, err = os.OpenFile(keyFilename, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0600)
 	if err != nil {
 		return err
 	}

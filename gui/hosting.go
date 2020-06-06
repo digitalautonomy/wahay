@@ -466,7 +466,7 @@ func (h *hostData) showMeetingConfiguration() {
 		"on_copy_meeting_id": func() { h.copyMeetingIDToClipboard(builder, "") },
 		"on_send_by_email":   func() { h.sendInvitationByEmail(builder) },
 		"on_cancel": func() {
-			h.service.Close()
+			_ = h.service.Close()
 			h.u.servers = nil
 			h.u.switchToMainWindow()
 		},

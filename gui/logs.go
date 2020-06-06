@@ -37,7 +37,7 @@ func ensureLogFile(conf *config.ApplicationConfig) io.Writer {
 		return nil
 	}
 
-	file, err := os.OpenFile(rawLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(rawLogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		return nil
 	}

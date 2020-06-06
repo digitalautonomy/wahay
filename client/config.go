@@ -106,7 +106,7 @@ func (c *client) ensureConfigurationDBFile() error {
 	}
 
 	configData := c.databaseProvider()
-	err = ioutil.WriteFile(filepath.Join(c.configDir, configDBName), configData, 0644)
+	err = ioutil.WriteFile(filepath.Join(c.configDir, configDBName), configData, 0600)
 	if err != nil {
 		return err
 	}
@@ -197,7 +197,7 @@ func (c *client) saveCertificateConfigFile() error {
 		1,
 	)
 
-	err = ioutil.WriteFile(c.configFile, []byte(langSection), 0644)
+	err = ioutil.WriteFile(c.configFile, []byte(langSection), 0600)
 	if err != nil {
 		return err
 	}

@@ -265,7 +265,7 @@ func (a *ApplicationConfig) CreateBackup() {
 
 		backupFile := filepath.Join(filepath.Dir(a.filename), appConfigFileBackup)
 		if FileExists(backupFile) {
-			os.Remove(backupFile)
+			_ = os.Remove(backupFile)
 		}
 
 		err = ioutil.WriteFile(backupFile, data, 0600)
@@ -281,7 +281,7 @@ func (a *ApplicationConfig) removeOldFileOnNextSave() {
 	a.doAfterSave(func() {
 		if FileExists(oldFilename) && a.filename != oldFilename {
 			// TODO: Remove the file securely
-			os.Remove(oldFilename)
+			_ = os.Remove(oldFilename)
 		}
 	})
 }

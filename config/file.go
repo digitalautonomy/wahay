@@ -41,7 +41,7 @@ func SafeWrite(name string, data []byte, perm os.FileMode) error {
 	}
 
 	if FileExists(name) {
-		os.Remove(name)
+		_ = os.Remove(name)
 	}
 
 	return os.Rename(tempName, name)
@@ -50,9 +50,9 @@ func SafeWrite(name string, data []byte, perm os.FileMode) error {
 // ReadFileOrTemporaryBackup tries to load a specific file
 func ReadFileOrTemporaryBackup(name string) (data []byte, e error) {
 	if FileExists(name) {
-		data, e = ioutil.ReadFile(name)
+		data, e = ioutil.ReadFile(filepath.Clean(name))
 		if len(data) == 0 && FileExists(name+tmpExtension) {
-			data, e = ioutil.ReadFile(name + tmpExtension)
+			data, e = ioutil.ReadFile(filepath.Clean(name + tmpExtension))
 		}
 		return
 	}

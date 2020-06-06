@@ -185,7 +185,7 @@ var _escData = map[string]*_escFile{
 	"/files/.mumble.sqlite": {
 		local:   "files/.mumble.sqlite",
 		size:    122880,
-		modtime: 1588105509,
+		modtime: 1588190338,
 		compressed: `
 U1FMaXRlIGZvcm1hdCAzABAAAQEAQCAgAAAAKAAAAB4AAAAAAAAAAAAAACMAAAAEAAAAAAAAAAAAAAAB
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAC4csA0AAAAdA58ADzkO5w6HDjINvA0Z
@@ -2241,7 +2241,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 	"/files/mumble.ini": {
 		local:   "files/mumble.ini",
 		size:    419,
-		modtime: 1589815440,
+		modtime: 1589832028,
 		compressed: `
 IyBNdW1ibGUgY29uZmlndXJhdGlvbiB0byBiZSB1c2VkIGluIFdhaGF5CltHZW5lcmFsXQpsYXN0dXBk
 YXRlPTIKCltuZXRdCnRjcG9ubHk9dHJ1ZQojQ0VSVElGSUNBVEUKCltvdmVybGF5XQplbmFibGU9ZmFs

@@ -46,7 +46,7 @@ func (g *Graphics) uiBuilderFor(name string) *uiBuilder {
 }
 
 func readFile(fileName string) string {
-	data, err := ioutil.ReadFile(fileName)
+	data, err := ioutil.ReadFile(filepath.Clean(fileName))
 	if err != nil {
 		fatal(err)
 	}

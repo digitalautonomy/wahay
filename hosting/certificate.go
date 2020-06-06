@@ -35,7 +35,7 @@ func newCertificateServer(dir string) (*webserver, error) {
 		return nil, errors.New("the certificate file do not exists")
 	}
 
-	cert, err := ioutil.ReadFile(certFile)
+	cert, err := ioutil.ReadFile(filepath.Clean(certFile))
 	if err != nil {
 		return nil, err
 	}
