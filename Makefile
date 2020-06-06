@@ -29,7 +29,8 @@ deps:
 	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
 	go get -u golang.org/x/text/cmd/gotext
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin v1.21.0
+	go get -u github.com/securego/gosec/cmd/gosec
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
 
 optional-deps:
 	go get -u github.com/rogpeppe/godef
@@ -97,7 +98,7 @@ lint:
 	golangci-lint run --disable-all -E golint ./...
 
 gosec:
-	golangci-lint run --disable-all -E gosec ./...
+	gosec -conf .gosec.config.json ./...
 
 ineffassign:
 	golangci-lint run --disable-all -E ineffassign ./...

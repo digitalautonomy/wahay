@@ -181,7 +181,7 @@ func genCertInto(certFilename, keyFilename string) error {
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer closeAndIgnore(file)
 	err = pem.Encode(file, &certblk)
 	if err != nil {
 		return err
@@ -191,7 +191,7 @@ func genCertInto(certFilename, keyFilename string) error {
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer closeAndIgnore(file)
 	err = pem.Encode(file, &keyblk)
 	if err != nil {
 		return err
@@ -218,13 +218,15 @@ func generateTemporaryMumbleCertificate() (string, error) {
 
 	args := []string{"pkcs12", "-passout", "pass:", "-inkey", filepath.Join(dir, "key.pem"),
 		"-in", filepath.Join(dir, "cert.pem"), "-export", "-out", filepath.Join(dir, "transformed.p12")}
+	// This executes the openssl command. The args are completely under our control
+	/* #nosec G204 */
 	cmd := exec.Command("openssl", args...)
 	_, err = cmd.Output()
 	if err != nil {
 		return "", err
 	}
 
-	data, err := ioutil.ReadFile(filepath.Join(dir, "transformed.p12"))
+	data, err := ioutil.ReadFile(filepath.Clean(filepath.Join(dir, "transformed.p12")))
 	if err != nil {
 		return "", err
 	}

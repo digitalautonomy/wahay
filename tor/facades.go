@@ -135,6 +135,8 @@ func (*realExecImplementation) LookPath(s string) (string, error) {
 }
 
 func (*realExecImplementation) ExecWithModify(bin string, args []string, cm ModifyCommand) ([]byte, error) {
+	// This executes the tor command, which is under control of the code
+	/* #nosec G204 */
 	cmd := exec.Command(bin, args...)
 
 	if cm != nil {

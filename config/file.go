@@ -56,7 +56,7 @@ func ReadFileOrTemporaryBackup(name string) (data []byte, e error) {
 		}
 		return
 	}
-	return ioutil.ReadFile(name + tmpExtension)
+	return ioutil.ReadFile(filepath.Clean(name + tmpExtension))
 }
 
 // Dir returns the default config directory for Wahay

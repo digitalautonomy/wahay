@@ -110,6 +110,10 @@ func (b *binary) remove() {
 	}
 }
 
+func closeAndIgnore(c io.Closer) {
+	_ = c.Close()
+}
+
 func (b *binary) copyBinaryToDir(destination string) error {
 	var err error
 	var srcfd *os.File
@@ -117,14 +121,14 @@ func (b *binary) copyBinaryToDir(destination string) error {
 	if srcfd, err = os.Open(b.path); err != nil {
 		return err
 	}
-	defer srcfd.Close()
+	defer closeAndIgnore(srcfd)
 
 	var dstfd *os.File
 
 	if dstfd, err = os.Create(destination); err != nil {
 		return err
 	}
-	defer dstfd.Close()
+	defer closeAndIgnore(dstfd)
 
 	if _, err = io.Copy(dstfd, srcfd); err != nil {
 		return err
@@ -287,6 +291,8 @@ func isThereAnAvailableBinary(path string) *binary {
 	}
 
 	bin := b.path
+	// This executes the tor command, which is under control of the code
+	/* #nosec G204 */
 	command := exec.Command(bin, "-h")
 
 	isBundle, env := checkLibsDependenciesInPath(b.path)

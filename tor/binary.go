@@ -351,6 +351,9 @@ func listPossibleTorBinary(path string) []string {
 
 func (b *binary) start(configFile string) (*runningTor, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
+	// This is safe since we control both the path and the configFile argument - there is
+	// no user input to these
+	/* #nosec G204 */
 	cmd := exec.CommandContext(ctx, b.path, "-f", configFile)
 
 	if b.isBundle && len(b.env) > 0 {

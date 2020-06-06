@@ -291,6 +291,8 @@ type ModifyCommand func(*exec.Cmd)
 
 func (i *instance) exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
+	// This executes the tor command, and the args which are both under control of the code
+	/* #nosec G204 */
 	cmd := exec.CommandContext(ctx, command, args...)
 
 	pathTorsocks, err := findLibTorsocks(i.pathTorsocks)

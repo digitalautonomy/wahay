@@ -96,7 +96,7 @@ func readBinaryContent(filename string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer closeAndIgnore(file)
 
 	return ioutil.ReadAll(file)
 }
