@@ -2,22 +2,39 @@ window {
   &.meeting-controls {
     border-radius: 2px;
 
-    %meeting-control {
+    .top {
+      background-color: $yellow-100;
+      color: $yellow-800;
+      font-weight: $font-weight-normal;
+      font-size: $font-size-large;
       padding: $spacing;
-      font-size: 21px;
-      font-weight: $font-weight-bold;
-      border-radius: 6px;
-      border-width: 0;
     }
 
-    .control-leave-call {
-      @extend %meeting-control;
-      @include btn-solid($text-white, $orange-600, $orange-800);
+    .content {
+      padding: $spacing;
     }
 
-    .control-finish-call {
-      @extend %meeting-control;
-      @include btn-solid($text-white, $red-600, $red-800);
+    .buttons {
+      background-color: $gray-200;
+      padding: $spacing;
+
+      %meeting-control {
+        padding: $spacing/1.5 $spacing;
+        font-size: 21px;
+        font-weight: $font-weight-bold;
+        border-radius: 6px;
+        border-width: 0;
+      }
+
+      .control-leave-call {
+        @extend %meeting-control;
+        @include btn-solid($text-white, $orange-600, $orange-800);
+      }
+
+      .control-finish-call {
+        @extend %meeting-control;
+        @include btn-solid($text-white, $red-600, $red-800);
+      }
     }
   }
 }
