@@ -73,7 +73,6 @@ else
 	cp $(BUILD_DIR)/wahay $(BUILD_DIR)/wahay-$(TAG_VERSION)-$(GIT_SHORT_VERSION)
 endif
 
-
 clean:
 	$(RM) -rf $(BUILD_DIR)/wahay
 	$(RM) -rf $(BUILD_TOOLS_DIR)
@@ -90,7 +89,6 @@ client/gen_client_files.go: $(BUILD_TOOLS_DIR)/esc client/files/* client/files/.
 
 gui/definitions.go: $(BUILD_TOOLS_DIR)/esc gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/*
 	(cd gui; go generate -x ui_reader.go)
-
 
 # QUALITY TOOLS
 
