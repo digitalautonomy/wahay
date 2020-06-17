@@ -21,10 +21,6 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
-            <property name="margin_top">20</property>
-            <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
@@ -87,6 +83,8 @@
                         <signal name="clicked" handler="on_copy_meeting_id" swapped="no"/>
                         <style>
                           <class name="btn"/>
+                          <class name="btn-invisible"/>
+                          <class name="btn-sm"/>
                         </style>
                       </object>
                       <packing>
@@ -312,10 +310,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
                 <child>
                   <object class="GtkButton" id="btnInviteOthers">
                     <property name="label" translatable="yes">Invite others</property>
@@ -335,6 +329,9 @@
                     <property name="position">0</property>
                   </packing>
                 </child>
+                <style>
+                  <class name="actions-left"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -348,10 +345,6 @@
                 <property name="can_focus">False</property>
                 <property name="halign">end</property>
                 <property name="valign">center</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
                 <child>
                   <object class="GtkButton" id="btnCancel">
                     <property name="label" translatable="yes">Cancel</property>
@@ -364,6 +357,7 @@
                     <style>
                       <class name="btn-md"/>
                       <class name="btn"/>
+                      <class name="btn-invisible"/>
                     </style>
                   </object>
                   <packing>
@@ -393,6 +387,10 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <style>
+                  <class name="actions"/>
+                  <class name="actions-right"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -414,8 +412,5 @@
         </child>
       </object>
     </child>
-    <style>
-      <class name="light"/>
-    </style>
   </object>
 </interface>

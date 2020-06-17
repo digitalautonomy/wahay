@@ -1,6 +1,6 @@
 window {
   font-family: $desktop-font;
-  background-color: $white;
+  background: $white;
   font-size: $desktop-font-size;
 
   .window-content {
@@ -8,23 +8,40 @@ window {
   }
 
   .window-actions {
+    padding: $spacing;
+
     &.bordered {
-      border-top: 1px solid $gray-300;
+      border-top: 2px solid $white;
+      background: $gray-200;
     }
   }
 
+  .actions {
+    .btn {
+      margin-left: $spacing/1.5;
+    }
+  }
+
+  .actions-right {
+    padding-left: $spacing;
+  }
+
+  .actions-left {
+    padding-right: $spacing;
+  }
+
   &.light {
-    background-color: $gray-100;
+    background: $white;
 
     .window-actions.bordered {
-      background-color: $white;
+      background: $white;
     }
   }
 }
 
 dialog {
   font-family: $desktop-font;
-  background-color: $white;
+  background: $white;
   font-size: $desktop-font-size;
 
   .dialog-content {
@@ -36,15 +53,15 @@ dialog {
 
     &.bordered {
       border-top: 1px solid $gray-300;
-      background-color: $gray-100;
+      background: $gray-100;
     }
   }
 
   &.light {
-    background-color: $gray-100;
+    background: $gray-100;
 
     .window-actions.bordered {
-      background-color: $white;
+      background: $white;
     }
   }
 }

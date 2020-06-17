@@ -11,25 +11,25 @@
     }
 
     &:hover {
-      background-color: darken($bg2, 3%);
+      background: darken($bg2, 3%);
       border-color: rgba($black, 0.35);
     }
 
     &:active {
-      background-color: darken(desaturate($bg, 10%), 6%);
+      background: darken(desaturate($bg, 10%), 6%);
       border-color: rgba($black, 0.35); // repeat to avoid shift on click-drag off of button
       box-shadow: $btn-active-shadow;
     }
 
     &:checked {
-      background-color: darken(desaturate($bg, 10%), 6%);
+      background: darken(desaturate($bg, 10%), 6%);
       border-color: rgba($black, 0.35); // repeat to avoid shift on click-drag off of button
       box-shadow: $btn-checked-shadow;
     }
 
     &:disabled {
       color: rgba($color, 0.4);
-      background-color: $bg2;
+      background: $bg2;
       border-color: $border-color-button;
       box-shadow: none;
     }
@@ -43,19 +43,19 @@
     }
 
     &:hover {
-      background-color: darken($bg2, 2%);
+      background: darken($bg2, 2%);
       border-color: darken($bg2, 2%);
     }
 
     &:active {
-      background-color: darken(mix($bg, $bg2, 50%), 7%);
+      background: darken(mix($bg, $bg2, 50%), 7%);
       border-color: darken($bg2, 2%);
       box-shadow: $btn-active-shadow;
     }
 
     &:disabled {
       color: rgba($white, 0.65);
-      background-color: mix($bg2, $white, 50%);
+      background: mix($bg2, $white, 50%);
       border-color: transparent;
       box-shadow: none;
     }
@@ -65,7 +65,9 @@
 // Inverse button hover style
 @mixin btn-inverse($color, $bg, $bg2) {
   color: $color;
-  background-color: $bg;
+  background: $bg;
+  border: 2px solid;
+  box-shadow: 0 2px 3px rgba($black, 0.12);
 
   &:focus {
     box-shadow: 0 0 0 0.2em rgba($color, 0.4);
@@ -73,20 +75,20 @@
 
   &:hover {
     color: $text-white;
-    background-color: $color;
+    background: $color;
     border-color: $black-fade-50;
   }
 
   &:active {
     color: $text-white;
-    background-color: darken($color, 5%);
+    background: darken($color, 5%);
     border-color: $black-fade-50;
     box-shadow: $btn-active-shadow;
   }
 
   &:disabled {
     color: rgba($color, 0.4);
-    background-color: $bg2;
+    background: $bg2;
     border-color: $border-color-button;
     box-shadow: none;
   }
@@ -95,12 +97,12 @@
 // Outline color generator for btn-outline to make the hover state inverse the text and bg colors.
 @mixin btn-outline($text-color: $text-blue, $bg-color: $bg-white) {
   color: $text-color;
-  background-color: $bg-color;
+  background: $bg-color;
 
   &:hover,
   &:active {
     color: $bg-color;
-    background-color: $text-color;
+    background: $text-color;
     border-color: $text-color;
   }
 
@@ -111,7 +113,7 @@
 
   &:disabled {
     color: $black-fade-30;
-    background-color: $bg-white;
+    background: $bg-white;
     border-color: $black-fade-15;
     box-shadow: none;
   }

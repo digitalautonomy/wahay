@@ -18,42 +18,56 @@
 
 window {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  background-color: #fff;
-  font-size: 14px; }
+  background: #fff;
+  font-size: 18px; }
   window .window-content {
     padding: 20px; }
-  window .window-actions.bordered {
-    border-top: 1px solid #e2e8f0; }
+  window .window-actions {
+    padding: 20px; }
+    window .window-actions.bordered {
+      border-top: 2px solid #fff;
+      background: #edf2f7; }
+  window .actions .btn, window .actions .main-window-top-bar .main-window-btn-settings, .main-window-top-bar window .actions .main-window-btn-settings,
+  window .actions .main-window-top-bar .main-window-btn-help,
+  .main-window-top-bar window .actions .main-window-btn-help, window .actions .main-window-actions .btn-host-meeting, .main-window-actions window .actions .btn-host-meeting,
+  window .actions .main-window-actions .btn-join-meeting,
+  .main-window-actions window .actions .btn-join-meeting, window .actions .invite-email-link, window .actions .invite-window-btn {
+    margin-left: 13.3333333333px; }
+  window .actions-right {
+    padding-left: 20px; }
+  window .actions-left {
+    padding-right: 20px; }
   window.light {
-    background-color: #f7fafc; }
+    background: #fff; }
     window.light .window-actions.bordered {
-      background-color: #fff; }
+      background: #fff; }
 
 dialog {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  background-color: #fff;
-  font-size: 14px; }
+  background: #fff;
+  font-size: 18px; }
   dialog .dialog-content {
     padding: 20px; }
   dialog .dialog-actions {
     padding: 20px; }
     dialog .dialog-actions.bordered {
       border-top: 1px solid #e2e8f0;
-      background-color: #f7fafc; }
+      background: #f7fafc; }
   dialog.light {
-    background-color: #f7fafc; }
+    background: #f7fafc; }
     dialog.light .window-actions.bordered {
-      background-color: #fff; }
+      background: #fff; }
 
 .form-control {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border: 2px solid #cbd5e0;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
   color: #1a202c;
   font-size: 18px;
-  border-radius: 4px;
-  padding: 10px 20px; }
+  border-radius: 4.2px;
+  padding: 13.3333333333px 10px;
+  text-shadow: none; }
   .form-control.append {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0; }
@@ -69,7 +83,7 @@ dialog {
 
 .form-legend-title {
   color: #000;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600; }
 
 .form-legend-content {
@@ -78,31 +92,45 @@ dialog {
   padding-top: 10px; }
 
 .form-control-font {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
-  color: #035cc2;
-  font-size: 16px;
-  border-radius: 4px;
-  padding: 7.1428571429px 20px; }
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  background: #fff;
+  border: 2px solid #cbd5e0;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
+  color: #1a202c;
+  font-size: 18px;
+  border-radius: 4.2px;
+  padding: 13.3333333333px 10px;
+  text-shadow: none; }
+  .form-control-font:active, .form-control-font:focus {
+    color: #1a202c;
+    border: 2px solid #718096;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
 
 .meeting-id-control {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #fff;
-  border: 1px solid #cbd5e0;
-  border-radius: 4px;
-  padding: 1rem; }
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  background: #fff;
+  border: 2px solid #cbd5e0;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
+  color: #1a202c;
+  font-size: 18px;
+  border-radius: 4.2px;
+  padding: 13.3333333333px 10px;
+  text-shadow: none; }
+  .meeting-id-control:active, .meeting-id-control:focus {
+    color: #1a202c;
+    border: 2px solid #718096;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
 
 .btn, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
 .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
   padding: 12px 20px;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: none;
-  border-radius: 0.25em; }
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  text-shadow: none;
+  border-radius: 4.384px; }
   .btn.append, .main-window-top-bar .append.main-window-btn-settings,
   .main-window-top-bar .append.main-window-btn-help, .main-window-actions .append.btn-host-meeting,
   .main-window-actions .append.btn-join-meeting, .append.invite-email-link, .append.invite-window-btn {
@@ -114,7 +142,7 @@ dialog {
 .main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
 .main-window-actions .btn-join-meeting, .invite-email-link, .invite-window-btn {
   color: #1a202c;
-  background: #f0f5f9; }
+  background: #fff; }
   .btn:focus, .main-window-top-bar .main-window-btn-settings:focus,
   .main-window-top-bar .main-window-btn-help:focus, .main-window-actions .btn-host-meeting:focus,
   .main-window-actions .btn-join-meeting:focus, .invite-email-link:focus, .invite-window-btn:focus {
@@ -122,25 +150,25 @@ dialog {
   .btn:hover, .main-window-top-bar .main-window-btn-settings:hover,
   .main-window-top-bar .main-window-btn-help:hover, .main-window-actions .btn-host-meeting:hover,
   .main-window-actions .btn-join-meeting:hover, .invite-email-link:hover, .invite-window-btn:hover {
-    background-color: #e4eef5;
+    background: #f7f7f7;
     border-color: rgba(0, 0, 0, 0.35); }
   .btn:active, .main-window-top-bar .main-window-btn-settings:active,
   .main-window-top-bar .main-window-btn-help:active, .main-window-actions .btn-host-meeting:active,
   .main-window-actions .btn-join-meeting:active, .invite-email-link:active, .invite-window-btn:active {
-    background-color: #e9ecef;
+    background: #e9ecef;
     border-color: rgba(0, 0, 0, 0.35);
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn:checked, .main-window-top-bar .main-window-btn-settings:checked,
   .main-window-top-bar .main-window-btn-help:checked, .main-window-actions .btn-host-meeting:checked,
   .main-window-actions .btn-join-meeting:checked, .invite-email-link:checked, .invite-window-btn:checked {
-    background-color: #e9ecef;
+    background: #e9ecef;
     border-color: rgba(0, 0, 0, 0.35);
     box-shadow: inset 0 0.3em 0.5em rgba(0, 0, 0, 0.3); }
   .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled,
   .main-window-top-bar .main-window-btn-help:disabled, .main-window-actions .btn-host-meeting:disabled,
   .main-window-actions .btn-join-meeting:disabled, .invite-email-link:disabled, .invite-window-btn:disabled {
     color: rgba(26, 32, 44, 0.4);
-    background-color: #f0f5f9;
+    background: #fff;
     border-color: rgba(0, 0, 0, 0.2);
     box-shadow: none; }
 
@@ -151,15 +179,15 @@ dialog {
   .btn-primary:focus, .main-window-actions .btn-host-meeting:focus {
     box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
   .btn-primary:hover, .main-window-actions .btn-host-meeting:hover {
-    background-color: #3994e0;
+    background: #3994e0;
     border-color: #3994e0; }
   .btn-primary:active, .main-window-actions .btn-host-meeting:active {
-    background-color: #2388dc;
+    background: #2388dc;
     border-color: #3994e0;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-primary:disabled, .main-window-actions .btn-host-meeting:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #a1ccf0;
+    background: #a1ccf0;
     border-color: transparent;
     box-shadow: none; }
 
@@ -170,15 +198,15 @@ dialog {
   .btn-secondary:focus, .main-window-actions .btn-join-meeting:focus {
     box-shadow: 0 0 0 0.2em rgba(72, 187, 120, 0.4); }
   .btn-secondary:hover, .main-window-actions .btn-join-meeting:hover {
-    background-color: #359964;
+    background: #359964;
     border-color: #359964; }
   .btn-secondary:active, .main-window-actions .btn-join-meeting:active {
-    background-color: #369460;
+    background: #369460;
     border-color: #359964;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-secondary:disabled, .main-window-actions .btn-join-meeting:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #9cd0b4;
+    background: #9cd0b4;
     border-color: transparent;
     box-shadow: none; }
 
@@ -189,35 +217,37 @@ dialog {
   .btn-blue:focus {
     box-shadow: 0 0 0 0.2em rgba(101, 172, 231, 0.4); }
   .btn-blue:hover {
-    background-color: #308fde;
+    background: #308fde;
     border-color: #308fde; }
   .btn-blue:active {
-    background-color: #308fdf;
+    background: #308fdf;
     border-color: #308fde;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-blue:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #9ccaf0;
+    background: #9ccaf0;
     border-color: transparent;
     box-shadow: none; }
 
 .btn-danger {
   color: #e53e3e;
-  background-color: #fafbfc; }
+  background: #fafbfc;
+  border: 2px solid;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.12); }
   .btn-danger:focus {
     box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
   .btn-danger:hover {
     color: #fff;
-    background-color: #e53e3e;
+    background: #e53e3e;
     border-color: rgba(0, 0, 0, 0.5); }
   .btn-danger:active {
     color: #fff;
-    background-color: #e22828;
+    background: #e22828;
     border-color: rgba(0, 0, 0, 0.5);
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-danger:disabled {
     color: rgba(229, 62, 62, 0.4);
-    background-color: #f0f5f9;
+    background: #f0f5f9;
     border-color: rgba(0, 0, 0, 0.2);
     box-shadow: none; }
 
@@ -228,31 +258,31 @@ dialog {
   .btn-orange:focus {
     box-shadow: 0 0 0 0.2em rgba(221, 107, 32, 0.4); }
   .btn-orange:hover {
-    background-color: #cb621d;
+    background: #cb621d;
     border-color: #cb621d; }
   .btn-orange:active {
-    background-color: #ba5a1b;
+    background: #ba5a1b;
     border-color: #cb621d;
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn-orange:disabled {
     color: rgba(255, 255, 255, 0.65);
-    background-color: #eab38f;
+    background: #eab38f;
     border-color: transparent;
     box-shadow: none; }
 
 .btn-outline {
   color: #4299e1;
-  background-color: #fff; }
+  background: #fff; }
   .btn-outline:hover, .btn-outline:active {
     color: #fff;
-    background-color: #4299e1;
+    background: #4299e1;
     border-color: #4299e1; }
   .btn-outline:focus {
     border-color: #4299e1;
     box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
   .btn-outline:disabled {
     color: rgba(0, 0, 0, 0.3);
-    background-color: #fff;
+    background: #fff;
     border-color: rgba(0, 0, 0, 0.15);
     box-shadow: none; }
 
@@ -260,18 +290,18 @@ dialog {
 .main-window-actions .btn-join-meeting {
   border-radius: 0.2em;
   padding: 15px 20px;
-  font-size: 18px; }
+  font-size: 20px; }
 
 .btn-md {
   border-radius: 0.2em;
   padding: 12px 25px;
-  font-size: 16px; }
+  font-size: 18px; }
 
 .btn-sm, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help {
-  border-radius: 0.1em;
+  border-radius: 4.8px;
   padding: 8px 18px;
-  font-size: 12px; }
+  font-size: 14px; }
 
 .btn-large {
   padding: 0.75em 1.25em;
@@ -279,32 +309,34 @@ dialog {
   border-radius: 6px; }
 
 .btn-invisible, .main-window-status-bar .status-show-errors {
-  color: #4299e1;
-  background: none;
-  border-width: 0;
-  border-color: transparent;
-  box-shadow: none; }
+  color: #1a202c;
+  background: #f7fafc;
+  border: 2px solid #cbd5e0;
+  outline-width: 0;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 500; }
   .btn-invisible:hover, .main-window-status-bar .status-show-errors:hover, .btn-invisible:active, .main-window-status-bar .status-show-errors:active, .btn-invisible:focus, .main-window-status-bar .status-show-errors:focus {
-    color: #4299e1;
-    background: none;
-    box-shadow: none; }
+    color: #1a202c;
+    background: #fff;
+    border: 2px solid #a0aec0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
 
 .btn-link {
   padding-left: 0;
   padding-right: 0; }
 
 label, .label, .label-success, .label-warning, .label-settings-warning {
-  font-size: 18px; }
+  font-size: 20.4px; }
 
 label.control-label {
   color: #000;
   font-weight: 500;
   margin-bottom: 10px; }
 label.control-help {
-  color: #4a5568;
-  font-size: 14px; }
+  color: #718096;
+  font-size: 16px; }
 label.label-text {
-  font-size: 14px; }
+  font-size: 16px; }
 
 .label-checkbox {
   color: #000; }
@@ -313,62 +345,71 @@ label.label-text {
   padding: 13.3333333333px 20px; }
 
 .label-title {
-  font-size: 18px;
-  font-weight: 600; }
+  font-size: 24px;
+  font-weight: 600;
+  color: #000; }
 
 .label-text {
-  font-size: 16px; }
+  font-size: 16px;
+  font-weight: 400;
+  color: #4a5568; }
 
 .label-success {
-  color: #735c0f;
-  background-color: #fff5b1; }
+  color: #22543d;
+  background: #c6f6d5;
+  font-weight: 500; }
 
 .label-warning, .label-settings-warning {
   color: #742a2a;
-  background-color: #fff5f5; }
+  background: #fed7d7;
+  font-weight: 500; }
 
 .main-window-top-bar {
-  background-color: #f7fafc;
-  border-bottom: 1px solid #e2e8f0; }
+  background: #f7fafc;
+  border-bottom: 2px solid #edf2f7;
+  padding: 20px; }
   .main-window-top-bar .main-window-title {
     color: #1a202c;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600; }
   .main-window-top-bar .main-window-btn-settings,
   .main-window-top-bar .main-window-btn-help {
+    font-size: 14px;
     border-radius: 10em;
-    background-color: #fff;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+    background: #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    margin-left: 10px; }
     .main-window-top-bar .main-window-btn-settings:hover,
     .main-window-top-bar .main-window-btn-help:hover {
       color: #1a202c;
-      background-color: #edf2f7; }
+      background: #edf2f7; }
 
 .main-window-actions {
   padding: 20px; }
   .main-window-actions .btn-host-meeting,
   .main-window-actions .btn-join-meeting {
     text-shadow: none;
-    font-size: 18.36px; }
+    font-size: 20.4px; }
     .main-window-actions .btn-host-meeting label,
     .main-window-actions .btn-join-meeting label {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 500; }
 
 .main-window-status-bar {
   color: #edf2f7;
   border-width: 0;
-  background-color: #1a202c;
+  padding: 10px 20px;
+  background: #1a202c;
   background-image: linear-gradient(-180deg, #141922 0%, black 90%); }
   .main-window-status-bar.error {
-    background-color: #742a2a;
+    background: #742a2a;
     background-image: linear-gradient(-180deg, #f45757 0%, #692626 90%); }
   .main-window-status-bar .status-label {
-    font-size: 16px; }
+    font-size: 18px; }
   .main-window-status-bar .status-show-errors {
     color: #fff;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 18px;
     padding: 5px 20px;
     border-radius: 10em;
     border: 2px solid rgba(255, 255, 255, 0.1); }
@@ -388,12 +429,12 @@ label.label-text {
   font-size: 20px; }
 
 .help-text {
-  font-size: 16px; }
+  font-size: 18px; }
 
 .loading-window {
   color: #000;
-  background-color: #fff;
-  font-size: 16px; }
+  background: #fff;
+  font-size: 18px; }
 
 .invite-email-link {
   border-radius: 100%;
@@ -408,70 +449,72 @@ label.label-text {
   padding-right: 20px; }
 
 .host-meeting-toolbar {
-  background-color: #48bb78;
+  background: #f0fff4;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
   padding: 20px;
-  font-size: 18px;
-  color: #fff; }
-
-.meeting-id-control {
-  background-color: #fff;
-  border: 1px solid #cbd5e0;
-  border-radius: 4px;
-  padding: 1rem; }
+  font-size: 20px;
+  color: #276749; }
+  .host-meeting-toolbar .message {
+    font-weight: 500; }
 
 window.meeting-controls {
   border-radius: 2px; }
   window.meeting-controls .top {
-    background-color: #fffbdd;
-    color: #b08800;
-    font-weight: 400;
-    font-size: 18px;
+    background: #f0fff4;
+    color: #276749;
+    font-weight: 500;
+    font-size: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
     padding: 20px; }
+    window.meeting-controls .top .text {
+      font-weight: 500;
+      font-size: 21px; }
   window.meeting-controls .content {
     padding: 20px; }
   window.meeting-controls .buttons {
-    background-color: #edf2f7;
+    background: #edf2f7;
     padding: 20px; }
     window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call {
       padding: 13.3333333333px 20px;
-      font-size: 21px;
-      font-weight: 600;
-      border-radius: 6px;
-      border-width: 0; }
+      font-size: 20px;
+      font-weight: 500;
+      border-radius: 4px;
+      text-shadow: none;
+      border: 2px solid transparent; }
     window.meeting-controls .buttons .control-leave-call {
       color: #fff;
-      background: #9c4221;
-      border-color: #9c4221; }
+      background: #dd6b20;
+      border-color: #dd6b20; }
       window.meeting-controls .buttons .control-leave-call:focus {
-        box-shadow: 0 0 0 0.2em rgba(221, 107, 32, 0.4); }
+        box-shadow: 0 0 0 0.2em rgba(237, 137, 54, 0.4); }
       window.meeting-controls .buttons .control-leave-call:hover {
-        background-color: #943e1f;
-        border-color: #943e1f; }
+        background: #d4671f;
+        border-color: #d4671f; }
       window.meeting-controls .buttons .control-leave-call:active {
-        background-color: #9f491c;
-        border-color: #943e1f;
+        background: #d2681a;
+        border-color: #d4671f;
         box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
       window.meeting-controls .buttons .control-leave-call:disabled {
         color: rgba(255, 255, 255, 0.65);
-        background-color: #cea190;
+        background: #eeb590;
         border-color: transparent;
         box-shadow: none; }
     window.meeting-controls .buttons .control-finish-call {
       color: #fff;
-      background: #9b2c2c;
-      border-color: #9b2c2c; }
+      background: #c53030;
+      border-color: #c53030; }
       window.meeting-controls .buttons .control-finish-call:focus {
         box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
       window.meeting-controls .buttons .control-finish-call:hover {
-        background-color: #932a2a;
-        border-color: #932a2a; }
+        background: #bd2e2e;
+        border-color: #bd2e2e; }
       window.meeting-controls .buttons .control-finish-call:active {
-        background-color: #a42d2d;
-        border-color: #932a2a;
+        background: #c02828;
+        border-color: #bd2e2e;
         box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
       window.meeting-controls .buttons .control-finish-call:disabled {
         color: rgba(255, 255, 255, 0.65);
-        background-color: #cd9696;
+        background: #e29898;
         border-color: transparent;
         box-shadow: none; }
 

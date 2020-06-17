@@ -1,6 +1,11 @@
 .host-meeting-toolbar {
-  background-color: $green;
+  background: $green-100;
+  box-shadow: 0 2px 4px rgba($black, 0.12);
   padding: $spacing;
   font-size: $font-size-large;
-  color: $white;
+  color: $green-800;
+
+  .message {
+    font-weight: $font-weight-semibold;
+  }
 }

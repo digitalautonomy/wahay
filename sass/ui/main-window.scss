@@ -1,6 +1,7 @@
 .main-window-top-bar {
-  background-color: $gray-100;
-  border-bottom: 1px solid $gray-300;
+  background: $gray-100;
+  border-bottom: 2px solid $gray-200;
+  padding: $spacing;
 
   .main-window-title {
     color: $gray-900;
@@ -10,16 +11,18 @@
 
   .main-window-btn-settings,
   .main-window-btn-help {
+    font-size: $font-size-small;
     border-radius: 10em;
-    background-color: $white;
+    background: $white;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    margin-left: $spacing/2;
 
     @extend .btn;
     @extend .btn-sm;
 
     &:hover {
       color: $gray-900;
-      background-color: $gray-200;
+      background: $gray-200;
     }
   }
 }
@@ -53,11 +56,12 @@
 .main-window-status-bar {
   color: $gray-200;
   border-width: 0;
-  background-color: $gray-900;
+  padding: $spacing/2 $spacing;
+  background: $gray-900;
   background-image: linear-gradient(-180deg, darken($gray-900, 3%) 0%, darken($black, 3%) 90%);
 
   &.error {
-    background-color: $red-900;
+    background: $red-900;
     background-image: linear-gradient(-180deg, darken($red, 3%) 0%, darken($red-900, 3%) 90%);
   }
 
