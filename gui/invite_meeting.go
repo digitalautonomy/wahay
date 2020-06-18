@@ -47,6 +47,7 @@ func (u *gtkUI) getCurrentMeetingWindow() *uiBuilder {
 		"secondary_text", "leaveMeeting",
 		"button", "btnLeaveMeeting",
 		"tooltip", "btnLeaveMeeting",
+		"label", "lblTipPush",
 	)
 
 	return builder

@@ -178,7 +178,8 @@ func (u *gtkUI) getCurrentHostMeetingWindow() *uiBuilder {
 		"tooltip", "btnFinishMeeting",
 		"tooltip", "btnLeaveMeeting",
 		"button", "btnInviteOthers",
-		"label", "lblTipPush")
+		"label", "lblTipPush",
+	)
 
 	return builder
 }
