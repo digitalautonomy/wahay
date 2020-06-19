@@ -82,10 +82,14 @@ func (h *hostData) showMeetingControls() {
 
 	builder.i18nProperties(
 		"label", "lblHostMeeting",
+		"label", "lblInfoHost",
+		"label", "lblInfoPassword",
+		"label", "lblInfoMeetingID",
 		"button", "btnFinishMeeting",
 		"button", "btnJoinMeeting",
 		"button", "btnJoinMeeting",
 		"button", "btnInviteOthers",
+		"button", "btnCopyMeetingID",
 		"tooltip", "btnJoinMeeting")
 
 	builder.ConnectSignals(map[string]interface{}{
@@ -105,6 +109,14 @@ func (h *hostData) showMeetingControls() {
 			h.sendInvitationByEmail(builder)
 		},
 	})
+
+	lblValueHost := builder.get("lblValueHost").(gtki.Label)
+	lblValuePassword := builder.get("lblValuePassword").(gtki.Label)
+	lblValueMeetingID := builder.get("lblValueMeetingID").(gtki.Label)
+
+	_ = lblValueHost.SetProperty("label", h.meetingUsername)
+	_ = lblValuePassword.SetProperty("label", h.meetingPassword)
+	_ = lblValueMeetingID.SetProperty("label", h.service.ID())
 
 	h.u.switchToWindow(win)
 }
@@ -453,8 +465,6 @@ func (h *hostData) showMeetingConfiguration() {
 
 	onInviteOpen := func(d gtki.ApplicationWindow) {
 		h.currentWindow = d
-		// Hide the current window because we don't want
-		// lot of windows there in the user's screen
 		win.Hide()
 	}
 
