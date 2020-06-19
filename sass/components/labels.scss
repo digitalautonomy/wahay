@@ -58,3 +58,18 @@ label {
 
   @extend .label;
 }
+
+.label-bold {
+  color: $gray-900;
+  font-weight: $font-weight-bold;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-right: 20px;
+}
+
+.label-value {
+  color: $gray-700;
+  font-weight: $font-weight-normal;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
