@@ -58,11 +58,11 @@
                       <object class="GtkLabel" id="lblMeetingID">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_bottom">10</property>
                         <property name="label" translatable="yes">4eimqaxib3qel2mb5y7d5a7nlawxtzrhyul7esw7uwajvbjkfcgctayd.onion</property>
                         <property name="wrap">True</property>
-                        <property name="wrap_mode">char</property>
+                        <property name="wrap_mode">word-char</property>
                         <property name="selectable">True</property>
+                        <property name="max_width_chars">40</property>
                         <property name="track_visited_links">False</property>
                         <style>
                           <class name="meeting-id-control"/>
@@ -75,16 +75,77 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="btnCopyMeetingID">
-                        <property name="label" translatable="yes">Copy Meeting ID</property>
+                      <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_copy_meeting_id" swapped="no"/>
+                        <property name="homogeneous">True</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkButton" id="btnCopyMeetingID">
+                                <property name="label" translatable="yes">Copy Meeting ID</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_copy_meeting_id" swapped="no"/>
+                                <style>
+                                  <class name="btn"/>
+                                  <class name="btn-sm"/>
+                                  <class name="btn-invisible"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkButton" id="btnInviteOthers">
+                                <property name="label" translatable="yes">Invite others</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_invite_others" swapped="no"/>
+                                <style>
+                                  <class name="btn"/>
+                                  <class name="btn-sm"/>
+                                  <class name="btn-invisible"/>
+                                </style>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <style>
+                              <class name="actions-right"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                         <style>
-                          <class name="btn"/>
-                          <class name="btn-invisible"/>
-                          <class name="btn-sm"/>
+                          <class name="mt"/>
                         </style>
                       </object>
                       <packing>
@@ -310,54 +371,33 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkButton" id="btnInviteOthers">
-                    <property name="label" translatable="yes">Invite others</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_right">10</property>
-                    <signal name="clicked" handler="on_invite_others" swapped="no"/>
-                    <style>
-                      <class name="btn-invisible"/>
-                      <class name="btn-md"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <style>
-                  <class name="actions-left"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">end</property>
                 <property name="valign">center</property>
                 <child>
-                  <object class="GtkButton" id="btnCancel">
-                    <property name="label" translatable="yes">Cancel</property>
+                  <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="valign">center</property>
-                    <property name="margin_left">10</property>
-                    <signal name="clicked" handler="on_cancel" swapped="no"/>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkButton" id="btnCancel">
+                        <property name="label" translatable="yes">Cancel</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="valign">center</property>
+                        <signal name="clicked" handler="on_cancel" swapped="no"/>
+                        <style>
+                          <class name="btn-md"/>
+                          <class name="btn"/>
+                          <class name="btn-invisible"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
                     <style>
-                      <class name="btn-md"/>
-                      <class name="btn"/>
-                      <class name="btn-invisible"/>
+                      <class name="actions-left"/>
                     </style>
                   </object>
                   <packing>
@@ -367,19 +407,29 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="btnStartMeeting">
-                    <property name="label" translatable="yes">Start meeting</property>
+                  <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="valign">center</property>
-                    <property name="margin_left">10</property>
-                    <signal name="clicked" handler="on_start_meeting" swapped="no"/>
-                    <style>
-                      <class name="btn-primary"/>
-                      <class name="btn-md"/>
-                      <class name="btn"/>
-                    </style>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkButton" id="btnStartMeeting">
+                        <property name="label" translatable="yes">Start meeting</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="valign">center</property>
+                        <signal name="clicked" handler="on_start_meeting" swapped="no"/>
+                        <style>
+                          <class name="btn-primary"/>
+                          <class name="btn-md"/>
+                          <class name="btn"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -387,10 +437,6 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
-                <style>
-                  <class name="actions"/>
-                  <class name="actions-right"/>
-                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
