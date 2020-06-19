@@ -70,6 +70,16 @@ func (h *hostData) showMeetingControls() {
 	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 
+	onInviteOpen := func(d gtki.ApplicationWindow) {
+		h.currentWindow = d
+		win.Hide()
+	}
+
+	onInviteClose := func(gtki.ApplicationWindow) {
+		win.Show()
+		h.currentWindow = nil
+	}
+
 	builder.i18nProperties(
 		"label", "lblHostMeeting",
 		"button", "btnFinishMeeting",
@@ -85,7 +95,9 @@ func (h *hostData) showMeetingControls() {
 			h.u.hideCurrentWindow()
 			go h.joinMeetingHost()
 		},
-		"on_invite_others": h.onInviteParticipants,
+		"on_invite_others": func() {
+			h.onInviteParticipants(onInviteOpen, onInviteClose)
+		},
 		"on_copy_meeting_id": func() {
 			h.copyMeetingIDToClipboard(builder, "")
 		},
@@ -478,7 +490,9 @@ func (h *hostData) showMeetingConfiguration() {
 			h.meetingPassword, _ = password.GetText()
 			h.startMeetingHandler()
 		},
-		"on_invite_others": func() { h.onInviteParticipants(onInviteOpen, onInviteClose) },
+		"on_invite_others": func() {
+			h.onInviteParticipants(onInviteOpen, onInviteClose)
+		},
 		"on_chkAutoJoin_toggled": func() {
 			h.autoJoin = chkAutoJoin.GetActive()
 			h.u.config.SetAutoJoin(h.autoJoin)
