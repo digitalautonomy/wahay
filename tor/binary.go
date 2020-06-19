@@ -176,7 +176,14 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 
 	log.Debugf("findTorBinaryInSystem(%s)", path)
 
-	return isThereConfiguredTorBinary(path)
+	b, errTorBinary := isThereConfiguredTorBinary(path)
+
+	errTorsocks := findTorsocksBinary()
+	if errTorsocks != nil {
+		return b, errTorsocks
+	}
+
+	return b, errTorBinary
 }
 
 func isThereConfiguredTorBinary(path string) (b *binary, err error) {
