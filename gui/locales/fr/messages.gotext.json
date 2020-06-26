@@ -1,0 +1,871 @@
+{
+    "language": "fr",
+    "messages": [
+        {
+            "id": "The meeting ID has been copied to the clipboard",
+            "message": "The meeting ID has been copied to the clipboard",
+            "translation": "L'ID de la réunion a été copié dans le presse-papiers"
+        },
+        {
+            "id": "Error",
+            "message": "Error",
+            "translation": "Erreur",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Something went wrong: {Err}",
+            "message": "Something went wrong: {Err}",
+            "translation": "Quelque chose s'est mal passée: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "we couldn't start the meeting",
+            "message": "we couldn't start the meeting",
+            "translation": "la réunion n'a pas pu commencer",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Configured Mumble port is not valid: {PortMumble}",
+            "message": "Configured Mumble port is not valid: {PortMumble}",
+            "translation": "Le port configuré pour Mumble n'est pas valide: {PortMumble}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "PortMumble",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "h.u.config.GetPortMumble()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "The meeting can't be closed: {Err}",
+            "message": "The meeting can't be closed: {Err}",
+            "translation": "La réunion n'a pas pu être clôturée: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "internal Tor instance has already been closed",
+            "message": "internal Tor instance has already been closed",
+            "translation": "l'instance Tor interne a déjà été fermée",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The onion service can't be deleted: {Err}",
+            "message": "The onion service can't be deleted: {Err}",
+            "translation": "Impossible de supprimer le service Onion: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "The invitation email has been copied to the clipboard",
+            "message": "The invitation email has been copied to the clipboard",
+            "translation": "L'e-mail d'invitation a été copié dans le presse-papiers",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Join Wahay Meeting",
+            "message": "Join Wahay Meeting",
+            "translation": "Rejoignez une réunion via Wahay",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Please join the Wahay meeting with the following details:",
+            "message": "Please join the Wahay meeting with the following details:",
+            "translation": "Veuillez vous joindre à la réunion via Wahay avec les détails suivants:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "{It}Meeting ID: {URL}",
+            "message": "{It}Meeting ID: {URL}",
+            "translation": "{It}ID de la réunion: {URL}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "It",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "it"
+                },
+                {
+                    "id": "URL",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "h.service.GetURL()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Start Meeting \u0026 Join",
+            "message": "Start Meeting \u0026 Join",
+            "translation": "Démarrer la réunion et rejoindre",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Start Meeting",
+            "message": "Start Meeting",
+            "translation": "Démarrer la réunion",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The Mumble process is down",
+            "message": "The Mumble process is down",
+            "translation": "Le processus Mumble est hors service",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The Meeting ID cannot be blank",
+            "message": "The Meeting ID cannot be blank",
+            "translation": "L'ID de réunion ne peut pas être vide",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "The provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "L'ID de réunion fourni n'est pas valide: \n\n{MeetingID}",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ]
+        },
+        {
+            "id": "An error occurred\n\n{Error}",
+            "message": "An error occurred\n\n{Error}",
+            "translation": "Une erreur est survenue\n\n{Error}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "l'ID de réunion fourni n'est pas valide: \n\n{MeetingID}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "MeetingID",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "data.MeetingID"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Invalid meeting ID provided",
+            "message": "Invalid meeting ID provided",
+            "translation": "ID de réunion fourni non valide"
+        },
+        {
+            "id": "The meeting ID is invalid",
+            "message": "The meeting ID is invalid",
+            "translation": "L'ID de la réunion n'est pas valide",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "the Mumble client can not be used because: {Error}",
+            "message": "the Mumble client can not be used because: {Error}",
+            "translation": "Le client Mumble ne peut pas être utilisé à cause de: {Error}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "please enter a valid password",
+            "message": "please enter a valid password",
+            "translation": "saisissez un mot de passe valide s'il vous plait",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "enter the password confirmation",
+            "message": "enter the password confirmation",
+            "translation": "confirmer le mot de passe",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "passwords do not match",
+            "message": "passwords do not match",
+            "translation": "Les mots de passe ne correspondent pas",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "enter a password at least 6 characters long",
+            "message": "enter a password at least 6 characters long",
+            "translation": "saisissez un mot de passe d'au moins 6 caractères",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "If you disable this option, anyone could read your configuration settings",
+            "message": "If you disable this option, anyone could read your configuration settings",
+            "translation": "Si vous désactivez cette option, n'importe qui peut lire les paramètres de configuration",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open file",
+            "message": "Open file",
+            "translation": "Ouvrir fichier",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Cancel",
+            "message": "Cancel",
+            "translation": "Annuler",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open",
+            "message": "Open",
+            "translation": "Ouvrir",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "tor can't be used",
+            "message": "tor can't be used",
+            "translation": "tor ne peut pas être utilisé",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "We've found errors",
+            "message": "We've found errors",
+            "translation": "Nous avons trouvé quelques erreurs",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Accept",
+            "message": "Accept",
+            "translation": "Accepter"
+        },
+        {
+            "id": "Allow the host to automatically join a newly created meeting",
+            "message": "Allow the host to automatically join a newly created meeting",
+            "translation": "Autoriser l'hôte à rejoindre automatiquement une réunion nouvellement créée"
+        },
+        {
+            "id": "Are you sure you want to do this action?",
+            "message": "Are you sure you want to do this action?",
+            "translation": "Voulez-vous vraiment effectuer cette action?"
+        },
+        {
+            "id": "Are you sure you want to end this meeting?",
+            "message": "Are you sure you want to end this meeting?",
+            "translation": "Voulez-vous vraiment terminer cette réunion?"
+        },
+        {
+            "id": "Are you sure you want to leave this meeting?",
+            "message": "Are you sure you want to leave this meeting?",
+            "translation": "Voulez-vous vraiment quitter cette réunion?"
+        },
+        {
+            "id": "Automatically join this meeting",
+            "message": "Automatically join this meeting",
+            "translation": "Rejoindre automatiquement cette réunion"
+        },
+        {
+            "id": "Automatically join a meeting",
+            "message": "Automatically join a meeting",
+            "translation": "Rejoindre automatiquement au démarrage d'une réunion"
+        },
+        {
+            "id": "Automatically join this meeting when starting it",
+            "message": "Automatically join this meeting when starting it",
+            "translation": "Rejoignez automatiquement cette réunion au démarrage"
+        },
+        {
+            "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
+            "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
+            "translation": "Soyez très prudent. Ces informations sont sensibles et pourraient potentiellement contenir des informations très privées. N'activez ces paramètres que si vous en avez absolument besoin pour le débogage."
+        },
+        {
+            "id": "Browse",
+            "message": "Browse",
+            "translation": "Examiner"
+        },
+        {
+            "id": "By clicking Yes, this meeting will end.",
+            "message": "By clicking Yes, this meeting will end.",
+            "translation": "En cliquant sur Oui, cette réunion se terminera."
+        },
+        {
+            "id": "By clicking Yes, you will leave this meeting.",
+            "message": "By clicking Yes, you will leave this meeting.",
+            "translation": "En cliquant sur Oui, vous quitterez cette réunion."
+        },
+        {
+            "id": "Check this option to automatically join every meeting you host",
+            "message": "Check this option to automatically join every meeting you host",
+            "translation": "Cochez cette option pour rejoindre automatiquement chaque réunion dont vous êtes l'organisateur"
+        },
+        {
+            "id": "Choose your email service to send invitation",
+            "message": "Choose your email service to send invitation",
+            "translation": "Choisissez votre service de messagerie pour envoyer l'invitation."
+        },
+        {
+            "id": "Client binary location",
+            "message": "Client binary location",
+            "translation": "Emplacement binaire du client"
+        },
+        {
+            "id": "Configuration settings will be lost in the next session",
+            "message": "Configuration settings will be lost in the next session",
+            "translation": "Les paramètres de configuration seront perdus lors de la prochaine session"
+        },
+        {
+            "id": "Configure master password",
+            "message": "Configure master password",
+            "translation": "Configurer le mot de passe maître"
+        },
+        {
+            "id": "Confirmation",
+            "message": "Confirmation",
+            "translation": "Confirmation"
+        },
+        {
+            "id": "Connecting, please wait...",
+            "message": "Connecting, please wait...",
+            "translation": "Connexion en cours, veuillez patienter ..."
+        },
+        {
+            "id": "Continue",
+            "message": "Continue",
+            "translation": "Continuer"
+        },
+        {
+            "id": "Copy Invitation",
+            "message": "Copy Invitation",
+            "translation": "Copier l'invitation"
+        },
+        {
+            "id": "Copy Meeting ID",
+            "message": "Copy Meeting ID",
+            "translation": "Copier l'ID de la réunion"
+        },
+        {
+            "id": "Copy URL",
+            "message": "Copy URL",
+            "translation": "Copier l'URL"
+        },
+        {
+            "id": "Debugging",
+            "message": "Debugging",
+            "translation": "Débogage"
+        },
+        {
+            "id": "Default Email",
+            "message": "Default Email",
+            "translation": "E-mail par défaut"
+        },
+        {
+            "id": "Encrypt the configuration file",
+            "message": "Encrypt the configuration file",
+            "translation": "Chiffrer le fichier de configuration"
+        },
+        {
+            "id": "Finish",
+            "message": "Finish",
+            "translation": "Finaliser"
+        },
+        {
+            "id": "End this meeting",
+            "message": "End this meeting",
+            "translation": "Finaliser cette réunion"
+        },
+        {
+            "id": "End this meeting for all",
+            "message": "End this meeting for all",
+            "translation": "Finaliser cette réunion pour tous"
+        },
+        {
+            "id": "General",
+            "message": "General",
+            "translation": "Général"
+        },
+        {
+            "id": "Gmail",
+            "message": "Gmail",
+            "translation": "Gmail"
+        },
+        {
+            "id": "Host a new meeting",
+            "message": "Host a new meeting",
+            "translation": "Organisez une nouvelle réunion"
+        },
+        {
+            "id": "Hosting",
+            "message": "Hosting",
+            "translation": "Hôte"
+        },
+        {
+            "id": "Host meeting",
+            "message": "Host meeting",
+            "translation": "Organiser une réunion en tant que hôte"
+        },
+        {
+            "id": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
+            "message": "If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.",
+            "translation": "Si vous sauvegardez le fichier de configuration, nous réinitialiserons les paramètres et continuerons normalement. Si le fichier de configuration est crypté, nous vous demanderons un mot de passe pour crypter le nouveau fichier de paramètres."
+        },
+        {
+            "id": "If you set this option to a file name, low level information will be logged there.",
+            "message": "If you set this option to a file name, low level information will be logged there.",
+            "translation": "Si vous définissez cette option à un nom de fichier, les informations de bas niveau y seront enregistrées."
+        },
+        {
+            "id": "Invalid configuration file",
+            "message": "Invalid configuration file",
+            "translation": "Fichier de configuration non valide"
+        },
+        {
+            "id": "Invalid password. Please, try again.",
+            "message": "Invalid password. Please, try again.",
+            "translation": "Mot de passe incorrect. Veuillez réessayer."
+        },
+        {
+            "id": "Invite others",
+            "message": "Invite others",
+            "translation": "Inviter d'autres personnes"
+        },
+        {
+            "id": "Join",
+            "message": "Join",
+            "translation": "Joindre"
+        },
+        {
+            "id": "Join a meeting",
+            "message": "Join a meeting",
+            "translation": "Joindre la réunion"
+        },
+        {
+            "id": "Join meeting",
+            "message": "Join meeting",
+            "translation": "Joindre une réunion"
+        },
+        {
+            "id": "Join the meeting",
+            "message": "Join the meeting",
+            "translation": "Rejoignez la réunion"
+        },
+        {
+            "id": "Join this meeting",
+            "message": "Join this meeting",
+            "translation": "Rejoignez cette réunion"
+        },
+        {
+            "id": "Keep configuration file when Wahay closes",
+            "message": "Keep configuration file when Wahay closes",
+            "translation": "Conserver le fichier de configuration à la fermeture de Wahay"
+        },
+        {
+            "id": "Leave",
+            "message": "Leave",
+            "translation": "Quitter"
+        },
+        {
+            "id": "Leave this meeting",
+            "message": "Leave this meeting",
+            "translation": "Quitter cette reunión"
+        },
+        {
+            "id": "Log debug info",
+            "message": "Log debug info",
+            "translation": "Logger information de débogage"
+        },
+        {
+            "id": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
+            "message": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
+            "translation": "Diriger la sortie de débogage vers le fichier log sélectionné. Si aucun fichier n'est sélectionné, les logs seront écrits dans le fichier log par défaut."
+        },
+        {
+            "id": "Master password",
+            "message": "Master password",
+            "translation": "Mot de passe maître"
+        },
+        {
+            "id": "Meeting ID",
+            "message": "Meeting ID",
+            "translation": "ID de la réunion"
+        },
+        {
+            "id": "Meeting ID:",
+            "message": "Meeting ID:",
+            "translation": "ID de la réunion:"
+        },
+        {
+            "id": "Meeting password",
+            "message": "Meeting password",
+            "translation": "Mot de passe de la réunion"
+        },
+        {
+            "id": "Mumble",
+            "message": "Mumble",
+            "translation": "Mumble"
+        },
+        {
+            "id": "No, cancel",
+            "message": "No, cancel",
+            "translation": "Non, annuler"
+        },
+        {
+            "id": "Now you are hosting a meeting.",
+            "message": "Now you are hosting a meeting.",
+            "translation": "Maintenant, vous organisez une réunion."
+        },
+        {
+            "id": "Ok, try again",
+            "message": "Ok, try again",
+            "translation": "Ok, essayer à nouveau"
+        },
+        {
+            "id": "Outlook",
+            "message": "Outlook",
+            "translation": "Outlook"
+        },
+        {
+            "id": "Password",
+            "message": "Password",
+            "translation": "Mot de passe"
+        },
+        {
+            "id": "Please enter the master password for the configuration file.",
+            "message": "Please enter the master password for the configuration file.",
+            "translation": "Veuillez saisir le mot de passe maître pour le fichier de configuration."
+        },
+        {
+            "id": "Port",
+            "message": "Port",
+            "translation": "Port"
+        },
+        {
+            "id": "Port out of range",
+            "message": "Port out of range",
+            "translation": "Port en déhors des limites"
+        },
+        {
+            "id": "Executable Mumble location",
+            "message": "Executable Mumble location",
+            "translation": "Emplacement de l'exécutable Mumble"
+        },
+        {
+            "id": "Ex. /home/user/mumble/mumble",
+            "message": "Ex. /home/user/mumble/mumble",
+            "translation": "Exple. /home/user/mumble/mumble"
+        },
+        {
+            "id": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
+            "message": "If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.",
+            "translation": "Si vous souhaitez utiliser votre propre instance de Mumble, entrez l'emplacement où Mumble se trouve dans le système."
+        },
+        {
+            "id": "Mumble service port",
+            "message": "Mumble service port",
+            "translation": "Port du service Mumble"
+        },
+        {
+            "id": "Ex. 9800",
+            "message": "Ex. 9800",
+            "translation": "Exple. 9800"
+        },
+        {
+            "id": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
+            "message": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
+            "translation": "Si vous souhaitez configurer un port personnalisé pour exécuter le service Mumble, veuillez saisir un numéro de port compris entre 1 et 65535"
+        },
+        {
+            "id": "Raw log file",
+            "message": "Raw log file",
+            "translation": "Fichier log brut"
+        },
+        {
+            "id": "Repeat the password",
+            "message": "Repeat the password",
+            "translation": "Répétez mot de passe"
+        },
+        {
+            "id": "Save changes",
+            "message": "Save changes",
+            "translation": "Sauvegarder les modifications"
+        },
+        {
+            "id": "Security",
+            "message": "Security",
+            "translation": "Sécurité"
+        },
+        {
+            "id": "Settings",
+            "message": "Settings",
+            "translation": "Paramètres"
+        },
+        {
+            "id": "Show",
+            "message": "Show",
+            "translation": "Afficher"
+        },
+        {
+            "id": "Specify a password for the meeting",
+            "message": "Specify a password for the meeting",
+            "translation": "Saisissez un mot de passe pour la réunion"
+        },
+        {
+            "id": "Start meeting",
+            "message": "Start meeting",
+            "translation": "Démarrer la réunion"
+        },
+        {
+            "id": "The error message",
+            "message": "The error message",
+            "translation": "Le message d'erreur"
+        },
+        {
+            "id": "The meeting ID is invalid, please check it.",
+            "message": "The meeting ID is invalid, please check it.",
+            "translation": "L'ID de la réunion n'est pas valide, veuillez le vérifier."
+        },
+        {
+            "id": "A valid port is between 1 and 65535",
+            "message": "A valid port is between 1 and 65535",
+            "translation": "Un port valide doit être compris entre 1 et 65535"
+        },
+        {
+            "id": "This action cannot be undone",
+            "message": "This action cannot be undone",
+            "translation": "Cette action ne peut pas être annulée"
+        },
+        {
+            "id": "Toggle password visibility",
+            "message": "Toggle password visibility",
+            "translation": "Afficher/masquer le mot de passe"
+        },
+        {
+            "id": "Type the Meeting ID (normally a .onion address)",
+            "message": "Type the Meeting ID (normally a .onion address)",
+            "translation": "Tapez l'ID de réunion (normalement une adresse .onion)"
+        },
+        {
+            "id": "Type the password",
+            "message": "Type the password",
+            "translation": "Saisissez le mot de passe"
+        },
+        {
+            "id": "Type the password to join the meeting",
+            "message": "Type the password to join the meeting",
+            "translation": "Saisissez le mot de passe pour rejoindre la réunion"
+        },
+        {
+            "id": "Type your preferred screen name",
+            "message": "Type your preferred screen name",
+            "translation": "Saisissez votre nom d'utilisateur préféré"
+        },
+        {
+            "id": "Type your screen name",
+            "message": "Type your screen name",
+            "translation": "Saisissez votre nom d'utilisateur"
+        },
+        {
+            "id": "Username",
+            "message": "Username",
+            "translation": "Nom d'utilisateur"
+        },
+        {
+            "id": "Wahay is ready to use",
+            "message": "Wahay is ready to use",
+            "translation": "Wahay est prêt à l'emploi"
+        },
+        {
+            "id": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
+            "message": "We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?",
+            "translation": "Nous avons détecté que le fichier de configuration est invalide ou corrompu. Voulez-vous en faire une copie (sauvegarde) et continuer?"
+        },
+        {
+            "id": "Welcome",
+            "message": "Welcome",
+            "translation": "Bienvenue"
+        },
+        {
+            "id": "When this option is checked, the configuration settings will be stored in the device.",
+            "message": "When this option is checked, the configuration settings will be stored in the device.",
+            "translation": "Lorsque cette option est cochée, les paramètres de configuration seront stockés dans le dispositif."
+        },
+        {
+            "id": "Yahoo Mail",
+            "message": "Yahoo Mail",
+            "translation": "Yahoo Mail"
+        },
+        {
+            "id": "Yes, back it up &amp; continue",
+            "message": "Yes, back it up &amp; continue",
+            "translation": "Oui, sauvegardez et continuez"
+        },
+        {
+            "id": "Yes, confirm",
+            "message": "Yes, confirm",
+            "translation": "Oui, confirmer"
+        },
+        {
+            "id": "You will not be asked for this password again until you restart Wahay.",
+            "message": "You will not be asked for this password again until you restart Wahay.",
+            "translation": "Vous ne serez plus invité à saisir ce mot de passe avant de redémarrer Wahay."
+        },
+        {
+            "id": "What is Wahay?",
+            "message": "What is Wahay?",
+            "translation": "Qu'est-ce que Wahay?"
+        },
+        {
+            "id": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
+            "message": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
+            "translation": "La communication est un besoin fondamental de l'être humain, dans ses débuts elle se fait verbalement de personne à personne grâce à l'utilisation de la technologie, divers outils ont été développés à cet effet des projets tels que: Skype, Zoom, Google Hangouts, etc. Cependant, un certain nombre d'aspects n'ont pas été pris en compte dans le développement de ces solutions: serveurs centralisés, technologie propriétaire, sécurité, sont des aspects qui n'ont pas été envisagés ou qui ont été mis en œuvre que partiellement."
+        },
+        {
+            "id": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
+            "message": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
+            "translation": "Wahay (https://wahay.org) a été développé comme un outil pour mener des conférences vocales d'une manière simple, extrêmement sécurisée et décentralisée (sans avoir besoin d'un serveur ou service centralisé). En interne, il utilise Tor (https://www.torproject.org/) comme outil pour établir des communications sécurisées et Mumble (https://www.mumble.com/) en tant que client pour établir la voix sur IP."
+        },
+        {
+            "id": "What is Tor?",
+            "message": "What is Tor?",
+            "translation": "Qu'est-ce que Tor?"
+        },
+        {
+            "id": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
+            "message": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
+            "translation": "Tor est un outil gratuit et open source qui vous permet d'établir des communications anonymes et distribuées. Tor dirige son trafic Internet via une série de routeurs appelés 'onion routers' permettant une communication anonyme entre ses nœuds, ce réseau fonctionne à partir d'un ensemble d'organisations et d'individus qui fournissent leur bande passante et leur puissance de traitement."
+        },
+        {
+            "id": "What is Mumble?",
+            "message": "What is Mumble?",
+            "translation": "Qu'est-ce que Mumble?"
+        },
+        {
+            "id": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
+            "message": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
+            "translation": "Mumble est une application gratuite et open source qui permet des conférences de type 'voix sur IP' entre utilisateurs avec une haute qualité de son et une faible latence."
+        },
+        {
+            "id": "Functionalities",
+            "message": "Functionalities",
+            "translation": "Fonctionnalités"
+        },
+        {
+            "id": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
+            "message": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
+            "translation": "Wahay vous permet d'organiser une réunion ou de rejoindre une réunion existante, pour cela vous établissez un identifiant qui servira d'identifiant de la réunion à utiliser."
+        },
+        {
+            "id": "Host a meeting",
+            "message": "Host a meeting",
+            "translation": "Organiser une réunion en tant que hôte"
+        },
+        {
+            "id": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
+            "message": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
+            "translation": "Cette option permet de démarrer le serveur qui prendra en charge la connexion des utilisateurs à une réunion définie par son ID (identifiant de réunion), cet ID doit être utilisé par le reste des utilisateurs qui souhaitent y accéder. De plus, il est possible de définir le nom d'utilisateur (non obligatoire) qui sera utilisé pour identifier l'utilisateur dans la réunion. Il est également possible de configurer un mot de passe pour accéder à la réunion, qui sera sollicité aux utilisateurs qui souhaitent accéder à Wahay."
+        },
+        {
+            "id": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
+            "message": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
+            "translation": "L'option de rejoindre automatiquement cette réunion vous permet de démarrer le serveur et d'y accéder. Si vous ne la sélectionnez pas, vous pourrez y accéder plus tard en cliquant le bouton pour rejoindre. Il est également possible de copier l'ID de la réunion et d'envoyer l'invitation par les clients de messagerie les plus communs."
+        },
+        {
+            "id": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
+            "message": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
+            "translation": "Cette option permet à l'utilisateur d'accéder à une réunion si elle existe déjà. Pour cela, vous devez saisir l'identifiant de la réunion (requis), le nom d'utilisateur (non requis) et le mot de passe (si celui-ci a été défini)."
+        },
+        {
+            "id": "Help",
+            "message": "Help",
+            "translation": "Aide"
+        },
+        {
+            "id": "Tip: Push right control to talk",
+            "message": "Tip: Push right control to talk",
+            "translation": "Astuce: appuyez sur le bouton droit 'Ctrl' pour parler"
+        }
+    ]
+}
