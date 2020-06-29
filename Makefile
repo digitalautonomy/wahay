@@ -19,7 +19,7 @@ SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
 SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
 
 GO_VERSION = $(shell go version | cut -c 14- | cut -d' ' -f1 | cut -d'.' -f 1-2)
-ifneq ($(GO_VERSION), 1.14)
+ifneq ($(GO_VERSION), 1.11)
 	SUPPORT_GOSEC = 1
 else
 	SUPPORT_GOSEC = 0
