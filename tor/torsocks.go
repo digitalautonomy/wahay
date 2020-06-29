@@ -9,7 +9,7 @@ import (
 var (
 	// ErrTorsocksNotInstalled is an error to be trown where
 	// torsocks is not installed in the system
-	ErrTorsocksNotInstalled = errors.New("not installed Torsocks")
+	ErrTorsocksNotInstalled = errors.New("torsocks not available")
 )
 
 func findTorsocksBinary() (fatalErr error) {
