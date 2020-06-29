@@ -121,9 +121,9 @@ func findTorBinaryInDataDir() (b *binary, fatalErr error) {
 
 		log.Debugf("findTorBinaryInDataDir(%s)", path)
 
-		b, err := isThereConfiguredTorBinary(path)
-		if (b != nil && b.isValid) || err != nil {
-			return b, err
+		b, _ = isThereConfiguredTorBinary(path)
+		if b != nil && b.isValid {
+			return b, nil
 		}
 	}
 
@@ -146,9 +146,9 @@ func findTorBinaryInCurrentWorkingDir() (b *binary, fatalErr error) {
 	for _, subdir := range paths {
 		path := filepath.Join(pathCWD, subdir)
 
-		b, err := isThereConfiguredTorBinary(path)
-		if (b != nil && b.isValid) || err != nil {
-			return b, err
+		b, _ = isThereConfiguredTorBinary(path)
+		if b != nil && b.isValid {
+			return b, nil
 		}
 	}
 
@@ -165,7 +165,9 @@ func findTorBinaryInWahayDir() (b *binary, fatalErr error) {
 
 	log.Debugf("findTorBinaryInWahayDir(%s)", path)
 
-	return isThereConfiguredTorBinary(path)
+	b, _ = isThereConfiguredTorBinary(path)
+
+	return b, nil
 }
 
 func findTorBinaryInSystem() (b *binary, fatalErr error) {
@@ -186,7 +188,7 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 		}
 	}
 
-	return b, errTorBinary
+	return b, nil
 }
 
 func isThereConfiguredTorBinary(path string) (b *binary, err error) {
