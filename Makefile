@@ -18,6 +18,13 @@ SRC_TEST := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*_test.go))
 SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
 SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
 
+GO_VERSION = $(shell go version | cut -c 14- | cut -d' ' -f1 | cut -d'.' -f 1-2)
+ifneq ($(GO_VERSION), 1.14)
+	SUPPORT_GOSEC = 1
+else
+	SUPPORT_GOSEC = 0
+endif
+
 .PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean run-coverage clean-cover cover cover-ci build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
 
 default: build
@@ -25,12 +32,16 @@ default: build
 gen-ui-locale:
 	cd gui && make generate-locale
 
-deps:
+deps: dep-gosec
 	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
 	go get -u golang.org/x/text/cmd/gotext
-	go get -u github.com/securego/gosec/cmd/gosec
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
+
+dep-gosec:
+ifeq ($(SUPPORT_GOSEC), 1)
+	go get -u github.com/securego/gosec/cmd/gosec
+endif
 
 optional-deps:
 	go get -u github.com/rogpeppe/godef
@@ -96,7 +107,12 @@ lint:
 	golangci-lint run --disable-all -E golint ./...
 
 gosec:
+ifeq ($(SUPPORT_GOSEC), 1)
 	gosec -conf .gosec.config.json ./...
+else
+	echo '`gosec` is not supported for the current version ($(GO_VERSION)) of `go`'
+	exit 1;
+endif
 
 ineffassign:
 	golangci-lint run --disable-all -E ineffassign ./...
