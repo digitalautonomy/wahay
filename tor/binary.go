@@ -178,9 +178,12 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 
 	b, errTorBinary := isThereConfiguredTorBinary(path)
 
-	errTorsocks := findTorsocksBinary()
-	if errTorsocks != nil {
-		return b, errTorsocks
+	// Ensure we have torsocks available in the system
+	if errTorBinary == nil {
+		errTorsocks := findTorsocksBinary()
+		if errTorsocks != nil {
+			return b, errTorsocks
+		}
 	}
 
 	return b, errTorBinary
