@@ -13,6 +13,7 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
+		defer u.torInitialized.Done()
 
 		instance, e := tor.InitializeInstance(u.config)
 		if e != nil {
@@ -26,7 +27,6 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 		}
 
 		u.tor = instance
-		u.torInitialized.Done()
 	}()
 }
 
@@ -73,6 +73,15 @@ func parseTorError(err error) string {
 
 	case tor.ErrInvalidConfiguredTorBinary:
 		return "ErrInvalidConfiguredTorBinary description"
+
+	case tor.ErrTorsocksNotInstalled:
+		return `
+Ensure you have installed Torsocks in your system.
+
+For more information please visit:
+
+https://trac.torproject.org/projects/tor/wiki/doc/torsocks
+`
 
 	case errTorNoBinary:
 		return "errTorNoBinary description"
