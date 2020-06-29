@@ -32,16 +32,14 @@ default: build
 gen-ui-locale:
 	cd gui && make generate-locale
 
-deps: dep-gosec
+deps:
 	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
 	go get -u golang.org/x/text/cmd/gotext
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
-
-dep-gosec:
 ifeq ($(SUPPORT_GOSEC), 1)
 	go get -u github.com/securego/gosec/cmd/gosec
 endif
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
 
 optional-deps:
 	go get -u github.com/rogpeppe/godef
@@ -110,8 +108,7 @@ gosec:
 ifeq ($(SUPPORT_GOSEC), 1)
 	gosec -conf .gosec.config.json ./...
 else
-	echo '`gosec` is not supported for the current version ($(GO_VERSION)) of `go`'
-	exit 1;
+	echo '`gosec` is not supported for the current version ($(GO_VERSION)) of `go`';
 endif
 
 ineffassign:
