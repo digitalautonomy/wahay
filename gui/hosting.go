@@ -32,11 +32,11 @@ func (u *gtkUI) realHostMeetingHandler() {
 	u.displayLoadingWindow()
 
 	if u.servers == nil {
-		var e error
-		u.servers, e = hosting.CreateServerCollection()
-		if e != nil {
+		var err error
+		u.servers, err = hosting.CreateServerCollection()
+		if err != nil {
 			// TODO: should we check if u.servers !== nil here?
-			u.reportError(i18n.Sprintf("Something went wrong: %s", e))
+			u.reportError(i18n.Sprintf("Something went wrong: %s", err))
 			u.switchToMainWindow()
 			return
 		}
