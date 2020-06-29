@@ -75,13 +75,8 @@ func parseTorError(err error) string {
 		return "ErrInvalidConfiguredTorBinary description"
 
 	case tor.ErrTorsocksNotInstalled:
-		return `
-Ensure you have installed Torsocks in your system.
-
-For more information please visit:
-
-https://trac.torproject.org/projects/tor/wiki/doc/torsocks
-`
+		return i18n.Sprintf("Ensure you have installed Torsocks in your system.\n\n" +
+			"For more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks")
 
 	case errTorNoBinary:
 		return "errTorNoBinary description"

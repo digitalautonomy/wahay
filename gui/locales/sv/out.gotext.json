@@ -246,6 +246,13 @@
             "fuzzy": true
         },
         {
+            "id": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
+            "message": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
+            "translation": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "We've found errors",
             "message": "We've found errors",
             "translation": "Vi har stött på fel",
