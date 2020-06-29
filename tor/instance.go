@@ -136,6 +136,9 @@ func InitializeInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 	b, err := findTorBinary(conf)
 	if b == nil || err != nil {
+		if err != nil {
+			return nil, err
+		}
 		return nil, ErrTorBinaryNotFound
 	}
 
