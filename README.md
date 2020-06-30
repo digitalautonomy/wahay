@@ -5,6 +5,13 @@
   An easy-to-use, secure and decentralized conference call application.
 </p>
 
+<p>
+  <a href="https://github.com/digitalautonomy/wahay/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/digitalautonomy/wahay"></a>
+  <a href="https://github.com/digitalautonomy/wahay/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/digitalautonomy/wahay"></a>
+  <a href="https://github.com/digitalautonomy/wahay/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/digitalautonomy/wahay"></a>
+  <a href="https://www.gnu.org/licenses/gpl-3.0"><img alt="License: GPL v3" src="https://img.shields.io/badge/License-GPLv3-blue.svg"></a>
+</p>
+
 ------
 
 [Wahay](https://wahay.org) is an application that allows you to easily host and participate in conference calls, without the need for any
