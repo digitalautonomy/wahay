@@ -40,12 +40,10 @@ func (u *gtkUI) waitForTorInstance(f func(tor.Instance)) {
 const errGroupTor errGroupType = "tor"
 
 func init() {
-	initStartupErrorGroup(errGroupTor, parseTorError)
+	initStartupErrorGroup(errGroupTor, torErrorTranslator)
 }
 
-// TODO[OB]: this is definitely not a parser, so the function name is confusing
-
-func parseTorError(err error) string {
+func torErrorTranslator(err error) string {
 	switch err {
 	case tor.ErrTorBinaryNotFound:
 		return "ErrTorBinaryNotFound description"

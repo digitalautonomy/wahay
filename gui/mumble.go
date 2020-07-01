@@ -45,11 +45,9 @@ func (u *gtkUI) switchContextWhenMumbleFinish() {
 const errGroupMumble errGroupType = "mumble"
 
 func init() {
-	initStartupErrorGroup(errGroupMumble, parseMumbleError)
+	initStartupErrorGroup(errGroupMumble, mumbleErrorTranslator)
 }
 
-// TODO[OB]: this is definitely not a parser...
-
-func parseMumbleError(err error) string {
+func mumbleErrorTranslator(err error) string {
 	return i18n.Sprintf("the Mumble client can not be used because: %s", err.Error())
 }

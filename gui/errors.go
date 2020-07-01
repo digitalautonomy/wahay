@@ -89,11 +89,10 @@ func (u *gtkUI) closeStatusErrorsWindow() {
 
 type errGroupType string
 
-// TODO[OB]: this is not a parser, so this naming is a bit confusing.
-type errGroupParser func(err error) string
+type errGroupTranslator func(err error) string
 type errGroupData struct {
 	errorList []string
-	parser    errGroupParser
+	parser    errGroupTranslator
 }
 
 // TODO[OB]: It seems like all these things, including the muxes and the flag
@@ -101,7 +100,7 @@ type errGroupData struct {
 
 var startupErrors = map[errGroupType]*errGroupData{}
 
-func initStartupErrorGroup(group errGroupType, parser errGroupParser) {
+func initStartupErrorGroup(group errGroupType, parser errGroupTranslator) {
 	if _, ok := startupErrors[group]; ok {
 		return
 	}
