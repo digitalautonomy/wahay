@@ -4,11 +4,6 @@ import (
 	"github.com/coyim/gotk3adapter/gtki"
 )
 
-// TODO[OB]: Why is this an exported type?
-
-// FileType is the type for identifiying mime-types
-type FileType string
-
 func (u *gtkUI) setCustomFilePathFor(
 	entry gtki.Entry,
 	originalValue string,

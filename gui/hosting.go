@@ -523,12 +523,16 @@ func (h *hostData) startMeetingRoutine() {
 
 	go h.createNewConferenceRoom(complete)
 
-	if !<-complete {
-		// TODO: Close the meeting window and return to the main window
-		return
-	}
+	r := <-complete
 
 	h.u.hideLoadingWindow()
+
+	if !r {
+		// TODO: show more useful information
+		h.u.reportError(i18n.Sprintf("we couldn't start the meeting"))
+		h.u.switchToMainWindow()
+		return
+	}
 
 	if h.autoJoin {
 		h.joinMeetingHost()

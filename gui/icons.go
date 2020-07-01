@@ -3,7 +3,6 @@ package gui
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"sync"
 
 	"github.com/coyim/gotk3adapter/gdki"
 	log "github.com/sirupsen/logrus"
@@ -80,45 +79,50 @@ func (i *icon) createPixBufWithSize(width, height int) (gdki.Pixbuf, error) {
 		log.Error("createPixBufWithSize(): Graphics hasn't been initialized correctly")
 	}
 
-	// TODO[OB]: no point in using a waitgroup for only one thing
-	// Just use a bool channel
-	var w sync.WaitGroup
-
 	pl, err := i.g.gdk.PixbufLoaderNew()
 	if err != nil {
 		return nil, err
 	}
 
-	w.Add(1)
+	complete := make(chan error)
 
-	_, err = pl.Connect("area-prepared", func() {
-		defer w.Done()
-	})
+	go func() {
+		_, err = pl.Connect("area-prepared", func() {
+			complete <- nil
+		})
+		if err != nil {
+			log.WithFields(log.Fields{
+				"caller": "pl.Connect(\"area-prepared\")",
+			}).Errorf("createPixBufWithSize(): %s", err.Error())
+		}
+
+		_, err = pl.Connect("size-prepared", func() {
+			pl.SetSize(width, height)
+		})
+
+		if err != nil {
+			log.WithFields(log.Fields{
+				"caller": "pl.Connect(\"size-prepared\")",
+			}).Errorf("createPixBufWithSize(): %s", err.Error())
+		}
+
+		bytes := i.get()
+		if _, err := pl.Write(bytes); err != nil {
+			complete <- err
+			return
+		}
+
+		if err := pl.Close(); err != nil {
+			complete <- err
+			return
+		}
+	}()
+
+	err = <-complete
+
 	if err != nil {
-		log.WithFields(log.Fields{
-			"caller": "pl.Connect(\"area-prepared\")",
-		}).Errorf("createPixBufWithSize(): %s", err.Error())
-	}
-
-	_, err = pl.Connect("size-prepared", func() {
-		pl.SetSize(width, height)
-	})
-	if err != nil {
-		log.WithFields(log.Fields{
-			"caller": "pl.Connect(\"size-prepared\")",
-		}).Errorf("createPixBufWithSize(): %s", err.Error())
-	}
-
-	bytes := i.get()
-	if _, err := pl.Write(bytes); err != nil {
 		return nil, err
 	}
-
-	if err := pl.Close(); err != nil {
-		return nil, err
-	}
-
-	w.Wait()
 
 	return pl.GetPixbuf()
 }
