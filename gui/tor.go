@@ -17,12 +17,12 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 
 		instance, e := tor.InitializeInstance(u.config)
 		if e != nil {
-			addNewStartupError(e, errGroupTor)
+			u.errorHandler.addNewStartupError(e, errGroupTor)
 			return
 		}
 
 		if instance == nil {
-			addNewStartupError(errTorNoBinary, errGroupTor)
+			u.errorHandler.addNewStartupError(errTorNoBinary, errGroupTor)
 			return
 		}
 

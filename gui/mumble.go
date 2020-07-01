@@ -18,7 +18,7 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 			c := client.InitSystem(u.config, t)
 
 			if !c.IsValid() {
-				addNewStartupError(c.LastError(), errGroupMumble)
+				u.errorHandler.addNewStartupError(c.LastError(), errGroupMumble)
 				return
 			}
 

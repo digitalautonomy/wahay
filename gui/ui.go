@@ -61,6 +61,7 @@ type gtkUI struct {
 	keySupplier    config.KeySupplier
 	config         *config.ApplicationConfig
 	servers        hosting.Servers
+	errorHandler   *errorHandler
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -78,6 +79,10 @@ func NewGTK(gx Graphics) UI {
 		g:              gx,
 		torInitialized: &sync.WaitGroup{},
 	}
+
+	// Initialize UI errors handler
+	ret.initErrorsHandler()
+
 	ret.torInitialized.Add(1)
 
 	// Creates the encryption key suplier for all the crypto-related
@@ -188,7 +193,7 @@ func (u *gtkUI) createMainWindow() {
 }
 
 func (u *gtkUI) updateMainWindowStatusBar(builder *uiBuilder) {
-	if !isThereAnyStartupError() {
+	if !u.errorHandler.isThereAnyStartupError() {
 		return // nothing to do
 	}
 
@@ -210,7 +215,7 @@ func (u *gtkUI) updateMainWindowStatusBar(builder *uiBuilder) {
 }
 
 func (u *gtkUI) disableMainWindowControls(builder *uiBuilder) {
-	if !isThereAnyStartupError() {
+	if !u.errorHandler.isThereAnyStartupError() {
 		return // nothing to do
 	}
 

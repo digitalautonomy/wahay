@@ -49,21 +49,8 @@ func (u *gtkUI) reportError(message string) {
 	})
 }
 
-func getStatusErrorsText() string {
-	if !isThereAnyStartupError() {
-		return "" // nothing to show
-	}
-
-	txt := []string{}
-	for _, v := range startupErrors {
-		txt = append(txt, v.errorList...)
-	}
-
-	return strings.Join(txt, "\n")
-}
-
 func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
-	txt := getStatusErrorsText()
+	txt := u.errorHandler.getStatusErrorsText()
 
 	dialog := builder.get("mainWindowErrors").(gtki.Dialog)
 	buffer := builder.get("helpTextBuffer").(gtki.TextBuffer)
@@ -86,45 +73,67 @@ func (u *gtkUI) closeStatusErrorsWindow() {
 	}
 }
 
+/* UI error handler utilities */
+
 type errGroupType string
 
 type errGroupTranslator func(err error) string
 type errGroupData struct {
-	errorList []string
-	parser    errGroupTranslator
+	errorList  []string
+	translator errGroupTranslator
 }
 
-// TODO[OB]: It seems like all these things, including the muxes and the flag
-// should be in its own struct instad of floating free like this.
+var initStartupErrorsGroups = map[errGroupType]*errGroupData{}
 
-var startupErrors = map[errGroupType]*errGroupData{}
-
-func initStartupErrorGroup(group errGroupType, parser errGroupTranslator) {
-	if _, ok := startupErrors[group]; ok {
+func initStartupErrorGroup(group errGroupType, t errGroupTranslator) {
+	if _, ok := initStartupErrorsGroups[group]; ok {
 		return
 	}
 
-	startupErrors[group] = &errGroupData{
-		errorList: []string{},
-		parser:    parser,
+	initStartupErrorsGroups[group] = &errGroupData{
+		errorList:  []string{},
+		translator: t,
 	}
 }
 
-func isThereAnyStartupError() bool {
-	return weHaveErrors
+type errorHandler struct {
+	sync.Mutex
+	hasErrors     bool
+	startupErrors map[errGroupType]*errGroupData
 }
 
-var startupErrorsIlock sync.Mutex
-var weHaveErrors bool
+func (u *gtkUI) initErrorsHandler() {
+	u.errorHandler = &errorHandler{
+		hasErrors:     false,
+		startupErrors: initStartupErrorsGroups,
+	}
+}
 
-func addNewStartupError(err error, group errGroupType) {
-	startupErrorsIlock.Lock()
-	defer startupErrorsIlock.Unlock()
+func (h *errorHandler) isThereAnyStartupError() bool {
+	return h.hasErrors
+}
 
-	weHaveErrors = true
+func (h *errorHandler) getStatusErrorsText() string {
+	if !h.hasErrors {
+		return "" // nothing to show
+	}
 
-	startupErrors[group].errorList = append(
-		startupErrors[group].errorList,
-		startupErrors[group].parser(err),
+	txt := []string{}
+	for _, v := range h.startupErrors {
+		txt = append(txt, v.errorList...)
+	}
+
+	return strings.Join(txt, "\n")
+}
+
+func (h *errorHandler) addNewStartupError(err error, group errGroupType) {
+	h.Lock()
+	defer h.Unlock()
+
+	h.hasErrors = true
+
+	h.startupErrors[group].errorList = append(
+		h.startupErrors[group].errorList,
+		h.startupErrors[group].translator(err),
 	)
 }
