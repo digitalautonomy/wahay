@@ -1,7 +1,7 @@
 <p>
   <a href="https://wahay.org/" target="_blank" rel="noopener noreferrer">
     <img src="https://wahay.org/assets/img/logo.svg" alt="Wahay" />
-  </a><br>
+  </a><br><br>
   An easy-to-use, secure and decentralized conference call application.
 </p>
 
