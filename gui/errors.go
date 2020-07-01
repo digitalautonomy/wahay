@@ -19,8 +19,7 @@ func fatalf(format string, v ...interface{}) {
 }
 
 func (u *gtkUI) reportError(message string) {
-	// TODO: this should only be logged as debug
-	log.Printf("reportError(%s)", message)
+	log.Debugf("reportError(%s)", message)
 
 	builder := u.g.uiBuilderFor("GeneralError")
 	builder.i18nProperties(
