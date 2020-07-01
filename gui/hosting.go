@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"errors"
 	"fmt"
 	"sync"
 
@@ -124,7 +123,6 @@ func (h *hostData) showMeetingControls() {
 func (h *hostData) joinMeetingHost() {
 	h.u.displayLoadingWindow()
 
-	var err error
 	validOpChannel := make(chan bool)
 
 	go h.joinMeetingHostHelper(validOpChannel)
@@ -134,13 +132,8 @@ func (h *hostData) joinMeetingHost() {
 		return
 	}
 
-	// TODO[OB]: Something is weird here. err will ALWAYS be nil...
-
-	if err == nil {
-		err = errors.New(i18n.Sprintf("we couldn't start the meeting"))
-	}
-
-	h.u.reportError(err.Error())
+	// TODO: we should give more information to the user
+	h.u.reportError(i18n.Sprintf("we couldn't start the meeting"))
 	h.u.switchToMainWindow()
 }
 
