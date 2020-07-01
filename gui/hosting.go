@@ -2,7 +2,6 @@ package gui
 
 import (
 	"fmt"
-	"sync"
 
 	log "github.com/sirupsen/logrus"
 
@@ -278,7 +277,7 @@ func (h *hostData) createNewConferenceRoom(complete chan bool) {
 }
 
 func (h *hostData) finishMeetingReal() {
-	// TODO: What happen if two errors occurrs?
+	// TODO: What happens if two errors occurrs?
 	// We need to do a better controlling for each error
 	// and if multiple errors occurrs, show all the errors in the
 	// same window using the `u.reportError` function
@@ -319,15 +318,7 @@ func (h *hostData) leaveHostMeeting() {
 	go h.mumble.Close()
 }
 
-var uiHostingLock sync.Mutex
-
 func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
-	// TODO[OB]: What's the purpose of this mutex? It doesn't
-	// seem to serve much of a purpose at all
-
-	uiHostingLock.Lock()
-	defer uiHostingLock.Unlock()
-
 	err := h.u.copyToClipboard(h.service.URL())
 	if err != nil {
 		h.u.reportError(err.Error())
