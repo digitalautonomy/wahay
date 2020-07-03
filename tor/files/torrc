@@ -1,0 +1,22 @@
+## Configuration file for a typical Tor user
+
+## Tell Tor to open a SOCKS proxy on port __PORT__
+SOCKSPort __PORT__
+
+## The port on which Tor will listen for local connections from Tor
+## controller applications, as documented in control-spec.txt.
+ControlPort __CONTROLPORT__
+
+## The directory for keeping all the keys/etc.
+DataDirectory __DATADIR__
+
+# Allow connections on the control port when the connecting process
+# knows the contents of a file named "control_auth_cookie", which Tor
+# will create in its data directory.
+CookieAuthentication __COOKIE__
+
+## Send all messages of level 'notice' or higher to %s
+Log notice file __LOGNOTICE__
+
+## Send every possible message to %s
+Log debug file __LOGDEBUG__

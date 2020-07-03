@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -394,41 +396,24 @@ func (i *instance) getConfigFileContents() []byte {
 		cookieFile = 0
 	}
 
-	// TODO[OB] - This should probably be exported into
-	// its own file, and then use esc to include it
+	replacements := map[string]string{
+		"PORT":        strconv.Itoa(i.socksPort),
+		"CONTROLPORT": strconv.Itoa(i.controlPort),
+		"DATADIR":     i.dataDirectory,
+		"COOKIE":      strconv.Itoa(cookieFile),
+		"LOGNOTICE":   noticeLog,
+		"LOGDEBUG":    logFile,
+	}
 
-	content := fmt.Sprintf(
-		`## Configuration file for a typical Tor user
+	content := getTorrc()
+	for k, v := range replacements {
+		content = strings.ReplaceAll(
+			content,
+			fmt.Sprintf("__%s__", k),
+			v,
+		)
+	}
 
-## Tell Tor to open a SOCKS proxy on port %d
-SOCKSPort %d
-
-## The port on which Tor will listen for local connections from Tor
-## controller applications, as documented in control-spec.txt.
-ControlPort %d
-
-## The directory for keeping all the keys/etc.
-DataDirectory %s
-
-# Allow connections on the control port when the connecting process
-# knows the contents of a file named "control_auth_cookie", which Tor
-# will create in its data directory.
-CookieAuthentication %d
-
-## Send all messages of level 'notice' or higher to %s
-Log notice file %s
-
-## Send every possible message to %s
-Log debug file %s`,
-		i.socksPort,
-		i.socksPort,
-		i.controlPort,
-		i.dataDirectory,
-		cookieFile,
-		noticeLog,
-		noticeLog,
-		logFile,
-		logFile)
 	return []byte(content)
 }
 
