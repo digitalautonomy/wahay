@@ -907,17 +907,41 @@ func (server *Server) sendUserList(client *Client) {
 	}
 }
 
-// Send a client its permissions for channel.
-func (server *Server) sendClientPermissions(client *Client, channel *Channel) {
-	// No caching for SuperUser
-	if client.IsSuperUser() {
-		return
+var allPermissions = []acl.Permission{
+	acl.WritePermission,
+	acl.TraversePermission,
+	acl.EnterPermission,
+	acl.SpeakPermission,
+	acl.MuteDeafenPermission,
+	acl.MovePermission,
+	acl.MakeChannelPermission,
+	acl.LinkChannelPermission,
+	acl.WhisperPermission,
+	acl.TextMessagePermission,
+	acl.TempChannelPermission,
+	acl.KickPermission,
+	acl.BanPermission,
+	acl.RegisterPermission,
+	acl.SelfRegisterPermission,
+}
+
+// calculateChannelPermissionsForClient checks what permissions a specific client has for the channel
+// it doesn't do this in a very nice way right now, but it should work.
+func calculateChannelPermissionsForClient(client *Client, channel *Channel) acl.Permission {
+	result := acl.Permission(acl.NonePermission)
+
+	for _, p := range allPermissions {
+		if acl.HasPermission(&channel.ACL, client, p) {
+			result = result | p
+		}
 	}
 
-	// fixme(mkrautz): re-add when we have ACL caching
-	return
+	return result
+}
 
-	perm := acl.Permission(acl.NonePermission)
+// Send a client its permissions for channel.
+func (server *Server) sendClientPermissions(client *Client, channel *Channel) {
+	perm := calculateChannelPermissionsForClient(client, channel)
 	client.sendMessage(&mumbleproto.PermissionQuery{
 		ChannelId:   proto.Uint32(uint32(channel.Id)),
 		Permissions: proto.Uint32(uint32(perm)),
