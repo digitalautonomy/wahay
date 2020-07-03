@@ -14,9 +14,3 @@ DataDirectory __DATADIR__
 # knows the contents of a file named "control_auth_cookie", which Tor
 # will create in its data directory.
 CookieAuthentication __COOKIE__
-
-## Send all messages of level 'notice' or higher to %s
-Log notice file __LOGNOTICE__
-
-## Send every possible message to %s
-Log debug file __LOGDEBUG__

@@ -44,6 +44,7 @@ type instance struct {
 	useCookie     bool
 	isLocal       bool
 	pathTorsocks  string
+	enableLogs    bool
 	controller    Control
 	runningTor    *runningTor
 	binary        *binary
@@ -187,7 +188,7 @@ func systemInstance() (Instance, error) {
 }
 
 func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error) {
-	i, _ := newInstance(b, conf.GetPathTorSocks())
+	i, _ := newInstance(b, conf.GetPathTorSocks(), conf.IsLogsEnabled())
 
 	err := i.Start()
 	if err != nil {
@@ -219,8 +220,8 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 	}
 }
 
-func newInstance(b *binary, torsocksPath string) (*instance, error) {
-	i := createOurInstance(b, torsocksPath)
+func newInstance(b *binary, torsocksPath string, enableLogs bool) (*instance, error) {
+	i := createOurInstance(b, torsocksPath, enableLogs)
 
 	err := i.createConfigFile()
 
@@ -344,7 +345,7 @@ func ensureWahayDataDir() {
 	_ = osf.MkdirAll(wahayDataDir, 0700)
 }
 
-func createOurInstance(b *binary, torsocksPath string) *instance {
+func createOurInstance(b *binary, torsocksPath string, enableLogs bool) *instance {
 	d, _ := filesystemf.TempDir(wahayDataDir, "tor")
 
 	controlPort, routePort := findAvailableTorPorts()
@@ -356,6 +357,7 @@ func createOurInstance(b *binary, torsocksPath string) *instance {
 		controlPort:   controlPort,
 		socksPort:     routePort,
 		dataDirectory: filepath.Join(d, torConfigData),
+		enableLogs:    enableLogs,
 		password:      "", // our instance don't use authentication with password
 		useCookie:     true,
 		isLocal:       false,
@@ -388,9 +390,6 @@ func (i *instance) createConfigFile() error {
 }
 
 func (i *instance) getConfigFileContents() []byte {
-	noticeLog := filepath.Join(filepath.Dir(i.configFile), "notice.log")
-	logFile := filepath.Join(filepath.Dir(i.configFile), "debug.log")
-
 	cookieFile := 1
 	if !i.useCookie {
 		cookieFile = 0
@@ -401,11 +400,20 @@ func (i *instance) getConfigFileContents() []byte {
 		"CONTROLPORT": strconv.Itoa(i.controlPort),
 		"DATADIR":     i.dataDirectory,
 		"COOKIE":      strconv.Itoa(cookieFile),
-		"LOGNOTICE":   noticeLog,
-		"LOGDEBUG":    logFile,
 	}
 
 	content := getTorrc()
+
+	if i.enableLogs {
+		noticeLog := filepath.Join(filepath.Dir(i.configFile), "notice.log")
+		logFile := filepath.Join(filepath.Dir(i.configFile), "debug.log")
+
+		replacements["LOGNOTICE"] = noticeLog
+		replacements["LOGDEBUG"] = logFile
+
+		content = fmt.Sprintf("%s\n%s", content, getTorrcLogConfig())
+	}
+
 	for k, v := range replacements {
 		content = strings.ReplaceAll(
 			content,

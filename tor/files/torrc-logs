@@ -1,0 +1,5 @@
+## Send all messages of level 'notice' or higher to __LOGNOTICE__
+# Log notice file __LOGNOTICE__
+
+## Send every possible message to __LOGNOTICE__
+# Log debug file __LOGDEBUG__

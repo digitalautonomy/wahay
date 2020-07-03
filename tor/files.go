@@ -184,7 +184,7 @@ var _escData = map[string]*_escFile{
 
 	"/files/torrc": {
 		local:   "files/torrc",
-		size:    710,
+		size:    558,
 		modtime: 1489449600,
 		compressed: `
 IyMgQ29uZmlndXJhdGlvbiBmaWxlIGZvciBhIHR5cGljYWwgVG9yIHVzZXIKCiMjIFRlbGwgVG9yIHRv
@@ -196,9 +196,18 @@ ZXBpbmcgYWxsIHRoZSBrZXlzL2V0Yy4KRGF0YURpcmVjdG9yeSBfX0RBVEFESVJfXwoKIyBBbGxvdyBj
 b25uZWN0aW9ucyBvbiB0aGUgY29udHJvbCBwb3J0IHdoZW4gdGhlIGNvbm5lY3RpbmcgcHJvY2Vzcwoj
 IGtub3dzIHRoZSBjb250ZW50cyBvZiBhIGZpbGUgbmFtZWQgImNvbnRyb2xfYXV0aF9jb29raWUiLCB3
 aGljaCBUb3IKIyB3aWxsIGNyZWF0ZSBpbiBpdHMgZGF0YSBkaXJlY3RvcnkuCkNvb2tpZUF1dGhlbnRp
-Y2F0aW9uIF9fQ09PS0lFX18KCiMjIFNlbmQgYWxsIG1lc3NhZ2VzIG9mIGxldmVsICdub3RpY2UnIG9y
-IGhpZ2hlciB0byAlcwpMb2cgbm90aWNlIGZpbGUgX19MT0dOT1RJQ0VfXwoKIyMgU2VuZCBldmVyeSBw
-b3NzaWJsZSBtZXNzYWdlIHRvICVzCkxvZyBkZWJ1ZyBmaWxlIF9fTE9HREVCVUdfXwo=
+Y2F0aW9uIF9fQ09PS0lFX18K
+`,
+	},
+
+	"/files/torrc-logs": {
+		local:   "files/torrc-logs",
+		size:    177,
+		modtime: 1489449600,
+		compressed: `
+IyMgU2VuZCBhbGwgbWVzc2FnZXMgb2YgbGV2ZWwgJ25vdGljZScgb3IgaGlnaGVyIHRvIF9fTE9HTk9U
+SUNFX18KIyBMb2cgbm90aWNlIGZpbGUgX19MT0dOT1RJQ0VfXwoKIyMgU2VuZCBldmVyeSBwb3NzaWJs
+ZSBtZXNzYWdlIHRvIF9fTE9HTk9USUNFX18KIyBMb2cgZGVidWcgZmlsZSBfX0xPR0RFQlVHX18K
 `,
 	},
 

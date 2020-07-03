@@ -9,3 +9,7 @@ import (
 func getTorrc() string {
 	return codegen.GetFileWithFallback("torrc", "tor/files", FSString)
 }
+
+func getTorrcLogConfig() string {
+	return codegen.GetFileWithFallback("torrc-logs", "tor/files", FSString)
+}
