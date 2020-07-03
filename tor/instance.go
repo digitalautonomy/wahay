@@ -415,10 +415,11 @@ func (i *instance) getConfigFileContents() []byte {
 	}
 
 	for k, v := range replacements {
-		content = strings.ReplaceAll(
+		content = strings.Replace(
 			content,
 			fmt.Sprintf("__%s__", k),
 			v,
+			-1,
 		)
 	}
 
