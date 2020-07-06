@@ -32,17 +32,28 @@ After that copy one of the messages.gotext.json files of en or es folders to use
 }
 ```
 
-After that modify i18.go (//go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar) to add the new language to be translated:
+After that modify i18.go:
+```go
+//go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar
+```
+
+to add the new language to be translated:
+```go
 //go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar,fr
+```
 
 Now its possible execute: 
 ```console
-make gen-ui-locale under src/github.com/digitalautonomy/wahay, 
+make gen-ui-locale 
 ```
+under **src/github.com/digitalautonomy/wahay**
 
 finally
 ```console
 make default
 ```
 
-To check the new language its possible use: **export LANG="fr_FR.utf8"**
+To check the new language its possible use: **export LANG="fr_FR.utf8"** and run wahay:
+```console
+bin/wahay
+```
