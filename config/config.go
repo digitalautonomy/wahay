@@ -26,6 +26,7 @@ type ApplicationConfig struct {
 
 	// The fields to save as the JSON representation of the configuration
 	UniqueConfigurationID string
+	AsSuperUser           bool
 	AutoJoin              bool
 	PathTor               string
 	PathTorsocks          string
@@ -113,6 +114,7 @@ func (a *ApplicationConfig) loadFromFile(configFile string, k KeySupplier) error
 // InitDefault initializes a basic application configuration
 // with default values for each entry
 func (a *ApplicationConfig) InitDefault() {
+	a.AsSuperUser = true
 	a.AutoJoin = true
 	a.LogsEnabled = false
 	a.RawLogFile = GetDefaultLogFile()
@@ -304,6 +306,16 @@ func (a *ApplicationConfig) GetAutoJoin() bool {
 // SetAutoJoin sets the specified value to autojoin
 func (a *ApplicationConfig) SetAutoJoin(v bool) {
 	a.AutoJoin = v
+}
+
+// GetAsSuperUser returns the setting value to autojoin like superuser
+func (a *ApplicationConfig) GetAsSuperUser() bool {
+	return a.AsSuperUser
+}
+
+// SetAutoJoinSuperUser sets the specified value to autojoin like superuser
+func (a *ApplicationConfig) SetAutoJoinSuperUser(v bool) {
+	a.AsSuperUser = v
 }
 
 // IsPersistentConfiguration returns the setting value to persist the configuration file in the device
