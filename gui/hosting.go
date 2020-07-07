@@ -483,11 +483,7 @@ func (h *hostData) showMeetingConfiguration() {
 		h.currentWindow = nil
 	}
 
-	builder.i18nProperties(
-		"label", "labelMeetingID",
-		"label", "labelUsername",
-		"label", "labelMeetingPassword",
-		"label", "lblMessage")
+	h.seti18nProperties(builder)
 
 	chkAutoJoin.SetActive(h.autoJoin)
 	chkAutoJoinSuperUser.SetActive(h.asSuperUser)
@@ -497,35 +493,26 @@ func (h *hostData) showMeetingConfiguration() {
 	btnCopyMeetingID.SetVisible(h.u.isCopyToClipboardSupported())
 
 	username := builder.get("inpMeetingUsername").(gtki.Entry)
-
 	h.updateSuperUserControls(username, h.asSuperUser)
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_copy_meeting_id": func() { h.copyMeetingIDToClipboard(builder, "") },
 		"on_send_by_email":   func() { h.sendInvitationByEmail(builder) },
 		"on_cancel": func() {
-			_ = h.service.Close()
-			h.u.servers = nil
-			h.u.switchToMainWindow()
+			h.handlerOnCancel()
 		},
 		"on_start_meeting": func() {
 			password := builder.get("inpMeetingPassword").(gtki.Entry)
-			h.meetingUsername, _ = username.GetText()
-			h.meetingPassword, _ = password.GetText()
-			h.startMeetingHandler()
+			h.handlerOnStartMeeting(username, password)
 		},
 		"on_invite_others": func() {
 			h.onInviteParticipants(onInviteOpen, onInviteClose)
 		},
 		"on_chkAutoJoin_toggled": func() {
-			h.autoJoin = chkAutoJoin.GetActive()
-			h.u.config.SetAutoJoin(h.autoJoin)
-			h.changeStartButtonText(btnStart)
+			h.handlerOnAutoJoinToggled(chkAutoJoin, btnStart)
 		},
 		"on_chkAutoJoinSuperUser_toggled": func() {
-			h.asSuperUser = chkAutoJoinSuperUser.GetActive()
-			h.u.config.SetAutoJoinSuperUser(h.asSuperUser)
-			h.changeStartButtonText(btnCopyMeetingID)
+			h.handlerOnAutoJoinSuperUserToggled(chkAutoJoinSuperUser, btnCopyMeetingID)
 			h.updateSuperUserControls(username, h.asSuperUser)
 		},
 	})
@@ -539,11 +526,43 @@ func (h *hostData) showMeetingConfiguration() {
 	h.u.switchToWindow(win)
 }
 
-func (h *hostData) changeStartButtonText(btn gtki.Button) {
+func (h *hostData) seti18nProperties(b *uiBuilder) {
+	b.i18nProperties(
+		"label", "labelMeetingID",
+		"label", "labelUsername",
+		"label", "labelMeetingPassword",
+		"label", "lblMessage")
+}
+
+func (h *hostData) handlerOnCancel() {
+	_ = h.service.Close()
+	h.u.servers = nil
+	h.u.switchToMainWindow()
+}
+
+func (h *hostData) handlerOnAutoJoinSuperUserToggled(ch gtki.CheckButton, b gtki.Button) {
+	h.asSuperUser = ch.GetActive()
+	h.u.config.SetAutoJoinSuperUser(h.asSuperUser)
+	h.changeStartButtonText(b)
+}
+
+func (h *hostData) handlerOnAutoJoinToggled(ch gtki.CheckButton, b gtki.Button) {
+	h.autoJoin = ch.GetActive()
+	h.u.config.SetAutoJoin(h.autoJoin)
+	h.changeStartButtonText(b)
+}
+
+func (h *hostData) handlerOnStartMeeting(u, p gtki.Entry) {
+	h.meetingUsername, _ = u.GetText()
+	h.meetingPassword, _ = p.GetText()
+	h.startMeetingHandler()
+}
+
+func (h *hostData) changeStartButtonText(b gtki.Button) {
 	if h.autoJoin {
-		_ = btn.SetProperty("label", i18n.Sprintf("Start Meeting & Join"))
+		_ = b.SetProperty("label", i18n.Sprintf("Start Meeting & Join"))
 	} else {
-		_ = btn.SetProperty("label", i18n.Sprintf("Start Meeting"))
+		_ = b.SetProperty("label", i18n.Sprintf("Start Meeting"))
 	}
 }
 
