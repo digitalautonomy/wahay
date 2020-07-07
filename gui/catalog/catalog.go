@@ -51,6 +51,7 @@ var messageKeyToIndex = map[string]int{
 	"Are you sure you want to leave this meeting?":                 32,
 	"Automatically join a meeting":                                 34,
 	"Automatically join this meeting":                              33,
+	"Automatically join this meeting as super user":                137,
 	"Automatically join this meeting when starting it":             35,
 	"Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.": 36,
 	"Browse": 37,
@@ -100,6 +101,7 @@ var messageKeyToIndex = map[string]int{
 	"Join":                                      67,
 	"Join Wahay Meeting":                        6,
 	"Join a meeting":                            68,
+	"Join as super user":                        136,
 	"Join meeting":                              69,
 	"Join the meeting":                          70,
 	"Join this meeting":                         71,
@@ -179,7 +181,7 @@ var messageKeyToIndex = map[string]int{
 	"we couldn't start the meeting":                                          2,
 }
 
-var arIndex = []uint32{ // 137 elements
+var arIndex = []uint32{ // 139 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -219,8 +221,8 @@ var arIndex = []uint32{ // 137 elements
 	// Entry 80 - 9F
 	0x00000729, 0x00000736, 0x00000743, 0x00000750,
 	0x0000075d, 0x0000076a, 0x00000777, 0x00000784,
-	0x00000791,
-} // Size: 572 bytes
+	0x00000791, 0x00000791, 0x00000791,
+} // Size: 580 bytes
 
 const arData string = "" + // Size: 1937 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -257,7 +259,7 @@ const arData string = "" + // Size: 1937 bytes
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME"
 
-var enIndex = []uint32{ // 137 elements
+var enIndex = []uint32{ // 139 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x00000022, 0x00000040,
 	0x00000063, 0x00000093, 0x000000c9, 0x000000dc,
@@ -297,10 +299,10 @@ var enIndex = []uint32{ // 137 elements
 	// Entry 80 - 9F
 	0x0000144d, 0x000014d7, 0x000014e7, 0x0000157d,
 	0x0000158c, 0x00001756, 0x00001863, 0x0000190b,
-	0x00001910,
-} // Size: 572 bytes
+	0x00001910, 0x00001923, 0x00001951,
+} // Size: 580 bytes
 
-const enData string = "" + // Size: 6416 bytes
+const enData string = "" + // Size: 6481 bytes
 	"\x02Error\x02Something went wrong: %[1]s\x02we couldn't start the meetin" +
 	"g\x02The meeting can't be closed: %[1]s\x02The meeting ID has been copie" +
 	"d to the clipboard\x02The invitation email has been copied to the clipbo" +
@@ -396,9 +398,10 @@ const enData string = "" + // Size: 6416 bytes
 	" ID and send the invitation by the most used email clients.\x02This opti" +
 	"on allows the user to access a meeting if already exist, for this you mu" +
 	"st enter the meeting id (required), username (not required) and password" +
-	" (if was set).\x02Help"
+	" (if was set).\x02Help\x02Join as super user\x02Automatically join this " +
+	"meeting as super user"
 
-var esIndex = []uint32{ // 137 elements
+var esIndex = []uint32{ // 139 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x0000001d, 0x0000003d,
 	0x00000062, 0x00000096, 0x000000cf, 0x000000f8,
@@ -438,10 +441,10 @@ var esIndex = []uint32{ // 137 elements
 	// Entry 80 - 9F
 	0x0000185b, 0x000018ff, 0x0000190f, 0x000019af,
 	0x000019c3, 0x00001bca, 0x00001d06, 0x00001de9,
-	0x00001def,
-} // Size: 572 bytes
+	0x00001def, 0x00001e09, 0x00001e4c,
+} // Size: 580 bytes
 
-const esData string = "" + // Size: 7663 bytes
+const esData string = "" + // Size: 7756 bytes
 	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
 	"La reunión no se pudo cerrar: %[1]s\x02El ID de la reunion ha sido copia" +
 	"do al portapapeles\x02El correo de invitación ha sido copiado al portapa" +
@@ -551,9 +554,10 @@ const esData string = "" + // Size: 7663 bytes
 	" de correo más usados.\x02Esta opción permite al usuario acceder a una r" +
 	"eunión ya existente, para esto debe ingresar la identificación de la reu" +
 	"nión (requerido), el nombre de usuario (no requerido) y la contraseña (s" +
-	"i fue configurada previamente).\x02Ayuda"
+	"i fue configurada previamente).\x02Ayuda\x02Unirse como super usuario" +
+	"\x02Unirse automáticamente como super usuario al iniciar una reunión"
 
-var svIndex = []uint32{ // 137 elements
+var svIndex = []uint32{ // 139 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000004, 0x0000001b, 0x00000036,
 	0x00000056, 0x00000084, 0x000000ba, 0x000000da,
@@ -593,8 +597,8 @@ var svIndex = []uint32{ // 137 elements
 	// Entry 80 - 9F
 	0x0000150f, 0x0000159e, 0x000015af, 0x0000165d,
 	0x0000166f, 0x00001896, 0x000019e8, 0x00001ad8,
-	0x00001adf,
-} // Size: 572 bytes
+	0x00001adf, 0x00001adf, 0x00001adf,
+} // Size: 580 bytes
 
 const svData string = "" + // Size: 6879 bytes
 	"\x02Fel\x02Något gick fel: %[1]s\x02vi kunde inte start mötet\x02Mötet k" +
@@ -696,4 +700,4 @@ const svData string = "" + // Size: 6879 bytes
 	"behöver du ange en mötes-kod, ett användarnamn (inte nödvändigt) och ett" +
 	" lösenord (om ett var konfigurerar för mötet).\x02Hjälp"
 
-	// Total table size 25183 bytes (24KiB); checksum: D00FDC5F
+	// Total table size 25373 bytes (24KiB); checksum: C55B8ED1

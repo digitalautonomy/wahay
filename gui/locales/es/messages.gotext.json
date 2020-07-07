@@ -355,6 +355,16 @@
             "translation": "Unirse automáticamente a esta reunión"
         },
         {
+            "id": "Join as super user",
+            "message": "Join as super user",
+            "translation": "Unirse como super usuario"
+        },
+        {
+            "id": "Automatically join this meeting as super user",
+            "message": "Automatically join this meeting as super user",
+            "translation": "Unirse automáticamente como super usuario al iniciar una reunión"
+        },       
+        {
             "id": "Automatically join a meeting",
             "message": "Automatically join a meeting",
             "translation": "Unirse automáticamente al iniciar una reunión"

@@ -798,6 +798,16 @@
             "id": "Help",
             "message": "Help",
             "translation": "Hjälp"
+        },
+        {
+            "id": "Join as super user",
+            "message": "Join as super user",
+            "translation": ""
+        },
+        {
+            "id": "Automatically join this meeting as super user",
+            "message": "Automatically join this meeting as super user",
+            "translation": ""
         }
     ]
 }
