@@ -31,8 +31,9 @@ type Service interface {
 	URL() string
 	Port() int
 	ServicePort() int
-	NewConferenceRoom(password string) error
+	NewConferenceRoom(password string, superUserPassword string) error
 	Close() error
+	SuperUserName() string
 }
 
 type service struct {
@@ -67,8 +68,8 @@ type conferenceRoom struct {
 	server Server
 }
 
-func (s *service) NewConferenceRoom(password string) error {
-	serv, err := s.collection.CreateServer(strconv.Itoa(s.port), password)
+func (s *service) NewConferenceRoom(password, superUserPassword string) error {
+	serv, err := s.collection.CreateServer(strconv.Itoa(s.port), password, superUserPassword)
 	if err != nil {
 		return err
 	}
@@ -178,4 +179,9 @@ func (s *service) Close() error {
 	s.collection.Cleanup()
 
 	return nil
+}
+
+// SuperUserName returns the default name for Super User
+func (s *service) SuperUserName() string {
+	return "SuperUser"
 }

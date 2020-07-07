@@ -17,7 +17,7 @@ import (
 
 // Servers serves
 type Servers interface {
-	CreateServer(port string, password string) (Server, error)
+	CreateServer(port string, password string, superUserPassword string) (Server, error)
 	DestroyServer(Server) error
 	DataDir() string
 	Cleanup()
@@ -145,7 +145,7 @@ func (s *servers) startListener() {
 	}
 }
 
-func (s *servers) CreateServer(port string, password string) (Server, error) {
+func (s *servers) CreateServer(port string, password string, superUserPassword string) (Server, error) {
 	s.nextID++
 
 	serv, err := grumbleServer.NewServer(int64(s.nextID))
@@ -161,6 +161,10 @@ func (s *servers) CreateServer(port string, password string) (Server, error) {
 	serv.Set("Port", port)
 	if len(password) > 0 {
 		serv.SetServerPassword(password)
+	}
+
+	if len(superUserPassword) > 0 {
+		serv.SetSuperUserPassword(superUserPassword)
 	}
 
 	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
