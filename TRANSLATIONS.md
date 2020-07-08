@@ -1,59 +1,94 @@
 # Translations
 
-New translations in Wahay can be done in the following way:
+To translate Wahay you will need to build it with the new translated messages.
 
-Fork wahay under a directory with the structure:
+To do that, please read the below instructions carefully and follow the steps.
 
-```console
+➀ Clone `Wahay` into a directory with the following structure:
+
+```bash
 $GOPATH/src/github.com/digitalautonomy/wahay
 ```
 
-Another important thing is add **$GOPATH/bin to $PATH**
+Another important thing to do is to add `$GOPATH/bin` to `$PATH`.
 
-In this point the following commands must run without issues inside $GOPATH/src/github.com/digitalautonomy/wahay:
+At this point you must run the below commands in Wahay's directory:
 
-```console
+```bash
+$ cd $GOPATH/src/github.com/digitalautonomy/wahay
 $ make deps
 $ make default
 ```
 
-To add a new language translation add the required folder under locales for example fr:
+➁ Create new language folder
 
-```console
-src/github.com/digitalautonomy/wahay/gui/locales/fr
+To add a new translation you should create the language folder under `locales` directory:
+
+```bash
+$ cd $GOPATH/src/github.com/digitalautonomy/wahay/gui/locales
+
+# Create a new folder for French language
+$ mkdir fr
 ```
 
-After that copy one of the messages.gotext.json files of en or es folders to use as a reference. In this file also is required set the code of language to be used, for example: "language": "fr" and add all the translations in translation tag:
+➂ Copy the `messages.gotext.json` file from __English__ (`en`) or __Spanish__ (`es`) folders as a reference, into the created language folder:
+
+```bash
+$ cd $GOPATH/src/github.com/digitalautonomy/wahay/gui/locales
+$ cp ./en/messages.gotext.json ./fr
+```
+
+The `messages.gotext.json` must have the following structure that contains the language code and all translated messages:
+
 ```json
 {
-"id": "Welcome",
-"message": "Welcome",
-"translation": "Bienvenue"
+  "language": "fr",
+  "messages": [
+    {
+      ...
+    },
+    {
+      "id": "Welcome",
+      "message": "Welcome",
+      "translation": "Bienvenue"
+    }
+    {
+      ...
+    }
+  ]
 }
 ```
 
-After that modify i18.go:
+➃ Modify the `i18.go` file to run the new language source:
+
+```bash
+$ cd $GOPATH/src/github.com/digitalautonomy/wahay
+$ nano gui/i18.go
+```
+
+And add the language code to the list of languages 
+
 ```go
-//go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar
+//go:generate gotext -srclang=en update-out=catalog/catalog.go -lang=en,es,sv,ar,→fr
 ```
 
-to add the new language to be translated:
-```go
-//go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar,fr
+Now its possible execute the command:
+
+```bash
+# cd $GOPATH/src/github.com/digitalautonomy/wahay
+$ make gen-ui-locale
 ```
 
-Now its possible execute: 
-```console
-make gen-ui-locale 
-```
-under **src/github.com/digitalautonomy/wahay**
+And finally run:
 
-finally
-```console
-make default
+```bash
+$ make default
 ```
 
-To check the new language its possible use: **export LANG="fr_FR.utf8"** and run wahay:
-```console
-bin/wahay
+➄ Check the new language:
+
+```bash
+$ export LANG="fr_FR.utf8"
+$ cd $GOPATH/src/github.com/digitalautonomy/wahay
+$ bin/wahay
 ```
