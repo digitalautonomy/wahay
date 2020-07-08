@@ -186,6 +186,8 @@ func (u *gtkUI) createMainWindow() {
 		},
 	})
 
+	u.connectShortcutsMainWindow(u.currentWindow)
+
 	u.updateMainWindowStatusBar(builder)
 	u.disableMainWindowControls(builder)
 

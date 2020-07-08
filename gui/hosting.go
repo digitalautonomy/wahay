@@ -241,6 +241,8 @@ func (h *hostData) openHostJoinMeetingWindow() {
 		},
 	})
 
+	h.u.connectShortcutCurrentHostMeetingWindow(win, h)
+
 	h.u.switchToWindow(win)
 }
 
@@ -516,6 +518,8 @@ func (h *hostData) showMeetingConfiguration() {
 			h.updateSuperUserControls(username, h.asSuperUser)
 		},
 	})
+
+	h.u.connectShortcutsHostingMeetingConfigurationWindow(win)
 
 	meetingID, err := builder.GetObject("lblMeetingID")
 	if err != nil {

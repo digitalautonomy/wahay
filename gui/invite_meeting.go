@@ -73,6 +73,8 @@ func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 		},
 	})
 
+	u.connectShortcutCurrentMeetingWindow(win, m)
+
 	u.switchToWindow(win)
 }
 
