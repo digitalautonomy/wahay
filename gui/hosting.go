@@ -504,7 +504,6 @@ func (h *hostData) showMeetingConfiguration() {
 			h.handlerOnCancel()
 		},
 		"on_start_meeting": func() {
-			// password := builder.get("inpMeetingPassword").(gtki.Entry)
 			h.handleOnStartMeeting(builder)
 		},
 		"on_invite_others": func() {
