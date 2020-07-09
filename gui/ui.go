@@ -62,6 +62,7 @@ type gtkUI struct {
 	config         *config.ApplicationConfig
 	servers        hosting.Servers
 	errorHandler   *errorHandler
+	cleanupHandler *cleanupHandler
 }
 
 // NewGTK returns a new client for a GTK ui
@@ -79,7 +80,6 @@ func NewGTK(gx Graphics) UI {
 		g:   gx,
 	}
 
-	// Initialize required tasks
 	ret.initTasks()
 
 	return ret
@@ -97,6 +97,7 @@ func (u *gtkUI) Loop() {
 }
 
 func (u *gtkUI) initTasks() {
+	u.initCleanupHandler()
 	u.initConfig()
 	u.initErrorsHandler()
 

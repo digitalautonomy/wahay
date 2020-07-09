@@ -1,5 +1,37 @@
 package gui
 
+import (
+	"os"
+	"os/signal"
+	"syscall"
+
+	log "github.com/sirupsen/logrus"
+)
+
+type cleanupHandler struct{}
+
+func (u *gtkUI) initCleanupHandler() {
+	u.cleanupHandler = &cleanupHandler{}
+	u.initInterruptHandler()
+}
+
+func (u *gtkUI) initInterruptHandler() {
+	c := make(chan os.Signal, 1)
+
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		<-c
+		u.exitOnInterrupt()
+	}()
+}
+
+func (u *gtkUI) exitOnInterrupt() {
+	log.Println("Closing Wahay")
+	u.quit()
+	os.Exit(0)
+}
+
 func (u *gtkUI) quit() {
 	u.cleanup()
 	u.app.Quit()
