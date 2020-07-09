@@ -15,7 +15,7 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 		defer wg.Done()
 		defer u.torInitialized.Done()
 
-		instance, e := tor.NewInstance(u.config)
+		instance, e := tor.NewInstance(u.config, u.onTorInstanceCreated)
 		if e != nil {
 			u.errorHandler.addNewStartupError(e, errGroupTor)
 			return
@@ -28,6 +28,13 @@ func (u *gtkUI) ensureTor(wg *sync.WaitGroup) {
 
 		u.tor = instance
 	}()
+}
+
+func (u *gtkUI) onTorInstanceCreated(i tor.Instance) {
+	// Tor instance has been successfully created, so we
+	// add a new cleanup callback to destroy the given Tor
+	// instance so when Wahay closes Tor can cleanup things
+	u.onExit(i.Destroy)
 }
 
 func (u *gtkUI) waitForTorInstance(f func(tor.Instance)) {

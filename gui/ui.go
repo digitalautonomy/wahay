@@ -118,6 +118,11 @@ func (u *gtkUI) onActivate() {
 	go u.loadConfig()
 }
 
+func (u *gtkUI) quit() {
+	log.Println("Closing Wahay...")
+	u.cleanupHandler.doCleanup(u.app.Quit)
+}
+
 func (u *gtkUI) configLoaded() {
 	u.displayLoadingWindow()
 

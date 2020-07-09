@@ -22,6 +22,8 @@ func (u *gtkUI) ensureMumble(wg *sync.WaitGroup) {
 				return
 			}
 
+			u.onExit(c.Destroy)
+
 			u.client = c
 		}()
 	})

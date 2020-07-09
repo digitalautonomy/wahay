@@ -8,44 +8,51 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type cleanupHandler struct{}
-
-func (u *gtkUI) initCleanupHandler() {
-	u.cleanupHandler = &cleanupHandler{}
-	u.initInterruptHandler()
+type cleanupHandler struct {
+	u         *gtkUI
+	callbacks []func()
 }
 
-func (u *gtkUI) initInterruptHandler() {
+func (u *gtkUI) initCleanupHandler() {
+	u.cleanupHandler = &cleanupHandler{
+		u: u,
+	}
+
+	u.cleanupHandler.initInterruptHandler()
+}
+
+func (h *cleanupHandler) initInterruptHandler() {
 	c := make(chan os.Signal, 1)
 
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
 		<-c
-		u.exitOnInterrupt()
+		h.exitOnInterrupt()
 	}()
 }
 
-func (u *gtkUI) exitOnInterrupt() {
-	log.Println("Closing Wahay")
-	u.quit()
+func (h *cleanupHandler) exitOnInterrupt() {
+	h.u.quit()
 	os.Exit(0)
 }
 
-func (u *gtkUI) quit() {
-	u.cleanup()
-	u.app.Quit()
+func (h *cleanupHandler) doCleanup(cb func()) {
+	log.Debug("Cleaning Wahay...")
+
+	if len(h.callbacks) != 0 {
+		for _, cb := range h.callbacks {
+			cb()
+		}
+	}
+
+	cb()
 }
 
-func (u *gtkUI) cleanup() {
-	if u.tor != nil {
-		// TODO: delete any created Onion Service
-		u.tor.Destroy()
-	}
+func (h *cleanupHandler) add(cb func()) {
+	h.callbacks = append(h.callbacks, cb)
+}
 
-	if u.client != nil {
-		// TODO: we should remove any Mumble command running
-		// and we should close the Grumble service if it's running
-		u.client.Destroy()
-	}
+func (u *gtkUI) onExit(cb func()) {
+	u.cleanupHandler.add(cb)
 }
