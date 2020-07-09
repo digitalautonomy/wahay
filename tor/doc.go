@@ -11,9 +11,9 @@ control port. Finally, the Service interface represents a running executable whi
 allow all of its traffic to be proxied over the specific Tor instance.
 
 In order to start using this package, you must first initialize a Tor instance. This is done by calling
-InitializeInstance. This function will try to figure out different ways of running Tor - first trying to use the system
+NewInstance. This function will try to figure out different ways of running Tor - first trying to use the system
 Tor instance, and if that's not possible, start its own Tor instance that we have the possibility of controlling. The
-InitializeInstance function should only be called once, at startup.
+NewInstance function should only be called once, at startup.
 
 All the top level functions that use Tor in this package, such as NewOnionServiceWithMultiplePorts and NewService, will
 use the instance and controller inside of the global instance in the package.
