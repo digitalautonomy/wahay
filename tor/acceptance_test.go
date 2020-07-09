@@ -84,7 +84,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithN
 
 	mockhttpf.checkConnectionReturn = true
 
-	ix, e := NewInstance(&config.ApplicationConfig{})
+	ix, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	c.Assert(e, IsNil)
 
@@ -131,7 +131,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorIsUsed_whenSystemTorIsOKWithCooki
 
 	mockhttpf.checkConnectionReturn = true
 
-	ix, e := NewInstance(&config.ApplicationConfig{})
+	ix, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	c.Assert(e, IsNil)
 
@@ -184,7 +184,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillBeUsed_whenSystemTorIsOKWithP
 
 	mockhttpf.checkConnectionReturn = true
 
-	ix, e := NewInstance(&config.ApplicationConfig{})
+	ix, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	c.Assert(e, IsNil)
 
@@ -238,7 +238,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenItsNotConnected
 
 	mockhttpf.checkConnectionReturn = false
 
-	_, e := NewInstance(&config.ApplicationConfig{})
+	_, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	c.Assert(e, ErrorMatches, "no Tor binary found")
 }
@@ -264,7 +264,7 @@ func (s *TorAcceptanceSuite) Test_thatSystemTorWillNotBeUsed_whenTheVersionIsToo
 
 	mockhttpf.checkConnectionReturn = true
 
-	_, e := NewInstance(&config.ApplicationConfig{})
+	_, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	c.Assert(e, ErrorMatches, "no Tor binary found")
 }
@@ -281,7 +281,7 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresNoSystemTor(c *C) {
 
 	mocktorgof.newControllerReturn2 = errors.New("no connection possible")
 
-	_, e := NewInstance(&config.ApplicationConfig{})
+	_, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	c.Assert(e, ErrorMatches, "no Tor binary found")
 }
@@ -313,7 +313,7 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVer
 		return nil, nil
 	}
 
-	_, e := NewInstance(&config.ApplicationConfig{})
+	_, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	c.Assert(e, ErrorMatches, "no Tor binary found")
 	c.Assert(called, Equals, true)
@@ -354,7 +354,7 @@ func (s *TorAcceptanceSuite) Test_thatASystemTorBinaryWillBeStartedIfProperVersi
 		return nil
 	}
 
-	ix, e := NewInstance(&config.ApplicationConfig{})
+	ix, e := NewInstance(&config.ApplicationConfig{}, nil)
 
 	verifyAllAssertions(c, e, tc, ix.(*instance))
 

@@ -34,20 +34,38 @@ type Instance interface {
 }
 
 type instance struct {
-	started       bool
-	configFile    string
-	socksPort     int
-	controlHost   string
-	controlPort   int
-	dataDirectory string
-	password      string
-	useCookie     bool
-	isLocal       bool
-	pathTorsocks  string
-	enableLogs    bool
-	controller    Control
-	runningTor    *runningTor
-	binary        *binary
+	started         bool
+	configFile      string
+	socksPort       int
+	controlHost     string
+	controlPort     int
+	dataDirectory   string
+	password        string
+	useCookie       bool
+	isLocal         bool
+	pathTorsocks    string
+	enableLogs      bool
+	controller      Control
+	runningTor      *runningTor
+	binary          *binary
+	onInitCallbacks []func(Instance)
+}
+
+func (i *instance) setBinary(b *binary, pathTorsocks string) {
+	i.binary = b
+	i.pathTorsocks = pathTorsocks
+}
+
+func (i *instance) init() {
+	if len(i.onInitCallbacks) != 0 {
+		for _, f := range i.onInitCallbacks {
+			f(i)
+		}
+	}
+}
+
+func (i *instance) onInit(f func(Instance)) {
+	i.onInitCallbacks = append(i.onInitCallbacks, f)
 }
 
 // TODO[OB] - This design is _very_ specific to the needs of the certificate getter
@@ -124,7 +142,7 @@ var (
 
 // NewInstance initializes and returns the Instance for working with Tor.
 // This function should be called only once during the system initialization
-func NewInstance(conf *config.ApplicationConfig) (Instance, error) {
+func NewInstance(conf *config.ApplicationConfig, onInit func(Instance)) (Instance, error) {
 	// Checking if the system Tor can be used.
 	// This should work for system like Tails, where Tor is
 	// already available in the system.
@@ -144,7 +162,7 @@ func NewInstance(conf *config.ApplicationConfig) (Instance, error) {
 
 	log.Infof("Using Tor binary found in: %s", b.path)
 
-	i, err = getOurInstance(b, conf)
+	i, err = getOurInstance(b, conf, onInit)
 	if err != nil {
 		log.Debugf("tor.NewInstance() error: %s", err)
 		return nil, err
@@ -184,8 +202,15 @@ func systemInstance() (Instance, error) {
 	return i, nil
 }
 
-func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error) {
-	i, _ := newInstance(b, conf.GetPathTorSocks(), conf.IsLogsEnabled())
+func getOurInstance(b *binary, conf *config.ApplicationConfig, onInit func(Instance)) (*instance, error) {
+	i, _ := newInstance(conf.IsLogsEnabled())
+
+	if onInit != nil {
+		i.onInit(onInit)
+	}
+
+	i.setBinary(b, conf.GetPathTorSocks())
+	i.init()
 
 	err := i.Start()
 	if err != nil {
@@ -217,8 +242,8 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig) (*instance, error
 	}
 }
 
-func newInstance(b *binary, torsocksPath string, enableLogs bool) (*instance, error) {
-	i := createOurInstance(b, torsocksPath, enableLogs)
+func newInstance(enableLogs bool) (*instance, error) {
+	i := createOurInstance(enableLogs)
 
 	err := i.createConfigFile()
 
@@ -336,7 +361,7 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 	return rc, nil
 }
 
-func createOurInstance(b *binary, torsocksPath string, enableLogs bool) *instance {
+func createOurInstance(enableLogs bool) *instance {
 	d := filesystemf.TempDir("tor")
 
 	controlPort, routePort := findAvailableTorPorts()
@@ -353,8 +378,6 @@ func createOurInstance(b *binary, torsocksPath string, enableLogs bool) *instanc
 		useCookie:     true,
 		isLocal:       false,
 		controller:    nil,
-		pathTorsocks:  torsocksPath,
-		binary:        b,
 	}
 
 	return i
