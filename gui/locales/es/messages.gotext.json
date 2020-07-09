@@ -149,9 +149,23 @@
             "fuzzy": true
         },
         {
+            "id": "Start a new meeting \u0026 join",
+            "message": "Start a new meeting \u0026 join",
+            "translation": "Iniciar una nueva reunión y unirse (Ctrl + s)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Start Meeting",
             "message": "Start Meeting",
             "translation": "Iniciar reunión",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Start a new meeting",
+            "message": "Start a new meeting",
+            "translation": "Iniciar una nueva reunión (Ctrl + s)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -477,7 +491,7 @@
         {
             "id": "End this meeting for all",
             "message": "End this meeting for all",
-            "translation": "Finaliza esta reunión para todos"
+            "translation": "Finaliza esta reunión para todos (Ctrl + w)"
         },
         {
             "id": "General",
@@ -492,7 +506,7 @@
         {
             "id": "Host a new meeting",
             "message": "Host a new meeting",
-            "translation": "Organizar una nueva reunión"
+            "translation": "Organizar una nueva reunión (Ctrl + h)"
         },
         {
             "id": "Hosting",
@@ -537,7 +551,7 @@
         {
             "id": "Join a meeting",
             "message": "Join a meeting",
-            "translation": "Unirse a una reunión"
+            "translation": "Unirse a una reunión (Ctrl + j)"
         },
         {
             "id": "Join meeting",
@@ -567,7 +581,7 @@
         {
             "id": "Leave this meeting",
             "message": "Leave this meeting",
-            "translation": "Salir de esta reunión"
+            "translation": "Salir de esta reunión (Ctrl + q)"
         },
         {
             "id": "Log debug info",

@@ -20,12 +20,25 @@ func (u *gtkUI) connectShortcutsMainWindow(w gtki.Window) {
 	// <Primary> maps to Command and OS X, but Control on other platforms
 	u.connectShortcut("<Primary>q", w, u.closeApplicationWindow)
 	u.connectShortcut("<Alt>F4", w, u.closeApplicationWindow)
+	u.connectShortcut("Escape", w, u.closeApplicationWindow)
+	u.connectShortcut("<Primary>F4", w, u.closeApplicationWindow)
+	u.connectShortcut("<Primary>H", w, func(w gtki.Window) {
+		u.hostMeetingHandler()
+	})
+	u.connectShortcut("<Primary>J", w, func(w gtki.Window) {
+		u.joinMeeting()
+	})
 }
 
-func (u *gtkUI) connectShortcutsHostingMeetingConfigurationWindow(w gtki.Window) {
+func (u *gtkUI) connectShortcutsHostingMeetingConfigurationWindow(w gtki.Window, b *uiBuilder, h *hostData) {
 	// <Primary> maps to Command and OS X, but Control on other platforms
 	u.connectShortcut("<Primary>q", w, u.closeApplicationWindow)
+	u.connectShortcut("<Primary>F4", w, u.closeWindow)
+	u.connectShortcut("Escape", w, u.closeWindow)
 	u.connectShortcut("<Alt>F4", w, u.closeApplicationWindow)
+	u.connectShortcut("<Primary>S", w, func(w gtki.Window) {
+		h.handleOnStartMeeting(b)
+	})
 }
 
 func (u *gtkUI) connectShortcutCurrentHostMeetingWindow(w gtki.Window, h *hostData) {
@@ -47,4 +60,8 @@ func (u *gtkUI) connectShortcutCurrentMeetingWindow(w gtki.Window, m tor.Service
 
 func (u *gtkUI) closeApplicationWindow(w gtki.Window) {
 	u.quit()
+}
+
+func (u *gtkUI) closeWindow(w gtki.Window) {
+	u.switchToMainWindow()
 }

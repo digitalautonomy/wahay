@@ -504,8 +504,8 @@ func (h *hostData) showMeetingConfiguration() {
 			h.handlerOnCancel()
 		},
 		"on_start_meeting": func() {
-			password := builder.get("inpMeetingPassword").(gtki.Entry)
-			h.handlerOnStartMeeting(username, password)
+			// password := builder.get("inpMeetingPassword").(gtki.Entry)
+			h.handleOnStartMeeting(builder)
 		},
 		"on_invite_others": func() {
 			h.onInviteParticipants(onInviteOpen, onInviteClose)
@@ -519,7 +519,7 @@ func (h *hostData) showMeetingConfiguration() {
 		},
 	})
 
-	h.u.connectShortcutsHostingMeetingConfigurationWindow(win)
+	h.u.connectShortcutsHostingMeetingConfigurationWindow(win, builder, h)
 
 	meetingID, err := builder.GetObject("lblMeetingID")
 	if err != nil {
@@ -528,6 +528,12 @@ func (h *hostData) showMeetingConfiguration() {
 	_ = meetingID.SetProperty("label", h.service.URL())
 
 	h.u.switchToWindow(win)
+}
+
+func (h *hostData) handleOnStartMeeting(b *uiBuilder) {
+	username := b.get("inpMeetingUsername").(gtki.Entry)
+	password := b.get("inpMeetingPassword").(gtki.Entry)
+	h.handlerOnStartMeeting(username, password)
 }
 
 func (h *hostData) seti18nProperties(b *uiBuilder) {
@@ -565,8 +571,10 @@ func (h *hostData) handlerOnStartMeeting(u, p gtki.Entry) {
 func (h *hostData) changeStartButtonText(b gtki.Button) {
 	if h.autoJoin {
 		_ = b.SetProperty("label", i18n.Sprintf("Start Meeting & Join"))
+		b.SetTooltipText(i18n.Sprintf("Start a new meeting \u0026 join"))
 	} else {
 		_ = b.SetProperty("label", i18n.Sprintf("Start Meeting"))
+		b.SetTooltipText(i18n.Sprintf("Start a new meeting"))
 	}
 }
 

@@ -108,9 +108,23 @@
             "fuzzy": true
         },
         {
+            "id": "Start a new meeting \u0026 join",
+            "message": "Start a new meeting \u0026 join",
+            "translation": "TRANSLATE ME (Ctrl + s)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Start Meeting",
             "message": "Start Meeting",
             "translation": "TRANSLATE ME",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Start a new meeting",
+            "message": "Start a new meeting",
+            "translation": "TRANSLATE ME (Ctrl + s)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -397,7 +411,7 @@
         {
             "id": "End this meeting",
             "message": "End this meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "TRANSLATE ME (Ctrl + w)"
         },
         {
             "id": "End this meeting for all",
@@ -417,7 +431,7 @@
         {
             "id": "Host a new meeting",
             "message": "Host a new meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "TRANSLATE ME (Ctrl + H)"
         },
         {
             "id": "Hosting",
@@ -462,7 +476,7 @@
         {
             "id": "Join a meeting",
             "message": "Join a meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "TRANSLATE ME (Ctrl + J)"
         },
         {
             "id": "Join meeting",
@@ -492,7 +506,7 @@
         {
             "id": "Leave this meeting",
             "message": "Leave this meeting",
-            "translation": "TRANSLATE ME"
+            "translation": "TRANSLATE ME  (Ctrl + q)"
         },
         {
             "id": "Log debug info",
@@ -802,12 +816,12 @@
         {
             "id": "Join as super user",
             "message": "Join as super user",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         },
         {
             "id": "Automatically join this meeting as super user",
             "message": "Automatically join this meeting as super user",
-            "translation": ""
+            "translation": "TRANSLATE ME"
         }
     ]
 }
