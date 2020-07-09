@@ -337,7 +337,7 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 }
 
 func createOurInstance(b *binary, torsocksPath string, enableLogs bool) *instance {
-	d := config.CreateTempDir("tor")
+	d := filesystemf.TempDir("tor")
 
 	controlPort, routePort := findAvailableTorPorts()
 
