@@ -46,6 +46,12 @@ func New() *ApplicationConfig {
 	return a
 }
 
+// Init initializes configuration basic stuffs
+func (a *ApplicationConfig) Init() {
+	EnsureFilesAndDir()
+	a.initialized = true
+}
+
 // DetectPersistence initializes the application config
 func (a *ApplicationConfig) DetectPersistence() (string, error) {
 	filename := a.getRealConfigFile()
@@ -55,8 +61,6 @@ func (a *ApplicationConfig) DetectPersistence() (string, error) {
 		a.InitDefault()
 		a.SetPersistentConfiguration(false)
 	}
-
-	a.initialized = true
 
 	return filename, nil
 }

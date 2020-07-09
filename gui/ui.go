@@ -75,22 +75,12 @@ func NewGTK(gx Graphics) UI {
 	}
 
 	ret := &gtkUI{
-		app:            app,
-		g:              gx,
-		torInitialized: &sync.WaitGroup{},
+		app: app,
+		g:   gx,
 	}
 
-	// Initialize UI errors handler
-	ret.initErrorsHandler()
-
-	ret.torInitialized.Add(1)
-
-	// Creates the encryption key suplier for all the crypto-related
-	// functionalities of the configuration package
-	ret.keySupplier = config.CreateKeySupplier(ret.getMasterPassword)
-
-	// Ensure all components that should be installed
-	ret.ensureInstallation()
+	// Initialize required tasks
+	ret.initTasks()
 
 	return ret
 }
@@ -104,6 +94,25 @@ func (u *gtkUI) Loop() {
 	}
 
 	u.app.Run([]string{})
+}
+
+func (u *gtkUI) initTasks() {
+	// Initialize configuration
+	u.initConfig()
+
+	// Initialize UI errors handler
+	u.initErrorsHandler()
+
+	// Initialize Tor wait group
+	u.torInitialized = &sync.WaitGroup{}
+	u.torInitialized.Add(1)
+
+	// Creates the encryption key suplier for all the crypto-related
+	// functionalities of the configuration package
+	u.keySupplier = config.CreateKeySupplier(u.getMasterPassword)
+
+	// Ensure all components that should be installed
+	u.ensureInstallation()
 }
 
 func (u *gtkUI) onActivate() {
@@ -288,26 +297,4 @@ func (u *gtkUI) showConfirmation(onConfirm func(bool), text string) {
 
 	dialog.Present()
 	dialog.Show()
-}
-
-func (u *gtkUI) cleanUp() {
-	if u.tor != nil {
-		// TODO: delete any created Onion Service
-		u.tor.Destroy()
-	}
-
-	if u.client != nil {
-		// TODO: we should remove any Mumble command running
-		// and we should close the Grumble service if it's running
-		u.client.Destroy()
-	}
-}
-
-func (u *gtkUI) closeApplication() {
-	u.quit()
-}
-
-func (u *gtkUI) quit() {
-	u.cleanUp()
-	u.app.Quit()
 }

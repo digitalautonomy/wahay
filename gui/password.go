@@ -97,7 +97,7 @@ func (u *gtkUI) getMasterPassword(p config.EncryptionParameters, lastAttemptFail
 			if !hadSubmission {
 				hadSubmission = true
 				close(passwordResultCh)
-				u.closeApplication()
+				u.quit()
 			}
 		},
 		"on_save": func() {

@@ -17,6 +17,20 @@ const (
 	appLogFile              = "application" + fileExtensionLOG
 )
 
+var wahayDataDir = filepath.Join(XdgDataHome(), "wahay")
+
+// EnsureFilesAndDir ensure Wahay's required files and/or directories
+func EnsureFilesAndDir() {
+	_ = os.MkdirAll(wahayDataDir, 0700)
+}
+
+// CreateTempDir creates a temp dir inside Wahay's data dir
+func CreateTempDir(dir string) string {
+	EnsureFilesAndDir()
+	d, _ := ioutil.TempDir(wahayDataDir, dir)
+	return d
+}
+
 // FileExists check if a specific file exists
 func FileExists(filename string) bool {
 	_, err := os.Stat(filename)
@@ -64,6 +78,7 @@ func Dir() string {
 	return filepath.Join(SystemConfigDir(), "wahay")
 }
 
+// TorDir returns the directory path for Tor
 func TorDir() string {
 	return filepath.Join(Dir(), "tor")
 }

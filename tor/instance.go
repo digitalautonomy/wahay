@@ -134,9 +134,6 @@ func InitializeInstance(conf *config.ApplicationConfig) (Instance, error) {
 		return i, nil
 	}
 
-	// Proceed to initialize our Tor instance
-	ensureWahayDataDir()
-
 	b, err := findTorBinary(conf)
 	if b == nil || err != nil {
 		if err != nil {
@@ -339,14 +336,8 @@ func (i *instance) exec(command string, args []string, pre ModifyCommand) (*Runn
 	return rc, nil
 }
 
-var wahayDataDir = filepath.Join(config.XdgDataHome(), "wahay")
-
-func ensureWahayDataDir() {
-	_ = osf.MkdirAll(wahayDataDir, 0700)
-}
-
 func createOurInstance(b *binary, torsocksPath string, enableLogs bool) *instance {
-	d, _ := filesystemf.TempDir(wahayDataDir, "tor")
+	d := config.CreateTempDir("tor")
 
 	controlPort, routePort := findAvailableTorPorts()
 

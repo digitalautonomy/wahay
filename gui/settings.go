@@ -313,9 +313,12 @@ func (s *settings) setCustomPathForMumble() {
 		})
 }
 
-func (u *gtkUI) loadConfig() {
+func (u *gtkUI) initConfig() {
 	u.config = config.New()
+	u.config.Init()
+}
 
+func (u *gtkUI) loadConfig() {
 	u.config.WhenLoaded(func(c *config.ApplicationConfig) {
 		u.config = c
 		u.doInUIThread(u.initialSetupWindow)
@@ -330,7 +333,7 @@ func (u *gtkUI) loadConfig() {
 	if !u.ensureConfig(configFile) {
 		u.config.OnAfterLoad()
 	} else {
-		u.closeApplication()
+		u.quit()
 	}
 }
 
