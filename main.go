@@ -23,17 +23,6 @@ var BuildTag = "(no tag)"
 // BuildTimestamp contains the timestamp in Ecuador time zone when the build was made
 var BuildTimestamp = "UNKNOWN"
 
-func initializeLogging() {
-	log.SetLevel(log.InfoLevel)
-	if *config.Debug {
-		log.SetLevel(log.DebugLevel)
-	}
-	if *config.Trace {
-		log.SetLevel(log.TraceLevel)
-	}
-	log.SetReportCaller(*config.DebugFunctionCalls)
-}
-
 func main() {
 	config.ProcessCommandLineArguments()
 
@@ -42,9 +31,20 @@ func main() {
 		return
 	}
 
-	initializeLogging()
+	initLogging()
 
 	runClient()
+}
+
+func initLogging() {
+	log.SetLevel(log.InfoLevel)
+	if *config.Debug {
+		log.SetLevel(log.DebugLevel)
+	}
+	if *config.Trace {
+		log.SetLevel(log.TraceLevel)
+	}
+	log.SetReportCaller(*config.DebugFunctionCalls)
 }
 
 func runClient() {
