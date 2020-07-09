@@ -97,13 +97,9 @@ func (u *gtkUI) Loop() {
 }
 
 func (u *gtkUI) initTasks() {
-	// Initialize configuration
 	u.initConfig()
-
-	// Initialize UI errors handler
 	u.initErrorsHandler()
 
-	// Initialize Tor wait group
 	u.torInitialized = &sync.WaitGroup{}
 	u.torInitialized.Add(1)
 
@@ -111,7 +107,6 @@ func (u *gtkUI) initTasks() {
 	// functionalities of the configuration package
 	u.keySupplier = config.CreateKeySupplier(u.getMasterPassword)
 
-	// Ensure all components that should be installed
 	u.ensureInstallation()
 }
 
