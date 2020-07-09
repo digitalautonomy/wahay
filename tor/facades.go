@@ -50,7 +50,7 @@ type execFacade interface {
 type filesystemFacade interface {
 	FileExists(string) bool
 	IsADirectory(string) bool
-	TempDir(where, suffix string) (string, error)
+	TempDir(suffix string) string
 	EnsureDir(string, os.FileMode)
 	WriteFile(string, []byte, os.FileMode) error
 }
@@ -169,8 +169,8 @@ func (*realFilesystemImplementation) IsADirectory(path string) bool {
 	return dir.IsDir()
 }
 
-func (*realFilesystemImplementation) TempDir(where, suffix string) (string, error) {
-	return ioutil.TempDir(where, suffix)
+func (*realFilesystemImplementation) TempDir(suffix string) string {
+	return config.CreateTempDir(suffix)
 }
 
 func (*realFilesystemImplementation) EnsureDir(name string, mode os.FileMode) {

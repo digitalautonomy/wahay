@@ -371,11 +371,8 @@ func setupSomeBasicMocks() {
 		return nil, nil
 	}
 
-	mockfilesystemf.onTempDir = func(s, s2 string) (string, error) {
-		if s == config.WithHome(".local/share/wahay") {
-			return config.WithHome(".local/share/wahay/4215-tor"), nil
-		}
-		return "", nil
+	mockfilesystemf.onTempDir = func(s string) string {
+		return config.WithHome(".local/share/wahay/4215-tor")
 	}
 
 	mockosf.onIsPortAvailable = func(p int) bool {
@@ -574,7 +571,7 @@ func (m *mockExecImplementation) WaitCommand(cmd *exec.Cmd) error {
 }
 
 type mockFilesystemImplementation struct {
-	onTempDir   func(string, string) (string, error)
+	onTempDir   func(string) string
 	onEnsureDir func(string, os.FileMode)
 	onWriteFile func(string, []byte, os.FileMode) error
 }
@@ -589,12 +586,12 @@ func (*mockFilesystemImplementation) IsADirectory(path string) bool {
 	return false
 }
 
-func (m *mockFilesystemImplementation) TempDir(where, suffix string) (string, error) {
-	testPrint("TempDir(%v, %v)\n", where, suffix)
+func (m *mockFilesystemImplementation) TempDir(suffix string) string {
+	testPrint("TempDir(%v)\n", suffix)
 	if m.onTempDir != nil {
-		return m.onTempDir(where, suffix)
+		return m.onTempDir(suffix)
 	}
-	return "", nil
+	return ""
 }
 
 func (m *mockFilesystemImplementation) EnsureDir(name string, mode os.FileMode) {
