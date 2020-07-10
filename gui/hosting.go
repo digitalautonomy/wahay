@@ -513,7 +513,7 @@ func (h *hostData) showMeetingConfiguration() {
 			h.handlerOnAutoJoinToggled(chkAutoJoin, btnStart)
 		},
 		"on_chkAutoJoinSuperUser_toggled": func() {
-			h.handlerOnAutoJoinSuperUserToggled(chkAutoJoinSuperUser, btnCopyMeetingID)
+			h.handlerOnAutoJoinSuperUserToggled(chkAutoJoinSuperUser)
 			h.updateSuperUserControls(username, h.asSuperUser)
 		},
 	})
@@ -549,7 +549,7 @@ func (h *hostData) handlerOnCancel() {
 	h.u.switchToMainWindow()
 }
 
-func (h *hostData) handlerOnAutoJoinSuperUserToggled(ch gtki.CheckButton, b gtki.Button) {
+func (h *hostData) handlerOnAutoJoinSuperUserToggled(ch gtki.CheckButton) {
 	h.asSuperUser = ch.GetActive()
 	h.u.config.SetAutoJoinSuperUser(h.asSuperUser)
 }
