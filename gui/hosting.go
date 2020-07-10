@@ -552,7 +552,6 @@ func (h *hostData) handlerOnCancel() {
 func (h *hostData) handlerOnAutoJoinSuperUserToggled(ch gtki.CheckButton, b gtki.Button) {
 	h.asSuperUser = ch.GetActive()
 	h.u.config.SetAutoJoinSuperUser(h.asSuperUser)
-	h.changeStartButtonText(b)
 }
 
 func (h *hostData) handlerOnAutoJoinToggled(ch gtki.CheckButton, b gtki.Button) {
