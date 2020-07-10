@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.18"/>
   <object class="GtkWindow" id="settingsWindow">
@@ -85,6 +85,7 @@
                                     <property name="can_focus">False</property>
                                     <property name="margin_top">10</property>
                                     <property name="label" translatable="yes">Check this option to automatically join every meeting you host</property>
+                                    <property name="selectable">True</property>
                                     <property name="xalign">0</property>
                                     <property name="yalign">0</property>
                                     <style>
@@ -117,6 +118,7 @@
                         <property name="can_focus">False</property>
                         <property name="margin_bottom">10</property>
                         <property name="label" translatable="yes">Hosting</property>
+                        <property name="selectable">True</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
@@ -145,6 +147,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">General</property>
+                <property name="selectable">True</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -196,6 +199,7 @@
                         <property name="margin_top">10</property>
                         <property name="label" translatable="yes">When this option is checked, the configuration settings will be stored in the device.</property>
                         <property name="wrap">True</property>
+                        <property name="selectable">True</property>
                         <property name="width_chars">1</property>
                         <property name="track_visited_links">False</property>
                         <property name="xalign">0</property>
@@ -296,6 +300,7 @@
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.</property>
                             <property name="wrap">True</property>
+                            <property name="selectable">True</property>
                             <property name="track_visited_links">False</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
@@ -353,6 +358,7 @@
                             <property name="margin_top">10</property>
                             <property name="label" translatable="yes">Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.</property>
                             <property name="wrap">True</property>
+                            <property name="selectable">True</property>
                             <property name="width_chars">1</property>
                             <property name="track_visited_links">False</property>
                             <property name="xalign">0</property>
@@ -384,6 +390,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Raw log file</property>
+                            <property name="selectable">True</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <style>
@@ -480,6 +487,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">If you set this option to a file name, low level information will be logged there.</property>
+                            <property name="selectable">True</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <style>
@@ -544,6 +552,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Executable Mumble location</property>
+                        <property name="selectable">True</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <style>
@@ -645,6 +654,7 @@
                         <property name="margin_top">10</property>
                         <property name="label" translatable="yes">If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.</property>
                         <property name="wrap">True</property>
+                        <property name="selectable">True</property>
                         <property name="width_chars">1</property>
                         <property name="track_visited_links">False</property>
                         <property name="xalign">0</property>
@@ -683,6 +693,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Mumble service port</property>
+                            <property name="selectable">True</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <style>
@@ -718,6 +729,7 @@
                             <property name="can_focus">False</property>
                             <property name="margin_top">10</property>
                             <property name="label" translatable="yes">Port out of range</property>
+                            <property name="selectable">True</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <style>
@@ -744,6 +756,7 @@
                         <property name="halign">start</property>
                         <property name="margin_top">10</property>
                         <property name="label" translatable="yes">If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535</property>
+                        <property name="selectable">True</property>
                         <style>
                           <class name="control-help"/>
                         </style>
@@ -796,6 +809,7 @@
               <object class="GtkLabel" id="lblMessage">
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Configuration settings will be lost in the next session</property>
+                <property name="selectable">True</property>
                 <style>
                   <class name="label-settings-warning"/>
                 </style>
@@ -926,6 +940,7 @@
                     <property name="can_focus">False</property>
                     <property name="margin_bottom">20</property>
                     <property name="label" translatable="yes">Invalid configuration file</property>
+                    <property name="selectable">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <attributes>
@@ -949,6 +964,7 @@
                     <property name="margin_bottom">20</property>
                     <property name="label" translatable="yes">We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?</property>
                     <property name="wrap">True</property>
+                    <property name="selectable">True</property>
                     <property name="track_visited_links">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
@@ -969,6 +985,7 @@
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.</property>
                     <property name="wrap">True</property>
+                    <property name="selectable">True</property>
                     <property name="track_visited_links">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
