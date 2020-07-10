@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -34,6 +35,7 @@ type Instance interface {
 }
 
 type instance struct {
+	sync.Mutex
 	started         bool
 	configFile      string
 	socksPort       int
@@ -57,14 +59,15 @@ func (i *instance) setBinary(b *binary, pathTorsocks string) {
 }
 
 func (i *instance) init() {
-	if len(i.onInitCallbacks) != 0 {
-		for _, f := range i.onInitCallbacks {
-			f(i)
-		}
+	for _, f := range i.onInitCallbacks {
+		f(i)
 	}
 }
 
 func (i *instance) onInit(f func(Instance)) {
+	i.Lock()
+	defer i.Unlock()
+
 	i.onInitCallbacks = append(i.onInitCallbacks, f)
 }
 
