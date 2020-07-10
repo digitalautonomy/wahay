@@ -306,7 +306,7 @@ dialog {
 .btn-sm, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help {
   border-radius: 4.8px;
-  padding: 8px 18px 2px;
+  padding: 8px 18px;
   font-size: 14px; }
 
 .btn-large {
