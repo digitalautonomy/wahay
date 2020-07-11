@@ -141,9 +141,9 @@ func (client *Client) UserId() int {
 }
 
 // ShownName gets the client's shown name.
-func (client *Client) ShownName() string {
+func (client *Client) ShownName(suName string) string {
 	if client.IsSuperUser() {
-		return "SuperUser"
+		return suName
 	}
 	if client.IsRegistered() {
 		return client.user.Name

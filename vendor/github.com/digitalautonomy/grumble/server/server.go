@@ -127,12 +127,13 @@ type Server struct {
 
 type clientLogForwarder struct {
 	client *Client
+	server *Server
 	logger *log.Logger
 }
 
 func (lf clientLogForwarder) Write(incoming []byte) (int, error) {
 	buf := new(bytes.Buffer)
-	buf.WriteString(fmt.Sprintf("<%v:%v(%v)> ", lf.client.Session(), lf.client.ShownName(), lf.client.UserId()))
+	buf.WriteString(fmt.Sprintf("<%v:%v(%v)> ", lf.client.Session(), lf.client.ShownName(lf.server.GetSuperUserName()), lf.client.UserId()))
 	buf.Write(incoming)
 	lf.logger.Output(3, buf.String())
 	return len(incoming), nil
@@ -160,6 +161,17 @@ func NewServer(id int64) (s *Server, err error) {
 	s.Logger = log.New(&logtarget.Target, fmt.Sprintf("[%v] ", s.Id), log.LstdFlags|log.Lmicroseconds)
 
 	return
+}
+
+func (server *Server) GetSuperUserName() string {
+	return server.Users[0].Name
+}
+
+func (server *Server) SetSuperUserName(n string) {
+	oldName := server.Users[0].Name
+	server.Users[0].Name = n
+	delete(server.UserNameMap, oldName)
+	server.UserNameMap[n] = server.Users[0]
 }
 
 // Debugf implements debug-level printing for Servers.
@@ -260,7 +272,7 @@ func (server *Server) handleIncomingClient(conn net.Conn) (err error) {
 		return
 	}
 
-	client.lf = &clientLogForwarder{client, server.Logger}
+	client.lf = &clientLogForwarder{client, server, server.Logger}
 	client.Logger = log.New(client.lf, "", 0)
 
 	client.session = server.pool.Get()
@@ -508,7 +520,7 @@ func (server *Server) handleAuthenticate(client *Client, msg *Message) {
 
 	client.Username = *auth.Username
 
-	if client.Username == "SuperUser" {
+	if client.Username == server.GetSuperUserName() {
 		if auth.Password == nil {
 			client.RejectAuth(mumbleproto.Reject_WrongUserPW, "")
 			return
@@ -652,7 +664,7 @@ func (server *Server) finishAuthenticate(client *Client) {
 
 	userstate := &mumbleproto.UserState{
 		Session:   proto.Uint32(client.Session()),
-		Name:      proto.String(client.ShownName()),
+		Name:      proto.String(client.ShownName(server.GetSuperUserName())),
 		ChannelId: proto.Uint32(uint32(channel.Id)),
 	}
 
@@ -836,7 +848,7 @@ func (server *Server) sendUserList(client *Client) {
 
 		userstate := &mumbleproto.UserState{
 			Session:   proto.Uint32(connectedClient.Session()),
-			Name:      proto.String(connectedClient.ShownName()),
+			Name:      proto.String(connectedClient.ShownName(server.GetSuperUserName())),
 			ChannelId: proto.Uint32(uint32(connectedClient.Channel.Id)),
 		}
 

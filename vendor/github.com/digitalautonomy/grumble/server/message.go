@@ -519,7 +519,7 @@ func (server *Server) handleUserRemoveMessage(client *Client, msg *Message) {
 		if userremove.Reason != nil {
 			ban.Reason = *userremove.Reason
 		}
-		ban.Username = removeClient.ShownName()
+		ban.Username = removeClient.ShownName(server.GetSuperUserName())
 		ban.CertHash = removeClient.CertHash()
 		ban.Start = time.Now().Unix()
 		ban.Duration = 0
@@ -537,9 +537,9 @@ func (server *Server) handleUserRemoveMessage(client *Client, msg *Message) {
 	}
 
 	if isBan {
-		client.Printf("Kick-banned %v (%v)", removeClient.ShownName(), removeClient.Session())
+		client.Printf("Kick-banned %v (%v)", removeClient.ShownName(server.GetSuperUserName()), removeClient.Session())
 	} else {
-		client.Printf("Kicked %v (%v)", removeClient.ShownName(), removeClient.Session())
+		client.Printf("Kicked %v (%v)", removeClient.ShownName(server.GetSuperUserName()), removeClient.Session())
 	}
 
 	removeClient.ForceDisconnect()
@@ -784,9 +784,9 @@ func (server *Server) handleUserStateMessage(client *Client, msg *Message) {
 		txtmsg := &mumbleproto.TextMessage{}
 		txtmsg.TreeId = append(txtmsg.TreeId, uint32(0))
 		if target.Recording {
-			txtmsg.Message = proto.String(fmt.Sprintf("User '%s' started recording", target.ShownName()))
+			txtmsg.Message = proto.String(fmt.Sprintf("User '%s' started recording", target.ShownName(server.GetSuperUserName())))
 		} else {
-			txtmsg.Message = proto.String(fmt.Sprintf("User '%s' stopped recording", target.ShownName()))
+			txtmsg.Message = proto.String(fmt.Sprintf("User '%s' stopped recording", target.ShownName(server.GetSuperUserName())))
 		}
 
 		server.broadcastProtoMessageWithPredicate(txtmsg, func(client *Client) bool {
