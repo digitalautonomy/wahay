@@ -28,7 +28,7 @@
         {
             "id": "we couldn't start the meeting",
             "message": "we couldn't start the meeting",
-            "translation": "we couldn't start the meeting",
+            "translation": "We couldn't start the meeting",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -69,7 +69,7 @@
         {
             "id": "internal Tor instance has already been closed",
             "message": "internal Tor instance has already been closed",
-            "translation": "internal Tor instance has already been closed",
+            "translation": "Internal Tor instance has been closed already",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -174,7 +174,7 @@
         {
             "id": "The Meeting ID cannot be blank",
             "message": "The Meeting ID cannot be blank",
-            "translation": "The Meeting ID cannot be blank",
+            "translation": "The Meeting ID can't be blank",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -215,7 +215,7 @@
         {
             "id": "the provided meeting ID is invalid: \n\n{MeetingID}",
             "message": "the provided meeting ID is invalid: \n\n{MeetingID}",
-            "translation": "the provided meeting ID is invalid: \n\n{MeetingID}",
+            "translation": "The provided meeting ID is invalid: \n\n{MeetingID}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -246,7 +246,7 @@
         {
             "id": "the Mumble client can not be used because: {Error}",
             "message": "the Mumble client can not be used because: {Error}",
-            "translation": "the Mumble client can not be used because: {Error}",
+            "translation": "The Mumble client can't be used because: {Error}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -263,21 +263,21 @@
         {
             "id": "please enter a valid password",
             "message": "please enter a valid password",
-            "translation": "please enter a valid password",
+            "translation": "Please enter a valid password",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "enter the password confirmation",
             "message": "enter the password confirmation",
-            "translation": "enter the password confirmation",
+            "translation": "Enter the password confirmation",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "passwords do not match",
             "message": "passwords do not match",
-            "translation": "passwords do not match",
+            "translation": "Passwords don't match",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -319,14 +319,14 @@
         {
             "id": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
             "message": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
-            "translation": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
+            "translation": "Make sure you have Torsocks installed in your system.\n\nFor more information, please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "tor can't be used",
             "message": "tor can't be used",
-            "translation": "tor can't be used",
+            "translation": "Tor can't be used",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -370,27 +370,27 @@
         {
             "id": "Join as super user",
             "message": "Join as super user",
-            "translation": "Join as super user"
+            "translation": "Join as Super User"
         },
         {
             "id": "Automatically join this meeting as super user",
             "message": "Automatically join this meeting as super user",
-            "translation": "Automatically join this meeting as super user"
+            "translation": "Join this meeting automatically as Super User"
         },
         {
             "id": "Automatically join a meeting",
             "message": "Automatically join a meeting",
-            "translation": "Automatically join a meeting"
+            "translation": "Join this meeting automatically"
         },
         {
             "id": "Automatically join this meeting when starting it",
             "message": "Automatically join this meeting when starting it",
-            "translation": "Automatically join this meeting when starting it"
+            "translation": "Join this meeting automatically when starting it"
         },
         {
             "id": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
             "message": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.",
-            "translation": "Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging."
+            "translation": "Be very careful. This information is sensitive and could potentially contain very private data. Turn on these settings ONLY if you absolutely need it for debugging."
         },
         {
             "id": "Browse",
@@ -400,12 +400,12 @@
         {
             "id": "By clicking Yes, this meeting will end.",
             "message": "By clicking Yes, this meeting will end.",
-            "translation": "By clicking Yes, this meeting will end."
+            "translation": "By clicking YES, this meeting will end."
         },
         {
             "id": "By clicking Yes, you will leave this meeting.",
             "message": "By clicking Yes, you will leave this meeting.",
-            "translation": "By clicking Yes, you will leave this meeting."
+            "translation": "By clicking YES, you will leave this meeting."
         },
         {
             "id": "Check this option to automatically join every meeting you host",
@@ -415,7 +415,7 @@
         {
             "id": "Choose your email service to send invitation",
             "message": "Choose your email service to send invitation",
-            "translation": "Choose your email service to send invitation"
+            "translation": "Choose your email service to send the invitation"
         },
         {
             "id": "Client binary location",
@@ -560,7 +560,7 @@
         {
             "id": "Join the meeting",
             "message": "Join the meeting",
-            "translation": "Join the meeting"
+            "translation": "Join this meeting"
         },
         {
             "id": "Join this meeting",
@@ -590,7 +590,7 @@
         {
             "id": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
             "message": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.",
-            "translation": "Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file."
+            "translation": "Log debug output to the selected log file. If no file is selected, then the log output will be written to the default log file."
         },
         {
             "id": "Master password",
@@ -685,7 +685,7 @@
         {
             "id": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
             "message": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535",
-            "translation": "If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535"
+            "translation": "If you want to set up a custom port to run the Mumble service, please enter a port number between 1 and 65535"
         },
         {
             "id": "Raw log file",
@@ -747,7 +747,7 @@
         {
             "id": "This action cannot be undone",
             "message": "This action cannot be undone",
-            "translation": "This action cannot be undone"
+            "translation": "This action can't be undone"
         },
         {
             "id": "Toggle password visibility",
@@ -822,7 +822,7 @@
         {
             "id": "You will not be asked for this password again until you restart Wahay.",
             "message": "You will not be asked for this password again until you restart Wahay.",
-            "translation": "You will not be asked for this password again until you restart Wahay."
+            "translation": "You won't be asked for this password again until you restart Wahay."
         },
         {
             "id": "What is Wahay?",
@@ -832,12 +832,12 @@
         {
             "id": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
             "message": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented.",
-            "translation": "Communication is a basic need of the human being, in its beginnings it is carried out verbally from person to person through the use of technology, various tools have been developed for this purpose stories such as: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security, are some aspects that have not been contemplated or have been partially implemented."
+            "translation": "Communication is a basic need of the human being. In the beginning, it's carried out verbally from person to person; through the use of technology, various tools have been developed for this purpose, for instance: Skype, Zoom, Google Hangouts, etc. However, there are several aspects that have not been considered in the development of these solutions: centralized servers, proprietary technology, security. Those are some features that have not been contemplated or have been partially implemented."
         },
         {
             "id": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
             "message": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.",
-            "translation": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP."
+            "translation": "Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice communications over IP."
         },
         {
             "id": "What is Tor?",
@@ -847,7 +847,7 @@
         {
             "id": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
             "message": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power.",
-            "translation": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'onion routers' allowing anonymous communication between its nodes, this network works from a set of organizations and individuals that donate their bandwidth and processing power."
+            "translation": "Tor is a free and open source tool that allows you to establish anonymous and distributed communications. Tor directs its internet traffic through a series of routers called 'Onion routers' allowing anonymous communication between its nodes. This network works from a set of organizations and individuals that donate their bandwidth and processing power."
         },
         {
             "id": "What is Mumble?",
@@ -857,7 +857,7 @@
         {
             "id": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
             "message": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.",
-            "translation": "Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency."
+            "translation": "Mumble is a free and open source application that allows voice over IP conferences between users with high quality sound and low latency."
         },
         {
             "id": "Functionalities",
@@ -867,7 +867,7 @@
         {
             "id": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
             "message": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.",
-            "translation": "Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use."
+            "translation": "Wahay allows you to host a meeting or join an existing one. For this, you establish an ID that will serve as the identifier to be used in the meeting."
         },
         {
             "id": "Host a meeting",
@@ -877,17 +877,17 @@
         {
             "id": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
             "message": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.",
-            "translation": "This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay."
+            "translation": "This option allows to start the server that will support the connection of users to a meeting, which is defined by its ID (meeting identifier). This ID must be used by the rest of users who aim to access it. Additionally it is possible of defining the user name (not mandatory) that will serve to identify the user in the meeting. It's also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay."
         },
         {
             "id": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
             "message": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.",
-            "translation": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients."
+            "translation": "The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It's also possible to copy the meeting ID and send the invitation through the most used email clients."
         },
         {
             "id": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
             "message": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).",
-            "translation": "This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set)."
+            "translation": "This option allows the user to access a meeting if it already exists. For this, you must enter the meeting id (required), username (not required) and password (if was set)."
         },
         {
             "id": "Help",
