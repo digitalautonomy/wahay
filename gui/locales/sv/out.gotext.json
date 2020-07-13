@@ -110,7 +110,7 @@
         {
             "id": "Start a new meeting \u0026 join",
             "message": "Start a new meeting \u0026 join",
-            "translation": "Starta ett nytt mötet \u0026 anslut (Ctrl + s)",
+            "translation": "Starta ett nytt mötet \u0026 anslut (Ctrl + Enter)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -124,7 +124,7 @@
         {
             "id": "Start a new meeting",
             "message": "Start a new meeting",
-            "translation": "Starta ett nytt mötet (Ctrl + s)",
+            "translation": "Starta ett nytt mötet (Ctrl + Enter)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -411,7 +411,7 @@
         {
             "id": "End this meeting",
             "message": "End this meeting",
-            "translation": "Avsluta detta möte (Ctrl + w)"
+            "translation": "Avsluta detta möte (Ctrl + W)"
         },
         {
             "id": "End this meeting for all",
@@ -431,7 +431,7 @@
         {
             "id": "Host a new meeting",
             "message": "Host a new meeting",
-            "translation": "Skapa ett nytt möte (Ctrl + h)"
+            "translation": "Skapa ett nytt möte (Ctrl + I)"
         },
         {
             "id": "Hosting",
@@ -476,7 +476,7 @@
         {
             "id": "Join a meeting",
             "message": "Join a meeting",
-            "translation": "Anslut till ett möte (Ctrl + j)"
+            "translation": "Anslut till ett möte (Ctrl + J)"
         },
         {
             "id": "Join meeting",
@@ -506,7 +506,7 @@
         {
             "id": "Leave this meeting",
             "message": "Leave this meeting",
-            "translation": "Lämna detta möte (Ctrl + q)"
+            "translation": "Lämna detta möte (Ctrl + L)"
         },
         {
             "id": "Log debug info",
@@ -819,8 +819,8 @@
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "Automatically join this meeting as super user",
-            "message": "Automatically join this meeting as super user",
+            "id": "As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.",
+            "message": "As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.",
             "translation": "TRANSLATE ME"
         }
     ]

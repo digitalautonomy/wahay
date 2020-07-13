@@ -153,7 +153,7 @@
         {
             "id": "Start a new meeting \u0026 join",
             "message": "Start a new meeting \u0026 join",
-            "translation": "Start a new meeting \u0026 join (Ctrl + s)",
+            "translation": "Start a new meeting \u0026 join (Ctrl + Enter)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -373,9 +373,9 @@
             "translation": "Join as Super User"
         },
         {
-            "id": "Automatically join this meeting as super user",
-            "message": "Automatically join this meeting as super user",
-            "translation": "Join this meeting automatically as Super User"
+            "id": "As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.",
+            "message": "As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.",
+            "translation": "As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc."
         },
         {
             "id": "Automatically join a meeting",
@@ -485,7 +485,7 @@
         {
             "id": "End this meeting",
             "message": "End this meeting",
-            "translation": "End this meeting (Ctrl + w)"
+            "translation": "End this meeting (Ctrl + W)"
         },
         {
             "id": "End this meeting for all",
@@ -505,7 +505,7 @@
         {
             "id": "Host a new meeting",
             "message": "Host a new meeting",
-            "translation": "Host a new meeting (Ctrl + h)"
+            "translation": "Host a new meeting (Ctrl + I)"
         },
         {
             "id": "Hosting",
@@ -550,7 +550,7 @@
         {
             "id": "Join a meeting",
             "message": "Join a meeting",
-            "translation": "Join a meeting (Ctrl + j)"
+            "translation": "Join a meeting (Ctrl + J)"
         },
         {
             "id": "Join meeting",
@@ -580,7 +580,7 @@
         {
             "id": "Leave this meeting",
             "message": "Leave this meeting",
-            "translation": "Leave this meeting (Ctrl + q)"
+            "translation": "Leave this meeting (Ctrl + L)"
         },
         {
             "id": "Log debug info",
@@ -725,7 +725,7 @@
         {
             "id": "Start a new meeting",
             "message": "Start a new meeting",
-            "translation": "Start a new meeting (Ctrl + s)",
+            "translation": "Start a new meeting (Ctrl + Enter)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

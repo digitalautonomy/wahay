@@ -333,7 +333,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
-                <property name="tooltip_text" translatable="yes">Automatically join this meeting as super user</property>
+                <property name="tooltip_text" translatable="yes">As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_chkAutoJoinSuperUser_toggled" swapped="no"/>
               </object>

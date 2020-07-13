@@ -178,7 +178,8 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt4() {
 
 func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt5() {
 	_ = i18n.Sprintf("Join as super user")
-	_ = i18n.Sprintf("Automatically join this meeting as super user")
+	_ = i18n.Sprintf("As a super user you will be able to do things that others do not, " +
+		"such as silencing another user or expelling him/her from the meeting, etc.")
 	_ = i18n.Sprintf("Start a new meeting \u0026 join")
 	_ = i18n.Sprintf("Start a new meeting")
 }
