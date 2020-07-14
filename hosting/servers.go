@@ -155,7 +155,9 @@ func setDefaultOptions(serv *grumbleServer.Server) {
 
 func setWelcomeText(t string) func(serv *grumbleServer.Server) {
 	return func(serv *grumbleServer.Server) {
-		serv.Set("WelcomeText", t)
+		if len(t) != 0 {
+			serv.Set("WelcomeText", t)
+		}
 	}
 }
 
