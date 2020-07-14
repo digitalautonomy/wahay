@@ -17,7 +17,7 @@ import (
 
 // Servers serves
 type Servers interface {
-	CreateServer(port string, password string, superUserPassword string) (Server, error)
+	CreateServer([]serverModifier) (Server, error)
 	DestroyServer(Server) error
 	DataDir() string
 	Cleanup()
@@ -36,6 +36,7 @@ type MeetingData struct {
 func create() (Servers, error) {
 	s := &servers{}
 	e := s.create()
+
 	return s, e
 }
 
@@ -145,7 +146,42 @@ func (s *servers) startListener() {
 	}
 }
 
-func (s *servers) CreateServer(port string, password string, superUserPassword string) (Server, error) {
+type serverModifier func(*grumbleServer.Server)
+
+func setDefaultOptions(serv *grumbleServer.Server) {
+	serv.Set("NoWebServer", "true")
+	serv.Set("Address", "127.0.0.1")
+}
+
+func setWelcomeText(serv *grumbleServer.Server) {
+	// We should translate this but the i18n package is not available from here
+	serv.Set("WelcomeText", "Welcome to this server running <b>Wahay</b>.")
+}
+
+func setPort(port string) func(*grumbleServer.Server) {
+	return func(serv *grumbleServer.Server) {
+		serv.Set("Port", port)
+	}
+}
+
+func setPassword(password string) func(*grumbleServer.Server) {
+	return func(serv *grumbleServer.Server) {
+		if len(password) != 0 {
+			serv.SetServerPassword(password)
+		}
+	}
+}
+
+func setSuperUser(username, password string) func(*grumbleServer.Server) {
+	return func(serv *grumbleServer.Server) {
+		if len(username) != 0 && len(password) != 0 {
+			serv.SetSuperUserName(username)
+			serv.SetSuperUserPassword(password)
+		}
+	}
+}
+
+func (s *servers) CreateServer(modifiers []serverModifier) (Server, error) {
 	s.nextID++
 
 	serv, err := grumbleServer.NewServer(int64(s.nextID))
@@ -154,22 +190,14 @@ func (s *servers) CreateServer(port string, password string, superUserPassword s
 	}
 
 	s.servers[serv.Id] = serv
-	// We should translate this but the i18n package is not available from here
-	serv.Set("WelcomeText", "Welcome to this server running <b>Wahay</b>.")
-	serv.Set("NoWebServer", "true")
-	serv.Set("Address", "127.0.0.1")
-	serv.Set("Port", port)
-	if len(password) > 0 {
-		serv.SetServerPassword(password)
-	}
-
-	if len(superUserPassword) > 0 {
-		serv.SetSuperUserPassword(superUserPassword)
-	}
 
 	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
 	if err != nil {
 		return nil, err
+	}
+
+	for _, m := range modifiers {
+		m(serv)
 	}
 
 	return &server{s, serv}, nil

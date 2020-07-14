@@ -25,15 +25,21 @@ const (
 
 var errInvalidPort = errors.New("invalid port supplied")
 
+// SuperUserData is an struct that represents the superuser data
+// of a Grumble server
+type SuperUserData struct {
+	Username string
+	Password string
+}
+
 // Service is a representation of our custom Mumble server
 type Service interface {
 	ID() string
 	URL() string
 	Port() int
 	ServicePort() int
-	NewConferenceRoom(password string, superUserPassword string) error
+	NewConferenceRoom(password string, u SuperUserData) error
 	Close() error
-	SuperUserName() string
 }
 
 type service struct {
@@ -68,8 +74,14 @@ type conferenceRoom struct {
 	server Server
 }
 
-func (s *service) NewConferenceRoom(password, superUserPassword string) error {
-	serv, err := s.collection.CreateServer(strconv.Itoa(s.port), password, superUserPassword)
+func (s *service) NewConferenceRoom(password string, u SuperUserData) error {
+	serv, err := s.collection.CreateServer([]serverModifier{
+		setDefaultOptions,
+		setWelcomeText,
+		setPort(strconv.Itoa(s.port)),
+		setPassword(password),
+		setSuperUser(u.Username, u.Password),
+	})
 	if err != nil {
 		return err
 	}
@@ -179,9 +191,4 @@ func (s *service) Close() error {
 	s.collection.Cleanup()
 
 	return nil
-}
-
-// SuperUserName returns the default name for Super User
-func (s *service) SuperUserName() string {
-	return "SuperUser"
 }

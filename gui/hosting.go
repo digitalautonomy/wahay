@@ -278,7 +278,15 @@ func (h *hostData) createNewService(err chan error) {
 }
 
 func (h *hostData) createNewConferenceRoom(complete chan bool) {
-	err := h.service.NewConferenceRoom(h.meetingPassword, h.superUserPassword)
+	var su hosting.SuperUserData
+	if h.asSuperUser {
+		su = hosting.SuperUserData{
+			Username: h.meetingUsername,
+			Password: h.superUserPassword,
+		}
+	}
+
+	err := h.service.NewConferenceRoom(h.meetingPassword, su)
 	if err != nil {
 		h.u.hideLoadingWindow()
 		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
@@ -456,18 +464,6 @@ func (u *gtkUI) getConfigureMeetingWindow() *uiBuilder {
 	return builder
 }
 
-func (h *hostData) updateSuperUserControls(username gtki.Entry, v bool) {
-	if v {
-		h.superUserPassword = generateRandomPassword()
-		username.SetSensitive(false)
-		username.SetText(h.service.SuperUserName())
-	} else {
-		h.superUserPassword = ""
-		username.SetSensitive(true)
-		username.SetText("")
-	}
-}
-
 func (h *hostData) showMeetingConfiguration() {
 	builder := h.u.getConfigureMeetingWindow()
 	win := builder.get("configureMeetingWindow").(gtki.ApplicationWindow)
@@ -494,9 +490,6 @@ func (h *hostData) showMeetingConfiguration() {
 	btnCopyMeetingID := builder.get("btnCopyMeetingID").(gtki.Button)
 	btnCopyMeetingID.SetVisible(h.u.isCopyToClipboardSupported())
 
-	username := builder.get("inpMeetingUsername").(gtki.Entry)
-	h.updateSuperUserControls(username, h.asSuperUser)
-
 	builder.ConnectSignals(map[string]interface{}{
 		"on_copy_meeting_id": func() { h.copyMeetingIDToClipboard(builder, "") },
 		"on_send_by_email":   func() { h.sendInvitationByEmail(builder) },
@@ -514,7 +507,6 @@ func (h *hostData) showMeetingConfiguration() {
 		},
 		"on_chkAutoJoinSuperUser_toggled": func() {
 			h.handlerOnAutoJoinSuperUserToggled(chkAutoJoinSuperUser)
-			h.updateSuperUserControls(username, h.asSuperUser)
 		},
 	})
 
@@ -532,6 +524,15 @@ func (h *hostData) showMeetingConfiguration() {
 func (h *hostData) handleOnStartMeeting(b *uiBuilder) {
 	username := b.get("inpMeetingUsername").(gtki.Entry)
 	password := b.get("inpMeetingPassword").(gtki.Entry)
+
+	if h.asSuperUser {
+		u, _ := username.GetText()
+		if len(u) == 0 {
+			h.u.reportError(i18n.Sprintf("The username is required"))
+			return
+		}
+	}
+
 	h.handlerOnStartMeeting(username, password)
 }
 
@@ -551,6 +552,7 @@ func (h *hostData) handlerOnCancel() {
 
 func (h *hostData) handlerOnAutoJoinSuperUserToggled(ch gtki.CheckButton) {
 	h.asSuperUser = ch.GetActive()
+	h.superUserPassword = generateRandomPassword()
 	h.u.config.SetAutoJoinSuperUser(h.asSuperUser)
 }
 
@@ -563,6 +565,7 @@ func (h *hostData) handlerOnAutoJoinToggled(ch gtki.CheckButton, b gtki.Button) 
 func (h *hostData) handlerOnStartMeeting(u, p gtki.Entry) {
 	h.meetingUsername, _ = u.GetText()
 	h.meetingPassword, _ = p.GetText()
+
 	h.startMeetingHandler()
 }
 
