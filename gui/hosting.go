@@ -271,6 +271,8 @@ func (h *hostData) createNewService(err chan error) {
 			return
 		}
 
+		s.SetWelcomeText(i18n.Sprintf("Welcome to this server running <b>Wahay</b>."))
+
 		h.service = s
 
 		err <- nil

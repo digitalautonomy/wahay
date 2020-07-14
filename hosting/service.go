@@ -38,17 +38,19 @@ type Service interface {
 	URL() string
 	Port() int
 	ServicePort() int
+	SetWelcomeText(string)
 	NewConferenceRoom(password string, u SuperUserData) error
 	Close() error
 }
 
 type service struct {
-	port       int
-	mumblePort int
-	onion      tor.Onion
-	room       *conferenceRoom
-	httpServer *webserver
-	collection Servers
+	port        int
+	mumblePort  int
+	welcomeText string
+	onion       tor.Onion
+	room        *conferenceRoom
+	httpServer  *webserver
+	collection  Servers
 }
 
 func (s *service) ID() string {
@@ -70,6 +72,10 @@ func (s *service) ServicePort() int {
 	return s.mumblePort
 }
 
+func (s *service) SetWelcomeText(t string) {
+	s.welcomeText = t
+}
+
 type conferenceRoom struct {
 	server Server
 }
@@ -77,7 +83,7 @@ type conferenceRoom struct {
 func (s *service) NewConferenceRoom(password string, u SuperUserData) error {
 	serv, err := s.collection.CreateServer([]serverModifier{
 		setDefaultOptions,
-		setWelcomeText,
+		setWelcomeText(s.welcomeText),
 		setPort(strconv.Itoa(s.port)),
 		setPassword(password),
 		setSuperUser(u.Username, u.Password),

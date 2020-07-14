@@ -153,9 +153,10 @@ func setDefaultOptions(serv *grumbleServer.Server) {
 	serv.Set("Address", "127.0.0.1")
 }
 
-func setWelcomeText(serv *grumbleServer.Server) {
-	// We should translate this but the i18n package is not available from here
-	serv.Set("WelcomeText", "Welcome to this server running <b>Wahay</b>.")
+func setWelcomeText(t string) func(serv *grumbleServer.Server) {
+	return func(serv *grumbleServer.Server) {
+		serv.Set("WelcomeText", t)
+	}
 }
 
 func setPort(port string) func(*grumbleServer.Server) {
