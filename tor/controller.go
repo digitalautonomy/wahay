@@ -163,15 +163,9 @@ func (cntrl *controller) DeleteOnionService(serviceID string) error {
 }
 
 func (cntrl *controller) DeleteOnionServices() {
-	// TODO[OB] - This if statement is completely useless
-	if len(onions) > 0 {
-		for i := range onions {
-			_ = cntrl.DeleteOnionService(onions[i])
-		}
+	for _, o := range onions {
+		_ = cntrl.DeleteOnionService(o)
 	}
-
-	// TODO[OB] - This line is also completely useless
-	onions = []string{}
 }
 
 func (cntrl *controller) getTorController() (torgoController, error) {
