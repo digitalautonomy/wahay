@@ -81,13 +81,13 @@ type conferenceRoom struct {
 }
 
 func (s *service) NewConferenceRoom(password string, u SuperUserData) error {
-	serv, err := s.collection.CreateServer([]serverModifier{
+	serv, err := s.collection.CreateServer(
 		setDefaultOptions,
 		setWelcomeText(s.welcomeText),
 		setPort(strconv.Itoa(s.port)),
 		setPassword(password),
 		setSuperUser(u.Username, u.Password),
-	})
+	)
 	if err != nil {
 		return err
 	}

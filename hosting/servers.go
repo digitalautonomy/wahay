@@ -17,7 +17,7 @@ import (
 
 // Servers serves
 type Servers interface {
-	CreateServer([]serverModifier) (Server, error)
+	CreateServer(...serverModifier) (Server, error)
 	DestroyServer(Server) error
 	DataDir() string
 	Cleanup()
@@ -153,7 +153,7 @@ func setDefaultOptions(serv *grumbleServer.Server) {
 	serv.Set("Address", "127.0.0.1")
 }
 
-func setWelcomeText(t string) func(serv *grumbleServer.Server) {
+func setWelcomeText(t string) serverModifier {
 	return func(serv *grumbleServer.Server) {
 		if len(t) != 0 {
 			serv.Set("WelcomeText", t)
@@ -161,13 +161,13 @@ func setWelcomeText(t string) func(serv *grumbleServer.Server) {
 	}
 }
 
-func setPort(port string) func(*grumbleServer.Server) {
+func setPort(port string) serverModifier {
 	return func(serv *grumbleServer.Server) {
 		serv.Set("Port", port)
 	}
 }
 
-func setPassword(password string) func(*grumbleServer.Server) {
+func setPassword(password string) serverModifier {
 	return func(serv *grumbleServer.Server) {
 		if len(password) != 0 {
 			serv.SetServerPassword(password)
@@ -175,7 +175,7 @@ func setPassword(password string) func(*grumbleServer.Server) {
 	}
 }
 
-func setSuperUser(username, password string) func(*grumbleServer.Server) {
+func setSuperUser(username, password string) serverModifier {
 	return func(serv *grumbleServer.Server) {
 		if len(username) != 0 && len(password) != 0 {
 			serv.SetSuperUserName(username)
@@ -184,7 +184,7 @@ func setSuperUser(username, password string) func(*grumbleServer.Server) {
 	}
 }
 
-func (s *servers) CreateServer(modifiers []serverModifier) (Server, error) {
+func (s *servers) CreateServer(modifiers ...serverModifier) (Server, error) {
 	s.nextID++
 
 	serv, err := grumbleServer.NewServer(int64(s.nextID))
