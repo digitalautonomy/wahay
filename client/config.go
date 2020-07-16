@@ -186,14 +186,14 @@ func (c *client) saveCertificateConfigFile() error {
 	certSectionProp := strings.Replace(
 		string(content),
 		"#CERTIFICATE",
-		fmt.Sprintf("certificate=\"%s\"", tmc),
+		fmt.Sprintf("certificate=%s", tmc),
 		1,
 	)
 
 	langSection := strings.Replace(
 		certSectionProp,
 		"#LANGUAGE",
-		config.DetectLanguage().String(),
+		fmt.Sprintf("language=%s", config.DetectLanguage().String()),
 		1,
 	)
 
