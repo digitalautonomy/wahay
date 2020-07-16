@@ -94,9 +94,6 @@ func HasPermission(ctx *Context, user User, perm Permission) bool {
 
 	// SuperUser can't speak or whisper, but everything else is OK
 	if user.UserId() == 0 {
-		if perm == SpeakPermission || perm == WhisperPermission {
-			return false
-		}
 		return true
 	}
 
