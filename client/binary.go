@@ -164,7 +164,7 @@ func newBinary(path string) *binary {
 
 func realBinaryPath(path string) string {
 	if isADirectory(path) {
-		// TODO: should we find all the Mumble binary possibilities inside the directory?
+		// TODO: should we find all Mumble binary possibilities inside the given directory?
 		// Examples:
 		// 	 - mumble
 		//   - mumble-0.1.0.4
