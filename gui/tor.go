@@ -53,38 +53,36 @@ func init() {
 func torErrorTranslator(err error) string {
 	switch err {
 	case tor.ErrTorBinaryNotFound:
-		return "ErrTorBinaryNotFound description"
+		return "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay's bundle with Tor from our website:\n\nhttps://wahay.org/download.html"
 
 	case tor.ErrTorInstanceCantStart:
-		return "ErrTorInstanceCantStart description"
+		return "The Tor instance can't be started."
 
 	case tor.ErrTorConnectionTimeout:
-		return "ErrTorConnectionTimeout description"
+		return "The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do."
 
 	case tor.ErrPartialTorNoControlPort:
-		return "ErrPartialTorNoControlPort description"
+		return "No valid Tor Control Port found in the system in order to run Wahay."
 
 	case tor.ErrPartialTorNoValidAuth:
-		return "ErrPartialTorNoValidAuth description"
+		return "No valid Tor Control Port authentication method found in the system."
 
 	case tor.ErrFatalTorNoConnectionAllowed:
-		return "ErrFatalTorNoConnectionAllowed description"
-
-	case tor.ErrInvalidTorPath:
-		return "ErrInvalidTorPath description"
+		return "We found a valid Tor in the system but the connection over Tor network is not available.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do."
 
 	case tor.ErrTorVersionNotCompatible:
-		return "ErrTorVersionNotCompatible description"
+		return "The current version of Tor is incompatible with Wahay."
 
 	case tor.ErrInvalidConfiguredTorBinary:
-		return "ErrInvalidConfiguredTorBinary description"
+		return "The configured path to Tor binary is not valid or can't be used.\n\nPlease, configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html"
 
 	case tor.ErrTorsocksNotInstalled:
 		return i18n.Sprintf("Ensure you have installed Torsocks in your system.\n\n" +
 			"For more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks")
 
-	case errTorNoBinary:
-		return "errTorNoBinary description"
+	case tor.ErrInvalidTorPath:
+	default:
+		return "No valid Tor binary available in the specified path in order to run Wahay."
 	}
 
 	return err.Error()
