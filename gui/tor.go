@@ -91,7 +91,7 @@ func torErrorTranslator(err error) string {
 
 	case tor.ErrInvalidTorPath:
 	default:
-		return "No valid Tor binary available in the specified path in order to run Wahay."
+		return "No valid Tor binary found in the system in order to run Wahay."
 	}
 
 	return err.Error()
