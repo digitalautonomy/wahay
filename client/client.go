@@ -122,6 +122,7 @@ func (c *client) Launch(url string, onClose func()) (tor.Service, error) {
 func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
 	s, err := c.tor.NewService(c.pathToBinary(), args, c.torCommandModifier())
 	if err != nil {
+		log.Errorf("Mumble client execute(): %s", err.Error())
 		return nil, errors.New("error: the service can't be started")
 	}
 
