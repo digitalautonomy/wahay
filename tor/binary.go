@@ -15,13 +15,6 @@ import (
 
 const libTorsocks = "libtorsocks.so"
 
-var libDirs = []string{
-	"/lib",
-	"/lib64",
-	"/lib/x86_64-linux-gnu",
-	"/lib64/x86_64-linux-gnu",
-}
-
 var libPrefixes = []string{
 	"",
 	"/usr",
