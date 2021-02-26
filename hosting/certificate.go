@@ -41,7 +41,7 @@ func newCertificateServer(dir string) (*webserver, error) {
 	}
 
 	port := config.GetRandomPort()
-	address := net.JoinHostPort(defaultHost, strconv.Itoa(port))
+	address := net.JoinHostPort(defaultHost(), strconv.Itoa(port))
 
 	s := &webserver{
 		port:    port,

@@ -150,7 +150,7 @@ type serverModifier func(*grumbleServer.Server)
 
 func setDefaultOptions(serv *grumbleServer.Server) {
 	serv.Set("NoWebServer", "true")
-	serv.Set("Address", "127.0.0.1")
+	serv.Set("Address", defaultHost())
 }
 
 func setWelcomeText(t string) serverModifier {

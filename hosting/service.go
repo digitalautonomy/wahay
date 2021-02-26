@@ -3,6 +3,7 @@ package hosting
 import (
 	"errors"
 	"net"
+	"os"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -19,9 +20,29 @@ func CreateServerCollection() (Servers, error) {
 const (
 	// DefaultPort is a representation of the default port Mumble server
 	DefaultPort = 64738
-
-	defaultHost = "127.0.0.1"
 )
+
+// Based on Whonix best practices:
+// http://www.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/wiki/Dev/Whonix_friendly_applications_best_practices#Listen_Interface
+func defaultHost() string {
+	allInterfaces := "0.0.0.0"
+	localhostInterface := "127.0.0.1"
+
+	// Based on https://stackoverflow.com/a/12518877
+	if _, err := os.Stat("/usr/share/anon-ws-base-files/workstation"); err == nil {
+		// We're in a Whonix-like environment; listen on all interfaces.
+		return allInterfaces
+	} else if os.IsNotExist(err) {
+		// We're not in Whonix; listen on localhost only.
+		return localhostInterface
+	} else {
+		// Some kind of error occurred; we don't know if we're on Whonix.  Fall
+		// back to non-Whonix default, which should at least be safe.
+		log.Errorf("defaultHost(): %s", err)
+	}
+
+	return localhostInterface
+}
 
 var errInvalidPort = errors.New("invalid port supplied")
 
@@ -124,7 +145,7 @@ func (s *servers) NewService(port string, t tor.Instance) (Service, error) {
 	}
 
 	onionPorts = append(onionPorts, tor.OnionPort{
-		DestinationHost: defaultHost,
+		DestinationHost: defaultHost(),
 		DestinationPort: httpServer.port,
 		ServicePort:     certServerPort,
 	})
@@ -140,7 +161,7 @@ func (s *servers) NewService(port string, t tor.Instance) (Service, error) {
 	serverPort := config.GetRandomPort()
 
 	onionPorts = append(onionPorts, tor.OnionPort{
-		DestinationHost: defaultHost,
+		DestinationHost: defaultHost(),
 		DestinationPort: serverPort,
 		ServicePort:     p,
 	})
