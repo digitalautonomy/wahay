@@ -708,7 +708,7 @@ func generateRandomPassword() string {
 	length := 8
 	var b strings.Builder
 	for i := 0; i < length; i++ {
-		/* #nosec G401 */
+		/* #nosec G404 */
 		b.WriteRune(chars[rand.Intn(len(chars))])
 	}
 	return b.String()

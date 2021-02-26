@@ -96,7 +96,7 @@ func IsPortAvailable(port int) bool {
 
 // RandomPort returns a random port
 func RandomPort() int {
-	/* #nosec G401 */
+	/* #nosec G404 */
 	return 10000 + int(mrand.Int31n(50000))
 }
 

@@ -127,7 +127,7 @@ func (g *Graphics) builderForDefinition(uiName string) gtki.Builder {
 		fatal(err)
 	}
 
-	//We dont use NewFromString because it doesnt give us an error message
+	// We dont use NewFromString because it doesnt give us an error message
 	err = builder.AddFromString(template)
 	if err != nil {
 		fatalf("gui: failed load %s: %s", uiName, err.Error())
