@@ -21,7 +21,7 @@ build:
   before_script:
     - *inject-gopath
   script:
-    - make deps
+    - make deps-ci
     - make build-ci
   artifacts:
     paths:
@@ -32,7 +32,7 @@ test:
   before_script:
     - *inject-gopath
   script:
-    - make deps
+    - make deps-ci
     - make test
 
 coverage:
@@ -41,7 +41,7 @@ coverage:
     - *inject-gopath
   coverage: '/total:.*?(\d+\.\d+\%)/'
   script:
-    - make deps
+    - make deps-ci
     - make cover-ci
   artifacts:
     paths:
@@ -52,7 +52,7 @@ quality:
   before_script:
     - *inject-gopath
   script:
-    - make deps
+    - make deps-ci
     - make quality
 
 deploy_staging:
