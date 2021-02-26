@@ -268,6 +268,6 @@ func (s *WahayTorSuite) Test_controller_DeleteOnionService_returnsErrorIfFails(c
 
 	e := cntrl.c.DeleteOnion("123456")
 
-	//error if delete fail
+	// error if delete fail
 	c.Assert(e, ErrorMatches, "service deletion error")
 }

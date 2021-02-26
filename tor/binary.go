@@ -313,7 +313,7 @@ func allLibDirs() []string {
 }
 
 func findLibTorsocks(filePath string) (string, error) {
-	//Search in user config path
+	// Search in user config path
 	f := filepath.Join(filePath, libTorsocks)
 	if filesystemf.FileExists(f) {
 		return f, nil

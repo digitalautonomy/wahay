@@ -296,8 +296,10 @@ func (a *ApplicationConfig) doAfterSave(f func()) {
 	a.afterSave = append(a.afterSave, f)
 }
 
-//TODO: This is where we generate a new JSON representation and serialize it.
-//We are currently serializing our internal representation (ApplicationConfig) directly.
+// TODO: This is where we generate a new JSON representation and serialize it.
+// We are currently serializing our internal representation (ApplicationConfig) directly.
+
+// serialize returns the serialized configuration
 func (a *ApplicationConfig) serialize() ([]byte, error) {
 	return json.MarshalIndent(a, "", "\t")
 }

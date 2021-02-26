@@ -18,6 +18,9 @@ run:
 linters-settings:
   golint:
     min-confidence: 0
+  gocritic:
+    disabled-checks:
+      - wrapperFunc
 
 linters:
   disable-all: true
