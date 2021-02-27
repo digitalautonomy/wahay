@@ -29,13 +29,14 @@ func defaultHost() string {
 	localhostInterface := "127.0.0.1"
 
 	// Based on https://stackoverflow.com/a/12518877
-	if _, err := os.Stat("/usr/share/anon-ws-base-files/workstation"); err == nil {
+	switch _, err := os.Stat("/usr/share/anon-ws-base-files/workstation"); {
+	case err == nil:
 		// We're in a Whonix-like environment; listen on all interfaces.
 		return allInterfaces
-	} else if os.IsNotExist(err) {
+	case os.IsNotExist(err):
 		// We're not in Whonix; listen on localhost only.
 		return localhostInterface
-	} else {
+	default:
 		// Some kind of error occurred; we don't know if we're on Whonix.  Fall
 		// back to non-Whonix default, which should at least be safe.
 		log.Errorf("defaultHost(): %s", err)
