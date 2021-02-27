@@ -23,7 +23,8 @@ const (
 )
 
 // Based on Whonix best practices:
-// http://www.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/wiki/Dev/Whonix_friendly_applications_best_practices#Listen_Interface
+// http://www.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion
+// /wiki/Dev/Whonix_friendly_applications_best_practices#Listen_Interface
 func defaultHost() string {
 	allInterfaces := "0.0.0.0"
 	localhostInterface := "127.0.0.1"
