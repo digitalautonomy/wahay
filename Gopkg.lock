@@ -133,11 +133,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f270cec410cc52b9560705ad4dc2f4338ac9049b0e0bce0ff5a1905a1367d398"
+  digest = "1:8141838087241052f17e5ff6990c5caebc35e99f42d9175cf29fb6341e49272b"
   name = "github.com/wybiral/torgo"
   packages = ["."]
   pruneopts = "UT"
-  revision = "a19a6c8a50489e2fdf37223edc5f1284bb965308"
+  revision = "5fd9910eab3125e20055492e54cdee2e11574aa1"
 
 [[projects]]
   branch = "master"

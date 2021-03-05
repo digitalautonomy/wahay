@@ -190,9 +190,10 @@ func (c *Controller) AddOnion(onion *Onion) error {
 		onion.PrivateKeyType = "NEW"
 	}
 	req += fmt.Sprintf("%s:%s ", onion.PrivateKeyType, onion.PrivateKey)
-	for remotePort, localAddr := range onion.Ports {
-		req += fmt.Sprintf("Port=%d,%s ", remotePort, localAddr)
+	for _, remotePort := range onion.sortedRemotePorts() {
+		req += fmt.Sprintf("Port=%d,%s ", remotePort, onion.Ports[remotePort])
 	}
+	req = strings.TrimSuffix(req, " ")
 	_, msg, err := c.makeRequest(req)
 	if err != nil {
 		return err
@@ -235,6 +236,17 @@ func (c *Controller) DeleteOnion(serviceID string) error {
 //   * ACTIVE
 func (c *Controller) Signal(signal string) error {
 	_, _, err := c.makeRequest("SIGNAL " + signal)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Controller) SetConf(param, value string) error {
+	newParamStr := param + "=" + "\"" + value + "\""
+
+	query := strings.Join([]string{"SETCONF", newParamStr}, " ")
+	_, _, err := c.makeRequest(query)
 	if err != nil {
 		return err
 	}
