@@ -25,6 +25,8 @@ else
 	SUPPORT_GOSEC = 0
 endif
 
+export GO111MODULE=off
+
 .PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean run-coverage clean-cover cover cover-ci build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
 
 default: build
