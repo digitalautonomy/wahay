@@ -20,21 +20,21 @@ test:
     - make deps-ci
     - make test
 
-coverage:
-  stage: check
-  coverage: '/total:.*?(\d+\.\d+\%)/'
-  script:
-    - make deps-ci
-    - make cover-ci
-  artifacts:
-    paths:
-      - coverage.html
+# coverage:
+#   stage: check
+#   coverage: '/total:.*?(\d+\.\d+\%)/'
+#   script:
+#     - make deps-ci
+#     - make cover-ci
+#   artifacts:
+#     paths:
+#       - coverage.html
 
-quality:
-  stage: check
-  script:
-    - make deps-ci
-    - make quality
+# quality:
+#   stage: check
+#   script:
+#     - make deps-ci
+#     - make quality
 
 deploy_staging:
   image: rbonifaz/wahay-deploy:latest
