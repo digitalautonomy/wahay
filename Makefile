@@ -37,9 +37,9 @@ gen-ui-locale:
 deps-ci:
 #	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
-ifeq ($(SUPPORT_GOSEC), 1)
-	go get -u github.com/securego/gosec/cmd/gosec
-endif
+#ifeq ($(SUPPORT_GOSEC), 1)
+#	go get -u github.com/securego/gosec/cmd/gosec
+#endif
 #	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
 
 deps: deps-ci
