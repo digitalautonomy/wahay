@@ -38,7 +38,7 @@ do
  cd ..
  tar cjf wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2 $DISTRO_DIR
  sha256sum wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2 > wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2.sha256sum
- gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2.sha256sum
+ gpg --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2.sha256sum
  mv wahay-${DISTRO_NAME}$BINARY_VERSION.tar.bz2* ../publish-bundles
 done < "$DISTRO_FILE"
 

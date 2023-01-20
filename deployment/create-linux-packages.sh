@@ -11,4 +11,4 @@ make ubuntu-package-ci
 
 cd ../publish-linux-packages
 sha256sum ${APP_NAME}-ubuntu-${BINARY_VERSION}-amd64.deb > ${APP_NAME}-ubuntu-${BINARY_VERSION}-amd64.deb.sha256sum
-gpg --detach-sign --armor -u 01242FFAB8CE1EC0C8F54456A8854162D28F171E ${APP_NAME}-ubuntu-${BINARY_VERSION}-amd64.deb.sha256sum
+gpg --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 ${APP_NAME}-ubuntu-${BINARY_VERSION}-amd64.deb.sha256sum
