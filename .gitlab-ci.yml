@@ -71,7 +71,7 @@ deploy_staging:
     name: staging
     url: https://staging.wahay.app
   only:
-    - master
+    - main
   script:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
@@ -108,7 +108,7 @@ deploy_production:
     url: https://wahay.app
   when: manual
   only:
-    - master
+    - main
   script:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
