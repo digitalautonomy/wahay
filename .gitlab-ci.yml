@@ -7,8 +7,6 @@ stages:
 
 build:
   stage: build
-  before_script:
-    - apt update && apt install -y ca-certificates
   script:
     - make deps-ci
     - make build-ci
@@ -18,16 +16,12 @@ build:
 
 test:
   stage: check
-  before_script:
-    - apt update && apt install -y ca-certificates
   script:
     - make deps-ci
     - make test
 
 coverage:
   stage: check
-  before_script:
-    - apt update && apt install -y ca-certificates
   coverage: '/total:.*?(\d+\.\d+\%)/'
   script:
     - make deps-ci
@@ -38,8 +32,6 @@ coverage:
 
 quality:
   stage: check
-  before_script:
-    - apt update && apt install -y ca-certificates
   script:
     - make deps-ci
     - make quality

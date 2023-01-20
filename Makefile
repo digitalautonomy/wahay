@@ -35,18 +35,15 @@ gen-ui-locale:
 	cd gui && make generate-locale
 
 deps-ci:
-	go get -u github.com/modocache/gover
+#	go get -u github.com/modocache/gover
 	go get -u github.com/rosatolen/esc
 ifeq ($(SUPPORT_GOSEC), 1)
 	go get -u github.com/securego/gosec/cmd/gosec
 endif
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
+#	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
 
 deps: deps-ci
 	go get -u golang.org/x/text/cmd/gotext
-
-optional-deps:
-	go get -u github.com/rogpeppe/godef
 
 test:
 	go test -cover -v ./client ./config ./gui ./hosting	 ./tor
@@ -61,7 +58,7 @@ run-coverage: clean-cover
 	go test -coverprofile=.coverprofiles/gui.coverprofile ./gui
 	go test -coverprofile=.coverprofiles/hosting.coverprofile ./hosting
 	go test -coverprofile=.coverprofiles/tor.coverprofile ./tor
-	gover .coverprofiles .coverprofiles/gover.coverprofile
+#	gover .coverprofiles .coverprofiles/gover.coverprofile
 
 clean-cover:
 	$(RM) -rf .coverprofiles
