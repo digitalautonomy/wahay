@@ -12,7 +12,7 @@ GOPATH_SINGLE=$(shell echo $${GOPATH%%:*})
 BUILD_DIR := bin
 BUILD_TOOLS_DIR := .build-tools
 
-PKGS := $(shell go list ./... | grep -v /vendor)
+PKGS := $(shell go list ./...)
 SRC_DIRS := . $(addprefix .,$(subst github.com/digitalautonomy/wahay,,$(PKGS)))
 SRC_TEST := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*_test.go))
 SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
@@ -24,8 +24,6 @@ ifneq ($(GO_VERSION), 1.11)
 else
 	SUPPORT_GOSEC = 0
 endif
-
-export GO111MODULE=off
 
 .PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean run-coverage clean-cover cover cover-ci build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
 
