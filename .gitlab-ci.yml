@@ -1,7 +1,6 @@
 image: rbonifaz/wahay-build:latest
 
 variables:
-  PACKAGE_PATH: /go/src/github.com/digitalautonomy/wahay
   DOCKER_DRIVER: overlay2
 
 stages:
@@ -9,17 +8,8 @@ stages:
   - check
   - deploy
 
-  # A hack to make Golang-in-Gitlab happy
-.anchors:
-  - &inject-gopath
-      mkdir -p $(dirname ${PACKAGE_PATH})
-      && ln -s ${CI_PROJECT_DIR} ${PACKAGE_PATH}
-      && cd ${PACKAGE_PATH}
-
 build:
   stage: build
-  before_script:
-    - *inject-gopath
   script:
     - make deps-ci
     - make build-ci
@@ -29,16 +19,12 @@ build:
 
 test:
   stage: check
-  before_script:
-    - *inject-gopath
   script:
     - make deps-ci
     - make test
 
 coverage:
   stage: check
-  before_script:
-    - *inject-gopath
   coverage: '/total:.*?(\d+\.\d+\%)/'
   script:
     - make deps-ci
@@ -49,8 +35,6 @@ coverage:
 
 quality:
   stage: check
-  before_script:
-    - *inject-gopath
   script:
     - make deps-ci
     - make quality
