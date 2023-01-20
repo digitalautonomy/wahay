@@ -47,7 +47,7 @@ deploy_staging:
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[staging.wahay.app]:${SSH_PORT},[185.108.76.88]:${SSH_PORT} ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
-  - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
+  - 'echo "$GPG_SIGNING_SUBKEY" | gpg --batch --import'
   environment:
     name: staging
     url: https://staging.wahay.app
