@@ -22,7 +22,15 @@ build-newest:
     paths:
       - bin/wahay-*
 
-test:
+test-oldest:
+  image: digitalautonomy/wahay:0.1-check-oldest-golang
+  stage: check
+  script:
+    - make deps-ci
+    - make test
+
+test-newest:
+  image: digitalautonomy/wahay:0.1-check-latest-golang
   stage: check
   script:
     - make deps-ci
