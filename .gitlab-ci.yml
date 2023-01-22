@@ -75,7 +75,7 @@ deploy_staging:
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
    - 'export BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
-   - 'gpg --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
+   - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
    - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - 'scp -P${SSH_PORT} deployment/*sh wahay@staging.wahay.app:bin/'
    - 'scp -P${SSH_PORT} deployment/*rb wahay@staging.wahay.app:bin/'
@@ -99,7 +99,7 @@ deploy_production:
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[wahay.app]:${SSH_PORT},[185.108.76.87]:${SSH_PORT} ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD7qdL4lFlIQwRU2h2fV6oIMBZl1ifd6bbcajd8iRYaFQfVvj7qxGvorfaBETyquGe+lk0xw3NrcJCfK1LvT2Wo=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
-  - 'echo "$GPG_SIGNING_SUBKEY" | gpg --import'
+  - 'echo "$GPG_SIGNING_SUBKEY" | gpg --batch --import'
   environment:
     name: production
     url: https://wahay.app
@@ -112,7 +112,7 @@ deploy_production:
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
    - 'export BINARY_NAME=$(find bin -name "wahay*" | head -1)'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
-   - 'gpg --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
+   - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
    - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@wahay.app:$DEPLOY_DIR/'
    - 'scp -P${SSH_PORT} deployment/*sh wahay@wahay.app:bin/'
    - 'scp -P${SSH_PORT} deployment/*rb wahay@wahay.app:bin/'
