@@ -5,7 +5,15 @@ stages:
   - check
   - deploy
 
-build:
+build-oldest:
+  image: digitalautonomy/wahay:0.1-build-oldest-golang
+  stage: build
+  script:
+    - make deps-ci
+    - make build-ci
+
+build-newest:
+  image: digitalautonomy/wahay:0.1-build-latest-golang
   stage: build
   script:
     - make deps-ci
