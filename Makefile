@@ -1,5 +1,13 @@
-GTK_VERSION=$(shell pkg-config --modversion gtk+-3.0 | tr . _ | cut -d '_' -f 1-2)
-GTK_BUILD_TAG="gtk_$(GTK_VERSION)"
+GTK_VERSION := $(shell pkg-config --modversion gtk+-3.0 | tr . _ | cut -d '_' -f 1-2)
+GTK_VERSION_TAG := "gtk_$(GTK_VERSION)"
+
+GLIB_VERSION := $(shell pkg-config --modversion glib-2.0 | tr . _ | cut -d '_' -f 1-2)
+GLIB_VERSION_TAG := "glib_$(GLIB_VERSION)"
+
+GDK_VERSION := $(shell pkg-config --modversion gdk-3.0 | tr . _ | cut -d '_' -f 1-2)
+GDK_VERSION_TAG := "gdk_$(GDK_VERSION)"
+
+BINARY_TAGS := -tags $(GTK_VERSION_TAG),$(GLIB_VERSION_TAG),$(GDK_VERSION_TAG),binary
 
 GIT_VERSION := $(shell git rev-parse HEAD)
 GIT_SHORT_VERSION := $(shell git rev-parse --short HEAD)
@@ -130,7 +138,7 @@ cover-ci: run-coverage
 	go tool cover -func=.coverprofiles/gover.coverprofile
 
 $(BUILD_DIR)/wahay: check-version gui/definitions.go client/gen_client_files.go $(SRC)
-	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" -i -tags $(GTK_BUILD_TAG) -o $(BUILD_DIR)/wahay
+	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" -i  $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
 
 build: $(BUILD_DIR)/wahay
 
