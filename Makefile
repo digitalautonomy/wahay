@@ -111,10 +111,13 @@ gen-ui-locale:
 
 deps-ci: check-version
 ifeq ($(SUPPORT_GOVER), 1)
+	go get github.com/modocache/gover
 	go install github.com/modocache/gover
 endif
+	go get github.com/rosatolen/esc
 	go install github.com/rosatolen/esc
 ifeq ($(SUPPORT_GOSEC), 1)
+	go get github.com/securego/gosec/cmd/gosec
 	go install github.com/securego/gosec/cmd/gosec
 endif
 ifeq ($(SUPPORT_GOLANGCI), 1)
