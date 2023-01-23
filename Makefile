@@ -7,7 +7,10 @@ GLIB_VERSION_TAG := "glib_$(GLIB_VERSION)"
 GDK_VERSION := $(shell pkg-config --modversion gdk-3.0 | tr . _ | cut -d '_' -f 1-2)
 GDK_VERSION_TAG := "gdk_$(GDK_VERSION)"
 
-BINARY_TAGS := -tags $(GTK_VERSION_TAG),$(GLIB_VERSION_TAG),$(GDK_VERSION_TAG),binary
+PANGO_VERSION := $(shell pkg-config --modversion pango | tr . _ | cut -d '_' -f 1-2)
+PANGO_VERSION_TAG := "pango_$(PANGO_VERSION)"
+
+BINARY_TAGS := -tags $(GTK_VERSION_TAG),$(GLIB_VERSION_TAG),$(GDK_VERSION_TAG),$(PANGO_VERSION_TAG),binary
 
 GIT_VERSION := $(shell git rev-parse HEAD)
 GIT_SHORT_VERSION := $(shell git rev-parse --short HEAD)
