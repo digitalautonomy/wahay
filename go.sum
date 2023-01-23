@@ -1,5 +1,7 @@
 github.com/atotto/clipboard v0.1.2 h1:YZCtFu5Ie8qX2VmVTBnrqLSiU9XOWwqNRmdT3gIQzbY=
 github.com/atotto/clipboard v0.1.2/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
+github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z4=
+github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
 github.com/coyim/gotk3adapter v0.0.0-20200403202524-728d69a7102f h1:LnxgsJ2lKS+G+2DMvJCD3uOCLObZ5xiBupV6tQ9MwM8=
 github.com/coyim/gotk3adapter v0.0.0-20200403202524-728d69a7102f/go.mod h1:5NK0rFFScmo76AEmCcSM0RqVJIeCRdtD2i8dmaki4QQ=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

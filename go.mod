@@ -3,7 +3,7 @@ module github.com/digitalautonomy/wahay
 go 1.14
 
 require (
-	github.com/atotto/clipboard v0.1.2
+	github.com/atotto/clipboard v0.1.4
 	github.com/coyim/gotk3adapter v0.0.0-20200403202524-728d69a7102f
 	github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de
 	github.com/digitalautonomy/grumble v0.0.0-20200716175154-8faaa9240402
