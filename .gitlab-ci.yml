@@ -6,14 +6,14 @@ stages:
   - deploy
 
 build-oldest:
-  image: digitalautonomy/wahay:0.2-build-oldest-golang
+  image: digitalautonomy/wahay:0.3-build-oldest-golang
   stage: build
   script:
     - make deps-ci
     - make build-ci
 
 build-newest:
-  image: digitalautonomy/wahay:0.2-build-latest-golang
+  image: digitalautonomy/wahay:0.3-build-latest-golang
   stage: build
   script:
     - make deps-ci
@@ -23,14 +23,14 @@ build-newest:
       - bin/wahay-*
 
 test-oldest:
-  image: digitalautonomy/wahay:0.2-check-oldest-golang
+  image: digitalautonomy/wahay:0.3-check-oldest-golang
   stage: check
   script:
     - make deps-ci
     - make test
 
 test-newest:
-  image: digitalautonomy/wahay:0.2-check-latest-golang
+  image: digitalautonomy/wahay:0.3-check-latest-golang
   stage: check
   script:
     - make deps-ci
