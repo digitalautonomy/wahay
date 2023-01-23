@@ -174,8 +174,7 @@ $(BUILD_TOOLS_DIR):
 	mkdir -p $@
 
 $(BUILD_TOOLS_DIR)/esc: $(BUILD_TOOLS_DIR)
-	@type esc >/dev/null 2>&1 || (echo "The program 'esc' is required but not available. Please install it by running 'make deps'." && exit 1)
-	@cp `which esc` $(BUILD_TOOLS_DIR)/esc
+	./build/find_esc.sh $(BUILD_TOOLS_DIR)
 
 client/gen_client_files.go: $(BUILD_TOOLS_DIR)/esc client/files/* client/files/.*
 	(cd client; go generate -x client.go)
