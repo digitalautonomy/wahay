@@ -111,18 +111,18 @@ gen-ui-locale:
 
 deps-ci: check-version
 ifeq ($(SUPPORT_GOVER), 1)
-	go get -u github.com/modocache/gover
+	go install github.com/modocache/gover
 endif
-	go get -u github.com/rosatolen/esc
+	go install github.com/rosatolen/esc
 ifeq ($(SUPPORT_GOSEC), 1)
-	go get -u github.com/securego/gosec/cmd/gosec
+	go install github.com/securego/gosec/cmd/gosec
 endif
 ifeq ($(SUPPORT_GOLANGCI), 1)
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
 endif
 
 deps: deps-ci
-	go get -u golang.org/x/text/cmd/gotext
+	go install golang.org/x/text/cmd/gotext
 
 test: check-version
 	go test -cover -v ./client ./config ./gui ./hosting	 ./tor
