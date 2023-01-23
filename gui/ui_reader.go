@@ -187,23 +187,13 @@ func (g Graphics) getImagePixbufForSize(imageName string, size int) (gdki.Pixbuf
 
 	w.Add(1)
 
-	_, err = pl.Connect("area-prepared", func() {
+	_ = pl.Connect("area-prepared", func() {
 		defer w.Done()
 	})
-	if err != nil {
-		log.WithFields(log.Fields{
-			"caller": "pl.Connect(\"area-prepared\")",
-		}).Errorf("getImagePixbufForSize(): %s", err.Error())
-	}
 
-	_, err = pl.Connect("size-prepared", func() {
+	_ = pl.Connect("size-prepared", func() {
 		pl.SetSize(size, size)
 	})
-	if err != nil {
-		log.WithFields(log.Fields{
-			"caller": "pl.Connect(\"size-prepared\")",
-		}).Errorf("getImagePixbufForSize(): %s", err.Error())
-	}
 
 	bytes := g.getImage(imageName)
 	if _, err := pl.Write(bytes); err != nil {

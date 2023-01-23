@@ -87,24 +87,13 @@ func (i *icon) createPixBufWithSize(width, height int) (gdki.Pixbuf, error) {
 	complete := make(chan error)
 
 	go func() {
-		_, err = pl.Connect("area-prepared", func() {
+		_ = pl.Connect("area-prepared", func() {
 			complete <- nil
 		})
-		if err != nil {
-			log.WithFields(log.Fields{
-				"caller": "pl.Connect(\"area-prepared\")",
-			}).Errorf("createPixBufWithSize(): %s", err.Error())
-		}
 
-		_, err = pl.Connect("size-prepared", func() {
+		_ = pl.Connect("size-prepared", func() {
 			pl.SetSize(width, height)
 		})
-
-		if err != nil {
-			log.WithFields(log.Fields{
-				"caller": "pl.Connect(\"size-prepared\")",
-			}).Errorf("createPixBufWithSize(): %s", err.Error())
-		}
 
 		bytes := i.get()
 		if _, err := pl.Write(bytes); err != nil {

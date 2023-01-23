@@ -4,6 +4,10 @@ github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z
 github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
 github.com/coyim/gotk3adapter v0.0.0-20200403202524-728d69a7102f h1:LnxgsJ2lKS+G+2DMvJCD3uOCLObZ5xiBupV6tQ9MwM8=
 github.com/coyim/gotk3adapter v0.0.0-20200403202524-728d69a7102f/go.mod h1:5NK0rFFScmo76AEmCcSM0RqVJIeCRdtD2i8dmaki4QQ=
+github.com/coyim/gotk3adapter v0.0.0-20220707154823-2087a87ccf9a h1:365ljdp0REnZH6n2Ox68Yr/LlbHqymzSRXh0ZxdLh0E=
+github.com/coyim/gotk3adapter v0.0.0-20220707154823-2087a87ccf9a/go.mod h1:5NK0rFFScmo76AEmCcSM0RqVJIeCRdtD2i8dmaki4QQ=
+github.com/coyim/gotk3extra v0.0.0-20220706184944-5697a72a84a2 h1:bK4Y+DZzvhiE6oZStY5xRW7URS3A+8vFnTuo563gNBM=
+github.com/coyim/gotk3extra v0.0.0-20220706184944-5697a72a84a2/go.mod h1:Nn1D/Zd6ivBvKkL1Lts7fYAAMBKIOqAwTNDbhDJeHok=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de h1:gm6C1Gl7u3AAlMDHq3OkoYUlavdWocN5Nhkboyl0S9s=
 github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de/go.mod h1:KwsZfRYrxgmPSgdFdORzlShUdTV5/Ri6XBMVT7TVCJY=
@@ -20,6 +24,10 @@ github.com/gorilla/websocket v1.4.1 h1:q7AeDBpnBk8AogcD4DSag/Ukw/KV+YhzLj2bP5HvK
 github.com/gorilla/websocket v1.4.1/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/gotk3/gotk3 v0.4.0 h1:TIuhyQitGeRTxOQIV3AJlYtEWWJpC74JHwAIsxlH8MU=
 github.com/gotk3/gotk3 v0.4.0/go.mod h1:Eew3QBwAOBTrfFFDmsDE5wZWbcagBL1NUslj1GhRveo=
+github.com/gotk3/gotk3 v0.6.1 h1:GJ400a0ecEEWrzjBvzBzH+pB/esEMIGdB9zPSmBdoeo=
+github.com/gotk3/gotk3 v0.6.1/go.mod h1:/hqFpkNa9T3JgNAE2fLvCdov7c5bw//FHNZrZ3Uv9/Q=
+github.com/gotk3/gotk3 v0.6.2-0.20220918105832-655547b6cbbc h1:SWKI/OYL5FuleAef26ZC11tDfD+W+wugKNh8x745GUA=
+github.com/gotk3/gotk3 v0.6.2-0.20220918105832-655547b6cbbc/go.mod h1:/hqFpkNa9T3JgNAE2fLvCdov7c5bw//FHNZrZ3Uv9/Q=
 github.com/hpcloud/tail v1.0.0 h1:nfCOvKYfkgYP8hkirhJocXT2+zOD8yUNjXaWfTlyFKI=
 github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpOxQnU=
 github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 h1:iQTw/8FWTuc7uiaSepXwyf3o52HaUYcV+Tu66S3F5GA=

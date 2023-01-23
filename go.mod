@@ -4,12 +4,13 @@ go 1.14
 
 require (
 	github.com/atotto/clipboard v0.1.4
-	github.com/coyim/gotk3adapter v0.0.0-20200403202524-728d69a7102f
+	github.com/coyim/gotk3adapter v0.0.0-20220707154823-2087a87ccf9a
+	github.com/coyim/gotk3extra v0.0.0-20220706184944-5697a72a84a2 // indirect
 	github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de
 	github.com/digitalautonomy/grumble v0.0.0-20200716175154-8faaa9240402
 	github.com/golang/protobuf v1.3.4 // indirect
 	github.com/gorilla/websocket v1.4.1 // indirect
-	github.com/gotk3/gotk3 v0.4.0 // indirect
+	github.com/gotk3/gotk3 v0.6.2-0.20220918105832-655547b6cbbc // indirect
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/kr/pretty v0.3.1 // indirect

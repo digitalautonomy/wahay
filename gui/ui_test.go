@@ -9,6 +9,7 @@ import (
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtk_mock"
 	"github.com/coyim/gotk3adapter/gtki"
+
 	. "gopkg.in/check.v1"
 )
 
@@ -135,21 +136,18 @@ func (s *WahayGUISuite) Test_NewGTK_returnsAGTKUIWithProperData(c *C) {
 type testApplication struct {
 	gtk_mock.MockApplication
 
-	connectArg1    string
-	connectArg2    interface{}
-	connectArgRest []interface{}
-	connectReturn1 glibi.SignalHandle
-	connectReturn2 error
+	connectArg1   string
+	connectArg2   interface{}
+	connectReturn glibi.SignalHandle
 
 	runArg1    []string
 	runReturn1 int
 }
 
-func (ta *testApplication) Connect(v1 string, v2 interface{}, v3 ...interface{}) (glibi.SignalHandle, error) {
+func (ta *testApplication) Connect(v1 string, v2 interface{}) glibi.SignalHandle {
 	ta.connectArg1 = v1
 	ta.connectArg2 = v2
-	ta.connectArgRest = v3
-	return ta.connectReturn1, ta.connectReturn2
+	return ta.connectReturn
 }
 
 func (ta *testApplication) Run(v1 []string) int {
@@ -188,17 +186,4 @@ func (s *WahayGUISuite) Test_gtkUI_Loop_runsTheAppWithArguments(c *C) {
 	u.Loop()
 
 	c.Assert(app.runArg1, DeepEquals, []string{})
-}
-
-func (s *WahayGUISuite) Test_gtkUI_Loop_panicsIfActivateFails(c *C) {
-	app := &testApplication{}
-	ourGtk := &testGtkStruct{}
-	ourGlib := &testGlibStruct{}
-	g := CreateGraphics(ourGtk, ourGlib, nil)
-	u := &gtkUI{
-		app: app,
-		g:   g,
-	}
-	app.connectReturn2 = errors.New("oh nooo")
-	c.Assert(func() { u.Loop() }, PanicMatches, "Couldn't activate application: oh nooo")
 }

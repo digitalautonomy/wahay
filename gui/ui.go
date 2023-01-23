@@ -52,8 +52,8 @@ func argsWithApplicationName() *[]string {
 type gtkUI struct {
 	app            gtki.Application
 	mainWindow     gtki.ApplicationWindow
-	currentWindow  gtki.ApplicationWindow
-	loadingWindow  gtki.ApplicationWindow
+	currentWindow  gtki.Window
+	loadingWindow  gtki.Window
 	g              Graphics
 	tor            tor.Instance
 	torInitialized *sync.WaitGroup
@@ -88,10 +88,7 @@ func NewGTK(gx Graphics) UI {
 func (u *gtkUI) Loop() {
 	// This Connect call returns a signal handle, but that's not useful
 	// for us, so we ignore it.
-	_, err := u.app.Connect("activate", u.onActivate)
-	if err != nil {
-		fatalf("Couldn't activate application: %v", err)
-	}
+	_ = u.app.Connect("activate", u.onActivate)
 
 	u.app.Run([]string{})
 }
