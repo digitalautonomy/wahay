@@ -158,7 +158,7 @@ cover-ci: run-coverage
 	go tool cover -func=.coverprofiles/gover.coverprofile
 
 $(BUILD_DIR)/wahay: check-version gui/definitions.go client/gen_client_files.go $(SRC)
-	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" -i  $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
+	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
 
 build: $(BUILD_DIR)/wahay
 
