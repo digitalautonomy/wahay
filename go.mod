@@ -4,8 +4,8 @@ go 1.14
 
 require (
 	github.com/atotto/clipboard v0.1.4
-	github.com/coyim/gotk3adapter v0.0.0-20220707154823-2087a87ccf9a
-	github.com/coyim/gotk3extra v0.0.0-20220706184944-5697a72a84a2 // indirect
+	github.com/coyim/gotk3adapter v0.0.0-20230124171242-94a80bfeedca
+	github.com/coyim/gotk3extra v0.0.0-20230124171643-ecb0d8cd94b3 // indirect
 	github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de
 	github.com/digitalautonomy/grumble v0.0.0-20200716175154-8faaa9240402
 	github.com/golang/protobuf v1.3.4 // indirect
