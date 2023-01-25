@@ -133,7 +133,7 @@ test-clean: test
 	go clean -testcache
 
 coverage:
-	$(GOTEST) -cover -coverprofile coverlog ./... || true
+	$(GOTEST) $(BINARY_TAGS) -cover -coverprofile coverlog ./... || true
 	$(GO) tool cover -html coverlog
 	$(RM) coverlog
 
@@ -141,7 +141,7 @@ $(COVERPROFILE):
 	$(GOTEST) -cover -coverprofile $@ ./...
 
 coverage-tails:
-	$(GOTEST) -cover -coverprofile coverlog ./... || true
+	$(GOTEST) $(BINARY_TAGS) -cover -coverprofile coverlog ./... || true
 	$(GO) tool cover -html coverlog -o ~/Tor\ Browser/coverage.html
 	xdg-open ~/Tor\ Browser/coverage.html
 	$(RM) coverlog
