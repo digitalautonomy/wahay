@@ -64,11 +64,9 @@ else
 endif
 
 GOSEC_COMPATIBILITY_VERSION := 1.19
-GOVER_COMPATIBILITY_VERSION := 1.15
 GOLANGCI_COMPATIBILITY_VERSION := 1.19
 
 GOSEC_COMPARE = $(shell ./check_version.rb $(GOSEC_COMPATIBILITY_VERSION) $(GO_VERSION))
-GOVER_COMPARE = $(shell ./check_version.rb $(GOVER_COMPATIBILITY_VERSION) $(GO_VERSION))
 GOLANGCI_COMPARE = $(shell ./check_version.rb $(GOLANGCI_COMPATIBILITY_VERSION) $(GO_VERSION))
 
 ifneq ($(GOSEC_COMPARE), gt)
@@ -77,21 +75,22 @@ else
 	SUPPORT_GOSEC=0
 endif
 
-ifneq ($(GOVER_COMPARE), gt)
-	SUPPORT_GOVER=1
-else
-	SUPPORT_GOVER=0
-endif
-
 ifneq ($(GOLANGCI_COMPARE), gt)
 	SUPPORT_GOLANGCI=1
 else
 	SUPPORT_GOLANGCI=0
 endif
 
+GO := go
+GOBUILD := $(GO) build
+GOTEST := $(GO) test
+GOINSTALL := $(GO) install
+
+COVERPROFILE := coverprofile
+
 export GO111MODULE=on
 
-.PHONY: default check-version check-deps gen-ui-defs deps optional-deps test test-clean run-coverage clean-cover cover cover-ci build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
+.PHONY: default check-version check-deps gen-ui-defs deps optional-deps test test-clean coverage coverage-tails build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
 
 default: build
 
@@ -133,29 +132,19 @@ test: check-version
 test-clean: test
 	go clean -testcache
 
-run-coverage: clean-cover check-version
-	mkdir -p .coverprofiles
-	go test -coverprofile=.coverprofiles/client.coverprofile ./client
-	go test -coverprofile=.coverprofiles/config.coverprofile ./config
-	go test -coverprofile=.coverprofiles/gui.coverprofile ./gui
-	go test -coverprofile=.coverprofiles/hosting.coverprofile ./hosting
-	go test -coverprofile=.coverprofiles/tor.coverprofile ./tor
-ifeq ($(SUPPORT_GOVER), 1)
-	gover .coverprofiles .coverprofiles/gover.coverprofile
-else
-	echo '`gover` is not supported for the current version ($(GO_VERSION)) of `go`';
-endif
+coverage:
+	$(GOTEST) -cover -coverprofile coverlog ./... || true
+	$(GO) tool cover -html coverlog
+	$(RM) coverlog
 
-clean-cover:
-	$(RM) -rf .coverprofiles
-	$(RM) -rf coverage.html
+$(COVERPROFILE):
+	$(GOTEST) -cover -coverprofile $@ ./...
 
-cover: run-coverage
-	go tool cover -html=.coverprofiles/gover.coverprofile
-
-cover-ci: run-coverage
-	go tool cover -html=.coverprofiles/gover.coverprofile -o coverage.html
-	go tool cover -func=.coverprofiles/gover.coverprofile
+coverage-tails:
+	$(GOTEST) -cover -coverprofile coverlog ./... || true
+	$(GO) tool cover -html coverlog -o ~/Tor\ Browser/coverage.html
+	xdg-open ~/Tor\ Browser/coverage.html
+	$(RM) coverlog
 
 $(BUILD_DIR)/wahay: check-version gui/definitions.go client/gen_client_files.go $(SRC)
 	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
