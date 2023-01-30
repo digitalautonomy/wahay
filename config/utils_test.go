@@ -111,8 +111,8 @@ func (m *mockNet) Listen(network, dir string) (net.Listener, error) {
 }
 
 func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfThePortIsAvailable(c *C) {
-	ml := &mockListener{}
 	mn := &mockNet{}
+	ml := &mockListener{}
 
 	defer gostub.New().Stub(&listen, mn.Listen).Reset()
 
@@ -137,6 +137,20 @@ func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfAnotherPortIsAvailable(c 
 	ml.On("Close").Return(nil)
 
 	c.Assert(IsPortAvailable(10002), Equals, true)
+}
+
+func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortIsNotAvailable(c *C) {
+	defer gostub.New().StubFunc(&listen, nil, errors.New("port already taken")).Reset()
+
+	c.Assert(IsPortAvailable(5555), Equals, false)
+}
+
+func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortWasAvailableButSomethingWentWrongWhenTestingIt(c *C) {
+	ml := &mockListener{}
+	defer gostub.New().StubFunc(&listen, ml, nil).Reset()
+	ml.On("Close").Return(errors.New("oh no")).Once()
+
+	c.Assert(IsPortAvailable(65501), Equals, false)
 }
 
 type mockRandom struct {
@@ -165,20 +179,6 @@ func (u *UtilsSuite) Test_GetRandomPort_returnsThePortAvailableBetweenSomePorts(
 	ml.On("Close").Return(nil).Once()
 
 	c.Assert(GetRandomPort(), Equals, 15679)
-}
-
-func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortIsNotAvailable(c *C) {
-	defer gostub.New().StubFunc(&listen, nil, errors.New("port already taken")).Reset()
-
-	c.Assert(IsPortAvailable(5555), Equals, false)
-}
-
-func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortWasAvailableButSomethingWentWrongWhenTestingIt(c *C) {
-	ml := &mockListener{}
-	defer gostub.New().StubFunc(&listen, ml, nil).Reset()
-	ml.On("Close").Return(errors.New("oh no")).Once()
-
-	c.Assert(IsPortAvailable(65501), Equals, false)
 }
 
 func (u *UtilsSuite) Test_RandomPort_ReturnsAPortBetween10000And59999(c *C) {
