@@ -11,6 +11,7 @@ import (
 	"net"
 	"os"
 	"strings"
+	"testing/iotest"
 )
 
 type UtilsSuite struct{}
@@ -26,16 +27,8 @@ func (u *UtilsSuite) Test_RandomString_returnsARandomStringIfTheReaderHaveEnough
 	c.Assert(string(dest[:]), Equals, "68656")
 }
 
-type errReader struct {
-	e error
-}
-
-func (r *errReader) Read(p []byte) (int, error) {
-	return 0, r.e
-}
-
 func (u *UtilsSuite) Test_RandomString_returnsAnErrorIfTheReaderGivesAnError(c *C) {
-	defer gostub.New().Stub(&rand.Reader, &errReader{io.EOF}).Reset()
+	defer gostub.New().Stub(&rand.Reader, iotest.ErrReader(io.EOF)).Reset()
 
 	dest := new([5]byte)
 	res := RandomString(dest[:])
