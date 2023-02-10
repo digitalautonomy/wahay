@@ -1,7 +1,5 @@
 package client
 
-//go:generate ../.build-tools/esc -o gen_client_files.go -pkg client -ignore "Makefile" files
-
 import (
 	"errors"
 	"io/ioutil"

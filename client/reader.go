@@ -1,18 +1,22 @@
 package client
 
 import (
+	_ "embed"
 	"os"
-
-	"github.com/digitalautonomy/wahay/codegen"
 )
 
+//go:embed files/.mumble.sqlite
+var mumbleDBContent []byte
+
 func readerMumbleDB() []byte {
-	content := codegen.GetFileWithFallback(".mumble.sqlite", "client/files", FSString)
-	return []byte(content)
+	return mumbleDBContent
 }
 
+//go:embed files/mumble.ini
+var mumbleIniContent string
+
 func readerMumbleIniConfig() string {
-	return codegen.GetFileWithFallback("mumble.ini", "client/files", FSString)
+	return mumbleIniContent
 }
 
 func createDir(path string) error {

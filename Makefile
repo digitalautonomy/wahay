@@ -151,7 +151,7 @@ coverage-dev:
 	$(GO) tool cover -html coverlog
 	$(RM) coverlog
 
-$(BUILD_DIR)/wahay: check-version gui/definitions.go client/gen_client_files.go $(SRC)
+$(BUILD_DIR)/wahay: check-version gui/definitions.go $(SRC)
 	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
 
 build: $(BUILD_DIR)/wahay
@@ -172,9 +172,6 @@ $(BUILD_TOOLS_DIR):
 
 $(BUILD_TOOLS_DIR)/esc: $(BUILD_TOOLS_DIR)
 	./build/find_esc.sh $(BUILD_TOOLS_DIR)
-
-client/gen_client_files.go: $(BUILD_TOOLS_DIR)/esc client/files/* client/files/.*
-	(cd client; go generate -x client.go)
 
 gui/definitions.go: $(BUILD_TOOLS_DIR)/esc gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/*
 	(cd gui; go generate -x ui_reader.go)
