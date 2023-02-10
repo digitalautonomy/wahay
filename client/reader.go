@@ -11,7 +11,7 @@ func readerMumbleDB() []byte {
 	return []byte(content)
 }
 
-func rederMumbleIniConfig() string {
+func readerMumbleIniConfig() string {
 	return codegen.GetFileWithFallback("mumble.ini", "client/files", FSString)
 }
 
