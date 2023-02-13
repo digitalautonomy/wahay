@@ -3,13 +3,19 @@
 package tor
 
 import (
-	"github.com/digitalautonomy/wahay/codegen"
+	_ "embed"
 )
 
+//go:embed files/torrc
+var torrcContent string
+
 func getTorrc() string {
-	return codegen.GetFileWithFallback("torrc", "tor/files", FSString)
+	return torrcContent
 }
 
+//go:embed files/torrc-logs
+var torrclogsContent string
+
 func getTorrcLogConfig() string {
-	return codegen.GetFileWithFallback("torrc-logs", "tor/files", FSString)
+	return torrclogsContent
 }
