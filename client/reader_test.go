@@ -1,6 +1,7 @@
 package client
 
 import . "gopkg.in/check.v1"
+import . "github.com/digitalautonomy/wahay/test"
 
 func (s *clientSuite) Test_readerMumbleDB_returnsTheByteRepresentationFromAString(c *C) {
 	result := string(readerMumbleDB())
