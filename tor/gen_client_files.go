@@ -1,5 +1,3 @@
-//go:generate ../.build-tools/esc -o files.go -modtime 1489449600 -pkg tor files/
-
 package tor
 
 import (
