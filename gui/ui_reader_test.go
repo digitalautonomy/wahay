@@ -157,3 +157,15 @@ func (s *WahayGUIUIReaderSuite) Test_getConfigFileFor_panicsWhenAskedForAConfigF
 		getConfigFileFor("foobar", ".something")
 	}, PanicMatches, "(?ms).*Developer error.*")
 }
+
+func (s *WahayGUIUIReaderSuite) Test_getImage_returnsAnImageThatExists(c *C) {
+	c.Assert(len(getImage("help.svg")), Equals, 1072)
+	c.Assert(len(getImage("wahay-192x192.png")), Equals, 26279)
+	c.Assert(len(getImage("join-meeting.svg")), Equals, 1206)
+}
+
+func (s *WahayGUIUIReaderSuite) Test_getImage_panicsWhenTheImageDoesntExist(c *C) {
+	c.Assert(func() {
+		getImage("santa.dancing.jpg")
+	}, PanicMatches, "(?ms).*Developer error.*")
+}

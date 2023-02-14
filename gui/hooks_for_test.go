@@ -1,11 +1,10 @@
 package gui
 
 import (
+	log "github.com/sirupsen/logrus"
 	"io"
-
-	"github.com/sirupsen/logrus"
 )
 
 func init() {
-	logrus.SetOutput(io.Discard)
+	log.SetOutput(io.Discard)
 }

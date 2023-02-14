@@ -13,12 +13,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/digitalautonomy/wahay/codegen"
-	log "github.com/sirupsen/logrus"
-
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
+	"github.com/digitalautonomy/wahay/codegen"
 )
 
 const (
@@ -175,14 +173,10 @@ func (b *uiBuilder) get(name string) glibi.Object {
 }
 
 func getImage(imageName string) []byte {
-	return getImageBytes(imageName)
-}
-
-func getImageBytes(filename string) []byte {
-	image := filepath.Join("/"+imagesDir, filename)
+	image := filepath.Join("/"+imagesDir, imageName)
 	bs, err := FSByte(false, image)
 	if err != nil {
-		log.Fatal("Developer error: getting the image " + image + " but it does not exist")
+		panic("Developer error: getting the image " + image + " but it does not exist")
 	}
 	return bs
 }
