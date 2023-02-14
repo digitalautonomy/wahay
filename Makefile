@@ -24,7 +24,9 @@ GDK_VERSION_TAG := "gdk_$(GDK_VERSION)"
 PANGO_VERSION := $(shell pkg-config --modversion pango | tr . _ | cut -d '_' -f 1-2)
 PANGO_VERSION_TAG := "pango_$(PANGO_VERSION)"
 
-BINARY_TAGS := -tags $(GTK_VERSION_TAG),$(GLIB_VERSION_TAG),$(GDK_VERSION_TAG),$(PANGO_VERSION_TAG),binary
+BASE_TAGS := $(GTK_VERSION_TAG),$(GLIB_VERSION_TAG),$(GDK_VERSION_TAG),$(PANGO_VERSION_TAG)
+BINARY_TAGS := -tags $(BASE_TAGS),binary
+TEST_TAGS := -tags $(BASE_TAGS),test
 
 GIT_VERSION := $(shell git rev-parse HEAD)
 GIT_SHORT_VERSION := $(shell git rev-parse --short HEAD)
@@ -127,13 +129,13 @@ deps: deps-ci
 	go install golang.org/x/text/cmd/gotext
 
 test: check-version
-	go test -cover -v ./client ./config ./gui ./hosting	 ./tor
+	go test -cover -v $(TEST_TAGS) ./...
 
 test-clean: test
 	go clean -testcache
 
 coverage:
-	$(GOTEST) $(BINARY_TAGS) -cover -coverprofile coverlog ./... || true
+	$(GOTEST) $(TEST_TAGS) -cover -coverprofile coverlog ./... || true
 	$(GO) tool cover -html coverlog
 	$(RM) coverlog
 
@@ -141,13 +143,13 @@ $(COVERPROFILE):
 	$(GOTEST) -cover -coverprofile $@ ./...
 
 coverage-tails:
-	$(GOTEST) $(BINARY_TAGS) -cover -coverprofile coverlog ./... || true
+	$(GOTEST) $(TEST_TAGS) -cover -coverprofile coverlog ./... || true
 	$(GO) tool cover -html coverlog -o ~/Tor\ Browser/coverage.html
 	xdg-open ~/Tor\ Browser/coverage.html
 	$(RM) coverlog
 
 coverage-dev:
-	$(GOTEST) $(BINARY_TAGS) -cover -coverprofile coverlog ./... || true
+	$(GOTEST) $(TEST_TAGS) -cover -coverprofile coverlog ./... || true
 	$(GO) tool cover -html coverlog
 	$(RM) coverlog
 
