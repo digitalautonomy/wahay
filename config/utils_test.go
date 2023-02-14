@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/mock"
 	"golang.org/x/text/language"
 	. "gopkg.in/check.v1"
+
+	. "github.com/digitalautonomy/wahay/test"
 )
 
 type UtilsSuite struct{}
