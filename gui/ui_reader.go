@@ -172,13 +172,15 @@ func (b *uiBuilder) get(name string) glibi.Object {
 	return obj
 }
 
+//go:embed images
+var images embed.FS
+
 func getImage(imageName string) []byte {
-	image := filepath.Join("/"+imagesDir, imageName)
-	bs, err := FSByte(false, image)
-	if err != nil {
-		panic("Developer error: getting the image " + image + " but it does not exist")
+	content, e := fs.ReadFile(images, filepath.Join(imagesDir, imageName))
+	if e != nil {
+		panic(fmt.Sprintf("Developer error: %v", e))
 	}
-	return bs
+	return content
 }
 
 func (g Graphics) getImagePixbufForSize(imageName string, size int) (gdki.Pixbuf, error) {
