@@ -3,6 +3,9 @@
 package gui
 
 import (
+	"embed"
+	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -57,8 +60,15 @@ func (u *gtkUI) getConfigDesktopFile(fileName string) string {
 	return u.getConfigFileFor(fileName, ".desktop")
 }
 
+//go:embed config_files
+var configFiles embed.FS
+
 func (u *gtkUI) getConfigFileFor(fileName, extension string) string {
-	return codegen.GetFileWithFallback(fileName+extension, filepath.Join("gui", configFilesDir), FSString)
+	content, e := fs.ReadFile(configFiles, filepath.Join(configFilesDir, fileName+extension))
+	if e != nil {
+		panic(fmt.Sprintf("Developer error: %v", e))
+	}
+	return string(content)
 }
 
 func getCSSFileWithFallback(fileName string) string {

@@ -2,6 +2,7 @@ package gui
 
 import (
 	"errors"
+	. "github.com/digitalautonomy/wahay/test"
 	"os"
 	"strings"
 
@@ -36,7 +37,7 @@ func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsDefini
 func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_panicsForNonExistingDefinition(c *C) {
 	g1 := CreateGraphics(nil, nil, nil)
 	c.Assert(func() { g1.uiBuilderFor("definitionThatDoesntExist") }, PanicMatches,
-		"No definition found for .*")
+		".*No definition found for .*")
 }
 
 func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsContentThatOnlyExistInMemory(c *C) {
@@ -141,4 +142,21 @@ func (s *WahayGUIUIReaderSuite) Test_uiBuilderFor_panicsIfBuilderCantBeCreated(c
 func (s *WahayGUIUIReaderSuite) Test_readFile_failsIfErrorHappens(c *C) {
 	c.Assert(func() { readFile("none_existing_file") }, PanicMatches,
 		"failing on error: open none_existing_file: no such file or directory")
+}
+
+func (s *WahayGUIUIReaderSuite) Test_getConfigFileFor_returnsTheWahayDesktopConfigFile(c *C) {
+	u := &gtkUI{}
+	val := u.getConfigFileFor("wahay", ".desktop")
+
+	c.Assert(val, HasLen, 221)
+	c.Assert(val, Contains, "Terminal=false")
+	c.Assert(val, Contains, "Secure and Decentralized Conference")
+}
+
+func (s *WahayGUIUIReaderSuite) Test_getConfigFileFor_panicsWhenAskedForAConfigFileThatDoesntExist(c *C) {
+	u := &gtkUI{}
+
+	c.Assert(func() {
+		u.getConfigFileFor("foobar", ".something")
+	}, PanicMatches, "(?ms).*Developer error.*")
 }
