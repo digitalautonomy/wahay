@@ -17,23 +17,19 @@ var Contains Checker = &stringMethodChecker{
 }
 
 func (checker *stringMethodChecker) Check(params []interface{}, _ []string) (result bool, error string) {
-	return stringMethodCheck(params[0], params[1], checker.check)
-}
-
-func stringMethodCheck(value, expected interface{}, f func(string, string) bool) (result bool, error string) {
-	exStr, ok := expected.(string)
-	if !ok {
+	exp, ok1 := params[1].(string)
+	if !ok1 {
 		return false, "Expected must be a string"
 	}
-	valueStr, valueIsStr := value.(string)
-	if !valueIsStr {
-		if valueWithStr, valueHasStr := value.(fmt.Stringer); valueHasStr {
-			valueStr, valueIsStr = valueWithStr.String(), true
+
+	val, ok0 := params[0].(string)
+	if !ok0 {
+		if v, ok := params[0].(fmt.Stringer); ok {
+			val = v.String()
+		} else {
+			return false, "Obtained value is not a string and has no .String()"
 		}
 	}
-	if valueIsStr {
-		checkOk := f(valueStr, exStr)
-		return checkOk, ""
-	}
-	return false, "Obtained value is not a string and has no .String()"
+
+	return checker.check(val, exp), ""
 }
