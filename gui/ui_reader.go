@@ -56,14 +56,14 @@ func readFile(fileName string) string {
 	return string(data)
 }
 
-func (u *gtkUI) getConfigDesktopFile(fileName string) string {
-	return u.getConfigFileFor(fileName, ".desktop")
+func getConfigDesktopFile(fileName string) string {
+	return getConfigFileFor(fileName, ".desktop")
 }
 
 //go:embed config_files
 var configFiles embed.FS
 
-func (u *gtkUI) getConfigFileFor(fileName, extension string) string {
+func getConfigFileFor(fileName, extension string) string {
 	content, e := fs.ReadFile(configFiles, filepath.Join(configFilesDir, fileName+extension))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))

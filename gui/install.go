@@ -106,7 +106,7 @@ func (i *installation) generateDesktopFile() string {
 		"ICON": icon,
 	}
 
-	output := i.u.getConfigDesktopFile("wahay")
+	output := getConfigDesktopFile("wahay")
 	for k, v := range replacements {
 		output = strings.Replace(
 			output,

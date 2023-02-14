@@ -145,8 +145,7 @@ func (s *WahayGUIUIReaderSuite) Test_readFile_failsIfErrorHappens(c *C) {
 }
 
 func (s *WahayGUIUIReaderSuite) Test_getConfigFileFor_returnsTheWahayDesktopConfigFile(c *C) {
-	u := &gtkUI{}
-	val := u.getConfigFileFor("wahay", ".desktop")
+	val := getConfigFileFor("wahay", ".desktop")
 
 	c.Assert(val, HasLen, 221)
 	c.Assert(val, Contains, "Terminal=false")
@@ -154,9 +153,7 @@ func (s *WahayGUIUIReaderSuite) Test_getConfigFileFor_returnsTheWahayDesktopConf
 }
 
 func (s *WahayGUIUIReaderSuite) Test_getConfigFileFor_panicsWhenAskedForAConfigFileThatDoesntExist(c *C) {
-	u := &gtkUI{}
-
 	c.Assert(func() {
-		u.getConfigFileFor("foobar", ".something")
+		getConfigFileFor("foobar", ".something")
 	}, PanicMatches, "(?ms).*Developer error.*")
 }
