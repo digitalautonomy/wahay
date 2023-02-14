@@ -1,3 +1,6 @@
+//go:build binary
+// +build binary
+
 package main
 
 import (
