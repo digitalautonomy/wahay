@@ -174,11 +174,11 @@ func (b *uiBuilder) get(name string) glibi.Object {
 	return obj
 }
 
-func (g *Graphics) getImage(imageName string) []byte {
-	return g.getImageBytes(imageName)
+func getImage(imageName string) []byte {
+	return getImageBytes(imageName)
 }
 
-func (g Graphics) getImageBytes(filename string) []byte {
+func getImageBytes(filename string) []byte {
 	image := filepath.Join("/"+imagesDir, filename)
 	bs, err := FSByte(false, image)
 	if err != nil {
@@ -205,7 +205,7 @@ func (g Graphics) getImagePixbufForSize(imageName string, size int) (gdki.Pixbuf
 		pl.SetSize(size, size)
 	})
 
-	bytes := g.getImage(imageName)
+	bytes := getImage(imageName)
 	if _, err := pl.Write(bytes); err != nil {
 		return nil, err
 	}

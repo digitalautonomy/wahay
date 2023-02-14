@@ -42,7 +42,7 @@ func getApplicationIcon() *icon {
 
 func (i *icon) get() []byte {
 	if i.decoded == nil {
-		i.decoded = i.g.getImage(i.name)
+		i.decoded = getImage(i.name)
 	}
 	return i.decoded
 }
