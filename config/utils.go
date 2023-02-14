@@ -3,14 +3,16 @@ package config
 import (
 	"crypto/rand"
 	"encoding/hex"
-	"github.com/cubiest/jibberjabber"
-	"golang.org/x/text/language"
 	"io"
 	mrand "math/rand"
 	"net"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strconv"
+
+	"github.com/cubiest/jibberjabber"
+	"golang.org/x/text/language"
 )
 
 // RandomString returns a string randomly generated
@@ -26,9 +28,28 @@ func RandomString(dest []byte) error {
 	return nil
 }
 
+// localHome is a function to return the home directory on Unix-like operating systems
+// Once support for Windows or other operating systems have been added, this
+// should be extracted to a file protected by build tags.
+func localHome() string {
+	u, e := user.Current()
+	if e == nil {
+		return u.HomeDir
+	}
+	return ""
+}
+
+func home() string {
+	e := os.Getenv("HOME")
+	if e != "" {
+		return e
+	}
+	return localHome()
+}
+
 // WithHome returns the given relative file/dir with the $HOME prepended
 func WithHome(file string) string {
-	return filepath.Join(os.Getenv("HOME"), file)
+	return filepath.Join(home(), file)
 }
 
 func xdgOrWithHome(env, or string) string {
