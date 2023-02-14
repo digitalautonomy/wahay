@@ -55,33 +55,27 @@ func getConfigDesktopFile(fileName string) string {
 	return getConfigFileFor(fileName, ".desktop")
 }
 
-//go:embed config_files
-var configFiles embed.FS
+//go:embed config_files styles definitions images
+var files embed.FS
 
 func getConfigFileFor(fileName, extension string) string {
-	content, e := fs.ReadFile(configFiles, filepath.Join(configFilesDir, fileName+extension))
+	content, e := fs.ReadFile(files, filepath.Join(configFilesDir, fileName+extension))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
 	return string(content)
 }
-
-//go:embed styles
-var styleFiles embed.FS
 
 func getCSSFileWithFallback(fileName string) string {
-	content, e := fs.ReadFile(styleFiles, filepath.Join(cssDir, fileName+cssExtension))
+	content, e := fs.ReadFile(files, filepath.Join(cssDir, fileName+cssExtension))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
 	return string(content)
 }
 
-//go:embed definitions
-var definitionFiles embed.FS
-
 func getDefinitionWithFileFallback(uiName string) string {
-	content, e := fs.ReadFile(definitionFiles, filepath.Join(definitionsDir, uiName+xmlExtension))
+	content, e := fs.ReadFile(files, filepath.Join(definitionsDir, uiName+xmlExtension))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
@@ -183,11 +177,8 @@ func (b *uiBuilder) get(name string) glibi.Object {
 	return obj
 }
 
-//go:embed images
-var images embed.FS
-
 func getImage(imageName string) []byte {
-	content, e := fs.ReadFile(images, filepath.Join(imagesDir, imageName))
+	content, e := fs.ReadFile(files, filepath.Join(imagesDir, imageName))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
