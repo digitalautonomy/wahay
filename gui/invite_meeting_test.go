@@ -22,7 +22,7 @@ func (s *WahayInviteMeetingSuite) Test_InviteMeeting_extractMeetingIDandPort_Suc
 	c.Assert(e2, Equals, nil)
 }
 
-func (s *WahayGUIDefinitionsSuite) Test_InviteMeeting_extractMeetingIDandPort_FailsIfNoValidUrl(c *C) {
+func (s *WahayInviteMeetingSuite) Test_InviteMeeting_extractMeetingIDandPort_FailsIfNoValidUrl(c *C) {
 	_, _, e1 := extractMeetingIDandPort("aaabbbcccddd.onion")
 	_, _, e2 := extractMeetingIDandPort("qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid:8080")
 	_, _, e3 := extractMeetingIDandPort("qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid")
