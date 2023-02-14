@@ -69,8 +69,15 @@ func getConfigFileFor(fileName, extension string) string {
 	return string(content)
 }
 
+//go:embed styles
+var styleFiles embed.FS
+
 func getCSSFileWithFallback(fileName string) string {
-	return codegen.GetFileWithFallback(fileName+cssExtension, filepath.Join("gui", cssDir), FSString)
+	content, e := fs.ReadFile(styleFiles, filepath.Join(cssDir, fileName+cssExtension))
+	if e != nil {
+		panic(fmt.Sprintf("Developer error: %v", e))
+	}
+	return string(content)
 }
 
 func getDefinitionWithFileFallback(uiName string) string {
