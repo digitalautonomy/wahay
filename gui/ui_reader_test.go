@@ -37,27 +37,7 @@ func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsDefini
 func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_panicsForNonExistingDefinition(c *C) {
 	g1 := CreateGraphics(nil, nil, nil)
 	c.Assert(func() { g1.uiBuilderFor("definitionThatDoesntExist") }, PanicMatches,
-		".*No definition found for .*")
-}
-
-func (s *WahayGUIUIReaderSuite) Test_getDefinitionWithFileFallback_returnsContentThatOnlyExistInMemory(c *C) {
-	_escData["/definitions/TestDefinition.xml"] = &_escFile{
-		local:   "definitions/TestDefinition.xml",
-		size:    326,
-		modtime: 1489449600,
-		compressed: `
-PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPGludGVyZmFjZT4KICA8b2JqZWN0
-IGNsYXNzPSJHdGtBcHBsaWNhdGlvbldpbmRvdyIgaWQ9Im1haW5XaW5kb3ciPgogICAgPHByb3BlcnR5
-IG5hbWU9ImNhbl9mb2N1cyI+RmFsc2U8L3Byb3BlcnR5PgogICAgPHByb3BlcnR5IG5hbWU9InRpdGxl
-Ij5Ub25pbyE8L3Byb3BlcnR5PgogICAgPHByb3BlcnR5IG5hbWU9ImRlZmF1bHRfd2lkdGgiPjYwMDwv
-cHJvcGVydHk+CiAgICA8cHJvcGVydHkgbmFtZT0iZGVmYXVsdF9oZWlnaHQiPjQwMDwvcHJvcGVydHk+
-CiAgPC9vYmplY3Q+CjwvaW50ZXJmYWNlPgo=
-`,
-	}
-
-	ss := getDefinitionWithFileFallback("TestDefinition")
-	c.Assert(ss, Not(Equals), "")
-	c.Assert(strings.Contains(ss, "\"GtkApplicationWindow\""), Equals, true)
+		"(?ms).*Developer error.*")
 }
 
 type testGtkWithBuilder struct {

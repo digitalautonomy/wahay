@@ -1,5 +1,3 @@
-//go:generate ./ui_generate.sh
-
 package gui
 
 import (
@@ -16,7 +14,6 @@ import (
 	"github.com/coyim/gotk3adapter/gdki"
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtki"
-	"github.com/digitalautonomy/wahay/codegen"
 )
 
 const (
@@ -80,8 +77,15 @@ func getCSSFileWithFallback(fileName string) string {
 	return string(content)
 }
 
+//go:embed definitions
+var definitionFiles embed.FS
+
 func getDefinitionWithFileFallback(uiName string) string {
-	return codegen.GetFileWithFallback(uiName+xmlExtension, filepath.Join("gui", definitionsDir), FSString)
+	content, e := fs.ReadFile(definitionFiles, filepath.Join(definitionsDir, uiName+xmlExtension))
+	if e != nil {
+		panic(fmt.Sprintf("Developer error: %v", e))
+	}
+	return string(content)
 }
 
 func getActualDefsFolder() string {

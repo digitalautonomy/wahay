@@ -37,13 +37,14 @@ BUILD_TIMESTAMP := $(shell TZ='America/Guayaquil' date '+%Y-%m-%d %H:%M:%S')
 GOPATH_SINGLE=$(shell echo $${GOPATH%%:*})
 
 BUILD_DIR := bin
-BUILD_TOOLS_DIR := .build-tools
 
 PKGS := $(shell go list ./...)
 SRC_DIRS := . $(addprefix .,$(subst github.com/digitalautonomy/wahay,,$(PKGS)))
 SRC_TEST := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*_test.go))
 SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
 SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
+
+AUTOGEN := gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/* tor/files/* client/files/*
 
 GO := go
 GOBUILD := $(GO) build
@@ -64,8 +65,6 @@ gen-ui-locale:
 deps-ci:
 	go get github.com/modocache/gover
 	go install github.com/modocache/gover
-	go get github.com/rosatolen/esc
-	go install github.com/rosatolen/esc
 	go get github.com/securego/gosec/cmd/gosec
 	go install github.com/securego/gosec/cmd/gosec
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOPATH_SINGLE)/bin latest
@@ -98,7 +97,7 @@ coverage-dev:
 	$(GO) tool cover -html coverlog
 	$(RM) coverlog
 
-$(BUILD_DIR)/wahay: gui/definitions.go $(SRC)
+$(BUILD_DIR)/wahay: $(AUTOGEN) $(SRC)
 	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
 
 build: $(BUILD_DIR)/wahay
@@ -112,16 +111,6 @@ endif
 
 clean:
 	$(RM) -rf $(BUILD_DIR)/wahay
-	$(RM) -rf $(BUILD_TOOLS_DIR)
-
-$(BUILD_TOOLS_DIR):
-	mkdir -p $@
-
-$(BUILD_TOOLS_DIR)/esc: $(BUILD_TOOLS_DIR)
-	./build/find_esc.sh $(BUILD_TOOLS_DIR)
-
-gui/definitions.go: $(BUILD_TOOLS_DIR)/esc gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/*
-	(cd gui; go generate -x ui_reader.go)
 
 # QUALITY TOOLS
 
