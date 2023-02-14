@@ -3,15 +3,16 @@ package config
 import (
 	"crypto/rand"
 	"errors"
-	"github.com/prashantv/gostub"
-	"github.com/stretchr/testify/mock"
-	"golang.org/x/text/language"
-	. "gopkg.in/check.v1"
 	"io"
 	"net"
 	"os"
 	"strings"
 	"testing/iotest"
+
+	"github.com/prashantv/gostub"
+	"github.com/stretchr/testify/mock"
+	"golang.org/x/text/language"
+	. "gopkg.in/check.v1"
 )
 
 type UtilsSuite struct{}
@@ -112,7 +113,7 @@ func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfThePortIsAvailable(c *C) 
 	mn.On("Listen", "tcp", ":10001").Return(ml, nil).Once()
 	ml.On("Close").Return(nil)
 
-	c.Assert(IsPortAvailable(10001), Equals, true)
+	c.Assert(IsPortAvailable(10001), IsTrue)
 
 	mn.AssertExpectations(c)
 	ml.AssertExpectations(c)
@@ -129,13 +130,13 @@ func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfAnotherPortIsAvailable(c 
 
 	ml.On("Close").Return(nil)
 
-	c.Assert(IsPortAvailable(10002), Equals, true)
+	c.Assert(IsPortAvailable(10002), IsTrue)
 }
 
 func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortIsNotAvailable(c *C) {
 	defer gostub.New().StubFunc(&listen, nil, errors.New("port already taken")).Reset()
 
-	c.Assert(IsPortAvailable(5555), Equals, false)
+	c.Assert(IsPortAvailable(5555), IsFalse)
 }
 
 func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortWasAvailableButSomethingWentWrongWhenTestingIt(c *C) {
@@ -143,7 +144,7 @@ func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortWasAvailableButSo
 	defer gostub.New().StubFunc(&listen, ml, nil).Reset()
 	ml.On("Close").Return(errors.New("oh no")).Once()
 
-	c.Assert(IsPortAvailable(65501), Equals, false)
+	c.Assert(IsPortAvailable(65501), IsFalse)
 }
 
 type mockRandom struct {
@@ -186,15 +187,15 @@ func (u *UtilsSuite) Test_RandomPort_ReturnsAPortBetween10000And59999(c *C) {
 }
 
 func (u *UtilsSuite) Test_CheckPort_ReturnsFalseIfTheGivenValueIsNegative(c *C) {
-	c.Assert(CheckPort(-1), Equals, false)
-	c.Assert(CheckPort(0), Equals, false)
-	c.Assert(CheckPort(65536), Equals, false)
+	c.Assert(CheckPort(-1), IsFalse)
+	c.Assert(CheckPort(0), IsFalse)
+	c.Assert(CheckPort(65536), IsFalse)
 }
 
 func (u *UtilsSuite) Test_CheckPort_ReturnsTrueIfTheGivenValueIsBetweenOneAnd65535(c *C) {
-	c.Assert(CheckPort(1), Equals, true)
-	c.Assert(CheckPort(90), Equals, true)
-	c.Assert(CheckPort(65535), Equals, true)
+	c.Assert(CheckPort(1), IsTrue)
+	c.Assert(CheckPort(90), IsTrue)
+	c.Assert(CheckPort(65535), IsTrue)
 }
 
 func (u *UtilsSuite) Test_DetectLanguage_returnsEngIfCannotDetectTheSystemLanguage(c *C) {
