@@ -28,7 +28,7 @@ func (u *gtkUI) reportError(message string) {
 
 	dlg := builder.get("dialog").(gtki.MessageDialog)
 
-	err := dlg.SetProperty("text", i18n.Sprintf("Error"))
+	err := dlg.SetProperty("text", i18n().Sprintf("Error"))
 	if err != nil {
 		panic(fmt.Sprintf("Programmer error #1: %s", err.Error()))
 	}

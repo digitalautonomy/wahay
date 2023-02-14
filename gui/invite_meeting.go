@@ -55,7 +55,7 @@ func (u *gtkUI) getCurrentMeetingWindow() *uiBuilder {
 
 func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 	if m.IsClosed() {
-		u.reportError(i18n.Sprintf("The Mumble process is down"))
+		u.reportError(i18n().Sprintf("The Mumble process is down"))
 	}
 
 	u.hideCurrentWindow()
@@ -80,12 +80,12 @@ func (u *gtkUI) openCurrentMeetingWindow(m tor.Service) {
 
 func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 	if len(data.MeetingID) == 0 {
-		u.openErrorDialog(i18n.Sprintf("The Meeting ID cannot be blank"))
+		u.openErrorDialog(i18n().Sprintf("The Meeting ID cannot be blank"))
 		return
 	}
 
 	if !isAValidMeetingID(data.MeetingID) {
-		u.reportError(i18n.Sprintf("The provided meeting ID is invalid: \n\n%s", data.MeetingID))
+		u.reportError(i18n().Sprintf("The provided meeting ID is invalid: \n\n%s", data.MeetingID))
 		return
 	}
 
@@ -111,7 +111,7 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 	u.hideLoadingWindow()
 
 	if err != nil {
-		u.openErrorDialog(i18n.Sprintf("An error occurred\n\n%s", err.Error()))
+		u.openErrorDialog(i18n().Sprintf("An error occurred\n\n%s", err.Error()))
 		u.showMainWindow()
 		return
 	}
@@ -148,7 +148,7 @@ func (u *gtkUI) openJoinWindow() {
 					"ID":   meetingID,
 					"port": port,
 				}).Error("Invalid meeting ID provided")
-				u.reportError(i18n.Sprintf("Invalid meeting ID provided"))
+				u.reportError(i18n().Sprintf("Invalid meeting ID provided"))
 				return
 			}
 

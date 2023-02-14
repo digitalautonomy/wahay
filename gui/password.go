@@ -196,19 +196,19 @@ func (u *gtkUI) captureMasterPassword(onSuccess func(), onCancel func()) {
 
 func validatePasswords(pass1, pass2 string) error {
 	if len(pass1) == 0 {
-		return errors.New(i18n.Sprintf("please enter a valid password"))
+		return errors.New(i18n().Sprintf("please enter a valid password"))
 	}
 
 	if len(pass2) == 0 {
-		return errors.New(i18n.Sprintf("enter the password confirmation"))
+		return errors.New(i18n().Sprintf("enter the password confirmation"))
 	}
 
 	if pass1 != pass2 {
-		return errors.New(i18n.Sprintf("passwords do not match"))
+		return errors.New(i18n().Sprintf("passwords do not match"))
 	}
 
 	if len(pass1) < passwordMinSize {
-		return errors.New(i18n.Sprintf("enter a password at least 6 characters long"))
+		return errors.New(i18n().Sprintf("enter a password at least 6 characters long"))
 	}
 
 	return nil

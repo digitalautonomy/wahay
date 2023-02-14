@@ -167,7 +167,7 @@ func (s *settings) processEncryptFileOption() {
 					// We keep the checkbutton checked. Nothing else change.
 					s.chkEncryptFile.SetActive(true)
 				}
-			}, i18n.Sprintf("If you disable this option, anyone could read your configuration settings"))
+			}, i18n().Sprintf("If you disable this option, anyone could read your configuration settings"))
 		} else {
 			s.u.captureMasterPassword(func() {
 				s.encryptFileOriginalValue = true

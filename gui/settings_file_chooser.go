@@ -40,12 +40,12 @@ func (u *gtkUI) getCustomFilePath() (ok bool, path string) {
 func (u *gtkUI) showCustomFilePathDialog(channel chan string, errChannel chan bool) {
 	u.doInUIThread(func() {
 		dialog, err := u.g.gtk.FileChooserDialogNewWith2Buttons(
-			i18n.Sprintf("Open file"),
+			i18n().Sprintf("Open file"),
 			u.currentWindow,
 			gtki.FILE_CHOOSER_ACTION_OPEN,
-			i18n.Sprintf("Cancel"),
+			i18n().Sprintf("Cancel"),
 			gtki.RESPONSE_CANCEL,
-			i18n.Sprintf("Open"),
+			i18n().Sprintf("Open"),
 			gtki.RESPONSE_ACCEPT)
 
 		if err != nil {

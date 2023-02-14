@@ -51,5 +51,5 @@ func init() {
 }
 
 func mumbleErrorTranslator(err error) string {
-	return i18n.Sprintf("Mumble client can't be used because:\n\n%s", err.Error())
+	return i18n().Sprintf("Mumble client can't be used because:\n\n%s", err.Error())
 }

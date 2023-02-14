@@ -85,7 +85,7 @@ func torErrorTranslator(err error) string {
 			"\n\nhttps://wahay.org/download.html"
 
 	case tor.ErrTorsocksNotInstalled:
-		return i18n.Sprintf("Ensure you have installed Torsocks in your system.\n\n" +
+		return i18n().Sprintf("Ensure you have installed Torsocks in your system.\n\n" +
 			"For more information please visit:\n\n" +
 			"https://trac.torproject.org/projects/tor/wiki/doc/torsocks")
 

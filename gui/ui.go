@@ -219,7 +219,7 @@ func (u *gtkUI) updateMainWindowStatusBar(builder *uiBuilder) {
 		cntx.AddClass("error")
 	}
 
-	lblAppStatus.SetLabel(i18n.Sprintf("We've found errors"))
+	lblAppStatus.SetLabel(i18n().Sprintf("We've found errors"))
 	btnStatusShow.SetVisible(true)
 }
 

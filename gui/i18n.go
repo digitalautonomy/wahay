@@ -3,6 +3,8 @@ package gui
 //go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar,fr
 
 import (
+	"sync"
+
 	"github.com/coyim/gotk3adapter/glibi"
 
 	"github.com/digitalautonomy/wahay/config"
@@ -14,14 +16,22 @@ import (
 	"golang.org/x/text/message"
 )
 
-var i18n *message.Printer
+var i18n = func() func() *message.Printer {
+	var o sync.Once
+	var p *message.Printer
 
-func init() {
-	tag := config.DetectLanguage()
+	initI18n := func() {
+		tag := config.DetectLanguage()
 
-	log.Infof("Detected language: %v\n", tag)
-	i18n = message.NewPrinter(tag, message.Catalog(message.DefaultCatalog))
-}
+		log.Infof("Detected language: %v\n", tag)
+		p = message.NewPrinter(tag, message.Catalog(message.DefaultCatalog))
+	}
+
+	return func() *message.Printer {
+		o.Do(initI18n)
+		return p
+	}
+}()
 
 func (b *uiBuilder) i18nProperties(objs ...string) {
 	if len(objs)%2 == 1 {
@@ -53,7 +63,7 @@ func (b *uiBuilder) i18nProperty(id, property string) {
 		fatal(e)
 	}
 
-	e = obj.SetProperty(property, i18n.Sprintf(currentVal))
+	e = obj.SetProperty(property, i18n().Sprintf(currentVal))
 	if e != nil {
 		log.Errorf("Error setting property '%s' from object with id %s (%v): %v", property, id, obj, e)
 		fatal(e)

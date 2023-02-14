@@ -39,7 +39,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 		u.servers, err = hosting.CreateServerCollection()
 		if err != nil {
 			// TODO: should we check if u.servers !== nil here?
-			u.reportError(i18n.Sprintf("Something went wrong: %s", err))
+			u.reportError(i18n().Sprintf("Something went wrong: %s", err))
 			u.switchToMainWindow()
 			return
 		}
@@ -62,7 +62,7 @@ func (u *gtkUI) realHostMeetingHandler() {
 
 	if err != nil {
 		// TODO: we should check if u.servers !== nil to reset it
-		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
+		h.u.reportError(i18n().Sprintf("Something went wrong: %s", err))
 		u.switchToMainWindow()
 		return
 	}
@@ -138,7 +138,7 @@ func (h *hostData) joinMeetingHost() {
 	}
 
 	// TODO: we should give more information to the user
-	h.u.reportError(i18n.Sprintf("we couldn't start the meeting"))
+	h.u.reportError(i18n().Sprintf("we couldn't start the meeting"))
 	h.u.switchToMainWindow()
 }
 
@@ -271,7 +271,7 @@ func (h *hostData) createNewService(err chan error) {
 			return
 		}
 
-		s.SetWelcomeText(i18n.Sprintf("Welcome to this server running <b>Wahay</b>."))
+		s.SetWelcomeText(i18n().Sprintf("Welcome to this server running <b>Wahay</b>."))
 
 		h.service = s
 
@@ -291,7 +291,7 @@ func (h *hostData) createNewConferenceRoom(complete chan bool) {
 	err := h.service.NewConferenceRoom(h.meetingPassword, su)
 	if err != nil {
 		h.u.hideLoadingWindow()
-		h.u.reportError(i18n.Sprintf("Something went wrong: %s", err))
+		h.u.reportError(i18n().Sprintf("Something went wrong: %s", err))
 		complete <- false
 		return
 	}
@@ -306,7 +306,7 @@ func (h *hostData) finishMeetingReal() {
 	// same window using the `u.reportError` function
 	err := h.service.Close()
 	if err != nil {
-		h.u.reportError(i18n.Sprintf("The meeting can't be closed: %s", err))
+		h.u.reportError(i18n().Sprintf("The meeting can't be closed: %s", err))
 	}
 
 	if h.currentWindow != nil {
@@ -362,7 +362,7 @@ func (h *hostData) copyMeetingIDToClipboard(builder *uiBuilder, label string) {
 			panic(fmt.Sprintf("programmer error: %s", err))
 		}
 
-		h.u.messageToLabel(lblMessage, i18n.Sprintf("The meeting ID has been copied to the clipboard"), 5)
+		h.u.messageToLabel(lblMessage, i18n().Sprintf("The meeting ID has been copied to the clipboard"), 5)
 	}()
 }
 
@@ -375,7 +375,7 @@ func (h *hostData) copyInvitationToClipboard(builder *uiBuilder) {
 	_ = lblMessage.SetProperty("visible", false)
 
 	go func() {
-		h.u.messageToLabel(lblMessage, i18n.Sprintf("The invitation email has been copied to the clipboard"), 5)
+		h.u.messageToLabel(lblMessage, i18n().Sprintf("The invitation email has been copied to the clipboard"), 5)
 	}()
 }
 
@@ -414,13 +414,13 @@ func (h *hostData) getInvitationMicrosoftURI() string {
 }
 
 func (h *hostData) getInvitationSubject() string {
-	return i18n.Sprintf("Join Wahay Meeting")
+	return i18n().Sprintf("Join Wahay Meeting")
 }
 
 func (h *hostData) getInvitationText() string {
-	it := i18n.Sprintf("Please join the Wahay meeting with the following details:") + "%0D%0A%0D%0A"
+	it := i18n().Sprintf("Please join the Wahay meeting with the following details:") + "%0D%0A%0D%0A"
 	if h.service.URL() != "" {
-		it = i18n.Sprintf("%sMeeting ID: %s", it, h.service.URL())
+		it = i18n().Sprintf("%sMeeting ID: %s", it, h.service.URL())
 	}
 	return it
 }
@@ -530,7 +530,7 @@ func (h *hostData) handleOnStartMeeting(b *uiBuilder) {
 	if h.asSuperUser {
 		u, _ := username.GetText()
 		if len(u) == 0 {
-			h.u.reportError(i18n.Sprintf("The username is required"))
+			h.u.reportError(i18n().Sprintf("The username is required"))
 			return
 		}
 	}
@@ -573,11 +573,11 @@ func (h *hostData) handlerOnStartMeeting(u, p gtki.Entry) {
 
 func (h *hostData) changeStartButtonText(b gtki.Button) {
 	if h.autoJoin {
-		_ = b.SetProperty("label", i18n.Sprintf("Start Meeting & Join"))
-		b.SetTooltipText(i18n.Sprintf("Start a new meeting \u0026 join"))
+		_ = b.SetProperty("label", i18n().Sprintf("Start Meeting & Join"))
+		b.SetTooltipText(i18n().Sprintf("Start a new meeting \u0026 join"))
 	} else {
-		_ = b.SetProperty("label", i18n.Sprintf("Start Meeting"))
-		b.SetTooltipText(i18n.Sprintf("Start a new meeting"))
+		_ = b.SetProperty("label", i18n().Sprintf("Start Meeting"))
+		b.SetTooltipText(i18n().Sprintf("Start a new meeting"))
 	}
 }
 
@@ -599,7 +599,7 @@ func (h *hostData) startMeetingRoutine() {
 
 	if !r {
 		// TODO: show more useful information
-		h.u.reportError(i18n.Sprintf("we couldn't start the meeting"))
+		h.u.reportError(i18n().Sprintf("we couldn't start the meeting"))
 		h.u.switchToMainWindow()
 		return
 	}
