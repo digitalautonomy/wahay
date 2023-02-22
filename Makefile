@@ -44,6 +44,8 @@ SRC_TEST := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*_test.go))
 SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
 SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
 
+SASS_SRC := sass/components/*.scss sass/mixins/*.scss sass/ui/*.scss sass/utilities/*.scss sass/variables/*.scss sass/*.scss
+CSS_GEN := gui/styles/gui.css
 AUTOGEN := gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/* tor/files/* client/files/*
 
 GO := go
@@ -55,7 +57,7 @@ COVERPROFILE := coverprofile
 
 export GO111MODULE=on
 
-.PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean coverage coverage-tails build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean
+.PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean coverage coverage-tails build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean sass-watch
 
 default: build
 
@@ -96,6 +98,17 @@ coverage-dev:
 	$(GOTEST) $(TEST_TAGS) -cover -coverprofile coverlog ./... || true
 	$(GO) tool cover -html coverlog
 	$(RM) coverlog
+
+gui/styles:
+	mkdir -p $@
+
+$(CSS_GEN): gui/styles $(SASS_SRC)
+	# this is necessary because we have a directory named sass as well, so Make gets confused
+	`which sass` ./sass/gui.scss:$@
+
+sass-watch: gui/styles $(SASS_SRC)
+	# this is necessary because we have a directory named sass as well, so Make gets confused
+	`which sass` --watch ./sass/gui.scss:$(CSS_GEN)
 
 $(BUILD_DIR)/wahay: $(AUTOGEN) $(SRC)
 	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
