@@ -1,8 +1,7 @@
 github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z4=
 github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
-github.com/coyim/gotk3adapter v0.0.0-20230124171242-94a80bfeedca h1:DDZeK3H7VVtkvXDDrdyr4j0rgW1A1YAiSCExBNcpiTM=
-github.com/coyim/gotk3adapter v0.0.0-20230124171242-94a80bfeedca/go.mod h1:JJAOyJqMTLqL/tCJEWbiJtqFa0dLxyQltzrq4tlOP+s=
-github.com/coyim/gotk3extra v0.0.0-20220706184944-5697a72a84a2/go.mod h1:Nn1D/Zd6ivBvKkL1Lts7fYAAMBKIOqAwTNDbhDJeHok=
+github.com/coyim/gotk3adapter v0.0.0-20230124190710-2f8954e934a6 h1:Sb4pafqRmwtsiFubWiHMOsY6Dakb4k7YClt/RfIxlqI=
+github.com/coyim/gotk3adapter v0.0.0-20230124190710-2f8954e934a6/go.mod h1:/U6pYktHtERlXVJ8hq57nyhVt4cjc8vnda64DqWsc9U=
 github.com/coyim/gotk3extra v0.0.0-20230124171643-ecb0d8cd94b3 h1:VBrpkS7pcJn3w+OV0PgVRuGmiM9JnQbtcc62lv7N+4M=
 github.com/coyim/gotk3extra v0.0.0-20230124171643-ecb0d8cd94b3/go.mod h1:sLgfe77R0fsgbMYlPx85RUkkr4l6DPD2GA5BNjshHyA=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=

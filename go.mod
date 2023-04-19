@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/atotto/clipboard v0.1.4
-	github.com/coyim/gotk3adapter v0.0.0-20230124171242-94a80bfeedca
+	github.com/coyim/gotk3adapter v0.0.0-20230124190710-2f8954e934a6
 	github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de
 	github.com/digitalautonomy/grumble v0.0.0-20200716175154-8faaa9240402
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
