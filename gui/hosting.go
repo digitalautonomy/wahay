@@ -74,12 +74,12 @@ func (h *hostData) showMeetingControls() {
 	builder := h.u.g.uiBuilderFor("StartHostingWindow")
 	win := builder.get("startHostingWindow").(gtki.ApplicationWindow)
 
-	onInviteOpen := func(d gtki.ApplicationWindow) {
+	onInviteOpen := func(d gtki.Window) {
 		h.currentWindow = d
 		win.Hide()
 	}
 
-	onInviteClose := func(gtki.ApplicationWindow) {
+	onInviteClose := func(gtki.Window) {
 		win.Show()
 		h.currentWindow = nil
 	}
@@ -217,14 +217,14 @@ func (h *hostData) openHostJoinMeetingWindow() {
 	builder := h.u.getCurrentHostMeetingWindow()
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
 
-	onInviteOpen := func(d gtki.ApplicationWindow) {
+	onInviteOpen := func(d gtki.Window) {
 		h.currentWindow = d
 		// Hide the current window because we don't want
 		// lot of windows there in the user's screen
 		win.Hide()
 	}
 
-	onInviteClose := func(gtki.ApplicationWindow) {
+	onInviteClose := func(gtki.Window) {
 		win.Show()
 		h.currentWindow = nil
 	}
@@ -473,12 +473,12 @@ func (h *hostData) showMeetingConfiguration() {
 	chkAutoJoinSuperUser := builder.get("chkAutoJoinSuperUser").(gtki.CheckButton)
 	btnStart := builder.get("btnStartMeeting").(gtki.Button)
 
-	onInviteOpen := func(d gtki.ApplicationWindow) {
+	onInviteOpen := func(d gtki.Window) {
 		h.currentWindow = d
 		win.Hide()
 	}
 
-	onInviteClose := func(gtki.ApplicationWindow) {
+	onInviteClose := func(gtki.Window) {
 		win.Show()
 		h.currentWindow = nil
 	}
@@ -659,13 +659,13 @@ func (h *hostData) getInvitePeopleBuilder() *uiBuilder {
 }
 
 // TODO: review this function and make a more pretty solution
-func (h *hostData) onInviteParticipants(onOpen func(d gtki.ApplicationWindow), onClose func(d gtki.ApplicationWindow)) {
+func (h *hostData) onInviteParticipants(onOpen func(d gtki.Window), onClose func(d gtki.Window)) {
 	builder := h.getInvitePeopleBuilder()
 
-	dialog := builder.get("invitePeopleWindow").(gtki.ApplicationWindow)
+	dialog := builder.get("invitePeopleWindow").(gtki.Window)
 
 	if onClose == nil {
-		onClose = func(gtki.ApplicationWindow) {
+		onClose = func(gtki.Window) {
 			h.u.enableCurrentWindow()
 		}
 	}
@@ -687,7 +687,7 @@ func (h *hostData) onInviteParticipants(onOpen func(d gtki.ApplicationWindow), o
 	})
 
 	if onOpen == nil {
-		onOpen = func(gtki.ApplicationWindow) {
+		onOpen = func(gtki.Window) {
 			h.u.disableCurrentWindow()
 		}
 	}

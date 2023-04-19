@@ -26,7 +26,7 @@ func (u *gtkUI) openHelpWindow() {
 	u.setImage(builder, "help/wahay_hosting.svg", "imgWahayHosting")
 	u.setImage(builder, "help/wahay_join.svg", "imgWahayJoin")
 
-	dialog := builder.get("helpWindow").(gtki.ApplicationWindow)
+	dialog := builder.get("helpWindow").(gtki.Window)
 
 	cleanup := func() {
 		dialog.Hide()

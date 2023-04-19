@@ -19,7 +19,7 @@ func (u *gtkUI) joinMeeting() {
 	u.openJoinWindow()
 }
 
-func (u *gtkUI) getInviteCodeEntities() (gtki.ApplicationWindow, *uiBuilder) {
+func (u *gtkUI) getInviteCodeEntities() (gtki.Window, *uiBuilder) {
 	builder := u.g.uiBuilderFor("InviteCodeWindow")
 
 	builder.i18nProperties(
