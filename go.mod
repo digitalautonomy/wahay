@@ -12,9 +12,9 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.1
 	github.com/wybiral/torgo v0.0.0-20201209223426-5fd9910eab31
-	golang.org/x/crypto v0.0.0-20200221231518-2aa609cf4a9d
-	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
-	golang.org/x/text v0.3.2
+	golang.org/x/crypto v0.8.0
+	golang.org/x/net v0.9.0
+	golang.org/x/text v0.9.0
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
 )
 
@@ -29,6 +29,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	golang.org/x/sys v0.7.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
