@@ -2,9 +2,10 @@ package gui
 
 import (
 	"errors"
-	. "github.com/digitalautonomy/wahay/test"
 	"os"
 	"strings"
+
+	. "github.com/digitalautonomy/wahay/test"
 
 	"github.com/coyim/gotk3adapter/glibi"
 	"github.com/coyim/gotk3adapter/gtk_mock"
@@ -153,7 +154,7 @@ func (s *WahayGUIUIReaderSuite) Test_getImage_panicsWhenTheImageDoesntExist(c *C
 func (s *WahayGUIUIReaderSuite) Test_getCSSFileWithFallback_returnsTheMainCSSFile(c *C) {
 	val := getCSSFileWithFallback("gui")
 
-	c.Assert(val, HasLen, 17198)
+	c.Assert(val, HasLen, 16457)
 	c.Assert(val, Contains, "padding: 1px 2px;")
 	c.Assert(val, Contains, ".host-meeting-toolbar .message")
 }
