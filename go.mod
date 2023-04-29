@@ -4,9 +4,9 @@ go 1.19
 
 require (
 	github.com/atotto/clipboard v0.1.4
-	github.com/coyim/gotk3adapter v0.0.0-20230124190710-2f8954e934a6
+	github.com/coyim/gotk3adapter v0.0.1
 	github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de
-	github.com/digitalautonomy/grumble v0.0.0-20200716175154-8faaa9240402
+	github.com/digitalautonomy/grumble v0.0.1
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0
 	github.com/prashantv/gostub v1.1.0
 	github.com/sirupsen/logrus v1.9.0
@@ -19,7 +19,7 @@ require (
 )
 
 require (
-	github.com/coyim/gotk3extra v0.0.0-20230124171643-ecb0d8cd94b3 // indirect
+	github.com/coyim/gotk3extra v0.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/protobuf v1.3.4 // indirect
 	github.com/gorilla/websocket v1.4.1 // indirect

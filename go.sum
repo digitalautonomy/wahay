@@ -2,8 +2,11 @@ github.com/atotto/clipboard v0.1.4 h1:EH0zSVneZPSuFR11BlR9YppQTVDbh5+16AmcJi4g1z
 github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
 github.com/coyim/gotk3adapter v0.0.0-20230124190710-2f8954e934a6 h1:Sb4pafqRmwtsiFubWiHMOsY6Dakb4k7YClt/RfIxlqI=
 github.com/coyim/gotk3adapter v0.0.0-20230124190710-2f8954e934a6/go.mod h1:/U6pYktHtERlXVJ8hq57nyhVt4cjc8vnda64DqWsc9U=
+github.com/coyim/gotk3adapter v0.0.1 h1:+batCWbnuMOCOW+rbUkuGPchrKk9NGXih68Qp9mhuqY=
+github.com/coyim/gotk3adapter v0.0.1/go.mod h1:Lne2FpOCVmoN22qIRDPxw3ia1s15aw1qfCmdG+8PUOE=
 github.com/coyim/gotk3extra v0.0.0-20230124171643-ecb0d8cd94b3 h1:VBrpkS7pcJn3w+OV0PgVRuGmiM9JnQbtcc62lv7N+4M=
 github.com/coyim/gotk3extra v0.0.0-20230124171643-ecb0d8cd94b3/go.mod h1:sLgfe77R0fsgbMYlPx85RUkkr4l6DPD2GA5BNjshHyA=
+github.com/coyim/gotk3extra v0.0.1/go.mod h1:W1H9cAbTYeQjtVIGP4+LuBZHlcEMJ0mxNdG2bsSa7PM=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de h1:gm6C1Gl7u3AAlMDHq3OkoYUlavdWocN5Nhkboyl0S9s=
 github.com/cubiest/jibberjabber v1.0.2-0.20200222172555-1351aa3fb4de/go.mod h1:KwsZfRYrxgmPSgdFdORzlShUdTV5/Ri6XBMVT7TVCJY=
@@ -12,6 +15,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/digitalautonomy/grumble v0.0.0-20200716175154-8faaa9240402 h1:LujPLnhnQBs1UKhiNxiUu4G/xz+CCgDFQcg1EBO+jGc=
 github.com/digitalautonomy/grumble v0.0.0-20200716175154-8faaa9240402/go.mod h1:e4nItzomi2iiJ58Bz05VSSCVHc6VttGnxMDZbqHQQ8k=
+github.com/digitalautonomy/grumble v0.0.1 h1:v443/oDNVk1xmN6AOrqHV4t/JD0VKz0ZJ68/dpEam0U=
+github.com/digitalautonomy/grumble v0.0.1/go.mod h1:uyglZFv30s77txwQjlnDwAAMFMwryIx47cno4upJ6RE=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/golang/protobuf v1.2.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/protobuf v1.3.4 h1:87PNWwrRvUSnqS4dlcBU/ftvOIBep4sYuBLlh6rX2wk=
