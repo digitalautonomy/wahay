@@ -5,7 +5,7 @@
 # The different bundles come as artifacts from the projects/wahay/bundles project in Gitlab
 # 
 
-set -x
+set -xe
 
 export TOR_VERSION=0.4.7.13
 
@@ -28,7 +28,7 @@ while IFS= read -r DISTRO_NAME
 do
  DISTRO_DIR=${APP_NAME}-${DISTRO_NAME}-${BINARY_VERSION}
  mkdir $DISTRO_DIR
- tar xf mumble-${DISTRO_NAME}-${APP_NAME}-${BINARY_VERSION}.tar.bz2 --directory $DISTRO_DIR
+ tar xf ../tmp_bundle/mumble-${DISTRO_NAME}-${APP_NAME}-${BINARY_VERSION}.tar.bz2 --directory $DISTRO_DIR
  cp -r tor $DISTRO_DIR
  cp -r ../packaging/bundles/* $DISTRO_DIR
  cp ../$BINARY_NAME $DISTRO_DIR

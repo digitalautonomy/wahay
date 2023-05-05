@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-set -x
+set -xe
 
-#Expect to have the new binary files, bundles per distributions and it's sha256sum and signature     files
+# Expect to have the new binary files, bundles per distributions and it's sha256sum and signature files
 
 APP_NAME=wahay
 TMP_DIR=~/tmp/deploy_binaries
