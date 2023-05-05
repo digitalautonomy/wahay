@@ -75,20 +75,17 @@ deploy_staging:
     - main
   script:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
+   - '$DO_SSH rm -rf $DEPLOY_DIR'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
-   - '$DO_SSH rm -rf $DEPLOY_DIR/*'
-   - 'export BINARY_NAME=$(find bin -name "wahay-*" | head -1)'
-   - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
+   - 'export BINARY_NAME=bin/wahay-*'
+   - 'echo Binary name is $BINARY_NAME'
+   - 'sha256sum $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
-   - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
-   - 'scp -P${SSH_PORT} deployment/*sh wahay@staging.wahay.app:bin/'
-   - 'scp -P${SSH_PORT} deployment/*rb wahay@staging.wahay.app:bin/'
-   - 'scp -P${SSH_PORT} deployment/*html wahay@staging.wahay.app:bin/'
-   - '$DO_SSH chmod +x bin/*sh'
-   - deployment/create-bundles.sh
-   - 'scp -P${SSH_PORT} publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
-   - '$DO_SSH bin/publish-downloads.sh'
+   - 'deployment/create-bundles.sh'
+   - 'scp -P${SSH_PORT} $BINARY_NAME publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
+   - 'scp -P${SSH_PORT} deployment/*.{sh,rb,html} wahay@staging.wahay.app:bin/'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@staging.wahay.app:$DEPLOY_DIR'
+#   - '$DO_SSH bash bin/publish-downloads.sh'
 
 deploy_production:
   image: digitalautonomy/wahay:0.1-deploy
