@@ -62,8 +62,12 @@ deploy_staging:
   - 'ssh-add <(echo "$DEPLOY_STAGING_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[staging.wahay.app]:${SSH_PORT},[185.108.76.88]:${SSH_PORT} ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEiKOqqE2wJo4OnAvgbCPLsnObcSJuoYQU0cW3QRMPqK4XHeo9RTxOE4jt+40Gy3wfzzo7q1fmUJ/QZrORcNI6Y=" >> ~/.ssh/known_hosts'
+  - 'echo -e "[debian.autonomia.digital]:4242,[185.108.78.22]:4242 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIx8qF3puSAM1UAxc3ODJTNGrgwf8mET664pPfP/ZQgiMxTIKG8Ar8h1xxP52AyQoqTLpCWOPaBkUya2Q0+SZTg=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
   - 'echo "$GPG_SIGNING_SUBKEY" | gpg --batch --import'
+  - 'ssh-add <(echo "$ARTIFACTS_REPO_SSH_PRIVATE_KEY")'
+  - mkdir tmp_bundle
+  - "scp -P4242 'artifact-repo@debian.autonomia.digital:wahay/bundles/*' tmp_bundle/"
   environment:
     name: staging
     url: https://staging.wahay.app
@@ -73,7 +77,7 @@ deploy_staging:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
-   - 'export BINARY_NAME=$(find bin -name "wahay*" | head -1)'
+   - 'export BINARY_NAME=$(find bin -name "wahay-*" | head -1)'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
    - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@staging.wahay.app:$DEPLOY_DIR/'
@@ -83,8 +87,6 @@ deploy_staging:
    - '$DO_SSH chmod +x bin/*sh'
    - deployment/create-bundles.sh
    - 'scp -P${SSH_PORT} publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
-   - deployment/create-linux-packages.sh
-   - 'scp -P${SSH_PORT} publish-linux-packages/* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - '$DO_SSH bin/publish-downloads.sh'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@staging.wahay.app:$DEPLOY_DIR'
 
@@ -110,7 +112,7 @@ deploy_production:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
    - '$DO_SSH rm -rf $DEPLOY_DIR/*'
-   - 'export BINARY_NAME=$(find bin -name "wahay*" | head -1)'
+   - 'export BINARY_NAME=$(find bin -name "wahay-*" | head -1)'
    - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
    - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@wahay.app:$DEPLOY_DIR/'

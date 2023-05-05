@@ -94,30 +94,3 @@ else
 	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2.sha256sum" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2.sha256sum \;
 	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2.sha256sum.asc" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2.sha256sum.asc \;
 fi
-
-#Move Linux Packages to the Download directory
-cd $TMP_DIR
-mkdir -p $DOWNLOADS_DIR/linux-packages/$BINARY_NAME
-mv wahay-ubuntu-${BINARY_VERSION}-amd64.deb* $DOWNLOADS_DIR/linux-packages/$BINARY_NAME/
-
-#Create symlinks for Linux Packagres (just Ubuntu for now)
-if [ $HAS_DATE -eq 0  ]
-then
-        cd $DOWNLOADS_DIR
-        rm -f *latest.deb*
-
-	ln -s linux-packages/$BINARY_NAME/${APP_NAME}-ubuntu-$BINARY_VERSION-amd64.deb ${APP_NAME}-ubuntu-latest.deb
-	ln -s linux-packages/$BINARY_NAME/${APP_NAME}-ubuntu-$BINARY_VERSION-amd64.deb.sha256sum ${APP_NAME}-ubuntu-latest.deb.sha256sum
-	ln -s linux-packages/$BINARY_NAME/${APP_NAME}-ubuntu-$BINARY_VERSION-amd64.deb.sha256sum.asc ${APP_NAME}-ubuntu-latest.deb.sha256sum.asc
-else
-
-        #Retrieve WAHAY_TAG name
-        WAHAY_TAG_NAME=${BINARY_NAME%-*******}
-
-        cd $DOWNLOADS_DIR
-        rm  -rf $WAHAY_TAG_NAME*deb*
-
-	ln -s linux-packages/$BINARY_NAME/${APP_NAME}-ubuntu-$BINARY_VERSION-amd64.deb ${APP_NAME}-ubuntu-${WAHAY_TAG_NAME}.deb
-        ln -s linux-packages/$BINARY_NAME/${APP_NAME}-ubuntu-$BINARY_VERSION-amd64.deb.sha256sum ${APP_NAME}-ubuntu-${WAHAY_TAG_NAME}.deb.sha256sum
-        ln -s linux-packages/$BINARY_NAME/${APP_NAME}-ubuntu-$BINARY_VERSION-amd64.deb.sha256sum.asc ${APP_NAME}-ubuntu-${WAHAY_TAG_NAME}.deb.sha256sum.asc
-fi

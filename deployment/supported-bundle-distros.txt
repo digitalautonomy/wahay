@@ -1,4 +1,11 @@
-ubuntu-18_04
+ubuntu-18-lts
+ubuntu-20-lts
+ubuntu-22-lts
+ubuntu-22
+ubuntu-23
 debian-10
-fedora-30
-fedora-31
+debian-11
+fedora-35
+fedora-36
+fedora-37
+fedora-38

@@ -119,7 +119,7 @@ build-ci: $(BUILD_DIR)/wahay
 ifeq ($(TAG_VERSION),)
 	cp $(BUILD_DIR)/wahay $(BUILD_DIR)/wahay-$(CURRENT_DATE)-$(GIT_SHORT_VERSION)
 else
-	cp $(BUILD_DIR)/wahay $(BUILD_DIR)/wahay-$(TAG_VERSION)-$(GIT_SHORT_VERSION)
+	cp $(BUILD_DIR)/wahay $(BUILD_DIR)/wahay-$(TAG_VERSION)
 endif
 
 clean:
