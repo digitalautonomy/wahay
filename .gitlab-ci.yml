@@ -77,7 +77,7 @@ deploy_staging:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
    - '$DO_SSH rm -rf $DEPLOY_DIR'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
-   - 'export BINARY_NAME=bin/wahay-*'
+   - 'export BINARY_NAME=$(find bin -name "wahay-*" | head -1)'
    - 'echo Binary name is $BINARY_NAME'
    - 'sha256sum $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
