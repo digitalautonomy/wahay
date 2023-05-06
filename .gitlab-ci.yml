@@ -81,12 +81,13 @@ deploy_staging:
    - 'sha256sum $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
    - 'deployment/create-bundles.sh'
-   - 'scp -P${SSH_PORT} $BINARY_NAME publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
+   - 'scp -P${SSH_PORT} $BINARY_NAME $BINARY_NAME.sha256sum $BINARY_NAME.sha256sum.asc publish-bundles/* wahay@staging.wahay.app:$DEPLOY_DIR/'
    - 'scp -P${SSH_PORT} deployment/*.{sh,rb,html} wahay@staging.wahay.app:bin/'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@staging.wahay.app:$DEPLOY_DIR'
    - '$DO_SSH bash bin/publish-downloads.sh $DEPLOY_DIR /usr/local/www/wahay/downloads $DEPLOY_DIR/$(basename $BINARY_NAME)'
    - '$DO_SSH ruby bin/generate-downloads-html.rb $DEPLOY_DIR /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html'
 
+# TODO: FIX PRODUCTION DEPLOY!
 deploy_production:
   image: digitalautonomy/wahay:0.1-deploy
   stage: deploy
