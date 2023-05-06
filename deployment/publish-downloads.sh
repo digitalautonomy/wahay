@@ -34,15 +34,15 @@ rm -rf $latest_name
 rm -rf $latest_name.sha256sum
 rm -rf $latest_name.sha256sum.asc
 
-ln -s $binary_name               wahay-latest
-ln -s $binary_name.sha256sum     wahay-latest.sha256sum
-ln -s $binary_name.sha256sum.asc wahay-latest.sha256sum.asc
+ln -sf $binary_name               wahay-latest
+ln -sf $binary_name.sha256sum     wahay-latest.sha256sum
+ln -sf $binary_name.sha256sum.asc wahay-latest.sha256sum.asc
 
 rm -rf $web_dir/bundles/$binary_name
 mkdir -p $web_dir/bundles/$binary_name
 rm -f $web_dir/bundles/latest
 cd $web_dir/bundles
-ln -s $binary_name wahay-latest
+ln -sf $binary_name wahay-latest
 
 link_bundle () {
     local path=$1

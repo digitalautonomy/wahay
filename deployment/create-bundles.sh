@@ -30,7 +30,7 @@ do
  cp -r ../packaging/bundles/* $DISTRO_DIR
  cp ../$BINARY_NAME $DISTRO_DIR
  cd $DISTRO_DIR
- ln -s $BINARY_BASE_NAME wahay
+ ln -sf $BINARY_BASE_NAME wahay
  cd ..
  tar cjf wahay-$DISTRO_NAME-$WAHAY_VERSION.tar.bz2 $DISTRO_DIR
  sha256sum wahay-$DISTRO_NAME-$WAHAY_VERSION.tar.bz2 > wahay-$DISTRO_NAME-$WAHAY_VERSION.tar.bz2.sha256sum
