@@ -18,10 +18,12 @@ TMP_DIR=$work_dir
 sum_file_path=$binary_path.sha256sum
 signature_path=$binary_path.sha256sum.asc
 
-binary_sha256_sum=$(grep --only-matching -E "[[:xdigit:]]{64}" $sum_file_path)
-if grep -q $binary_sha256_sum $web_dir/*.sha256sum > /dev/null 2>&1 ; then 
-    echo "Binary already exists - not replacing"
-    exit 0
+if [ -f $sum_file_path ]; then
+    binary_sha256_sum=$(grep --only-matching -E "[[:xdigit:]]{64}" $sum_file_path)
+    if grep -q $binary_sha256_sum $web_dir/*.sha256sum > /dev/null 2>&1 ; then 
+        echo "Binary already exists - not replacing"
+        exit 0
+    fi
 fi
 
 cp $binary_path $sum_file_path $signature_path $web_dir
