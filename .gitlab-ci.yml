@@ -85,7 +85,7 @@ deploy_staging:
    - 'scp -P${SSH_PORT} deployment/*.{sh,rb,html} wahay@staging.wahay.app:bin/'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@staging.wahay.app:$DEPLOY_DIR'
    - '$DO_SSH bash bin/publish-downloads.sh $DEPLOY_DIR /usr/local/www/wahay/downloads $DEPLOY_DIR/$(basename $BINARY_NAME)'
-   - '$DO_SSH ruby bin/generate-downloads-html.rb $DEPLOY_DIR /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html'
+   - '$DO_SSH "ruby bin/generate-downloads-html.rb $DEPLOY_DIR /usr/local/www/wahay/downloads > /usr/local/www/wahay/downloads.html"'
 
 # TODO: FIX PRODUCTION DEPLOY!
 deploy_production:
