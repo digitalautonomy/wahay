@@ -86,19 +86,22 @@ deploy_staging:
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@staging.wahay.app:$DEPLOY_DIR'
    - '$DO_SSH bash bin/publish-downloads.sh $DEPLOY_DIR /usr/local/www/wahay/downloads $DEPLOY_DIR/$(basename $BINARY_NAME)'
 
-# TODO: FIX PRODUCTION DEPLOY!
 deploy_production:
   image: digitalautonomy/wahay:0.1-deploy
   stage: deploy
   before_script:
   - export SSH_PORT=2387
   - 'export DO_SSH="ssh -p${SSH_PORT} wahay@wahay.app"'
-  - "eval $(ssh-agent -s)"
+  - 'eval $(ssh-agent -s)'
   - 'ssh-add <(echo "$DEPLOY_PRODUCTION_SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh; chmod 700 ~/.ssh
   - 'echo -e "[wahay.app]:${SSH_PORT},[185.108.76.87]:${SSH_PORT} ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBD7qdL4lFlIQwRU2h2fV6oIMBZl1ifd6bbcajd8iRYaFQfVvj7qxGvorfaBETyquGe+lk0xw3NrcJCfK1LvT2Wo=" >> ~/.ssh/known_hosts'
+  - 'echo -e "[debian.autonomia.digital]:4242,[185.108.78.22]:4242 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIx8qF3puSAM1UAxc3ODJTNGrgwf8mET664pPfP/ZQgiMxTIKG8Ar8h1xxP52AyQoqTLpCWOPaBkUya2Q0+SZTg=" >> ~/.ssh/known_hosts'
   - chmod 644 ~/.ssh/known_hosts
   - 'echo "$GPG_SIGNING_SUBKEY" | gpg --batch --import'
+  - 'ssh-add <(echo "$ARTIFACTS_REPO_SSH_PRIVATE_KEY")'
+  - mkdir tmp_bundle
+  - "scp -P4242 'artifact-repo@debian.autonomia.digital:wahay/bundles/*' tmp_bundle/"
   environment:
     name: production
     url: https://wahay.app
@@ -107,19 +110,13 @@ deploy_production:
     - main
   script:
    - 'export DEPLOY_DIR=/home/wahay/tmp/deploy_binaries'
+   - '$DO_SSH rm -rf $DEPLOY_DIR'
    - '$DO_SSH mkdir -p $DEPLOY_DIR'
-   - '$DO_SSH rm -rf $DEPLOY_DIR/*'
    - 'export BINARY_NAME=$(find bin -name "wahay-*" | head -1)'
-   - 'sha256sum  $BINARY_NAME > $BINARY_NAME.sha256sum'
+   - 'sha256sum $BINARY_NAME > $BINARY_NAME.sha256sum'
    - 'gpg --batch --detach-sign --armor -u 3EE89711B35F8B3089646FCBF3B1159FC97D5490 $BINARY_NAME.sha256sum'
-   - 'scp -P${SSH_PORT} $BINARY_NAME* wahay@wahay.app:$DEPLOY_DIR/'
-   - 'scp -P${SSH_PORT} deployment/*sh wahay@wahay.app:bin/'
-   - 'scp -P${SSH_PORT} deployment/*rb wahay@wahay.app:bin/'
-   - 'scp -P${SSH_PORT} deployment/*html wahay@wahay.app:bin/'
-   - '$DO_SSH chmod +x bin/*sh'
-   - deployment/create-bundles.sh
-   - 'scp -P${SSH_PORT} publish-bundles/* wahay@wahay.app:$DEPLOY_DIR/'
-   - deployment/create-linux-packages.sh
-   - 'scp -P${SSH_PORT} publish-linux-packages/* wahay@wahay.app:$DEPLOY_DIR/'
-   - '$DO_SSH bin/publish-downloads.sh'
+   - 'deployment/create-bundles.sh'
+   - 'scp -P${SSH_PORT} $BINARY_NAME $BINARY_NAME.sha256sum $BINARY_NAME.sha256sum.asc publish-bundles/* wahay@wahay.app:$DEPLOY_DIR/'
+   - 'scp -P${SSH_PORT} deployment/*.{sh,rb,html} wahay@wahay.app:bin/'
    - 'scp -P${SSH_PORT} deployment/supported-*-distros.txt wahay@wahay.app:$DEPLOY_DIR'
+   - '$DO_SSH bash bin/publish-downloads.sh $DEPLOY_DIR /usr/local/www/wahay/downloads $DEPLOY_DIR/$(basename $BINARY_NAME)'
