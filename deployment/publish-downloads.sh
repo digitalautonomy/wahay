@@ -1,97 +1,57 @@
 #!/usr/bin/env bash
 
-set -xe
+set -e
 
-export WAHAY_VERSION=0.1
+if [ $# -lt 3 ]; then
+    echo "usage: $0 <work dir> <web dir> <binary>"
+    exit 1
+fi
 
-# Expect to have the new binary files, bundles per distributions and it's sha256sum and signature files
+work_dir=$(realpath $1)         # absolute path
+web_dir=$(realpath $2)          # absoute path
+binary_path=$(realpath $3)      # relative path to the binary in question, either bin/wahay-TAG or bin/wahay-DATE-COMMIT
 
-APP_NAME=wahay
-TMP_DIR=/home/wahay/tmp/deploy_binaries
-SUM_FILE_FULL=$(find $TMP_DIR -name "*.sha256sum" | grep -v ".bz2\|.deb\|.rpm" | head -1)
-SHA256_SUM_FILE=$(basename $SUM_FILE_FULL)
-BINARY_SHA256_SUM=$(grep --only-matching -E "[[:xdigit:]]{64}" $SUM_FILE_FULL)
-BINARY_NAME=${SHA256_SUM_FILE%.sha256sum}
-BINARY_VERSION=${BINARY_NAME#$APP_NAME-}
-SIGNATURE_FILE=$SHA256_SUM_FILE.asc
-ALL_BUNDLES=$(find $TMP_DIR -name  "*.bz2" -exec basename {} \;)
-ALL_BUNDLES_SHA256_SUM=$(echo "$ALL_BUNDLES"  | sed 's/$/.sha256sum/')
-ALL_BUNDLES_SIGNATURES=$(echo "$ALL_BUNDLES"  | sed 's/$/.sha256sum.asc/')
-DOWNLOADS_DIR=/usr/local/www/${APP_NAME}/downloads
+binary_name=$(basename $binary_path)
 
-#Compare NEW_WAHAY_BINARY sha256sum with previous
-#hashes to avoid duplicated binaries if a binary 
-#is duplicated  clean the $TMP_DIR
-grep $BINARY_SHA256_SUM $DOWNLOADS_DIR/*.sha256sum 
-if [ $? -eq 0 ] 
-then
-    echo "Binary already exists"
-    rm -f $TMP_DIR/*
+TMP_DIR=$work_dir
+
+sum_file_path=$binary_path.sha256sum
+signature_path=$binary_path.sha256sum.asc
+
+binary_sha256_sum=$(grep --only-matching -E "[[:xdigit:]]{64}" $sum_file_path)
+if grep -q $binary_sha256_sum $web_dir/*.sha256sum > /dev/null 2>&1 ; then 
+    echo "Binary already exists - not replacing"
     exit 0
 fi
 
-#Move binaries to the download page
-cd $TMP_DIR
-mv $BINARY_NAME $SHA256_SUM_FILE $SIGNATURE_FILE $DOWNLOADS_DIR
+cp $binary_path $sum_file_path $signature_path $web_dir
 
-#Identified if the file has a date patern, that way we can
-#now that is not a tagged version
-DATE_FORMAT='20[0-9][0-9]-[0-1][0-9]-[0-3][0-9]'
-echo $BINARY_NAME | grep "$DATE_FORMAT"
-HAS_DATE=$?
+cd $web_dir
 
-if [ $HAS_DATE -eq 0  ] 
-then
-    cd $DOWNLOADS_DIR
-    
-    if [ -L ${APP_NAME}-latest ] ; then
-        rm ${APP_NAME}-latest*
-    fi
+rm -rf $latest_name
+rm -rf $latest_name.sha256sum
+rm -rf $latest_name.sha256sum.asc
 
-    ln -s $BINARY_NAME ${APP_NAME}-latest
-    ln -s $SHA256_SUM_FILE ${APP_NAME}-latest.sha256sum
-    ln -s $SIGNATURE_FILE ${APP_NAME}-latest.sha256sum.asc
-else
-    
-    #Retrieve WAHAY_TAG name        
-    WAHAY_TAG_NAME=$(echo ${BINARY_NAME%-*******})
+ln -s $binary_name               wahay-latest
+ln -s $binary_name.sha256sum     wahay-latest.sha256sum
+ln -s $binary_name.sha256sum.asc wahay-latest.sha256sum.asc
 
-    cd $DOWNLOADS_DIR
-    
-    if [ -L $WAHAY_TAG_NAME ] ; then
-        rm $WAHAY_TAG_NAME*
-    fi
-    
-    ln -s $BINARY_NAME $WAHAY_TAG_NAME
-    ln -s $SHA256_SUM_FILE $WAHAY_TAG_NAME.sha256sum
-    ln -s $SIGNATURE_FILE $WAHAY_TAG_NAME.sha256sum.asc
+rm -rf $web_dir/bundles/$binary_name
+mkdir -p $web_dir/bundles/$binary_name
+rm -f $web_dir/bundles/latest
+cd $web_dir/bundles
+ln -s $binary_name wahay-latest
 
-fi
+link_bundle () {
+    local path=$1
+    local bundle=${path%.tar.bz2}
+    local name=$(basename $bundle)
 
-#Move bundles to the download directory
-cd $TMP_DIR
-mkdir -p $DOWNLOADS_DIR/bundles/$BINARY_NAME
-echo "$ALL_BUNDLES" | xargs -I file mv file $DOWNLOADS_DIR/bundles/$BINARY_NAME
-echo "$ALL_BUNDLES_SHA256_SUM" | xargs -I file mv file $DOWNLOADS_DIR/bundles/$BINARY_NAME
-echo "$ALL_BUNDLES_SIGNATURES" | xargs -I file mv file $DOWNLOADS_DIR/bundles/$BINARY_NAME
+    cp $bundle.tar.bz2 $web_dir/bundles/$binary_name/
+    cp $bundle.tar.bz2.sha256sum $web_dir/bundles/$binary_name/
+    cp $bundle.tar.bz2.sha256sum.asc $web_dir/bundles/$binary_name/
+}
 
-# Create latest and tag name symlinks for linux bundles
-if [ $HAS_DATE -eq 0  ]
-then
-    cd $DOWNLOADS_DIR
-    rm -f *latest.tar.bz2*
-	
-	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.bz2" -exec ln -s {} file-latest.tar.bz2 \;
-	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.sha256sum" -exec ln -s {} file-latest.tar.bz2.sha256sum \;
-	echo "$ALL_BUNDLES" |  cut -d "-" -f 1,2,3 | xargs -I file find bundles/$BINARY_NAME -name "file*.asc" -exec ln -s {} file-latest.tar.bz2.sha256sum.asc \;
-else
-    #Retrieve WAHAY_TAG name
-    WAHAY_TAG_NAME=${BINARY_NAME%-*******}
-
-    cd $DOWNLOADS_DIR
-    rm  -rf $WAHAY_TAG_NAME*bz2*
-
-	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2 \;
-	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2.sha256sum" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2.sha256sum \;
-	echo "$ALL_BUNDLES" |  cut -d "-" -f 2,3 | xargs -I file find bundles/$BINARY_NAME -name "*file*.bz2.sha256sum.asc" -exec ln -s {} $WAHAY_TAG_NAME-file.bz2.sha256sum.asc \;
-fi
+for bundle in $work_dir/*.tar.bz2; do
+    link_bundle $bundle
+done
