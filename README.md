@@ -26,7 +26,10 @@ For full documentation, visit [wahay.org](https://wahay.org/documentation/index.
 
 ## Installing
 
-For end-users, please refer to installation instructions on the [website](https://wahay.org/documentation/getting-started/installation/). We provide several different options for installation there. If you are a developer, installing the application should be as easy as cloning the repository and running `make build`.
+For end-users, please refer to installation instructions on the
+[website](https://wahay.org/documentation/getting-started/installation/). We provide several different options for
+installation there. If you are a developer, installing the application should be as easy as cloning the repository and
+running `make build`.
 
 ## Security warning
 
@@ -45,8 +48,9 @@ $ export LANG="en_US.utf8"
 
 ## Compatibility
 
-The current version of Wahay is compatible with all major Linux distributions. It is possible that the application can run on OS X or
-Windows, but at this moment we have not tested this. We are planning on adding official OS X and Windows compatibility in the near future.
+The current version of Wahay is compatible with all major Linux distributions. It is possible that the application can
+run on macOS or Windows, but at the moment we have not tested it. We are planning on adding official macOS and Windows
+compatibility in the near future.
 
 ## About the developers
 
