@@ -2,25 +2,18 @@ package hosting
 
 import (
 	"errors"
-	"testing"
 
 	log "github.com/sirupsen/logrus"
 	. "gopkg.in/check.v1"
 )
 
-type ServersSuite struct{}
-
-var _ = Suite(&ServersSuite{})
-
-func Test(t *testing.T) { TestingT(t) }
-
-func (s *ServersSuite) Test_GenerateURL_returnsEmptyMumbleURLWhenNoMeetingDataHasBeenGiven(c *C) {
+func (s *hostingSuite) Test_GenerateURL_returnsEmptyMumbleURLWhenNoMeetingDataHasBeenGiven(c *C) {
 	md := MeetingData{}
 	url := md.GenerateURL()
 	c.Assert(url, Equals, "mumble://:@:0")
 }
 
-func (s *ServersSuite) Test_GenerateURL_returnsValidMumbleURLWhenAllMeetingDataHasBeenGiven(c *C) {
+func (s *hostingSuite) Test_GenerateURL_returnsValidMumbleURLWhenAllMeetingDataHasBeenGiven(c *C) {
 	md := MeetingData{
 		MeetingID: "meetingId",
 		Port:      23840,
@@ -32,7 +25,7 @@ func (s *ServersSuite) Test_GenerateURL_returnsValidMumbleURLWhenAllMeetingDataH
 	c.Assert(url, Equals, "mumble://TestUser:mypassword@meetingId:23840")
 }
 
-func (s *ServersSuite) Test_initializeSharedObjects_checkIfServersMapHasBeenCreated(c *C) {
+func (s *hostingSuite) Test_initializeSharedObjects_checkIfServersMapHasBeenCreated(c *C) {
 	servers := &servers{}
 
 	c.Assert(servers.servers, IsNil)
@@ -40,7 +33,7 @@ func (s *ServersSuite) Test_initializeSharedObjects_checkIfServersMapHasBeenCrea
 	c.Assert(servers.servers, NotNil)
 }
 
-func (s *ServersSuite) Test_initializeDataDirectory_generateExpectedDataDirectory(c *C) {
+func (s *hostingSuite) Test_initializeDataDirectory_generateExpectedDataDirectory(c *C) {
 	servers := &servers{}
 	expectedDataDir := `/tmp/wahay\d+$`
 
@@ -50,13 +43,13 @@ func (s *ServersSuite) Test_initializeDataDirectory_generateExpectedDataDirector
 	c.Assert(err, IsNil)
 }
 
-func (s *ServersSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
+func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
 	servers := &servers{}
 	err := servers.initializeLogging()
 	c.Assert(err, IsNil)
 }
 
-func (s *ServersSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
+func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
 	servers := &servers{}
 
 	c.Assert(servers.log, IsNil)
@@ -64,7 +57,7 @@ func (s *ServersSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(
 	c.Assert(servers.log, NotNil)
 }
 
-func (s *ServersSuite) Test_initializeCertificates_emptyServersInstanceReturnsNoError(c *C) {
+func (s *hostingSuite) Test_initializeCertificates_emptyServersInstanceReturnsNoError(c *C) {
 	servers := &servers{}
 	servers.log = log.New() //Must have a log or panics
 
@@ -79,7 +72,7 @@ func errHelper() error {
 	return errors.New("error2")
 }
 
-func (s *ServersSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
+func (s *hostingSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
 	err := callAll(
 		noErrHelper,
 		errHelper)
@@ -87,13 +80,13 @@ func (s *ServersSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
 	c.Assert(err.Error(), Equals, "error2")
 }
 
-func (s *ServersSuite) Test_servers_create_emptyServersInstanceReturnsNoError(c *C) {
+func (s *hostingSuite) Test_servers_create_emptyServersInstanceReturnsNoError(c *C) {
 	servers := &servers{}
 	err := servers.create()
 	c.Assert(err, IsNil)
 }
 
-func (s *ServersSuite) Test_servers_create_callFunctionTwiceReturnsAnError(c *C) {
+func (s *hostingSuite) Test_servers_create_callFunctionTwiceReturnsAnError(c *C) {
 	servers := &servers{}
 
 	servers.create()
@@ -102,9 +95,15 @@ func (s *ServersSuite) Test_servers_create_callFunctionTwiceReturnsAnError(c *C)
 	//This scenario should return an advice, an error or something
 }
 
-func (s *ServersSuite) Test_create_createServerCollection(c *C) {
+func (s *hostingSuite) Test_create_createServerCollection(c *C) {
 	servers, err := create()
 
 	c.Assert(servers, NotNil)
 	c.Assert(err, IsNil)
+}
+
+func (s *hostingSuite) Test_startListener_setTrueIntoServersStartedStatus(c *C) {
+	servers := &servers{}
+	servers.startListener()
+	c.Assert(servers.started, Equals, true)
 }
