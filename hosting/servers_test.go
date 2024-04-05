@@ -1,6 +1,7 @@
 package hosting
 
 import (
+	log "github.com/sirupsen/logrus"
 	. "gopkg.in/check.v1"
 )
 
@@ -53,3 +54,58 @@ func (s *hostingSuite) Test_startListener_setTrueIntoServersStartedStatus(c *C) 
 	servers.startListener()
 	c.Assert(servers.started, Equals, true)
 }
+
+func (s *hostingSuite) Test_initializeCertificates_emptyServersInstanceReturnsNotSuchFileOrDirectoryError(c *C) {
+	servers := &servers{}
+	servers.log = log.New() //Must have a log or panics
+	expectedErr := `open .*/cert.pem: no such file or directory`
+
+	err := servers.initializeCertificates()
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Matches, expectedErr)
+}
+
+//TODO: These tests are working, but they're generating files that we don't need in testing mode
+//I have to fix this with some mocks but that is not going to be today
+
+// func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
+// 	servers := &servers{}
+// 	err := servers.initializeLogging()
+// 	c.Assert(err, IsNil)
+// }
+
+// func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
+// 	servers := &servers{}
+// 	err := servers.initializeLogging()
+// 	c.Assert(err, IsNil)
+// }
+
+// func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
+// 	servers := &servers{}
+
+// 	c.Assert(servers.log, IsNil)
+// 	servers.initializeLogging()
+// 	c.Assert(servers.log, NotNil)
+// }
+
+// func (s *hostingSuite) Test_servers_create_emptyServersInstanceReturnsNoError(c *C) {
+// 	servers := &servers{}
+// 	err := servers.create()
+// 	c.Assert(err, IsNil)
+// }
+
+// func (s *hostingSuite) Test_servers_create_callFunctionTwiceShouldReturnAnErrorButItDoesnt(c *C) {
+// 	servers := &servers{}
+
+// 	servers.create()
+// 	err := servers.create()
+// 	c.Assert(err, IsNil)
+// 	//This scenario should return an advice, an error or something
+// }
+
+// func (s *hostingSuite) Test_create_createServerCollection(c *C) {
+// 	servers, err := create()
+
+// 	c.Assert(servers, NotNil)
+// 	c.Assert(err, IsNil)
+// }
