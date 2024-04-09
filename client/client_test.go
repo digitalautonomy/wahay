@@ -3,6 +3,7 @@ package client
 import (
 	"errors"
 
+	. "github.com/digitalautonomy/wahay/test"
 	"github.com/prashantv/gostub"
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
@@ -51,4 +52,20 @@ func (s *clientSuite) Test_pathToBinary_returnsTheValidBinaryPath(c *C) {
 	result := client.pathToBinary()
 
 	c.Assert(result, Equals, "path/to/binary")
+}
+
+func (s *clientSuite) Test_IsValid_returnsTrueWhenTheClientIsValid(c *C) {
+	client := &client{isValid: true}
+
+	result := client.IsValid()
+
+	c.Assert(result, IsTrue)
+}
+
+func (s *clientSuite) Test_IsValid_returnsFalseWhenTheClientIsNotValid(c *C) {
+	client := &client{isValid: false}
+
+	result := client.IsValid()
+
+	c.Assert(result, IsFalse)
 }
