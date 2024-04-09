@@ -22,6 +22,8 @@ const (
 	DefaultPort = 64738
 )
 
+var stat = os.Stat
+
 // Based on Whonix best practices:
 // http://www.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion
 // /wiki/Dev/Whonix_friendly_applications_best_practices#Listen_Interface
@@ -30,7 +32,7 @@ func defaultHost() string {
 	localhostInterface := "127.0.0.1"
 
 	// Based on https://stackoverflow.com/a/12518877
-	switch _, err := os.Stat("/usr/share/anon-ws-base-files/workstation"); {
+	switch _, err := stat("/usr/share/anon-ws-base-files/workstation"); {
 	case err == nil:
 		// We're in a Whonix-like environment; listen on all interfaces.
 		return allInterfaces

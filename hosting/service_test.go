@@ -1,11 +1,43 @@
 package hosting
 
 import (
+	"io/fs"
+
+	"github.com/prashantv/gostub"
+	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
 
-func (s *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenWorkstationFileHasNotBeenFound(c *C) {
-	dh := defaultHost()
+type mockStat struct {
+	mock.Mock
+}
 
-	c.Assert(dh, Equals, "127.0.0.1")
+func (m *mockStat) Stat(name string) (fs.FileInfo, error) {
+	ret := m.Called(name)
+	return nil, ret.Error(1)
+}
+
+func (s *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenWorkstationFileHasNotBeenFound(c *C) {
+	ms := &mockStat{}
+
+	defer gostub.New().Stub(&stat, ms.Stat).Reset()
+	ms.On("Stat", "/usr/share/anon-ws-base-files/workstation").Return(nil, fs.ErrNotExist).Once()
+
+	dh := defaultHost()
+	localhostInterface := "127.0.0.1"
+
+	c.Assert(dh, Equals, localhostInterface)
+	ms.AssertExpectations(c)
+}
+
+func (s *hostingSuite) Test_defaultHost_returnsAllInterfacesWhenWorkstationFileHasBeenFound(c *C) {
+	ms := &mockStat{}
+
+	defer gostub.New().Stub(&stat, ms.Stat).Reset()
+	ms.On("Stat", "/usr/share/anon-ws-base-files/workstation").Return(nil, nil).Once()
+
+	dh := defaultHost()
+	allInterfaces := "0.0.0.0"
+	c.Assert(dh, Equals, allInterfaces)
+	ms.AssertExpectations(c)
 }
