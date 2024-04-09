@@ -221,8 +221,10 @@ func (c *client) Destroy() {
 	c.binary.destroy()
 }
 
+var tempDir = ioutil.TempDir
+
 func tempFolder() (string, error) {
-	dir, err := ioutil.TempDir("", "mumble")
+	dir, err := tempDir("", "mumble")
 	if err != nil {
 		return "", err
 	}
