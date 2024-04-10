@@ -3,9 +3,12 @@ package client
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	. "github.com/digitalautonomy/wahay/test"
+	"github.com/prashantv/gostub"
+	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
 
@@ -87,21 +90,22 @@ func (s *clientSuite) Test_checkLibsDependenciesInPath_worksWithMumbleBundledDep
 	defer os.RemoveAll(tempDir)
 
 	nestedDirs := []string{"mumble", "mumble"}
-	mumbleBundlePath, err := createNestedDirsForTesting(tempDir, nestedDirs, 0755)
+	mumblePath, err := createNestedDirsForTesting(tempDir, nestedDirs, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create nested directories: %v", err)
 	}
 
-	mumbleBundlePathWithDependencies := filepath.Join(tempDir, "/mumble", mumbleBundleLibsDir)
+	mumbleBundlePath := filepath.Join(tempDir, "/mumble", mumbleBundleLibsDir)
 
-	err = os.MkdirAll(mumbleBundlePathWithDependencies, 0755)
+	err = os.MkdirAll(mumbleBundlePath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
 	}
 
-	isBundle, _ := checkLibsDependenciesInPath(mumbleBundlePath)
+	isBundle, env := checkLibsDependenciesInPath(mumblePath)
 
 	c.Assert(isBundle, IsTrue)
+	c.Assert(env, HasLen, 1)
 }
 
 func (s *clientSuite) Test_checkLibsDependenciesInPath_worksWithMumbleWithoutBundledDependencies(c *C) {
@@ -117,7 +121,57 @@ func (s *clientSuite) Test_checkLibsDependenciesInPath_worksWithMumbleWithoutBun
 		c.Fatalf("Failed to create nested directories: %v", err)
 	}
 
-	isBundle, _ := checkLibsDependenciesInPath(mumbleBundlePath)
+	isBundle, env := checkLibsDependenciesInPath(mumbleBundlePath)
 
 	c.Assert(isBundle, IsFalse)
+	c.Assert(env, HasLen, 0)
+}
+
+type mockCommand struct {
+	mock.Mock
+}
+
+func (m *mockCommand) Command(name string, arg ...string) *exec.Cmd {
+	args := m.Called(name, arg)
+	return args.Get(0).(*exec.Cmd)
+}
+
+func (m *mockCommand) Output() ([]byte, error) {
+	args := m.Called()
+	return args.Get(0).([]byte), args.Error(1)
+}
+
+func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBinary(c *C) {
+
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	nestedDirs := []string{"mumble", "lib"}
+	_, err = createNestedDirsForTesting(tempDir, nestedDirs, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create nested directories: %v", err)
+	}
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble", "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	mc := &mockCommand{}
+
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+
+	mc.On("Command", mumbleBinaryPath, []string{"-h"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"-h"}})
+
+	mc.On("Output").Return([]byte("command output"), nil)
+
+	binary := isThereAnAvailableBinary(tempDir)
+
+	c.Assert(binary.isBundle, IsTrue)
+	c.Assert(binary.isValid, IsTrue)
 }

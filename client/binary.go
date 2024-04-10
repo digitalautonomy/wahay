@@ -280,6 +280,10 @@ func searchBinaryInSystem() (*binary, error) {
 	return b, nil
 }
 
+var execCommand = exec.Command
+var commandOutput = command.Output
+var command *exec.Cmd
+
 func isThereAnAvailableBinary(path string) *binary {
 	log.WithFields(log.Fields{
 		"path": path,
@@ -293,7 +297,7 @@ func isThereAnAvailableBinary(path string) *binary {
 	bin := b.path
 	// This executes the tor command, which is under control of the code
 	/* #nosec G204 */
-	command := exec.Command(bin, "-h")
+	command = execCommand(bin, "-h")
 
 	isBundle, env := checkLibsDependenciesInPath(b.path)
 	if isBundle && len(env) > 0 {
@@ -304,7 +308,7 @@ func isThereAnAvailableBinary(path string) *binary {
 	b.isBundle = isBundle
 	b.shouldBeCopied = !isBundle
 
-	output, err := command.Output()
+	output, err := commandOutput()
 	if len(output) == 0 && err != nil {
 		b.isValid = false
 		b.lastError = errInvalidCommand
