@@ -1,6 +1,7 @@
 package client
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -127,6 +128,11 @@ func (s *clientSuite) Test_checkLibsDependenciesInPath_worksWithMumbleWithoutBun
 	c.Assert(env, HasLen, 0)
 }
 
+func (s *clientSuite) Test_isThereAnAvailableBinary_worksWhenTheProvidedPathIsEmpty(c *C) {
+	binary := isThereAnAvailableBinary("")
+	c.Assert(binary.isValid, IsFalse)
+}
+
 type mockCommand struct {
 	mock.Mock
 }
@@ -141,8 +147,7 @@ func (m *mockCommand) Output() ([]byte, error) {
 	return args.Get(0).([]byte), args.Error(1)
 }
 
-func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBinary(c *C) {
-
+func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBinaryWhenThePathIsCorrect(c *C) {
 	tempDir, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
@@ -155,7 +160,7 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBi
 		c.Fatalf("Failed to create nested directories: %v", err)
 	}
 
-	mumbleBinaryPath := filepath.Join(tempDir, "/mumble", "/mumble")
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble/mumble")
 	err = os.MkdirAll(mumbleBinaryPath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
@@ -166,12 +171,71 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBi
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
 
-	mc.On("Command", mumbleBinaryPath, []string{"-h"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"-h"}})
+	mc.On("Command", mumbleBinaryPath, []string{"-h"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"-h"}}).Once()
 
-	mc.On("Output").Return([]byte("command output"), nil)
+	mc.On("Output").Return([]byte("command output"), nil).Once()
 
 	binary := isThereAnAvailableBinary(tempDir)
 
 	c.Assert(binary.isBundle, IsTrue)
 	c.Assert(binary.isValid, IsTrue)
+}
+
+func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAInvalidMumbleBinaryWhenThePathIsIncorrect(c *C) {
+	binary := isThereAnAvailableBinary("invalid/binary/path")
+
+	c.Assert(binary.isValid, IsFalse)
+}
+
+func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidAndNotBundledMumbleBinaryWhenThePathIsCorrect(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	mc := &mockCommand{}
+
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+
+	mc.On("Command", mumbleBinaryPath, []string{"-h"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"-h"}}).Once()
+
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+
+	binary := isThereAnAvailableBinary(tempDir)
+
+	c.Assert(binary.isValid, IsTrue)
+	c.Assert(binary.isBundle, IsFalse)
+}
+
+func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAInValidMumbleBinaryOnInvalidCommand(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	mc := &mockCommand{}
+
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+
+	mc.On("Output").Return([]byte{}, errors.New("Invalid Command")).Once()
+
+	binary := isThereAnAvailableBinary(tempDir)
+
+	c.Assert(binary.isValid, IsFalse)
+	c.Assert(binary.lastError, Equals, errInvalidCommand)
 }
