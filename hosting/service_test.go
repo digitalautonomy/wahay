@@ -1,6 +1,7 @@
 package hosting
 
 import (
+	"errors"
 	"io/fs"
 
 	"github.com/prashantv/gostub"
@@ -17,7 +18,7 @@ func (m *mockStat) Stat(name string) (fs.FileInfo, error) {
 	return nil, ret.Error(1)
 }
 
-func (s *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenWorkstationFileHasNotBeenFound(c *C) {
+func (h *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenWorkstationFileHasNotBeenFound(c *C) {
 	ms := &mockStat{}
 
 	defer gostub.New().Stub(&stat, ms.Stat).Reset()
@@ -30,7 +31,7 @@ func (s *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenWorkstation
 	ms.AssertExpectations(c)
 }
 
-func (s *hostingSuite) Test_defaultHost_returnsAllInterfacesWhenWorkstationFileHasBeenFound(c *C) {
+func (h *hostingSuite) Test_defaultHost_returnsAllInterfacesWhenWorkstationFileHasBeenFound(c *C) {
 	ms := &mockStat{}
 
 	defer gostub.New().Stub(&stat, ms.Stat).Reset()
@@ -39,5 +40,18 @@ func (s *hostingSuite) Test_defaultHost_returnsAllInterfacesWhenWorkstationFileH
 	dh := defaultHost()
 	allInterfaces := "0.0.0.0"
 	c.Assert(dh, Equals, allInterfaces)
+	ms.AssertExpectations(c)
+}
+
+func (h *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenSomeKindOfErrorOcurred(c *C) {
+	ms := &mockStat{}
+
+	defer gostub.New().Stub(&stat, ms.Stat).Reset()
+	ms.On("Stat", "/usr/share/anon-ws-base-files/workstation").Return(nil, errors.New("unknown error")).Once()
+
+	dh := defaultHost()
+	localhostInterface := "127.0.0.1"
+
+	c.Assert(dh, Equals, localhostInterface)
 	ms.AssertExpectations(c)
 }
