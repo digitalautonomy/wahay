@@ -64,9 +64,11 @@ func (s *servers) initializeSharedObjects() {
 	grumbleServer.SetServers(s.servers)
 }
 
+var ioutilTempDir = ioutil.TempDir
+
 func (s *servers) initializeDataDirectory() error {
 	var e error
-	s.dataDir, e = ioutil.TempDir("", "wahay")
+	s.dataDir, e = ioutilTempDir("", "wahay")
 	if e != nil {
 		s.log.Debug(e.Error())
 		return e

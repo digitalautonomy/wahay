@@ -1,8 +1,12 @@
 package hosting
 
 import (
+	"errors"
+
 	grumbleServer "github.com/digitalautonomy/grumble/server"
+	"github.com/prashantv/gostub"
 	log "github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
 
@@ -44,6 +48,29 @@ func (s *hostingSuite) Test_initializeDataDirectory_generateExpectedDataDirector
 	err := servers.initializeDataDirectory()
 	c.Assert(servers.dataDir, Matches, expectedDataDir)
 	c.Assert(err, IsNil)
+}
+
+type mockTempDir struct {
+	mock.Mock
+}
+
+func (m *mockTempDir) TempDir(dir string, pattern string) (name string, err error) {
+	ret := m.Called(dir, pattern)
+	return ret.String(0), ret.Error(1)
+}
+
+func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreatingWahayTemporalDirectory(c *C) {
+	servers := &servers{}
+	servers.log = log.New()
+	mtd := &mockTempDir{}
+
+	defer gostub.New().Stub(&ioutilTempDir, mtd.TempDir).Reset()
+	mtd.On("TempDir", "", "wahay").Return("", errors.New("unknown error"))
+
+	err := servers.initializeDataDirectory()
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Equals, "unknown error")
+	mtd.AssertExpectations(c)
 }
 
 func (s *hostingSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
