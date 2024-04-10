@@ -1,6 +1,7 @@
 package hosting
 
 import (
+	grumbleServer "github.com/digitalautonomy/grumble/server"
 	log "github.com/sirupsen/logrus"
 	. "gopkg.in/check.v1"
 )
@@ -25,10 +26,14 @@ func (s *hostingSuite) Test_GenerateURL_returnsValidMumbleURLWhenAllMeetingDataH
 
 func (s *hostingSuite) Test_initializeSharedObjects_checkIfServersMapHasBeenCreated(c *C) {
 	servers := &servers{}
+	sm := make(map[int64]*grumbleServer.Server)
 
 	c.Assert(servers.servers, IsNil)
+
 	servers.initializeSharedObjects()
+
 	c.Assert(servers.servers, NotNil)
+	c.Assert(servers.servers, DeepEquals, sm)
 }
 
 func (s *hostingSuite) Test_initializeDataDirectory_generateExpectedDataDirectory(c *C) {
