@@ -269,8 +269,10 @@ func searchBinaryInDataDir() (*binary, error) {
 	return nil, nil
 }
 
+var execLookPath = exec.LookPath
+
 func searchBinaryInSystem() (*binary, error) {
-	path, err := exec.LookPath("mumble")
+	path, err := execLookPath("mumble")
 	if err != nil {
 		return nil, nil
 	}

@@ -239,3 +239,34 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAInValidMumbleBinaryO
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, Equals, errInvalidCommand)
 }
+
+type mockLookPath struct {
+	mock.Mock
+}
+
+func (m *mockLookPath) LookPath(file string) (string, error) {
+	args := m.Called(file)
+	return args.String(0), args.Error(1)
+}
+
+func (s *clientSuite) Test_searchBinaryInSystem_returnsTheBinaryFoundInTheSystem(c *C) {
+	ml := &mockLookPath{}
+	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
+
+	ml.On("LookPath", "mumble").Return("absolut/path/to/binary", nil).Once()
+
+	binary, err := searchBinaryInSystem()
+
+	c.Assert(binary, NotNil)
+	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_searchBinaryInSystem_returnsNilWhenTheBinaryIsNotFoundInTheSystem(c *C) {
+	ml := &mockLookPath{}
+	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
+
+	ml.On("LookPath", "mumble").Return("", errors.New("Error looking for executable")).Once()
+
+	binary, _ := searchBinaryInSystem()
+	c.Assert(binary, IsNil)
+}
