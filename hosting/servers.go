@@ -65,6 +65,7 @@ func (s *servers) initializeSharedObjects() {
 }
 
 var ioutilTempDir = ioutil.TempDir
+var osMkdirAll = os.MkdirAll
 
 func (s *servers) initializeDataDirectory() error {
 	var e error
@@ -76,7 +77,7 @@ func (s *servers) initializeDataDirectory() error {
 
 	grumbleServer.Args.DataDir = s.dataDir
 
-	e = os.MkdirAll(filepath.Join(s.dataDir, "servers"), 0700)
+	e = osMkdirAll(filepath.Join(s.dataDir, "servers"), 0700)
 	if e != nil {
 		s.log.Debug(e.Error())
 		return e

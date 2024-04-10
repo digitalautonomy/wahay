@@ -2,6 +2,7 @@ package hosting
 
 import (
 	"errors"
+	"io/fs"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
@@ -65,12 +66,41 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 	mtd := &mockTempDir{}
 
 	defer gostub.New().Stub(&ioutilTempDir, mtd.TempDir).Reset()
-	mtd.On("TempDir", "", "wahay").Return("", errors.New("unknown error"))
+	mtd.On("TempDir", "", "wahay").Return("", errors.New("unknown error related to TempDir"))
 
 	err := servers.initializeDataDirectory()
 	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Equals, "unknown error")
+	c.Assert(err.Error(), Equals, "unknown error related to TempDir")
 	mtd.AssertExpectations(c)
+}
+
+type mockMkdirAll struct {
+	mock.Mock
+}
+
+func (m *mockMkdirAll) MkdirAll(path string, perm fs.FileMode) error {
+	ret := m.Called(path, perm)
+	return ret.Error(0)
+}
+
+func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreatingServersDirectory(c *C) {
+	servers := &servers{}
+	servers.log = log.New()
+
+	mtd := &mockTempDir{}
+	defer gostub.New().Stub(&ioutilTempDir, mtd.TempDir).Reset()
+	mtd.On("TempDir", "", "wahay").Return("/tmp/wahay", nil)
+
+	mda := &mockMkdirAll{}
+	defer gostub.New().Stub(&osMkdirAll, mda.MkdirAll).Reset()
+	var perm fs.FileMode = 0700
+	mda.On("MkdirAll", "/tmp/wahay/servers", perm).Return(errors.New("unknown error related to MkdirAll"))
+
+	err := servers.initializeDataDirectory()
+	c.Assert(err.Error(), Equals, "unknown error related to MkdirAll")
+
+	mtd.AssertExpectations(c)
+	mda.AssertExpectations(c)
 }
 
 func (s *hostingSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {

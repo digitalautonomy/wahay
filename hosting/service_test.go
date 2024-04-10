@@ -47,7 +47,7 @@ func (h *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenSomeKindOfE
 	ms := &mockStat{}
 
 	defer gostub.New().Stub(&stat, ms.Stat).Reset()
-	ms.On("Stat", "/usr/share/anon-ws-base-files/workstation").Return(nil, errors.New("unknown error")).Once()
+	ms.On("Stat", "/usr/share/anon-ws-base-files/workstation").Return(nil, errors.New("unknown error related to Stat")).Once()
 
 	dh := defaultHost()
 	localhostInterface := "127.0.0.1"
