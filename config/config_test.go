@@ -1,6 +1,9 @@
 package config
 
 import (
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -11,8 +14,6 @@ import (
 type ConfigSuite struct {}
 
 var _ = Suite(&ConfigSuite{})
-
-func TestConfig(t *testing.T) { TestingT(t) }
 
 func (cs *ConfigSuite) Test_New_createsNewInstanceOfConfiguration(c *C) {
 	ac := New()
@@ -26,6 +27,17 @@ func (cs *ConfigSuite) Test_Init_setsInitializedFieldValueToTrue(c *C) {
 	ac.Init()
 
 	c.Assert(ac.initialized, Equals, true)
+}
+func TestConfig(t *testing.T) { TestingT(t) }
+
+func (cs *ConfigSuite) Test_InitDefault_initializesWithDefaultValues(c *C) {
+	ac := New()
+	ac.InitDefault()
+
+	c.Assert(ac.AsSuperUser, Equals, true)
+	c.Assert(ac.AutoJoin, Equals, true)
+	c.Assert(ac.LogsEnabled, Equals, false)
+	c.Assert(ac.RawLogFile, NotNil)
 }
 
 func (cs *ConfigSuite) Test_DetectPersistance_configurationInitializedCorrectly(c *C) {
@@ -102,6 +114,15 @@ func (cs *ConfigSuite) Test_GetUniqueID_returnsUniqueID(c *C) {
 	c.Assert(ac.UniqueConfigurationID, Equals, uniqueID)
 }
 
+func (cs *ConfigSuite) Test_onBeforeSave_uniqueConfigIDIsGeneratedCorrectly(c *C) {
+	ac := New()
+	ac.Init()
+
+	ac.onBeforeSave()
+
+	c.Assert(ac.UniqueConfigurationID, Not(Equals), "")
+}
+
 func (cs *ConfigSuite) Test_WhenLoaded_addsFunctionToList(c *C) {
 
 	ac := New()
@@ -152,6 +173,17 @@ func (cs *ConfigSuite) Test_OnAfterSave_executesCallbacksCorrectly(c *C) {
     c.Assert(len(ac.afterSave), Equals, 0)
 }
 
+func (cs *ConfigSuite) Test_Save_nonPersistentConfiguration(c *C) {
+
+	ac := New()
+
+	ac.persistentMode = false
+
+    err := ac.Save(nil)
+
+    c.Assert(err, NotNil)
+}
+
 type MockKeySupplier struct {
 	mock.Mock
 }
@@ -188,6 +220,68 @@ func (_m *MockKeySupplier) CacheFromResult(r EncryptionResult) error {
 	}
 
 	return r0
+}
+
+func (cs *ConfigSuite) Test_DeleteFileIfExists_fileExists(c *C) {
+
+	filename := "temp_file.txt"
+	_, err := os.Create(filename)
+	c.Assert(err, IsNil)
+
+	ac := &ApplicationConfig{filename: filename}
+
+	_, err = os.Stat(filename)
+	c.Assert(err, IsNil)
+
+	ac.DeleteFileIfExists()
+
+	_, err = os.Stat(filename)
+	c.Assert(os.IsNotExist(err), Equals, true)
+}
+
+func (cs *ConfigSuite) Test_DeleteFileIfExists_fileDoesNotExist(c *C) {
+	ac := New()
+	ac.filename = ""
+
+	ac.DeleteFileIfExists()
+
+	_, err := os.Stat(ac.filename)
+	c.Assert(err, NotNil)
+	c.Assert(os.IsNotExist(err), Equals, true)
+}
+
+func (cs *ConfigSuite) Test_CreateBackup_fileExists(c *C) {
+
+	filename := "temp_file.txt"
+	err := ioutil.WriteFile(filename, []byte("test data"), 0644)
+	c.Assert(err, IsNil)
+
+	ac := &ApplicationConfig{filename: filename}
+
+	ac.CreateBackup()
+
+
+	backupFile := filepath.Join(filepath.Dir(filename), appConfigFileBackup)
+	_, err = os.Stat(backupFile)
+	c.Assert(err, IsNil)
+
+
+	data, err := ioutil.ReadFile(backupFile)
+	c.Assert(err, IsNil)
+	c.Assert(string(data), Equals, "test data")
+
+	defer os.Remove(filename)
+	defer os.Remove(backupFile)
+}
+
+func (cs *ConfigSuite) Test_CreateBackup_fileDoesNotExist(c *C) {
+	ac := &ApplicationConfig{filename: "non_existent_file.txt"}
+
+	ac.CreateBackup()
+
+	backupFile := filepath.Join(filepath.Dir("non_existent_file.txt"), appConfigFileBackup)
+	_, err := os.Stat(backupFile)
+	c.Assert(os.IsNotExist(err), Equals, true)
 }
 
 func (_m *MockKeySupplier) Invalidate() {
