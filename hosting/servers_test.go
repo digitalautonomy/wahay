@@ -156,6 +156,8 @@ func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError
 		c.Fatalf("Failed to create temporary directory: %v", e)
 	}
 
+	defer os.RemoveAll(f.Name())
+
 	defer gostub.New().Stub(&pathJoin, mpj.Join).Reset()
 
 	mpj.On("Join", []string{"", "grumble.log"}).Return(f.Name())
@@ -165,13 +167,24 @@ func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError
 	mpj.AssertExpectations(c)
 }
 
-// func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
-// 	servers := &servers{}
+func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
+	servers := &servers{}
+	mpj := &mockPathJoin{}
+	f, e := os.CreateTemp("", "grumble.log")
 
-// 	c.Assert(servers.log, IsNil)
-// 	servers.initializeLogging()
-// 	c.Assert(servers.log, NotNil)
-// }
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+
+	defer os.RemoveAll(f.Name())
+
+	defer gostub.New().Stub(&pathJoin, mpj.Join).Reset()
+	mpj.On("Join", []string{"", "grumble.log"}).Return(f.Name())
+
+	c.Assert(servers.log, IsNil)
+	servers.initializeLogging()
+	c.Assert(servers.log, NotNil)
+}
 
 // func (s *hostingSuite) Test_servers_create_emptyServersInstanceReturnsNoError(c *C) {
 // 	servers := &servers{}
