@@ -284,6 +284,198 @@ func (cs *ConfigSuite) Test_CreateBackup_fileDoesNotExist(c *C) {
 	c.Assert(os.IsNotExist(err), Equals, true)
 }
 
+func (cs *ConfigSuite) Test_doAfterSave_addFunctionToList(c *C) {
+	ac := New()
+
+	testFunc := func() {}
+
+	ac.doAfterSave(testFunc)
+
+	found := false
+	for _, f := range ac.afterSave {
+		if reflect.ValueOf(f).Pointer() == reflect.ValueOf(testFunc).Pointer() {
+			found = true
+			break
+		}
+	}
+	c.Assert(found, Equals, true)
+}
+
+func (cs *ConfigSuite) Test_GetAutoJoin_returnsSettingValueToAutojoin(c *C) {
+	ac := New()
+
+	expectedAutoJoin := ac.GetAutoJoin()
+
+	c.Assert(ac.AutoJoin, Equals, expectedAutoJoin)
+}
+
+func (cs *ConfigSuite) Test_SetAutoJoin_setsAutojoinToTrue(c *C) {
+	ac := New()
+
+	c.Assert(ac.AutoJoin, Equals, false)
+
+	ac.SetAutoJoin(true)
+
+	c.Assert(ac.AutoJoin, Equals, true)
+}
+
+func (cs *ConfigSuite) Test_SetAutoJoin_setsAutojoinToFalse(c *C) {
+	ac := New()
+	ac.AutoJoin = true
+
+	ac.SetAutoJoin(false)
+
+	c.Assert(ac.AutoJoin, Equals, false)
+}
+
+func (cs *ConfigSuite) Test_GetSuperUser_returnsSettingValueToAutojoinAsSuperuser(c *C) {
+	ac := New()
+
+	expectedAsSuperUser := ac.GetAsSuperUser()
+
+	c.Assert(ac.AsSuperUser, Equals, expectedAsSuperUser)
+}
+
+func (cs *ConfigSuite) Test_SetAutoJoinAsSuperUser_setsAsSuperUserAsTrue(c *C) {
+	ac := New()
+
+	c.Assert(ac.AsSuperUser, Equals, false)
+
+	ac.SetAutoJoinSuperUser(true)
+
+	c.Assert(ac.AsSuperUser, Equals, true)
+}
+
+func (cs *ConfigSuite) Test_SetAutoJoinAsSuperUser_setsAsSuperUserAsFalse(c *C) {
+	ac := New()
+
+	ac.AsSuperUser = true
+
+	ac.SetAutoJoinSuperUser(false)
+
+	c.Assert(ac.AsSuperUser, Equals, false)
+}
+
+func (cs *ConfigSuite) Test_GetPathTor_returnsConfiguredPathToTorBin(c *C) {
+	ac := New()
+
+	ac.PathTor = "path/to/tor/binary"
+
+	expectedPathTor := ac.GetPathTor()
+
+	ac.PathTor = expectedPathTor
+
+	c.Assert(ac.PathTor, Equals, expectedPathTor)
+}
+
+func (cs *ConfigSuite) Test_SetPathTor_setsConfiguredPathToTorBin(c *C) {
+	ac := New()
+
+	expectedPathTor := "path/to/tor/binary"
+
+	ac.SetPathTor(expectedPathTor)
+
+	c.Assert(ac.PathTor, Equals, expectedPathTor)
+}
+
+func (cs *ConfigSuite) Test_GetPathTorSocks_returnsConfiguredPathToTorsocksLib(c *C) {
+	ac := New()
+
+	ac.PathTorsocks = "path/to/torsocks/library"
+
+	expectedPathTorsocks := ac.GetPathTorSocks()
+
+	c.Assert(ac.PathTorsocks, Equals, expectedPathTorsocks)
+}
+
+func (cs *ConfigSuite) Test_SetPathTorSocks_setsConfiguredPathToTorsocksLib(c *C) {
+	ac := New()
+
+	expectedPathTorsocks := "path/to/torsocks/library"
+
+	ac.SetPathTorSocks(expectedPathTorsocks)
+
+	c.Assert(ac.PathTorsocks, Equals, expectedPathTorsocks)
+}
+
+func (cs *ConfigSuite) Test_ShouldEncrypt_returnsIfConfigFileIsEncrypted(c *C) {
+	ac := New()
+
+	expectedEncryptedFile := ac.ShouldEncrypt()
+
+	c.Assert(ac.encryptedFile, Equals, expectedEncryptedFile)
+
+	ac.encryptedFile = true
+	expectedEncryptedFile = ac.ShouldEncrypt()
+
+	c.Assert(ac.encryptedFile, Equals, expectedEncryptedFile)
+}
+
+func (cs *ConfigSuite) Test_SetShouldEncrypt_setsEncryptedFileToTrue(c *C) {
+	ac := New()
+
+	ac.SetShouldEncrypt(true)
+
+	c.Assert(ac.encryptedFile, Equals, true)
+}
+
+func (cs *ConfigSuite) Test_SetShouldEncrypt_setsEncryptedFileToFalse(c *C) {
+	ac := New()
+	ac.encryptedFile = true
+
+	ac.SetShouldEncrypt(false)
+
+	c.Assert(ac.encryptedFile, Equals, false)
+}
+
+func (cs *ConfigSuite) Test_SetShouldEncrypt_noActionWhenAlreadySetToSameValue(c *C) {
+	ac := New()
+	ac.encryptedFile = true
+
+	ac.SetShouldEncrypt(true)
+
+	c.Assert(ac.encryptedFile, Equals, true)
+}
+
+func (cs *ConfigSuite) Test_LogsEnabled_ReturnsCorrectValue(c *C) {
+	ac := New()
+	ac.EnableLogs(true)
+
+	c.Assert(ac.IsLogsEnabled(), Equals, true)
+
+	ac.EnableLogs(false)
+
+	c.Assert(ac.IsLogsEnabled(), Equals, false)
+}
+
+func (cs *ConfigSuite) Test_CustomLogFile_SetAndGet(c *C) {
+	ac := New()
+	expectedLogFile := "/path/to/logs.log"
+
+	ac.SetCustomLogFile(expectedLogFile)
+
+	c.Assert(ac.GetRawLogFile(), Equals, expectedLogFile)
+}
+
+func (cs *ConfigSuite) Test_MumbleBinaryPath_SetAndGet(c *C) {
+	ac := New()
+	expectedPath := "/path/to/mumble"
+
+	ac.SetMumbleBinaryPath(expectedPath)
+
+	c.Assert(ac.MumbleBinaryPath(), Equals, expectedPath)
+}
+
+func (cs *ConfigSuite) Test_PortMumble_SetAndGet(c *C) {
+	ac := New()
+	expectedPort := "12345"
+
+	ac.SetPortMumble(expectedPort)
+
+	c.Assert(ac.GetPortMumble(), Equals, expectedPort)
+}
+
+
 func (_m *MockKeySupplier) Invalidate() {
 	_m.Called()
 }
