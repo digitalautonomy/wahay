@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/digitalautonomy/wahay/config"
 	. "github.com/digitalautonomy/wahay/test"
 	"github.com/prashantv/gostub"
 	"github.com/stretchr/testify/mock"
@@ -255,4 +256,33 @@ func (s *clientSuite) Test_searchBinaryInSystem_returnsNilWhenTheBinaryIsNotFoun
 
 	binary, _ := searchBinaryInSystem()
 	c.Assert(binary, IsNil)
+}
+
+func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFunc(c *C) {
+	conf := &config.ApplicationConfig{}
+
+	expectedFunction := func() (*binary, error) {
+		configuredPath := conf.MumbleBinaryPath()
+
+		if len(configuredPath) == 0 {
+			// No client path has been configured
+			return nil, nil
+		}
+
+		b := isThereAnAvailableBinary(configuredPath)
+		if b == nil || b.lastError != nil {
+			return nil, errNoClientInConfiguredPath
+		}
+
+		return b, nil
+	}
+
+	result := searchBinaryInConf(conf)
+	c.Assert(result, FitsTypeOf, expectedFunction)
+}
+
+func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFuncWhenANilConfIsProvided(c *C) {
+
+	result := searchBinaryInConf(nil)
+	c.Assert(result, NotNil)
 }
