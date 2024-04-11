@@ -3,6 +3,7 @@ package hosting
 import (
 	"errors"
 	"io/fs"
+	"os"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
@@ -113,6 +114,7 @@ func (s *hostingSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
 
 func (s *hostingSuite) Test_startListener_setTrueIntoServersStartedStatus(c *C) {
 	servers := &servers{}
+	c.Assert(servers.started, Equals, false)
 	servers.startListener()
 	c.Assert(servers.started, Equals, true)
 }
@@ -127,14 +129,31 @@ func (s *hostingSuite) Test_initializeCertificates_emptyServersInstanceReturnsNo
 	c.Assert(err.Error(), Matches, expectedErr)
 }
 
-//TODO: These tests are working, but they're generating files that we don't need in testing mode
-//I have to fix this with some mocks but that is not going to be today
+type mockPathJoin struct {
+	mock.Mock
+}
 
-// func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
-// 	servers := &servers{}
-// 	err := servers.initializeLogging()
-// 	c.Assert(err, IsNil)
-// }
+func (m *mockPathJoin) Join(elem ...string) string {
+	ret := m.Called(elem)
+	return ret.String(0)
+}
+
+func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
+	servers := &servers{}
+	mpj := &mockPathJoin{}
+	f, e := os.CreateTemp("", "grumble.log")
+
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+
+	defer gostub.New().Stub(&pathJoin, mpj.Join).Reset()
+
+	mpj.On("Join", []string{"", "grumble.log"}).Return(f.Name())
+
+	err := servers.initializeLogging()
+	c.Assert(err, IsNil)
+}
 
 // func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
 // 	servers := &servers{}
