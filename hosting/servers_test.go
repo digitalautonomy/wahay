@@ -119,6 +119,15 @@ func (s *hostingSuite) Test_startListener_setTrueIntoServersStartedStatus(c *C) 
 	c.Assert(servers.started, Equals, true)
 }
 
+func (s *hostingSuite) Test_startListener_statusRemainsTheSameWhenServersIsAlreadyStarted(c *C) {
+	servers := &servers{
+		started: true,
+	}
+	c.Assert(servers.started, Equals, true)
+	servers.startListener()
+	c.Assert(servers.started, Equals, true)
+}
+
 func (s *hostingSuite) Test_initializeCertificates_emptyServersInstanceReturnsNotSuchFileOrDirectoryError(c *C) {
 	servers := &servers{}
 	servers.log = log.New() //Must have a log or panics
@@ -153,13 +162,8 @@ func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError
 
 	err := servers.initializeLogging()
 	c.Assert(err, IsNil)
+	mpj.AssertExpectations(c)
 }
-
-// func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
-// 	servers := &servers{}
-// 	err := servers.initializeLogging()
-// 	c.Assert(err, IsNil)
-// }
 
 // func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
 // 	servers := &servers{}
