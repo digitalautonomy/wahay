@@ -382,7 +382,7 @@ func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheBinaryPathDoesNo
 	c.Assert(err.Error(), Equals, expectedErrorText)
 }
 
-func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsADirectory(c *C) {
+func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationFileIsADirectory(c *C) {
 	tempDir, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
@@ -449,4 +449,130 @@ func (s *clientSuite) Test_copyBinaryToDir_shouldOverwriteAnExistingFile(c *C) {
 	err = binary.copyBinaryToDir(dstf.Name())
 
 	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_copyTo_worksWithAValidBinaryPathAndAValidDestinationPath(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	destinationBinaryPath := filepath.Join(tempDir, "/destination")
+	err = os.MkdirAll(destinationBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	binary := &binary{path: srcf.Name(), isValid: true}
+
+	err = binary.copyTo(destinationBinaryPath)
+
+	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_copyTo_returnsAnErrorIfTheBinaryPathDoesNotExist(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	binary := &binary{path: "invalid/binary/path", isValid: true}
+
+	err = binary.copyTo("valid/binary/destination")
+
+	c.Assert(err.Error(), Equals, errInvalidBinaryFile.Error())
+}
+
+func (s *clientSuite) Test_copyTo_returnsAnErrorIfDestinationPathIsNotADirectory(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	_, err = os.CreateTemp(tempDir, "destination")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	binary := &binary{path: srcf.Name(), isValid: true}
+
+	err = binary.copyTo(tempDir + "/destination")
+
+	c.Assert(err.Error(), Equals, errDestinationIsNotADirectory.Error())
+}
+
+type mockJoin struct {
+	mock.Mock
+}
+
+func (m *mockJoin) Join(elem ...string) string {
+	args := m.Called(elem)
+	return args.String(0)
+}
+
+func (s *clientSuite) Test_copyTo_returnsAnErrorIfTheBinaryAlreadyExistInThePath(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	binaryDestinationPath := filepath.Join(tempDir, "/destination")
+	err = os.MkdirAll(binaryDestinationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	alreadyExistingBinary, err := os.CreateTemp(binaryDestinationPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	alreadyExistingBinaryPath := alreadyExistingBinary.Name()
+
+	mj := &mockJoin{}
+	defer gostub.New().Stub(&filepathJoin, mj.Join).Reset()
+	mj.On("Join", []string{binaryDestinationPath, "mumble"}).Return(alreadyExistingBinaryPath).Once()
+
+	binary := &binary{path: srcf.Name(), isValid: true}
+
+	err = binary.copyTo(binaryDestinationPath)
+
+	c.Assert(err.Error(), Equals, errBinaryAlreadyExists.Error())
 }

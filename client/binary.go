@@ -71,6 +71,8 @@ func (b *binary) envIfBundle() []string {
 	return b.env
 }
 
+var filepathJoin = filepath.Join
+
 func (b *binary) copyTo(path string) error {
 	if !b.isValid || !pathExists(b.path) {
 		return errInvalidBinaryFile
@@ -80,7 +82,7 @@ func (b *binary) copyTo(path string) error {
 		return errDestinationIsNotADirectory
 	}
 
-	destination := filepath.Join(path, "mumble")
+	destination := filepathJoin(path, "mumble")
 
 	if pathExists(destination) {
 		return errBinaryAlreadyExists
