@@ -104,40 +104,6 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 	mda.AssertExpectations(c)
 }
 
-func (s *hostingSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
-	err := callAll(
-		noErrHelper,
-		errHelper)
-
-	c.Assert(err.Error(), Equals, "error2")
-}
-
-func (s *hostingSuite) Test_startListener_setTrueIntoServersStartedStatus(c *C) {
-	servers := &servers{}
-	c.Assert(servers.started, Equals, false)
-	servers.startListener()
-	c.Assert(servers.started, Equals, true)
-}
-
-func (s *hostingSuite) Test_startListener_statusRemainsTheSameWhenServersIsAlreadyStarted(c *C) {
-	servers := &servers{
-		started: true,
-	}
-	c.Assert(servers.started, Equals, true)
-	servers.startListener()
-	c.Assert(servers.started, Equals, true)
-}
-
-func (s *hostingSuite) Test_initializeCertificates_emptyServersInstanceReturnsNotSuchFileOrDirectoryError(c *C) {
-	servers := &servers{}
-	servers.log = log.New() //Must have a log or panics
-	expectedErr := `open .*/cert.pem: no such file or directory`
-
-	err := servers.initializeCertificates()
-	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Matches, expectedErr)
-}
-
 type mockPathJoin struct {
 	mock.Mock
 }
@@ -184,6 +150,59 @@ func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(
 	c.Assert(servers.log, IsNil)
 	servers.initializeLogging()
 	c.Assert(servers.log, NotNil)
+}
+
+func (s *hostingSuite) Test_initializeCertificates_generatesSelfSignedCertificateWhenGrumbleDataDirIsCorrect(c *C) {
+	servers := &servers{
+		log: log.New(), //Must have a log or panics
+	}
+
+	var e error
+	grumbleServer.Args.DataDir, e = os.MkdirTemp("", "wahay")
+
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+
+	defer os.RemoveAll(grumbleServer.Args.DataDir)
+
+	err := servers.initializeCertificates()
+	c.Assert(err, IsNil)
+}
+
+func (s *hostingSuite) Test_initializeCertificates_returnsNotSuchFileOrDirectoryErrorWhenGrumbleDataDirIsNotSetted(c *C) {
+	servers := &servers{
+		log: log.New(),
+	}
+	expectedErr := `open .*/cert.pem: no such file or directory`
+
+	err := servers.initializeCertificates()
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Matches, expectedErr)
+}
+
+func (s *hostingSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
+	err := callAll(
+		noErrHelper,
+		errHelper)
+
+	c.Assert(err.Error(), Equals, "error2")
+}
+
+func (s *hostingSuite) Test_startListener_setTrueIntoServersStartedStatus(c *C) {
+	servers := &servers{}
+	c.Assert(servers.started, Equals, false)
+	servers.startListener()
+	c.Assert(servers.started, Equals, true)
+}
+
+func (s *hostingSuite) Test_startListener_statusRemainsTheSameWhenServersIsAlreadyStarted(c *C) {
+	servers := &servers{
+		started: true,
+	}
+	c.Assert(servers.started, Equals, true)
+	servers.startListener()
+	c.Assert(servers.started, Equals, true)
 }
 
 // func (s *hostingSuite) Test_servers_create_emptyServersInstanceReturnsNoError(c *C) {

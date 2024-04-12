@@ -87,7 +87,6 @@ func (s *servers) initializeDataDirectory() error {
 }
 
 var pathJoin = path.Join
-var logNew = log.New
 
 func (s *servers) initializeLogging() error {
 	logDir := pathJoin(s.dataDir, "grumble.log")
@@ -98,7 +97,7 @@ func (s *servers) initializeLogging() error {
 		return err
 	}
 
-	l := logNew()
+	l := log.New()
 	l.SetOutput(&logtarget.Target)
 	s.log = l
 	s.log.Info("Grumble")
