@@ -189,6 +189,8 @@ func setSuperUser(username, password string) serverModifier {
 	}
 }
 
+var osMkdir = os.Mkdir
+
 func (s *servers) CreateServer(modifiers ...serverModifier) (Server, error) {
 	s.nextID++
 
@@ -199,7 +201,7 @@ func (s *servers) CreateServer(modifiers ...serverModifier) (Server, error) {
 
 	s.servers[serv.Id] = serv
 
-	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
+	err = osMkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
 	if err != nil {
 		return nil, err
 	}

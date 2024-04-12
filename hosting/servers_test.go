@@ -2,8 +2,10 @@ package hosting
 
 import (
 	"errors"
+	"fmt"
 	"io/fs"
 	"os"
+	"path/filepath"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
@@ -75,11 +77,11 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 	mtd.AssertExpectations(c)
 }
 
-type mockMkdirAll struct {
+type mockOs struct {
 	mock.Mock
 }
 
-func (m *mockMkdirAll) MkdirAll(path string, perm fs.FileMode) error {
+func (m *mockOs) MkdirAll(path string, perm fs.FileMode) error {
 	ret := m.Called(path, perm)
 	return ret.Error(0)
 }
@@ -92,16 +94,16 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 	defer gostub.New().Stub(&ioutilTempDir, mtd.TempDir).Reset()
 	mtd.On("TempDir", "", "wahay").Return("/tmp/wahay", nil)
 
-	mda := &mockMkdirAll{}
-	defer gostub.New().Stub(&osMkdirAll, mda.MkdirAll).Reset()
+	mo := &mockOs{}
+	defer gostub.New().Stub(&osMkdirAll, mo.MkdirAll).Reset()
 	var perm fs.FileMode = 0700
-	mda.On("MkdirAll", "/tmp/wahay/servers", perm).Return(errors.New("unknown error related to MkdirAll"))
+	mo.On("MkdirAll", "/tmp/wahay/servers", perm).Return(errors.New("unknown error related to MkdirAll"))
 
 	err := servers.initializeDataDirectory()
 	c.Assert(err.Error(), Equals, "unknown error related to MkdirAll")
 
 	mtd.AssertExpectations(c)
-	mda.AssertExpectations(c)
+	mo.AssertExpectations(c)
 }
 
 type mockPathJoin struct {
@@ -205,24 +207,33 @@ func (s *hostingSuite) Test_startListener_statusRemainsTheSameWhenServersIsAlrea
 	c.Assert(servers.started, Equals, true)
 }
 
-// func (s *hostingSuite) Test_servers_create_emptyServersInstanceReturnsNoError(c *C) {
-// 	servers := &servers{}
-// 	err := servers.create()
-// 	c.Assert(err, IsNil)
-// }
+func (m *mockOs) Mkdir(name string, perm fs.FileMode) error {
+	ret := m.Called(name, perm)
+	return ret.Error(0)
+}
 
-// func (s *hostingSuite) Test_servers_create_callFunctionTwiceShouldReturnAnErrorButItDoesnt(c *C) {
-// 	servers := &servers{}
+func (s *hostingSuite) Test_CreateServer_setDefaultOptionsOnlyReturnsNoError(c *C) {
+	f, e := os.CreateTemp("", "wahay")
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
 
-// 	servers.create()
-// 	err := servers.create()
-// 	c.Assert(err, IsNil)
-// 	//This scenario should return an advice, an error or something
-// }
+	defer os.RemoveAll(f.Name())
 
-// func (s *hostingSuite) Test_create_createServerCollection(c *C) {
-// 	servers, err := create()
+	servers := &servers{
+		nextID:  1,
+		servers: make(map[int64]*grumbleServer.Server),
+		dataDir: f.Name(),
+	}
 
-// 	c.Assert(servers, NotNil)
-// 	c.Assert(err, IsNil)
-// }
+	mo := &mockOs{}
+
+	defer gostub.New().Stub(&osMkdir, mo.Mkdir).Reset()
+
+	path := filepath.Join(servers.dataDir, "servers", fmt.Sprintf("%v", (servers.nextID+1)))
+	var perm fs.FileMode = 0750
+
+	mo.On("Mkdir", path, perm).Return(nil).Once()
+	_, err := servers.CreateServer(setDefaultOptions)
+	c.Assert(err, IsNil)
+}
