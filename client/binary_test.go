@@ -286,3 +286,29 @@ func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFuncWhenANilConfIsPro
 	result := searchBinaryInConf(nil)
 	c.Assert(result, NotNil)
 }
+
+func (s *clientSuite) Test_remove_removesTemporaryDirectoryContainingTheMumbleClient(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	binary := &binary{isTemporary: true, path: mumbleBinaryPath}
+
+	_, err = os.Stat(mumbleBinaryPath)
+
+	c.Assert(err, IsNil)
+
+	binary.remove()
+
+	_, err = os.Stat(mumbleBinaryPath)
+
+	c.Assert(err, NotNil)
+}
