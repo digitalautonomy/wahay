@@ -312,3 +312,141 @@ func (s *clientSuite) Test_remove_removesTemporaryDirectoryContainingTheMumbleCl
 
 	c.Assert(err, NotNil)
 }
+
+func (s *clientSuite) Test_copyBinaryToDir_copyTheBinaryToANewFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mumbleBinaryDestinationPath := filepath.Join(tempDir, "/destination")
+	err = os.MkdirAll(mumbleBinaryDestinationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	binary := &binary{path: srcf.Name()}
+
+	err = binary.copyBinaryToDir(mumbleBinaryDestinationPath + "/mumble")
+
+	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsInvalid(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	binary := &binary{path: srcf.Name()}
+
+	err = binary.copyBinaryToDir("invalid/binary/destination")
+
+	expectedErrorText := "open" + " invalid/binary/destination:" + " no such file or directory"
+
+	c.Assert(err.Error(), Equals, expectedErrorText)
+}
+
+func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheBinaryPathDoesNotExist(c *C) {
+
+	binary := &binary{path: "invalid/binary/path"}
+
+	err := binary.copyBinaryToDir("invalid/binary/destination")
+
+	expectedErrorText := "open" + " invalid/binary/path:" + " no such file or directory"
+
+	c.Assert(err.Error(), Equals, expectedErrorText)
+}
+
+func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsADirectory(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mumbleBinaryDestinationPath := filepath.Join(tempDir, "/destination")
+	err = os.MkdirAll(mumbleBinaryDestinationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	binary := &binary{path: srcf.Name()}
+
+	err = binary.copyBinaryToDir(mumbleBinaryDestinationPath)
+
+	expectedErrorText := "open " + mumbleBinaryDestinationPath + ": is a directory"
+
+	c.Assert(err.Error(), Equals, expectedErrorText)
+}
+
+func (s *clientSuite) Test_copyBinaryToDir_shouldOverwriteAnExistingFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mumbleBinaryDestinationPath := filepath.Join(tempDir, "/destination")
+	err = os.MkdirAll(mumbleBinaryDestinationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	dstf, err := os.CreateTemp(mumbleBinaryPath, "existingFile")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	binary := &binary{path: srcf.Name()}
+
+	err = binary.copyBinaryToDir(dstf.Name())
+
+	c.Assert(err, IsNil)
+}
