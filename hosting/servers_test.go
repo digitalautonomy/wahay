@@ -2,10 +2,8 @@ package hosting
 
 import (
 	"errors"
-	"fmt"
 	"io/fs"
 	"os"
-	"path/filepath"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
@@ -207,33 +205,22 @@ func (s *hostingSuite) Test_startListener_statusRemainsTheSameWhenServersIsAlrea
 	c.Assert(servers.started, Equals, true)
 }
 
-func (m *mockOs) Mkdir(name string, perm fs.FileMode) error {
-	ret := m.Called(name, perm)
-	return ret.Error(0)
-}
-
 func (s *hostingSuite) Test_CreateServer_setDefaultOptionsOnlyReturnsNoError(c *C) {
-	f, e := os.CreateTemp("", "wahay")
+	path := "/tmp/wahay"
+	var perm fs.FileMode = 0750
+	e := os.MkdirAll(path, perm)
 	if e != nil {
 		c.Fatalf("Failed to create temporary directory: %v", e)
 	}
 
-	defer os.RemoveAll(f.Name())
+	defer os.RemoveAll(path)
 
 	servers := &servers{
 		nextID:  1,
 		servers: make(map[int64]*grumbleServer.Server),
-		dataDir: f.Name(),
+		dataDir: path,
 	}
 
-	mo := &mockOs{}
-
-	defer gostub.New().Stub(&osMkdir, mo.Mkdir).Reset()
-
-	path := filepath.Join(servers.dataDir, "servers", fmt.Sprintf("%v", (servers.nextID+1)))
-	var perm fs.FileMode = 0750
-
-	mo.On("Mkdir", path, perm).Return(nil).Once()
 	_, err := servers.CreateServer(setDefaultOptions)
 	c.Assert(err, IsNil)
 }

@@ -189,11 +189,8 @@ func setSuperUser(username, password string) serverModifier {
 	}
 }
 
-var osMkdir = os.Mkdir
-
 func (s *servers) CreateServer(modifiers ...serverModifier) (Server, error) {
 	s.nextID++
-
 	serv, err := grumbleServer.NewServer(int64(s.nextID))
 	if err != nil {
 		return nil, err
@@ -201,7 +198,8 @@ func (s *servers) CreateServer(modifiers ...serverModifier) (Server, error) {
 
 	s.servers[serv.Id] = serv
 
-	err = osMkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
+	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
+	fmt.Println(err)
 	if err != nil {
 		return nil, err
 	}
