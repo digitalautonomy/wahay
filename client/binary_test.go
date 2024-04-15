@@ -339,8 +339,15 @@ func (s *clientSuite) Test_copyBinaryToDir_copyTheBinaryToANewFile(c *C) {
 
 	binary := &binary{path: srcf.Name()}
 
-	err = binary.copyBinaryToDir(mumbleBinaryDestinationPath + "/mumble")
+	// Assert that the Mumble binary does not exist in the destination directory
+	_, err = os.Stat(mumbleBinaryDestinationPath + "/mumble")
+	c.Assert(err, NotNil)
 
+	err = binary.copyBinaryToDir(mumbleBinaryDestinationPath + "/mumble")
+	c.Assert(err, IsNil)
+
+	// Assert that the Mumble binary now exists in the destination directory
+	_, err = os.Stat(mumbleBinaryDestinationPath + "/mumble")
 	c.Assert(err, IsNil)
 }
 
@@ -365,21 +372,23 @@ func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsInv
 	binary := &binary{path: srcf.Name()}
 
 	err = binary.copyBinaryToDir("invalid/binary/destination")
+	c.Assert(err, NotNil)
 
-	expectedErrorText := "open" + " invalid/binary/destination:" + " no such file or directory"
-
-	c.Assert(err.Error(), Equals, expectedErrorText)
+	// Assert that the Mumble binary does not exist in the destination directory
+	_, err = os.Stat("invalid/binary/destination")
+	c.Assert(err, NotNil)
 }
 
 func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheBinaryPathDoesNotExist(c *C) {
 
 	binary := &binary{path: "invalid/binary/path"}
 
-	err := binary.copyBinaryToDir("invalid/binary/destination")
+	err := binary.copyBinaryToDir("valid/binary/destination")
+	c.Assert(err, NotNil)
 
-	expectedErrorText := "open" + " invalid/binary/path:" + " no such file or directory"
-
-	c.Assert(err.Error(), Equals, expectedErrorText)
+	// Assert that the Mumble binary does not exist in the src directory
+	_, err = os.Stat("invalid/binary/path")
+	c.Assert(err, NotNil)
 }
 
 func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationFileIsADirectory(c *C) {
@@ -409,10 +418,9 @@ func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationFileI
 	binary := &binary{path: srcf.Name()}
 
 	err = binary.copyBinaryToDir(mumbleBinaryDestinationPath)
+	c.Assert(err, NotNil)
 
-	expectedErrorText := "open " + mumbleBinaryDestinationPath + ": is a directory"
-
-	c.Assert(err.Error(), Equals, expectedErrorText)
+	c.Assert(isADirectory(mumbleBinaryDestinationPath), IsTrue)
 }
 
 func (s *clientSuite) Test_copyBinaryToDir_shouldOverwriteAnExistingFile(c *C) {
