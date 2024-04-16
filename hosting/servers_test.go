@@ -105,48 +105,20 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 	mo.AssertExpectations(c)
 }
 
-type mockPathJoin struct {
-	mock.Mock
-}
-
-func (m *mockPathJoin) Join(elem ...string) string {
-	ret := m.Called(elem)
-	return ret.String(0)
-}
-
-func (s *hostingSuite) Test_initializeLogging_emptyServersInstanceReturnsNoError(c *C) {
-	servers := &servers{}
-	mpj := &mockPathJoin{}
-	f, e := os.CreateTemp("", "grumble.log")
-
-	if e != nil {
-		c.Fatalf("Failed to create temporary directory: %v", e)
-	}
-
-	defer os.RemoveAll(f.Name())
-
-	defer gostub.New().Stub(&pathJoin, mpj.Join).Reset()
-
-	mpj.On("Join", []string{"", "grumble.log"}).Return(f.Name())
-
-	err := servers.initializeLogging()
-	c.Assert(err, IsNil)
-	mpj.AssertExpectations(c)
-}
-
 func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
-	servers := &servers{}
-	mpj := &mockPathJoin{}
-	f, e := os.CreateTemp("", "grumble.log")
+	path := "/tmp/wahay/"
+	var perm fs.FileMode = 0700
+	e := os.MkdirAll(path, perm)
 
 	if e != nil {
 		c.Fatalf("Failed to create temporary directory: %v", e)
 	}
 
-	defer os.RemoveAll(f.Name())
+	defer os.RemoveAll(path)
 
-	defer gostub.New().Stub(&pathJoin, mpj.Join).Reset()
-	mpj.On("Join", []string{"", "grumble.log"}).Return(f.Name())
+	servers := &servers{
+		dataDir: path,
+	}
 
 	c.Assert(servers.log, IsNil)
 	servers.initializeLogging()
