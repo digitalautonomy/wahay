@@ -283,3 +283,31 @@ func (s *hostingSuite) Test_CreateServer_setSuperUserOnlyReturnsAServerInstance(
 	c.Assert(err, IsNil)
 	c.Assert(reflect.TypeOf(serv), DeepEquals, reflect.TypeOf(&server{}))
 }
+
+func (s *hostingSuite) Test_CreateServer_sendSeveralServerModifiersReturnsAServerInstanceWithNoErrors(c *C) {
+	path := "/tmp/wahay/"
+	var perm fs.FileMode = 0700
+	e := os.MkdirAll(filepath.Join(path, "servers"), perm)
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+
+	defer os.RemoveAll(path)
+
+	servers := &servers{
+		nextID:  1,
+		servers: make(map[int64]*grumbleServer.Server),
+		dataDir: path,
+	}
+
+	serv, err := servers.CreateServer(
+		setDefaultOptions,
+		setWelcomeText("hello wahay"),
+		setPort("1234"),
+		setPassword("pAwd12!@"),
+		setSuperUser("root", "pAwd12!@"),
+	)
+
+	c.Assert(err, IsNil)
+	c.Assert(reflect.TypeOf(serv), DeepEquals, reflect.TypeOf(&server{}))
+}
