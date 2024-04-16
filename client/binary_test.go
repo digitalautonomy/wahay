@@ -639,3 +639,82 @@ func (s *clientSuite) Test_copyTo_returnsAnErrorIfTheBinaryAlreadyExistInThePath
 
 	c.Assert(err.Error(), Equals, errBinaryAlreadyExists.Error())
 }
+
+type mockGetwd struct {
+	mock.Mock
+}
+
+func (m *mockGetwd) Getwd() (string, error) {
+	args := m.Called()
+	return args.String(0), args.Error(1)
+}
+
+func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAValidBinaryIfABinaryFileIsFoundInTheCurrentWorkingDirectory(c *C) {
+	currentWorkingDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(currentWorkingDirectory)
+
+	mumbleBinaryPath := filepath.Join(currentWorkingDirectory, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	binaryFile, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+	mg := &mockGetwd{}
+	defer gostub.New().Stub(&osGetwd, mg.Getwd).Reset()
+	mg.On("Getwd").Return(currentWorkingDirectory, nil).Once()
+
+	mj := &mockJoin{}
+	defer gostub.New().Stub(&filepathJoin, mj.Join).Reset()
+	mj.On("Join", []string{currentWorkingDirectory, mumbleBundlePath}).Return(binaryFile.Name())
+
+	mc := &mockCommand{}
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+	mc.On("Command", binaryFile.Name(), []string{"-h"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"-h"}}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+
+	binary, err := searchBinaryInCurrentWorkingDir()
+	c.Assert(binary.isValid, IsTrue)
+	c.Assert(binary.lastError, IsNil)
+	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_searchBinaryInLocalDir_returnsNilIfThereIsAnErrorGettingTheCurrentDirectory(c *C) {
+	currentWorkingDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(currentWorkingDirectory)
+
+	mg := &mockGetwd{}
+	defer gostub.New().Stub(&osGetwd, mg.Getwd).Reset()
+	mg.On("Getwd").Return("", errors.New("Getwd error")).Once()
+
+	binary, err := searchBinaryInCurrentWorkingDir()
+	c.Assert(binary, IsNil)
+	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAInvalidBinaryIfABinaryFileIsNotFoundInTheCurrentWorkingDirectory(c *C) {
+	currentWorkingDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(currentWorkingDirectory)
+
+	mg := &mockGetwd{}
+	defer gostub.New().Stub(&osGetwd, mg.Getwd).Reset()
+	mg.On("Getwd").Return(currentWorkingDirectory, nil).Once()
+
+	binary, err := searchBinaryInCurrentWorkingDir()
+	c.Assert(binary.isValid, IsFalse)
+	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
+	c.Assert(err, IsNil)
+}

@@ -243,13 +243,15 @@ func searchBinaryInLocalDir() (*binary, error) {
 	return b, nil
 }
 
+var osGetwd = os.Getwd
+
 func searchBinaryInCurrentWorkingDir() (*binary, error) {
-	cwDir, err := os.Getwd()
+	cwDir, err := osGetwd()
 	if err != nil {
 		return nil, nil
 	}
 
-	b := isThereAnAvailableBinary(filepath.Join(cwDir, mumbleBundlePath))
+	b := isThereAnAvailableBinary(filepathJoin(cwDir, mumbleBundlePath))
 
 	return b, nil
 }
