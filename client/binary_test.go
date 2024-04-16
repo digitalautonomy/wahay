@@ -281,27 +281,60 @@ func (s *clientSuite) Test_searchBinaryInSystem_returnsNilWhenTheBinaryIsNotFoun
 	c.Assert(binary, IsNil)
 }
 
-func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFunc(c *C) {
-	conf := &config.ApplicationConfig{}
+func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionWorksWithAValidConfiguredPath(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
 
-	expectedFunction := func() (*binary, error) {
-		configuredPath := conf.MumbleBinaryPath()
-
-		if len(configuredPath) == 0 {
-			// No client path has been configured
-			return nil, nil
-		}
-
-		b := isThereAnAvailableBinary(configuredPath)
-		if b == nil || b.lastError != nil {
-			return nil, errNoClientInConfiguredPath
-		}
-
-		return b, nil
+	absolutePathForBinary := filepath.Join(tempDir, "path/to/binary")
+	err = os.MkdirAll(absolutePathForBinary, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
 	}
 
-	result := searchBinaryInConf(conf)
-	c.Assert(result, FitsTypeOf, expectedFunction)
+	srcf, err := os.CreateTemp(absolutePathForBinary, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+	conf := &config.ApplicationConfig{PathMumble: srcf.Name()}
+
+	mc := &mockCommand{}
+	mc.On("Command", srcf.Name(), []string{"-h"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"-h"}}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+
+	callBack := searchBinaryInConf(conf)
+
+	binary, err := callBack()
+
+	c.Assert(binary.isValid, IsTrue)
+	c.Assert(binary.lastError, IsNil)
+	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionReturnsNilWhenTheConfiguredPathIsEmpty(c *C) {
+	conf := &config.ApplicationConfig{PathMumble: ""}
+
+	callBack := searchBinaryInConf(conf)
+
+	binary, err := callBack()
+
+	c.Assert(binary, IsNil)
+	c.Assert(err, IsNil)
+}
+
+func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionReturnsAnErrorWhenTheConfiguredPathIsInvalid(c *C) {
+	conf := &config.ApplicationConfig{PathMumble: "invalid/binary/path"}
+
+	callBack := searchBinaryInConf(conf)
+
+	binary, err := callBack()
+
+	c.Assert(binary, IsNil)
+	c.Assert(err, Equals, errNoClientInConfiguredPath)
 }
 
 func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFuncWhenANilConfIsProvided(c *C) {
