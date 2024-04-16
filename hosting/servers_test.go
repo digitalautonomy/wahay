@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io/fs"
 	"os"
+	"path/filepath"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
@@ -206,9 +207,9 @@ func (s *hostingSuite) Test_startListener_statusRemainsTheSameWhenServersIsAlrea
 }
 
 func (s *hostingSuite) Test_CreateServer_setDefaultOptionsOnlyReturnsNoError(c *C) {
-	path := "/tmp/wahay"
-	var perm fs.FileMode = 0750
-	e := os.MkdirAll(path, perm)
+	path := "/tmp/wahay/"
+	var perm fs.FileMode = 0700
+	e := os.MkdirAll(filepath.Join(path, "servers"), perm)
 	if e != nil {
 		c.Fatalf("Failed to create temporary directory: %v", e)
 	}

@@ -199,7 +199,6 @@ func (s *servers) CreateServer(modifiers ...serverModifier) (Server, error) {
 	s.servers[serv.Id] = serv
 
 	err = os.Mkdir(filepath.Join(s.dataDir, "servers", fmt.Sprintf("%v", serv.Id)), 0750)
-	fmt.Println(err)
 	if err != nil {
 		return nil, err
 	}
