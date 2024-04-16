@@ -236,16 +236,39 @@ func (m *mockLookPath) LookPath(file string) (string, error) {
 	return args.String(0), args.Error(1)
 }
 
-func (s *clientSuite) Test_searchBinaryInSystem_returnsTheBinaryFoundInTheSystem(c *C) {
+func (s *clientSuite) Test_searchBinaryInSystem_returnsAValidBinaryFoundInTheSystem(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	absolutePathForBinary := filepath.Join(tempDir, "path/to/binary")
+	err = os.MkdirAll(absolutePathForBinary, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(absolutePathForBinary, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mc := &mockCommand{}
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+	mc.On("Command", srcf.Name(), []string{"-h"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"-h"}}).Once()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+
 	ml := &mockLookPath{}
 	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
-
-	ml.On("LookPath", "mumble").Return("absolut/path/to/binary", nil).Once()
+	ml.On("LookPath", "mumble").Return(srcf.Name(), nil).Once()
 
 	binary, err := searchBinaryInSystem()
-
 	c.Assert(binary, NotNil)
 	c.Assert(err, IsNil)
+	c.Assert(binary.isValid, IsTrue)
+	c.Assert(binary.lastError, IsNil)
 }
 
 func (s *clientSuite) Test_searchBinaryInSystem_returnsNilWhenTheBinaryIsNotFoundInTheSystem(c *C) {
@@ -282,7 +305,6 @@ func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFunc(c *C) {
 }
 
 func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFuncWhenANilConfIsProvided(c *C) {
-
 	result := searchBinaryInConf(nil)
 	c.Assert(result, NotNil)
 }
