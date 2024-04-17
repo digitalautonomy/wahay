@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strconv"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
@@ -310,4 +311,17 @@ func (s *hostingSuite) Test_CreateServer_sendSeveralServerModifiersReturnsAServe
 
 	c.Assert(err, IsNil)
 	c.Assert(reflect.TypeOf(serv), DeepEquals, reflect.TypeOf(&server{}))
+}
+
+func (s *hostingSuite) Test_CreateServer_returnsAnErrorWhenServersDirectoryHasNotBeenCreated(c *C) {
+	servers := &servers{
+		nextID:  1,
+		servers: make(map[int64]*grumbleServer.Server),
+	}
+
+	expectedError := "mkdir servers/" + strconv.Itoa(servers.nextID+1) + ": no such file or directory"
+
+	_, err := servers.CreateServer()
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Equals, expectedError)
 }
