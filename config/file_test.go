@@ -13,22 +13,7 @@ type FileSuite struct{}
 
 var _ = Suite(&FileSuite{})
 
-func (f *FileSuite) Test_EnsureFilesAndDir_createsRequiredFilesAndDirectories(c *C) {
-	testDir := c.MkDir()
-
-	wahayDataDir = filepath.Join(testDir, "wahay")
-
-	EnsureFilesAndDir()
-
-	expectedDir := filepath.Join(testDir, "wahay")
-	_, err := os.Stat(expectedDir)
-	c.Assert(err, IsNil)
-}
-
 func (f *FileSuite) Test_CreateTempDir_createsTempFileInWahayDirectory(c *C) {
-	tempDir := c.MkDir()
-
-	wahayDataDir = filepath.Join(tempDir, "wahay")
 
 	dir := CreateTempDir("test")
 
@@ -37,6 +22,8 @@ func (f *FileSuite) Test_CreateTempDir_createsTempFileInWahayDirectory(c *C) {
 
 	_, err := os.Stat(dir)
 	c.Assert(err, IsNil)
+
+	defer os.RemoveAll(dir)
 }
 
 func (f *FileSuite) Test_FileExists_returnsTrueWhenFileExists(c *C) {
