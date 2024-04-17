@@ -649,7 +649,7 @@ func (m *mockGetwd) Getwd() (string, error) {
 	return args.String(0), args.Error(1)
 }
 
-func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAValidBinaryIfABinaryFileIsFoundInTheCurrentWorkingDirectory(c *C) {
+func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAValidBinaryIfABinaryFileIsFoundInTheCurrentWorkingDirectory(c *C) {
 	currentWorkingDirectory, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
@@ -686,7 +686,7 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAValidBinaryIfABinaryFi
 	c.Assert(err, IsNil)
 }
 
-func (s *clientSuite) Test_searchBinaryInLocalDir_returnsNilIfThereIsAnErrorGettingTheCurrentDirectory(c *C) {
+func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsNilIfThereIsAnErrorGettingTheCurrentDirectory(c *C) {
 	currentWorkingDirectory, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
@@ -702,7 +702,7 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsNilIfThereIsAnErrorGett
 	c.Assert(err, IsNil)
 }
 
-func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAInvalidBinaryIfABinaryFileIsNotFoundInTheCurrentWorkingDirectory(c *C) {
+func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAInvalidBinaryIfABinaryFileIsNotFoundInTheCurrentWorkingDirectory(c *C) {
 	currentWorkingDirectory, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
