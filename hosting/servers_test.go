@@ -325,3 +325,21 @@ func (s *hostingSuite) Test_CreateServer_returnsAnErrorWhenServersDirectoryHasNo
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Equals, expectedError)
 }
+
+func (s *hostingSuite) Test_DataDir_returnsTheCorrectDataDirectoryConfiguredOnTheStructure(c *C) {
+	servers := &servers{
+		dataDir: "example/dir",
+	}
+
+	dir := servers.DataDir()
+
+	c.Assert(dir, Equals, "example/dir")
+}
+
+func (s *hostingSuite) Test_DataDir_returnsEmptyStringWhenDataDirectoryHasNotBeenConfigured(c *C) {
+	servers := &servers{}
+
+	dir := servers.DataDir()
+
+	c.Assert(dir, Equals, "")
+}
