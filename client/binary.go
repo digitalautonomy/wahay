@@ -232,13 +232,17 @@ func searchBinaryInConf(conf *config.ApplicationConfig) func() (*binary, error) 
 	}
 }
 
+var filepathAbs = filepath.Abs
+var filepathDir = filepath.Dir
+var osArgs = os.Args
+
 func searchBinaryInLocalDir() (*binary, error) {
-	localDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	localDir, err := filepathAbs(filepathDir(osArgs[0]))
 	if err != nil {
 		return nil, nil
 	}
 
-	b := isThereAnAvailableBinary(filepath.Join(localDir, mumbleBundlePath))
+	b := isThereAnAvailableBinary(filepathJoin(localDir, mumbleBundlePath))
 
 	return b, nil
 }

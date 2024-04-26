@@ -666,6 +666,7 @@ func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAValidBinaryIf
 	if err != nil {
 		c.Fatalf("Failed to create file")
 	}
+
 	mg := &mockGetwd{}
 	defer gostub.New().Stub(&osGetwd, mg.Getwd).Reset()
 	mg.On("Getwd").Return(currentWorkingDirectory, nil).Once()
@@ -716,5 +717,68 @@ func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAInvalidBinary
 	binary, err := searchBinaryInCurrentWorkingDir()
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
+	c.Assert(err, IsNil)
+}
+
+type mockAbs struct {
+	mock.Mock
+}
+
+func (m *mockAbs) Abs(path string) (string, error) {
+	args := m.Called(path)
+	return args.String(0), args.Error(1)
+}
+
+type mockDir struct {
+	mock.Mock
+}
+
+func (m *mockDir) Dir(path string) string {
+	args := m.Called(path)
+	return args.String(0)
+}
+
+func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAValidBinaryIfABinaryFileIsFoundInTheLocalDirectory(c *C) {
+	localDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(localDirectory)
+
+	mumbleBinaryPath := filepath.Join(localDirectory, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	binaryFile, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mockOsArgs := []string{localDirectory + "/wahay"}
+	osArgs = mockOsArgs
+
+	ma := &mockAbs{}
+	defer gostub.New().Stub(&filepathAbs, ma.Abs).Reset()
+	ma.On("Abs", localDirectory).Return(localDirectory, nil).Once()
+
+	md := &mockDir{}
+	defer gostub.New().Stub(&filepathDir, md.Dir).Reset()
+	md.On("Dir", osArgs[0]).Return(localDirectory).Once()
+
+	mj := &mockJoin{}
+	defer gostub.New().Stub(&filepathJoin, mj.Join).Reset()
+	mj.On("Join", []string{localDirectory, mumbleBundlePath}).Return(binaryFile.Name())
+
+	mc := &mockCommand{}
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+	mc.On("Command", binaryFile.Name(), []string{"-h"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"-h"}}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+
+	binary, err := searchBinaryInLocalDir()
+	c.Assert(binary.isValid, IsTrue)
+	c.Assert(binary.lastError, IsNil)
 	c.Assert(err, IsNil)
 }
