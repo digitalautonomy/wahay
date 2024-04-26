@@ -343,3 +343,24 @@ func (s *hostingSuite) Test_DataDir_returnsEmptyStringWhenDataDirectoryHasNotBee
 
 	c.Assert(dir, Equals, "")
 }
+
+func (s *hostingSuite) Test_Cleanup_delete(c *C) {
+	path := "/tmp/wahay/"
+	var perm fs.FileMode = 0700
+	e := os.MkdirAll(path, perm)
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+
+	expectedErr := "open " + path + ": no such file or directory"
+
+	servers := &servers{dataDir: path}
+	_, e = os.ReadDir(path)
+	c.Assert(e, IsNil)
+
+	servers.Cleanup()
+
+	_, e = os.ReadDir(path)
+	c.Assert(e, NotNil)
+	c.Assert(e.Error(), Equals, expectedErr)
+}
