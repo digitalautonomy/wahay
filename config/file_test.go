@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 
 	. "gopkg.in/check.v1"
 )
@@ -14,11 +13,12 @@ type FileSuite struct{}
 var _ = Suite(&FileSuite{})
 
 func (f *FileSuite) Test_CreateTempDir_createsTempFileInWahayDirectory(c *C) {
-
 	dir := CreateTempDir("test")
 
+	tempDir := filepath.Dir(dir)
+
 	c.Assert(dir, Not(Equals), "")
-	c.Assert(strings.HasPrefix(dir, wahayDataDir), Equals, true)
+	c.Assert(tempDir, Equals, wahayDataDir)
 
 	_, err := os.Stat(dir)
 	c.Assert(err, IsNil)
