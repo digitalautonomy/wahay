@@ -260,11 +260,13 @@ func searchBinaryInCurrentWorkingDir() (*binary, error) {
 	return b, nil
 }
 
+var configXdgDataHome = config.XdgDataHome
+
 func searchBinaryInDataDir() (*binary, error) {
-	dataDir := config.XdgDataHome()
+	dataDir := configXdgDataHome()
 	dirs := []string{
-		filepath.Join(dataDir, mumbleBundlePath),
-		filepath.Join(dataDir, wahayMumbleBundlePath),
+		filepathJoin(dataDir, mumbleBundlePath),
+		filepathJoin(dataDir, wahayMumbleBundlePath),
 	}
 
 	for _, d := range dirs {

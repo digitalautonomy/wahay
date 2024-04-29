@@ -857,3 +857,51 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAnInvalidBinaryWhenTher
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
 }
+
+type mockXdgDataHome struct {
+	mock.Mock
+}
+
+func (m *mockXdgDataHome) XdgDataHome() string {
+	args := m.Called()
+	return args.String(0)
+}
+
+func (s *clientSuite) Test_searchBinaryInDataDir_returnsAValidBinaryIfABinaryFileIsFoundInTheDataDirectory(c *C) {
+	dataDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(dataDir)
+
+	mumbleBinaryPath := filepath.Join(dataDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	binaryFile, err := os.CreateTemp(mumbleBinaryPath, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mx := &mockXdgDataHome{}
+	defer gostub.New().Stub(&configXdgDataHome, mx.XdgDataHome).Reset()
+	mx.On("XdgDataHome").Return(dataDir)
+
+	mj := &mockJoin{}
+	defer gostub.New().Stub(&filepathJoin, mj.Join).Reset()
+	mj.On("Join", []string{dataDir, mumbleBundlePath}).Return(binaryFile.Name())
+	mj.On("Join", []string{dataDir, wahayMumbleBundlePath}).Return(filepath.Join(dataDir, wahayMumbleBundlePath))
+
+	mc := &mockCommand{}
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+	mc.On("Command", binaryFile.Name(), []string{"-h"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"-h"}}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+
+	binary, err := searchBinaryInDataDir()
+	c.Assert(binary.isValid, IsTrue)
+	c.Assert(binary.lastError, IsNil)
+	c.Assert(err, IsNil)
+}
