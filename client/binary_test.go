@@ -929,14 +929,14 @@ func (s *clientSuite) Test_envIfBundle_returnsNilIfTheBinaryIsNotBundled(c *C) {
 	c.Assert(envVariables, IsNil)
 }
 
-func (s *clientSuite) Test_envIfBundle_returnsTheRequiredMumbleBinaryEnviromentVariables(c *C) {
+func (s *clientSuite) Test_envIfBundle_returnsTheRequiredMumbleBinaryEnvironmentVariables(c *C) {
 	binary := &binary{isBundle: true, env: []string{"enviroment variable"}}
 
 	envVariables := binary.envIfBundle()
 	c.Assert(envVariables, DeepEquals, []string{"enviroment variable"})
 }
 
-func (s *clientSuite) Test_envIfBundle_returnsNilWhenBinaryIsBundledButDoesNotHaveEnviromentVariables(c *C) {
+func (s *clientSuite) Test_envIfBundle_returnsNilWhenBinaryIsBundledButDoesNotHaveEnvironmentVariables(c *C) {
 	binary := &binary{isBundle: true, env: []string{}}
 
 	envVariables := binary.envIfBundle()
