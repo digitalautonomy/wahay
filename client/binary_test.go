@@ -921,3 +921,10 @@ func (s *clientSuite) Test_searchBinaryInDataDir_returnsNilWhenABinaryDoesNotExi
 	c.Assert(binary, IsNil)
 	c.Assert(err, IsNil)
 }
+
+func (s *clientSuite) Test_envIfBundle_returnsNilIfTheBinaryIsNotBundled(c *C) {
+	binary := &binary{isBundle: false}
+
+	envVariables := binary.envIfBundle()
+	c.Assert(envVariables, IsNil)
+}
