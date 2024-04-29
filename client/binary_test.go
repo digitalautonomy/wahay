@@ -834,3 +834,26 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAnInvalidBinaryWhenTheP
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
 }
+
+func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAnInvalidBinaryWhenThereIsNotAMumbleBinaryInTheLocalDirectory(c *C) {
+	localDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(localDirectory)
+
+	mockOsArgs := []string{localDirectory + "/wahay"}
+	osArgs = mockOsArgs
+
+	md := &mockDir{}
+	defer gostub.New().Stub(&filepathDir, md.Dir).Reset()
+	md.On("Dir", osArgs[0]).Return(localDirectory).Once()
+
+	ma := &mockAbs{}
+	defer gostub.New().Stub(&filepathAbs, ma.Abs).Reset()
+	ma.On("Abs", localDirectory).Return(localDirectory, nil).Once()
+
+	binary, _ := searchBinaryInLocalDir()
+	c.Assert(binary.isValid, IsFalse)
+	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
+}
