@@ -3,6 +3,7 @@ package hosting
 import (
 	"errors"
 	"io/fs"
+	"net/http"
 	"os"
 	"path/filepath"
 	"time"
@@ -111,4 +112,25 @@ func (s *hostingSuite) Test_newCertificate_returnsAnErrorWhenCertificateContentC
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Equals, expectedErr.Error())
 	c.Assert(httpServer, IsNil)
+}
+
+func (s *hostingSuite) Test_stop_returnsNoErrorWhenWebServerIsNotRunning(c *C) {
+	ws := &webserver{
+		running: false,
+	}
+	err := ws.stop()
+
+	c.Assert(err, IsNil)
+	c.Assert(ws.running, Equals, false)
+}
+
+func (s *hostingSuite) Test_stop_worksWithBasicExample(c *C) {
+	ws := &webserver{
+		running: true,
+		server:  &http.Server{},
+	}
+	err := ws.stop()
+
+	c.Assert(err, IsNil)
+	c.Assert(ws.running, Equals, false)
 }
