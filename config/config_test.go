@@ -184,44 +184,6 @@ func (cs *ConfigSuite) Test_Save_nonPersistentConfiguration(c *C) {
     c.Assert(err, NotNil)
 }
 
-type MockKeySupplier struct {
-	mock.Mock
-}
-
-func (_m *MockKeySupplier) GenerateKey(p EncryptionParameters) EncryptionResult {
-	ret := _m.Called(p)
-
-	if len(ret) == 0 {
-		panic("no return value specified for GenerateKey")
-	}
-
-	var r0 EncryptionResult
-	if rf, ok := ret.Get(0).(func(EncryptionParameters) EncryptionResult); ok {
-		r0 = rf(p)
-	} else {
-		r0 = ret.Get(0).(EncryptionResult)
-	}
-
-	return r0
-}
-
-func (_m *MockKeySupplier) CacheFromResult(r EncryptionResult) error {
-	ret := _m.Called(r)
-
-	if len(ret) == 0 {
-		panic("no return value specified for CacheFromResult")
-	}
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(EncryptionResult) error); ok {
-		r0 = rf(r)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
 func (cs *ConfigSuite) Test_DeleteFileIfExists_fileExists(c *C) {
 
 	filename := "temp_file.txt"
@@ -475,6 +437,44 @@ func (cs *ConfigSuite) Test_PortMumble_SetAndGet(c *C) {
 	c.Assert(ac.GetPortMumble(), Equals, expectedPort)
 }
 
+
+type MockKeySupplier struct {
+	mock.Mock
+}
+
+func (_m *MockKeySupplier) GenerateKey(p EncryptionParameters) EncryptionResult {
+	ret := _m.Called(p)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GenerateKey")
+	}
+
+	var r0 EncryptionResult
+	if rf, ok := ret.Get(0).(func(EncryptionParameters) EncryptionResult); ok {
+		r0 = rf(p)
+	} else {
+		r0 = ret.Get(0).(EncryptionResult)
+	}
+
+	return r0
+}
+
+func (_m *MockKeySupplier) CacheFromResult(r EncryptionResult) error {
+	ret := _m.Called(r)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CacheFromResult")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(EncryptionResult) error); ok {
+		r0 = rf(r)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
 
 func (_m *MockKeySupplier) Invalidate() {
 	_m.Called()
