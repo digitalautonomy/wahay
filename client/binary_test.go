@@ -943,3 +943,14 @@ func (s *clientSuite) Test_envIfBundle_returnsNilWhenBinaryIsBundledButDoesNotHa
 	c.Assert(envVariables, IsNil)
 	c.Assert(binary.isBundle, IsFalse)
 }
+
+func (s *clientSuite) Test_searchBinary_returnsNilWhenNoBinaryIsFound(c *C) {
+	conf := &config.ApplicationConfig{}
+
+	ml := &mockLookPath{}
+	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
+	ml.On("LookPath", "mumble").Return("", nil).Once()
+
+	binary := searchBinary(conf)
+	c.Assert(binary, IsNil)
+}
