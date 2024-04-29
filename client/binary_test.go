@@ -905,3 +905,19 @@ func (s *clientSuite) Test_searchBinaryInDataDir_returnsAValidBinaryIfABinaryFil
 	c.Assert(binary.lastError, IsNil)
 	c.Assert(err, IsNil)
 }
+
+func (s *clientSuite) Test_searchBinaryInDataDir_returnsNilWhenABinaryDoesNotExistInTheDataDirectory(c *C) {
+	dataDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(dataDir)
+
+	mx := &mockXdgDataHome{}
+	defer gostub.New().Stub(&configXdgDataHome, mx.XdgDataHome).Reset()
+	mx.On("XdgDataHome").Return(dataDir)
+
+	binary, err := searchBinaryInDataDir()
+	c.Assert(binary, IsNil)
+	c.Assert(err, IsNil)
+}
