@@ -782,3 +782,32 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAValidBinaryIfABinaryFi
 	c.Assert(binary.lastError, IsNil)
 	c.Assert(err, IsNil)
 }
+
+func (s *clientSuite) Test_searchBinaryInLocalDir_returnsNilWhenThereIsAnErrorGettingTheAbsolutePathOfTheRunningWahayProgram(c *C) {
+	localDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(localDirectory)
+
+	mumbleBinaryPath := filepath.Join(localDirectory, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	mockOsArgs := []string{localDirectory + "/wahay"}
+	osArgs = mockOsArgs
+
+	md := &mockDir{}
+	defer gostub.New().Stub(&filepathDir, md.Dir).Reset()
+	md.On("Dir", osArgs[0]).Return(localDirectory).Once()
+
+	ma := &mockAbs{}
+	defer gostub.New().Stub(&filepathAbs, ma.Abs).Reset()
+	ma.On("Abs", localDirectory).Return("", errors.New("Abs error")).Once()
+
+	binary, err := searchBinaryInLocalDir()
+	c.Assert(binary, IsNil)
+	c.Assert(err, IsNil)
+}
