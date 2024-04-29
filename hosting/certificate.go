@@ -29,13 +29,15 @@ type webserver struct {
 
 const certServerPort = 8181
 
+var ioutilReadFile = ioutil.ReadFile
+
 func newCertificateServer(dir string) (*webserver, error) {
 	certFile := filepath.Join(dir, "cert.pem")
 	if !fileExists(certFile) {
 		return nil, errors.New("the certificate file do not exists")
 	}
 
-	cert, err := ioutil.ReadFile(filepath.Clean(certFile))
+	cert, err := ioutilReadFile(filepath.Clean(certFile))
 	if err != nil {
 		return nil, err
 	}
