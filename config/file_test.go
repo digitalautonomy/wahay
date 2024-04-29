@@ -41,25 +41,31 @@ func (f *FileSuite) Test_FileExists_returnsFalseWhenFileDoesNotExist(c *C) {
 
 	exists := FileExists(tempFile)
 	c.Assert(exists, Equals, false)
+
+	defer os.Remove(tempFile)
 }
 
 func (f *FileSuite) Test_EnsureDir_createsDirWhenDirectoryDoesNotExist(c *C) {
-	tempDir := c.MkDir()
+	tempDir, err := ioutil.TempDir("", "testdir")
+
+	c.Assert(err, IsNil)
+	defer os.Remove(tempDir)
 
 	dirToCreate := filepath.Join(tempDir, "new_directory")
 
 	EnsureDir(dirToCreate, 0700)
 
-	_, err := os.Stat(dirToCreate)
+	_, err = os.Stat(dirToCreate)
 	c.Assert(err, IsNil)
 }
 
 func (f *FileSuite) Test_EnsureDir_doesNothingIfDirectoryAlreadyExists(c *C) {
-	tempDir := c.MkDir()
+	tempDir, err := ioutil.TempDir("", "testdir")
 
-	dirToCreate := filepath.Join(tempDir, "existing_directory")
-	err := os.Mkdir(dirToCreate, 0700)
 	c.Assert(err, IsNil)
+	defer os.Remove(tempDir)
+
+	dirToCreate := filepath.Join(tempDir, "new_directory")
 
 	EnsureDir(dirToCreate, 0700)
 
@@ -68,12 +74,15 @@ func (f *FileSuite) Test_EnsureDir_doesNothingIfDirectoryAlreadyExists(c *C) {
 }
 
 func (f *FileSuite) Test_SafeWrite_writesContentOnTempFile(c *C) {
-	testDir := c.MkDir()
+	tempDir, err := ioutil.TempDir("", "testdir")
 
-	fileName := filepath.Join(testDir, "test.txt")
+	c.Assert(err, IsNil)
+	defer os.Remove(tempDir)
+
+	fileName := filepath.Join(tempDir, "test.txt")
 	fileContent := []byte("Praise the sun!")
 
-	err := SafeWrite(fileName, fileContent, 0644)
+	err = SafeWrite(fileName, fileContent, 0644)
 	c.Assert(err, IsNil)
 
 	content, err := ioutil.ReadFile(fileName)
