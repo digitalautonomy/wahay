@@ -54,6 +54,14 @@ func (s *clientSuite) Test_pathToBinary_returnsTheValidBinaryPath(c *C) {
 	c.Assert(result, Equals, "path/to/binary")
 }
 
+func (s *clientSuite) Test_pathToBinary_returnsAnEmptyStringWhenTheClientIsNotValid(c *C) {
+	client := &client{isValid: false}
+
+	result := client.pathToBinary()
+
+	c.Assert(result, Equals, "")
+}
+
 func (s *clientSuite) Test_IsValid_returnsTrueWhenTheClientIsValid(c *C) {
 	client := &client{isValid: true}
 
