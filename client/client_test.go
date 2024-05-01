@@ -122,3 +122,10 @@ func (s *clientSuite) Test_setBinary_returnsAnErrorIfTheBinaryIsNotValid(c *C) {
 	err := client.setBinary(binary)
 	c.Assert(err, ErrorMatches, "the provided binary is not valid")
 }
+
+func (s *clientSuite) Test_torCommandModifier_returnsNilWhenTheClientIsNotValid(c *C) {
+	client := &client{isValid: false}
+
+	result := client.torCommandModifier()
+	c.Assert(result, IsNil)
+}
