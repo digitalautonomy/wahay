@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	. "github.com/digitalautonomy/wahay/test"
+	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
@@ -128,4 +129,14 @@ func (s *clientSuite) Test_torCommandModifier_returnsNilWhenTheClientIsNotValid(
 
 	result := client.torCommandModifier()
 	c.Assert(result, IsNil)
+}
+
+func (s *clientSuite) Test_torCommandModifier_setsClientTorCmdModifierAndReturnsATorModifyCommandWhenTheClientIsValid(c *C) {
+	client := &client{isValid: true}
+	c.Assert(client.torCmdModifier, IsNil)
+
+	var expected tor.ModifyCommand
+	result := client.torCommandModifier()
+	c.Assert(client.torCmdModifier, NotNil)
+	c.Assert(result, FitsTypeOf, expected)
 }
