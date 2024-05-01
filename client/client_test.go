@@ -93,3 +93,12 @@ func (s *clientSuite) Test_validate_returnsAnErrorWhenTheClientBinaryIsInvalidAn
 	c.Assert(result, Equals, errInvalidBinary)
 	c.Assert(client.isValid, IsFalse)
 }
+
+func (s *clientSuite) Test_validate_returnsNilAndSetsIsValidToTrueWhenTheBinaryIsValid(c *C) {
+	client := &client{binary: &binary{isValid: true}}
+
+	result := client.validate()
+	c.Assert(result, IsNil)
+	c.Assert(client.isValid, IsTrue)
+	c.Assert(client.err, IsNil)
+}
