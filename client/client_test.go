@@ -113,3 +113,12 @@ func (s *clientSuite) Test_setBinary_returnsNilAndsetsClientBinaryIfTheBinaryIsV
 	err := client.setBinary(binary)
 	c.Assert(err, IsNil)
 }
+
+func (s *clientSuite) Test_setBinary_returnsAnErrorIfTheBinaryIsNotValid(c *C) {
+	binary := &binary{isValid: false}
+
+	client := &client{}
+
+	err := client.setBinary(binary)
+	c.Assert(err, ErrorMatches, "the provided binary is not valid")
+}
