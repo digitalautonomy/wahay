@@ -166,6 +166,8 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBi
 
 	c.Assert(binary.isBundle, IsTrue)
 	c.Assert(binary.isValid, IsTrue)
+
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAInvalidMumbleBinaryWhenThePathIsIncorrect(c *C) {
@@ -200,6 +202,8 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidAndNotBundledMu
 
 	c.Assert(binary.isValid, IsTrue)
 	c.Assert(binary.isBundle, IsFalse)
+
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAInValidMumbleBinaryOnInvalidCommand(c *C) {
@@ -225,6 +229,8 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAInValidMumbleBinaryO
 
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, Equals, errInvalidCommand)
+
+	mc.AssertExpectations(c)
 }
 
 type mockLookPath struct {
@@ -269,6 +275,9 @@ func (s *clientSuite) Test_searchBinaryInSystem_returnsAValidBinaryFoundInTheSys
 	c.Assert(err, IsNil)
 	c.Assert(binary.isValid, IsTrue)
 	c.Assert(binary.lastError, IsNil)
+
+	mc.AssertExpectations(c)
+	ml.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInSystem_returnsNilWhenTheBinaryIsNotFoundInTheSystem(c *C) {
@@ -279,6 +288,8 @@ func (s *clientSuite) Test_searchBinaryInSystem_returnsNilWhenTheBinaryIsNotFoun
 
 	binary, _ := searchBinaryInSystem()
 	c.Assert(binary, IsNil)
+
+	ml.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionWorksWithAValidConfiguredPath(c *C) {
@@ -313,6 +324,8 @@ func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionWorksWithA
 	c.Assert(binary.isValid, IsTrue)
 	c.Assert(binary.lastError, IsNil)
 	c.Assert(err, IsNil)
+
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionReturnsNilWhenTheConfiguredPathIsEmpty(c *C) {
@@ -638,6 +651,8 @@ func (s *clientSuite) Test_copyTo_returnsAnErrorIfTheBinaryAlreadyExistInThePath
 	err = binary.copyTo(binaryDestinationPath)
 
 	c.Assert(err.Error(), Equals, errBinaryAlreadyExists.Error())
+
+	mj.AssertExpectations(c)
 }
 
 type mockGetwd struct {
@@ -685,6 +700,10 @@ func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAValidBinaryIf
 	c.Assert(binary.isValid, IsTrue)
 	c.Assert(binary.lastError, IsNil)
 	c.Assert(err, IsNil)
+
+	mg.AssertExpectations(c)
+	mj.AssertExpectations(c)
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsNilIfThereIsAnErrorGettingTheCurrentDirectory(c *C) {
@@ -701,6 +720,8 @@ func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsNilIfThereIsAn
 	binary, err := searchBinaryInCurrentWorkingDir()
 	c.Assert(binary, IsNil)
 	c.Assert(err, IsNil)
+
+	mg.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAInvalidBinaryIfABinaryFileIsNotFoundInTheCurrentWorkingDirectory(c *C) {
@@ -718,6 +739,8 @@ func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAInvalidBinary
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
 	c.Assert(err, IsNil)
+
+	mg.AssertExpectations(c)
 }
 
 type mockAbs struct {
@@ -781,6 +804,11 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAValidBinaryIfABinaryFi
 	c.Assert(binary.isValid, IsTrue)
 	c.Assert(binary.lastError, IsNil)
 	c.Assert(err, IsNil)
+
+	ma.AssertExpectations(c)
+	md.AssertExpectations(c)
+	mj.AssertExpectations(c)
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInLocalDir_returnsNilWhenThereIsAnErrorGettingTheAbsolutePathOfTheRunningWahayProgram(c *C) {
@@ -810,6 +838,9 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsNilWhenThereIsAnErrorGe
 	binary, err := searchBinaryInLocalDir()
 	c.Assert(binary, IsNil)
 	c.Assert(err, IsNil)
+
+	md.AssertExpectations(c)
+	ma.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAnInvalidBinaryWhenTheProgramNameIsEmptyAndTheCurrentDirectoryDoesNotHaveAMumbleBinary(c *C) {
@@ -833,6 +864,9 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAnInvalidBinaryWhenTheP
 	binary, _ := searchBinaryInLocalDir()
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
+
+	md.AssertExpectations(c)
+	ma.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAnInvalidBinaryWhenThereIsNotAMumbleBinaryInTheLocalDirectory(c *C) {
@@ -856,6 +890,9 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAnInvalidBinaryWhenTher
 	binary, _ := searchBinaryInLocalDir()
 	c.Assert(binary.isValid, IsFalse)
 	c.Assert(binary.lastError, ErrorMatches, "not valid binary path")
+
+	md.AssertExpectations(c)
+	ma.AssertExpectations(c)
 }
 
 type mockXdgDataHome struct {
@@ -904,6 +941,10 @@ func (s *clientSuite) Test_searchBinaryInDataDir_returnsAValidBinaryIfABinaryFil
 	c.Assert(binary.isValid, IsTrue)
 	c.Assert(binary.lastError, IsNil)
 	c.Assert(err, IsNil)
+
+	mx.AssertExpectations(c)
+	mj.AssertExpectations(c)
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_searchBinaryInDataDir_returnsNilWhenABinaryDoesNotExistInTheDataDirectory(c *C) {
@@ -953,4 +994,6 @@ func (s *clientSuite) Test_searchBinary_returnsNilWhenNoBinaryIsFound(c *C) {
 
 	binary := searchBinary(conf)
 	c.Assert(binary, IsNil)
+
+	ml.AssertExpectations(c)
 }

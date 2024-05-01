@@ -36,6 +36,8 @@ func (s *clientSuite) Test_tempFolder_returnsAnErrorWhenTheTempFolderIsNotCreate
 
 	c.Assert(tempDir, Equals, "")
 	c.Assert(err, NotNil)
+
+	mtd.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_LastError_returnsClientError(c *C) {
