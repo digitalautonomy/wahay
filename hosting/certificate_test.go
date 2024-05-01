@@ -112,6 +112,7 @@ func (s *hostingSuite) Test_newCertificate_returnsAnErrorWhenCertificateContentC
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Equals, expectedErr.Error())
 	c.Assert(httpServer, IsNil)
+	mi.AssertExpectations(c)
 }
 
 func (s *hostingSuite) Test_stop_returnsNoErrorWhenWebServerIsNotRunning(c *C) {
@@ -141,4 +142,20 @@ func (s *hostingSuite) Test_start_keepsServerRunningWhenItHasAlreadyStarted(c *C
 	}
 	ws.start(func(err error) {})
 	c.Assert(ws.running, Equals, true)
+}
+
+func (s *hostingSuite) Test_fileExist_returnsTrueWhenFileExists(c *C) {
+	file, err := os.CreateTemp("", "test_file")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.Remove(file.Name())
+
+	val := fileExists(file.Name())
+	c.Assert(val, Equals, true)
+}
+
+func (s *hostingSuite) Test_fileExist_returnsFalseWhenFileDoesNotExists(c *C) {
+	val := fileExists("test_file")
+	c.Assert(val, Equals, false)
 }
