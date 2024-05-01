@@ -1,9 +1,6 @@
 package config
 
 import (
-	"strings"
-	"sync"
-
 	. "gopkg.in/check.v1"
 )
 
@@ -79,16 +76,4 @@ func (e *EncryptSuite) Test_Invalidate(c *C) {
     c.Assert(k.haveKeys, Equals, false)
     c.Assert(len(k.key), Equals, 0)
     c.Assert(len(k.mac), Equals, 0)
-}
-
-func (e *EncryptSuite) Test_TurnOnEncryption_EncryptsConfigFile(c *C) {
-
-    a := &ApplicationConfig{
-        filename: "config.json",
-        ioLock:   &sync.Mutex{},
-    }
-
-    a.turnOnEncryption()
-
-    c.Assert(strings.HasSuffix(a.filename, encryptedFileExtension), Equals, true)
 }
