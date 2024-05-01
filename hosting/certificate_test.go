@@ -134,3 +134,11 @@ func (s *hostingSuite) Test_stop_worksWithBasicExample(c *C) {
 	c.Assert(err, IsNil)
 	c.Assert(ws.running, Equals, false)
 }
+
+func (s *hostingSuite) Test_start_keepsServerRunningWhenItHasAlreadyStarted(c *C) {
+	ws := &webserver{
+		running: true,
+	}
+	ws.start(func(err error) {})
+	c.Assert(ws.running, Equals, true)
+}
