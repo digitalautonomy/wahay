@@ -3,6 +3,8 @@ package hosting
 import (
 	"errors"
 	"io/fs"
+	"os"
+	"path/filepath"
 
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
@@ -67,11 +69,39 @@ func (h *hostingSuite) Test_SetWelcomeText_worksWithBasicExample(c *C) {
 func (h *hostingSuite) Test_NewService_returnsAnErrorWhenFailsCreatingCertificateServerBecauseNoDataDirectoryExists(c *C) {
 	servers := &servers{}
 	var ti tor.Instance
-	srvc, err := servers.NewService("1234", ti)
+	srvc, err := servers.NewService("", ti)
 
 	expectedErr := "the certificate file do not exists"
 
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Equals, expectedErr)
+	c.Assert(srvc, IsNil)
+}
+
+func (h *hostingSuite) Test_NewService_returnsAnErrorWhenWrongPortIsGiven(c *C) {
+	path := "/tmp/wahay"
+	var perm fs.FileMode = 0700
+
+	e := os.MkdirAll(path, perm)
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+	defer os.RemoveAll(path)
+
+	file := "cert.pem"
+	fp := filepath.Join(path, file)
+	_, e = os.Create(fp)
+	if e != nil {
+		c.Fatalf("Failed to create file: %v", e)
+	}
+
+	servers := &servers{
+		dataDir: path,
+	}
+	var ti tor.Instance
+	srvc, err := servers.NewService("xx", ti)
+
+	c.Assert(err, NotNil)
+	c.Assert(err, Equals, errInvalidPort)
 	c.Assert(srvc, IsNil)
 }
