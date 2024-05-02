@@ -130,3 +130,19 @@ func (e *EncryptSuite) Test_unserialize_(c *C) {
 
     c.Assert(err, NotNil)
 }
+
+func (e *EncryptSuite) Test_newEncryptionParameters_createsDefaultParams(c *C) {
+
+    expectedN := 262144
+    expectedR := 8
+    expectedP := 1
+
+    params := newEncryptionParameters()
+
+    c.Assert(params.N, Equals, expectedN)
+    c.Assert(params.R, Equals, expectedR)
+    c.Assert(params.P, Equals, expectedP)
+
+    c.Assert(len(params.nonceInternal), Equals, 12)
+    c.Assert(len(params.saltInternal), Equals, 16)
+}
