@@ -147,3 +147,10 @@ func (s *clientSuite) Test_binaryEnv_appendsEnvironmentVariableWhenTheClientIsVa
 
 	c.Assert(envVariables, DeepEquals, []string{"QT_QPA_PLATFORM=xcb", "ENVIRONMENT=variable"})
 }
+
+func (s *clientSuite) Test_binaryEnv_returnsEnvironmentVariableWhenClientIsNotValidAndHasNoBinary(c *C) {
+	client := &client{binary: nil, isValid: false}
+	envVariable := client.binaryEnv()
+
+	c.Assert(envVariable, DeepEquals, []string{"QT_QPA_PLATFORM=xcb"})
+}
