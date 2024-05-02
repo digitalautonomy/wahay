@@ -1,6 +1,8 @@
 package config
 
 import (
+	"encoding/hex"
+
 	. "gopkg.in/check.v1"
 )
 
@@ -76,4 +78,55 @@ func (e *EncryptSuite) Test_Invalidate(c *C) {
     c.Assert(k.haveKeys, Equals, false)
     c.Assert(len(k.key), Equals, 0)
     c.Assert(len(k.mac), Equals, 0)
+}
+
+func (e *EncryptSuite) Test_serialize_createsJSONRepresentation(c *C) {
+
+    nonce := []byte{0x01,0x02,0x03}
+    salt := []byte{0x04,0x05,0x06}
+
+    params := &EncryptionParameters{
+        nonceInternal: nonce,
+        saltInternal: salt,
+    }
+
+    params.serialize()
+
+    expectedNonce := hex.EncodeToString(nonce)
+    expectedSalt := hex.EncodeToString(salt)
+
+    c.Assert(params.Nonce, DeepEquals, expectedNonce)
+    c.Assert(params.Salt, DeepEquals, expectedSalt)
+}
+
+func (e *EncryptSuite) Test_unserialize_decodingSuccesful(c *C) {
+
+    params := &EncryptionParameters{
+        Nonce: "1234567890",
+        Salt: "ABCD",
+    }
+
+    err := params.unserialize()
+
+    expectedNonceInternal, nonceErr := hex.DecodeString(params.Nonce)
+    expectedSaltInternal, saltErr := hex.DecodeString(params.Salt)
+
+    c.Assert(err, IsNil)
+    c.Assert(nonceErr, IsNil)
+    c.Assert(saltErr, IsNil)
+
+    c.Assert(params.nonceInternal, DeepEquals, expectedNonceInternal)
+    c.Assert(params.saltInternal, DeepEquals, expectedSaltInternal)
+}
+
+func (e *EncryptSuite) Test_unserialize_(c *C) {
+
+    params := &EncryptionParameters{
+        Nonce: "",
+        Salt: "",
+    }
+
+    err := params.unserialize()
+
+    c.Assert(err, NotNil)
 }
