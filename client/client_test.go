@@ -140,3 +140,10 @@ func (s *clientSuite) Test_torCommandModifier_setsClientTorCmdModifierAndReturns
 	c.Assert(client.torCmdModifier, NotNil)
 	c.Assert(result, FitsTypeOf, expected)
 }
+
+func (s *clientSuite) Test_binaryEnv_appendsEnvironmentVariableWhenTheClientIsValidAndTheBinaryIsNotNil(c *C) {
+	client := &client{binary: &binary{env: []string{"ENVIRONMENT=variable"}, isBundle: true}, isValid: true}
+	envVariables := client.binaryEnv()
+
+	c.Assert(envVariables, DeepEquals, []string{"QT_QPA_PLATFORM=xcb", "ENVIRONMENT=variable"})
+}
