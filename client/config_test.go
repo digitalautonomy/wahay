@@ -122,3 +122,78 @@ func (s *clientSuite) Test_ensureConfigurationDir_returnsAnErrorIfCreateDirFails
 	err = client.ensureConfigurationDir()
 	c.Assert(err, ErrorMatches, "Error creating directory")
 }
+
+func (s *clientSuite) Test_writeConfigToFile_succesfullyWritesConfigurationContentToAnExistingFileAndUpdatesConfigFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	configFile, err := os.Create(filepath.Join(tempDir, configFileName))
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	client := &client{configFile: configFile.Name(), configContentProvider: func() string { return "config file content" }}
+
+	err = client.writeConfigToFile(configFile.Name())
+	c.Assert(err, IsNil)
+	c.Assert(client.configFile, Equals, configFile.Name())
+
+	fileContent, err := os.ReadFile(configFile.Name())
+	if err != nil {
+		c.Fatalf("Failed to read file")
+	}
+	c.Assert(string(fileContent), Equals, "config file content")
+}
+
+func (s *clientSuite) Test_writeConfigToFile_succesfullyWritesConfigurationContentToANewFileInAnExistingDirectoryAndUpdatesConfigFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	client := &client{configContentProvider: func() string { return "config file content" }}
+	c.Assert(client.configFile, Equals, "")
+
+	err = client.writeConfigToFile(tempDir)
+	c.Assert(err, IsNil)
+
+	expectedConfigFile := filepath.Join(tempDir, configFileName)
+	c.Assert(client.configFile, Equals, expectedConfigFile)
+
+	fileContent, err := os.ReadFile(expectedConfigFile)
+	if err != nil {
+		c.Fatalf("Failed to read file")
+	}
+	c.Assert(string(fileContent), Equals, "config file content")
+}
+
+type mockCreate struct {
+	mock.Mock
+}
+
+func (m *mockCreate) Create(name string) (*os.File, error) {
+	args := m.Called(name)
+	return args.Get(0).(*os.File), args.Error(1)
+}
+
+func (s *clientSuite) Test_writeConfigToFile_returnsAnErrorWhenTheConfigFileCreationFails(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	client := &client{}
+
+	mc := &mockCreate{}
+	defer gostub.New().Stub(&osCreate, mc.Create).Reset()
+	configFile := filepath.Join(tempDir, configFileName)
+	mc.On("Create", configFile).Return(&os.File{}, errors.New("Error creating file")).Once()
+
+	err = client.writeConfigToFile(tempDir)
+	c.Assert(err, Equals, errInvalidConfigFileDBFile)
+}

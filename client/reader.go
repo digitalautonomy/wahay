@@ -29,12 +29,14 @@ func createDir(path string) error {
 	return osMkdirAll(path, 0700)
 }
 
+var osCreate = os.Create
+
 func createFile(filename string) error {
 	if pathExists(filename) {
 		return nil
 	}
 
-	file, err := os.Create(filename)
+	file, err := osCreate(filename)
 	if err != nil {
 		return err
 	}
