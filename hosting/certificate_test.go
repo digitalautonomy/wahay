@@ -3,12 +3,15 @@ package hosting
 import (
 	"errors"
 	"io/fs"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
 
 	"github.com/prashantv/gostub"
+	log "github.com/sirupsen/logrus"
+	logtest "github.com/sirupsen/logrus/hooks/test"
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
@@ -137,10 +140,15 @@ func (s *hostingSuite) Test_stop_worksWithBasicExample(c *C) {
 }
 
 func (s *hostingSuite) Test_start_keepsServerRunningWhenItHasAlreadyStarted(c *C) {
+	hook := logtest.NewGlobal()
+	defer hook.Reset()
+	log.SetOutput(ioutil.Discard)
+
 	ws := &webserver{
 		running: true,
 	}
-	ws.start(func(err error) {})
+	ws.start(nil)
+
 	c.Assert(ws.running, Equals, true)
 }
 
