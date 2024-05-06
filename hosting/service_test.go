@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/digitalautonomy/wahay/tor"
@@ -115,13 +116,44 @@ func (h *hostingSuite) Test_NewService_returnsAnErrorWhenWrongPortIsGiven(c *C) 
 }
 
 func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsCreatingServer(c *C) {
+	path := "/tmp/wahay/"
+	sID := 2
 	servers := &servers{
 		servers: make(map[int64]*grumbleServer.Server),
+		dataDir: path,
+		nextID:  sID,
 	}
 	srvc := &service{
 		collection: servers,
 	}
 	sud := SuperUserData{}
 	err := srvc.NewConferenceRoom("", sud)
+	expectedError := "mkdir " + path + "servers/" + strconv.Itoa(sID+1) + ": no such file or directory"
 	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Equals, expectedError)
+}
+
+func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsStartingServer(c *C) {
+	path := "/tmp/wahay/"
+	var perm fs.FileMode = 0700
+
+	e := os.MkdirAll(filepath.Join(path, "servers"), perm)
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+	defer os.RemoveAll(path)
+
+	servers := &servers{
+		servers: make(map[int64]*grumbleServer.Server),
+		dataDir: path,
+		nextID:  1,
+	}
+	srvc := &service{
+		collection: servers,
+	}
+	sud := SuperUserData{}
+	err := srvc.NewConferenceRoom("", sud)
+	expectedError := `open .*/.grumble/cert.pem: no such file or directory`
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Matches, expectedError)
 }
