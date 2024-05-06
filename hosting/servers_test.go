@@ -11,6 +11,7 @@ import (
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
 	log "github.com/sirupsen/logrus"
+	logtest "github.com/sirupsen/logrus/hooks/test"
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
@@ -116,6 +117,27 @@ func (s *hostingSuite) Test_initializeLogging_returnsAnErrorWhenIsNotPossibleToO
 	expectedError := "open " + path + "grumble.log: no such file or directory"
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Equals, expectedError)
+}
+
+func (s *hostingSuite) Test_initializeLogging_returnsNilWhenGrumbleLogHasBeenCreated(c *C) {
+	hook := logtest.NewGlobal()
+	defer hook.Reset()
+
+	path := "/tmp/wahay/"
+	var perm fs.FileMode = 0700
+
+	e := os.MkdirAll(path, perm)
+	if e != nil {
+		c.Fatalf("Failed to create temporary directory: %v", e)
+	}
+	defer os.RemoveAll(path)
+
+	servers := &servers{
+		dataDir: path,
+	}
+
+	err := servers.initializeLogging()
+	c.Assert(err, IsNil)
 }
 
 func (s *hostingSuite) Test_initializeCertificates_generatesSelfSignedCertificateWhenGrumbleDataDirIsCorrect(c *C) {
