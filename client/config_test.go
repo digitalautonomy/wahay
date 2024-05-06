@@ -197,3 +197,42 @@ func (s *clientSuite) Test_writeConfigToFile_returnsAnErrorWhenTheConfigFileCrea
 	err = client.writeConfigToFile(tempDir)
 	c.Assert(err, Equals, errInvalidConfigFileDBFile)
 }
+
+func (s *clientSuite) Test_ensureConfigurationDBFile_successfullyCreatesAndWritesTheConfigurationDBFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	configurationPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(configurationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	client := &client{configDir: configurationPath, databaseProvider: func() []byte { return []byte("database configuration content") }}
+
+	err = client.ensureConfigurationDBFile()
+	c.Assert(err, IsNil)
+
+	expectedConfigDatabaseFile := filepath.Join(configurationPath, configDBName)
+	fileContent, err := os.ReadFile(expectedConfigDatabaseFile)
+	if err != nil {
+		c.Fatalf("Failed to read file")
+	}
+	c.Assert(string(fileContent), Equals, "database configuration content")
+}
+
+func (s *clientSuite) Test_ensureConfigurationDBFile_returnsAnErrorWhenTheConfigurationDBFileFails(c *C) {
+	client := &client{configDir: "invalid/configuration/path"}
+
+	err := client.ensureConfigurationDBFile()
+	c.Assert(err, NotNil)
+
+	configurationDBFile := filepath.Join(client.configDir, configDBName)
+
+	//Assert that the configuration file does not exist.
+	_, err = os.Stat(configurationDBFile)
+	c.Assert(err, NotNil)
+}
