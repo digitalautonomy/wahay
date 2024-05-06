@@ -123,7 +123,7 @@ func (s *clientSuite) Test_ensureConfigurationDir_returnsAnErrorIfCreateDirFails
 	c.Assert(err, ErrorMatches, "Error creating directory")
 }
 
-func (s *clientSuite) Test_writeConfigToFile_succesfullyWritesConfigurationContentToAnExistingFileAndUpdatesConfigFile(c *C) {
+func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationContentToAnExistingFileAndUpdatesConfigFile(c *C) {
 	tempDir, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
@@ -148,7 +148,7 @@ func (s *clientSuite) Test_writeConfigToFile_succesfullyWritesConfigurationConte
 	c.Assert(string(fileContent), Equals, "config file content")
 }
 
-func (s *clientSuite) Test_writeConfigToFile_succesfullyWritesConfigurationContentToANewFileInAnExistingDirectoryAndUpdatesConfigFile(c *C) {
+func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationContentToANewFileInAnExistingDirectoryAndUpdatesConfigFile(c *C) {
 	tempDir, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
