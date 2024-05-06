@@ -224,7 +224,7 @@ func (s *clientSuite) Test_ensureConfigurationDBFile_successfullyCreatesAndWrite
 	c.Assert(string(fileContent), Equals, "database configuration content")
 }
 
-func (s *clientSuite) Test_ensureConfigurationDBFile_returnsAnErrorWhenTheConfigurationDBFileFails(c *C) {
+func (s *clientSuite) Test_ensureConfigurationDBFile_returnsAnErrorWhenTheConfigurationDBFileCreationFails(c *C) {
 	client := &client{configDir: "invalid/configuration/path"}
 
 	err := client.ensureConfigurationDBFile()
