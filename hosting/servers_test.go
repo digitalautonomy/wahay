@@ -107,24 +107,15 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 	mo.AssertExpectations(c)
 }
 
-func (s *hostingSuite) Test_initializeLogging_verifyThatServerLogHasBeenCreated(c *C) {
+func (s *hostingSuite) Test_initializeLogging_returnsAnErrorWhenIsNotPossibleToOpenGrumbleLogFile(c *C) {
 	path := "/tmp/wahay/"
-	var perm fs.FileMode = 0700
-	e := os.MkdirAll(path, perm)
-
-	if e != nil {
-		c.Fatalf("Failed to create temporary directory: %v", e)
-	}
-
-	defer os.RemoveAll(path)
-
 	servers := &servers{
 		dataDir: path,
 	}
-
-	c.Assert(servers.log, IsNil)
-	servers.initializeLogging()
-	c.Assert(servers.log, NotNil)
+	err := servers.initializeLogging()
+	expectedError := "open " + path + "grumble.log: no such file or directory"
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Equals, expectedError)
 }
 
 func (s *hostingSuite) Test_initializeCertificates_generatesSelfSignedCertificateWhenGrumbleDataDirIsCorrect(c *C) {
