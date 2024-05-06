@@ -236,3 +236,38 @@ func (e *EncryptSuite) Test_encryptConfigContent_errorIfKeyIsNotValid(c *C) {
 
     c.Assert(err,NotNil)
 }
+
+func (e *EncryptSuite) Test_GenerateKeysBasedOnPassword_generatesAESAndMACKeys(c *C) {
+
+    params := newEncryptionParameters()
+
+    password := "password123"
+
+    result := GenerateKeysBasedOnPassword(password, params)
+
+    c.Assert(result.valid, Equals, true)
+
+    c.Assert(len(result.key), Equals, aesKeyLen)
+    c.Assert(len(result.mac), Equals, macKeyLen)
+}
+
+func (e *EncryptSuite) Test_GenerateKeysBasedOnPassword_errorWhenKeyIsNotValid(c *C) {
+
+    params := &EncryptionParameters{
+        Nonce:  "",
+        Salt:   "",
+        N:      0,
+        R:      0,
+        P:      0,
+
+        nonceInternal:  []byte("1234"),
+        saltInternal:   []byte("abcd"),
+    }
+
+    password := "password123"
+
+    result := GenerateKeysBasedOnPassword(password, *params)
+
+    c.Assert(result.valid, Equals, false)
+
+}
