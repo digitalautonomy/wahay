@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/hex"
+	"encoding/json"
 
 	. "gopkg.in/check.v1"
 )
@@ -145,4 +146,93 @@ func (e *EncryptSuite) Test_newEncryptionParameters_createsDefaultParams(c *C) {
 
     c.Assert(len(params.nonceInternal), Equals, 12)
     c.Assert(len(params.saltInternal), Equals, 16)
+}
+
+func (e *EncryptSuite) Test_encryptConfigContent_verifiesThatContentIsEncrypted(c *C) {
+
+    params := &EncryptionParameters{
+        nonceInternal: []byte{
+            0x01, 0x02, 0x03, 0x04,
+            0x05, 0x06, 0x07, 0x08,
+            0x09, 0x0A, 0x0B, 0x0C,
+        },
+        saltInternal: []byte{
+            0x0D, 0x0F, 0x11, 0x12,
+            0x13, 0x14, 0x15, 0x16,
+            0x17, 0x18, 0x19, 0x1A,
+            0x1B, 0x1C, 0x1D, 0x1F,
+        },
+    }
+
+    fakeKeys := EncryptionResult{
+		key: []byte("1234567890123456"),
+		mac: []byte("abcdefghijklmnop"),
+		valid: true,
+	}
+
+    getFakeKeys := func(p EncryptionParameters, lastAttemptFailed bool) EncryptionResult {
+        return fakeKeys
+    }
+
+    k := &keySupplierWrap{
+        key:    []byte{0x01,0x02,0x03},
+        mac:    []byte{0x04,0x05,0x06},
+    }
+    k.getKeys = getFakeKeys
+
+    testContent := "this is an example for content"
+
+    encryptedContent, err := encryptConfigContent(testContent, params, k)
+
+    c.Assert(err, IsNil)
+    c.Assert(encryptedContent, NotNil)
+
+    var encryptedData *encryptedData
+    err = json.Unmarshal(encryptedContent, &encryptedData)
+
+    c.Assert(err, IsNil)
+
+    c.Assert(encryptedData.Params.Nonce, DeepEquals, params.Nonce)
+    c.Assert(encryptedData.Params.Salt, DeepEquals, params.Salt)
+
+    c.Assert(encryptedData.Data, NotNil)
+}
+
+func (e *EncryptSuite) Test_encryptConfigContent_errorIfKeyIsNotValid(c *C) {
+
+    params := &EncryptionParameters{
+        nonceInternal: []byte{
+            0x01, 0x02, 0x03, 0x04,
+            0x05, 0x06, 0x07, 0x08,
+            0x09, 0x0A, 0x0B, 0x0C,
+        },
+        saltInternal: []byte{
+            0x0D, 0x0F, 0x11, 0x12,
+            0x13, 0x14, 0x15, 0x16,
+            0x17, 0x18, 0x19, 0x1A,
+            0x1B, 0x1C, 0x1D, 0x1F,
+        },
+    }
+
+    fakeKeys := EncryptionResult{
+		key: []byte("1234567890123456"),
+		mac: []byte("abcdefghijklmnop"),
+		valid: false,
+	}
+
+    getFakeKeys := func(p EncryptionParameters, lastAttemptFailed bool) EncryptionResult {
+        return fakeKeys
+    }
+
+    k := &keySupplierWrap{
+        key:    []byte{0x01,0x02,0x03},
+        mac:    []byte{0x04,0x05,0x06},
+    }
+    k.getKeys = getFakeKeys
+
+    testContent := "this is an example for content"
+
+    _, err := encryptConfigContent(testContent, params, k)
+
+    c.Assert(err,NotNil)
 }
