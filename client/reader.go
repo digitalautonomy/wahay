@@ -19,12 +19,14 @@ func readerMumbleIniConfig() string {
 	return mumbleIniContent
 }
 
+var osMkdirAll = os.MkdirAll
+
 func createDir(path string) error {
 	if pathExists(path) {
 		return nil
 	}
 
-	return os.MkdirAll(path, 0700)
+	return osMkdirAll(path, 0700)
 }
 
 func createFile(filename string) error {
