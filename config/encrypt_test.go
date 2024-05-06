@@ -251,6 +251,81 @@ func (e *EncryptSuite) Test_GenerateKeysBasedOnPassword_generatesAESAndMACKeys(c
     c.Assert(len(result.mac), Equals, macKeyLen)
 }
 
+func (e *EncryptSuite) Test_decryptConfigContent_verifiesThatContentIsDecrypted(c *C) {
+
+    params := &EncryptionParameters{
+        nonceInternal: []byte{
+            0x01, 0x02, 0x03, 0x04,
+            0x05, 0x06, 0x07, 0x08,
+            0x09, 0x0A, 0x0B, 0x0C,
+        },
+        saltInternal: []byte{
+            0x0D, 0x0F, 0x11, 0x12,
+            0x13, 0x14, 0x15, 0x16,
+            0x17, 0x18, 0x19, 0x1A,
+            0x1B, 0x1C, 0x1D, 0x1F,
+        },
+    }
+
+    fakeKeys := EncryptionResult{
+        key:   []byte("1234567890123456"),
+        mac:   []byte("abcdefghijklmnop"),
+        valid: true,
+    }
+
+    getFakeKeys := func(p EncryptionParameters, lastAttemptFailed bool) EncryptionResult {
+        return fakeKeys
+    }
+
+    k := &keySupplierWrap{
+        key:    []byte{0x01, 0x02, 0x03},
+        mac:    []byte{0x04, 0x05, 0x06},
+    }
+    k.getKeys = getFakeKeys
+
+    testContent := "this is an example for content"
+    encryptedContent, err := encryptConfigContent(testContent, params, k)
+
+    c.Assert(err, IsNil)
+    c.Assert(encryptedContent, NotNil)
+
+    var encryptedData *encryptedData
+    err = json.Unmarshal(encryptedContent, &encryptedData)
+    c.Assert(err, IsNil)
+
+    decryptedContent, decryptedParams, err := decryptConfigContent(encryptedContent, k)
+
+    c.Assert(err, IsNil)
+    c.Assert(decryptedContent, NotNil)
+    c.Assert(decryptedParams, NotNil)
+
+    c.Assert(*decryptedParams, DeepEquals, *params)
+
+    c.Assert(string(decryptedContent), Equals, testContent)
+}
+
+func (e *EncryptSuite) Test_decryptConfigContent_errorEncryptionNotEncrypted(c *C) {
+
+    invalidContent := []byte("This is not a valid JSON")
+
+    k := &keySupplierWrap{}
+
+    _, _, err := decryptConfigContent(invalidContent, k)
+
+    c.Assert(err, Equals, errorEncryptionNoEncrypted)
+}
+
+func (e *EncryptSuite) Test_decryptConfigContent_verifiesThatContentIsDecrypted_errorEncryptionNotEncrypted(c *C) {
+
+    invalidContent := []byte("This is not a valid JSON")
+
+    k := &keySupplierWrap{}
+
+    _, _, err := decryptConfigContent(invalidContent, k)
+
+    c.Assert(err, Equals, errorEncryptionNoEncrypted)
+}
+
 func (e *EncryptSuite) Test_GenerateKeysBasedOnPassword_errorWhenKeyIsNotValid(c *C) {
 
     params := &EncryptionParameters{
