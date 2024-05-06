@@ -41,3 +41,24 @@ func (s *clientSuite) Test_pathToConfig_returnsAndSetsParentDirOfBinaryIfConfigD
 	c.Assert(pathToConfig, Equals, expectedPath)
 	c.Assert(client.configDir, Equals, expectedPath)
 }
+
+func (s *clientSuite) Test_pathToConfig_returnsAndSetsBinaryPathIfConfigDirIsEmptyAndPathIsDirectory(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	mumbleBinaryPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(mumbleBinaryPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	client := &client{isValid: true, binary: &binary{path: mumbleBinaryPath}, configDir: ""}
+
+	pathToConfig := client.pathToConfig()
+	expectedPath := mumbleBinaryPath
+	c.Assert(pathToConfig, Equals, expectedPath)
+	c.Assert(client.configDir, Equals, expectedPath)
+}
