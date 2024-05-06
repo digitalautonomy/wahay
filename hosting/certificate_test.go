@@ -2,8 +2,8 @@ package hosting
 
 import (
 	"errors"
+	"io"
 	"io/fs"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -142,7 +142,7 @@ func (s *hostingSuite) Test_stop_worksWithBasicExample(c *C) {
 func (s *hostingSuite) Test_start_keepsServerRunningWhenItHasAlreadyStarted(c *C) {
 	hook := logtest.NewGlobal()
 	defer hook.Reset()
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(io.Discard)
 
 	ws := &webserver{
 		running: true,

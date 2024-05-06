@@ -2,12 +2,15 @@ package hosting
 
 import (
 	"errors"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
 
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
+	log "github.com/sirupsen/logrus"
+	logtest "github.com/sirupsen/logrus/hooks/test"
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
@@ -47,6 +50,10 @@ func (h *hostingSuite) Test_defaultHost_returnsAllInterfacesWhenWorkstationFileH
 }
 
 func (h *hostingSuite) Test_defaultHost_returnsLocalhostInterfaceWhenSomeKindOfErrorOcurred(c *C) {
+	hook := logtest.NewGlobal()
+	defer hook.Reset()
+	log.SetOutput(io.Discard)
+
 	ms := &mockStat{}
 
 	defer gostub.New().Stub(&stat, ms.Stat).Reset()
