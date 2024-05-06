@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
 	log "github.com/sirupsen/logrus"
@@ -111,4 +112,16 @@ func (h *hostingSuite) Test_NewService_returnsAnErrorWhenWrongPortIsGiven(c *C) 
 	c.Assert(err, NotNil)
 	c.Assert(err, Equals, errInvalidPort)
 	c.Assert(srvc, IsNil)
+}
+
+func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsCreatingServer(c *C) {
+	servers := &servers{
+		servers: make(map[int64]*grumbleServer.Server),
+	}
+	srvc := &service{
+		collection: servers,
+	}
+	sud := SuperUserData{}
+	err := srvc.NewConferenceRoom("", sud)
+	c.Assert(err, NotNil)
 }
