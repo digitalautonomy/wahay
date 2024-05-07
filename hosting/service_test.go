@@ -192,3 +192,13 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsNilWhenSuccessfullyCreatesA
 
 	c.Assert(err, IsNil)
 }
+
+func (s *hostingSuite) Test_Close_returnsErrorNilWhenHttpServerRoomAndOnionAreAlreadyEmpty(c *C) {
+	srvc := &service{
+		collection: &servers{
+			dataDir: "tmp/wahay",
+		},
+	}
+	err := srvc.Close()
+	c.Assert(err, IsNil)
+}
