@@ -4,10 +4,13 @@ import (
 	"errors"
 	"io"
 	"io/fs"
+	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strconv"
 
+	"github.com/digitalautonomy/grumble/pkg/logtarget"
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
@@ -148,12 +151,44 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsStartingSer
 		dataDir: path,
 		nextID:  1,
 	}
+	grumbleServer.Args.DataDir = path
 	srvc := &service{
 		collection: servers,
 	}
 	sud := SuperUserData{}
 	err := srvc.NewConferenceRoom("", sud)
-	expectedError := `open .*/.grumble/cert.pem: no such file or directory`
+	expectedError := `open .*/cert.pem: no such file or directory`
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Matches, expectedError)
+}
+
+func (s *hostingSuite) Test_NewConferenceRoom_returnsNilWhenSuccessfullyCreatesANewConferenceRoom(c *C) {
+	servers := &servers{
+		nextID: 2,
+	}
+
+	servers.initializeSharedObjects()
+	servers.initializeDataDirectory()
+
+	logDir := path.Join(servers.dataDir, "grumble.log")
+	grumbleServer.Args.LogPath = logDir
+	logtarget.Target.OpenFile(logDir)
+
+	l := log.New()
+	l.SetOutput(io.Discard)
+	servers.log = l
+
+	servers.initializeCertificates()
+	srvc := &service{
+		collection: servers,
+		httpServer: &webserver{
+			running: true,
+			server:  &http.Server{},
+			address: "127.0.0.1:5545",
+		},
+	}
+	sud := SuperUserData{}
+	err := srvc.NewConferenceRoom("", sud)
+
+	c.Assert(err, IsNil)
 }
