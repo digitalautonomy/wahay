@@ -121,6 +121,8 @@ func (s *clientSuite) Test_ensureConfigurationDir_returnsAnErrorIfCreateDirFails
 
 	err = client.ensureConfigurationDir()
 	c.Assert(err, ErrorMatches, "Error creating directory")
+
+	mm.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationContentToAnExistingFileAndUpdatesConfigFile(c *C) {
@@ -196,6 +198,8 @@ func (s *clientSuite) Test_writeConfigToFile_returnsAnErrorWhenTheConfigFileCrea
 
 	err = client.writeConfigToFile(tempDir)
 	c.Assert(err, Equals, errInvalidConfigFileDBFile)
+
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_ensureConfigurationDBFile_successfullyCreatesAndWritesTheConfigurationDBFile(c *C) {
@@ -285,6 +289,8 @@ func (s *clientSuite) Test_ensureConfigurationFile_returnsAnErrorWhenTheConfigur
 
 	err = client.ensureConfigurationFile()
 	c.Assert(err, Equals, errInvalidConfigFileDBFile)
+
+	mc.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_ensureConfiguration_successEnsuringConfiguration(c *C) {
