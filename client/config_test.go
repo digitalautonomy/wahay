@@ -236,3 +236,53 @@ func (s *clientSuite) Test_ensureConfigurationDBFile_returnsAnErrorWhenTheConfig
 	_, err = os.Stat(configurationDBFile)
 	c.Assert(err, NotNil)
 }
+
+func (s *clientSuite) Test_ensureConfigurationFile_successfullyCreatesAndWritesAConfigurationFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	configurationPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(configurationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	client := &client{configDir: configurationPath, configContentProvider: func() string { return "config file content" }}
+
+	err = client.ensureConfigurationFile()
+	c.Assert(err, IsNil)
+
+	expectedConfigFile := filepath.Join(configurationPath, configFileName)
+	fileContent, err := os.ReadFile(expectedConfigFile)
+	if err != nil {
+		c.Fatalf("Failed to read file")
+	}
+	c.Assert(string(fileContent), Equals, "config file content")
+}
+
+func (s *clientSuite) Test_ensureConfigurationFile_returnsAnErrorWhenTheConfigurationFileCreationFails(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	configurationPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(configurationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	client := &client{configDir: configurationPath, configContentProvider: func() string { return "config file content" }}
+
+	mc := &mockCreate{}
+	defer gostub.New().Stub(&osCreate, mc.Create).Reset()
+	configFile := filepath.Join(client.configDir, configFileName)
+	mc.On("Create", configFile).Return(&os.File{}, errors.New("Error creating file")).Once()
+
+	err = client.ensureConfigurationFile()
+	c.Assert(err, Equals, errInvalidConfigFileDBFile)
+}
