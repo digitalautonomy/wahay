@@ -286,3 +286,23 @@ func (s *clientSuite) Test_ensureConfigurationFile_returnsAnErrorWhenTheConfigur
 	err = client.ensureConfigurationFile()
 	c.Assert(err, Equals, errInvalidConfigFileDBFile)
 }
+
+func (s *clientSuite) Test_ensureConfiguration_successEnsuringConfiguration(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	configurationPath := filepath.Join(tempDir, "/mumble")
+	err = os.MkdirAll(configurationPath, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	client := &client{isValid: true, binary: &binary{path: configurationPath}, configDir: "", configContentProvider: func() string { return "config file content" }, databaseProvider: func() []byte { return []byte("database configuration content") }}
+
+	err = client.ensureConfiguration()
+
+	c.Assert(err, IsNil)
+}
