@@ -202,3 +202,16 @@ func (s *hostingSuite) Test_Close_returnsErrorNilWhenHttpServerRoomAndOnionAreAl
 	err := srvc.Close()
 	c.Assert(err, IsNil)
 }
+
+func (s *hostingSuite) Test_Close_returnsAnErrorWhenFailsClosingRoom(c *C) {
+	srvc := &service{
+		room: &conferenceRoom{
+			server: &server{
+				gs: &grumbleServer.Server{},
+			},
+		},
+	}
+	err := srvc.Close()
+	c.Assert(err, NotNil)
+	c.Assert(err, Equals, ErrServerNoClosed)
+}
