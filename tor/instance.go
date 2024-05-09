@@ -115,7 +115,6 @@ func (i *instance) NewOnionServiceWithMultiplePorts(ports []OnionPort) (Onion, e
 	log.Debugf("NewOnionServiceWithMultiplePorts(%v)", ports)
 	controller := i.GetController()
 
-	fmt.Println(ports)
 	serviceID, err := controller.CreateNewOnionServiceWithMultiplePorts(ports)
 	if err != nil {
 		return nil, err
