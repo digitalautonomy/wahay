@@ -37,6 +37,33 @@ func (s *clientSuite) Test_write_writesDBContent(c *C) {
 	c.Assert(readContent, DeepEquals, content)
 }
 
+func (s *clientSuite) Test_write_handlesError(c *C) {
+	tempDir, err := ioutil.TempDir("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	tempFile := filepath.Join(tempDir, "testfile.txt")
+
+	file, err := os.Create(tempFile)
+	c.Assert(err, IsNil)
+	file.Close()
+
+	err = os.Chmod(tempFile, 0400)
+	c.Assert(err, IsNil)
+
+	content := []byte("example content")
+
+	db := &dbData{
+		filename: tempFile,
+		content:  content,
+	}
+
+	err = db.write()
+
+	c.Assert(err, NotNil)
+
+}
+
 func (s *clientSuite) Test_exists_returnsTrueIfStringExistsInContent(c *C) {
 	db := &dbData{
 		content: []byte("this is true"),
