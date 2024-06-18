@@ -342,3 +342,22 @@ func (s *clientSuite) Test_regenerateConfiguration_regeneratesConfigurationFiles
 
 	c.Assert(err, IsNil)
 }
+
+func (s *clientSuite) Test_regenerateConfiguration_returnsAnErrorWhenRegeneratingTheConfigurationFilesFails(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	client := &client{isValid: true, configDir: "invalid/path/to/config"}
+
+	mm := &mockMkdirAll{}
+	defer gostub.New().Stub(&osMkdirAll, mm.MkdirAll).Reset()
+	var perm fs.FileMode = 0700
+	mm.On("MkdirAll", "invalid/path/to/config", perm).Return(errors.New("Error creating directory")).Once()
+
+	err = client.regenerateConfiguration()
+
+	c.Assert(err, ErrorMatches, "invalid client configuration directory")
+}
