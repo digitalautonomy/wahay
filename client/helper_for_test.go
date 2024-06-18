@@ -1,8 +1,11 @@
 package client
 
 import (
-	. "gopkg.in/check.v1"
+	"io"
 	"testing"
+
+	"github.com/sirupsen/logrus"
+	. "gopkg.in/check.v1"
 )
 
 func Test(t *testing.T) { TestingT(t) }
@@ -10,3 +13,7 @@ func Test(t *testing.T) { TestingT(t) }
 type clientSuite struct{}
 
 var _ = Suite(&clientSuite{})
+
+func init() {
+	logrus.SetOutput(io.Discard)
+}
