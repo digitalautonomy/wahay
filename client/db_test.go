@@ -189,8 +189,28 @@ func (s *clientSuite) Test_db_createsDatabase(c *C) {
 
 	sqlFile := filepath.Join(tempDir, ".mumble.sqlite")
 	_, err = os.Stat(sqlFile)
+	c.Assert(err, IsNil)
 
+	c.Assert(db.filename, Equals, sqlFile)
+	c.Assert(db.content, DeepEquals, fakeDBContent)
+}
+
+func (s *clientSuite) Test_db_loadsExistingDatabase(c *C) {
+
+	content := "database example content"
+	fakeClientContent := "fake client content"
+
+	tempDir, tempConfigFile := createTempDirAndFile(c, "config.yaml", "configuration data")
+	sqlFile := createTempFile(c, tempDir, ".mumble.sqlite", content)
+
+	defer removeTempDir(c, tempDir)
+
+	fakeClient := createFakeClient(tempConfigFile, fakeClientContent)
+	fakeDBContent := []byte(content)
+
+	db, err := fakeClient.db()
 	c.Assert(err, IsNil)
 	c.Assert(db.filename, Equals, sqlFile)
 	c.Assert(db.content, DeepEquals, fakeDBContent)
+	c.Assert(db.content, Not(DeepEquals), []byte(fakeClientContent))
 }
