@@ -135,7 +135,7 @@ func (s *clientSuite) Test_loadDBFromFile_loadsDatabaseSuccessfully(c *C) {
 
 	tempDir := createTempDir(c)
 	tempFile := createTempFile(c, tempDir, "testfile.db", content)
-	defer os.RemoveAll(tempDir)
+	defer removeTempDir(c, tempDir)
 
 	expectedContent := []byte(content)
 
