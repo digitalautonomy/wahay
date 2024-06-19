@@ -200,12 +200,14 @@ func genCertInto(certFilename, keyFilename string) error {
 	return nil
 }
 
+var ioutilTempDir = ioutil.TempDir
+
 // generateTemporaryMumbleCertificate will generate a certificate and private key and
 // then format that in PKCS12, finally formatting it in the @ByteArray format that
 // Mumble configuration files use
 // This will fail if OpenSSL is not installed on the system.
 func generateTemporaryMumbleCertificate() (string, error) {
-	dir, err := ioutil.TempDir("", "wahay_cert_generation")
+	dir, err := ioutilTempDir("", "wahay_cert_generation")
 	if err != nil {
 		return "", err
 	}

@@ -1,6 +1,9 @@
 package client
 
 import (
+	"errors"
+
+	"github.com/prashantv/gostub"
 	. "gopkg.in/check.v1"
 )
 
@@ -85,4 +88,17 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsCertificate
 	c.Assert(err, IsNil)
 	c.Assert(data, NotNil)
 	c.Assert(data, Matches, `@ByteArray\(.*\)`)
+}
+
+func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenFailsCreatingTempDir(c *C) {
+	mtd := &mockTempDir{}
+	defer gostub.New().Stub(&ioutilTempDir, mtd.tempDir).Reset()
+
+	expectedError := errors.New("Error creating the temp folder")
+	mtd.On("tempDir", "", "wahay_cert_generation").Return("", expectedError).Once()
+
+	data, err := generateTemporaryMumbleCertificate()
+	c.Assert(err, NotNil)
+	c.Assert(err, Equals, expectedError)
+	c.Assert(data, Equals, "")
 }
