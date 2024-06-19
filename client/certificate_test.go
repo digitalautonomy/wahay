@@ -116,3 +116,17 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	c.Assert(err, NotNil)
 	c.Assert(err, Equals, expectedError)
 }
+
+func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen(c *C) {
+	mtd := &mockTempDir{}
+	defer gostub.New().Stub(&ioutilTempDir, mtd.tempDir).Reset()
+
+	mtd.On("tempDir", "", "wahay_cert_generation").Return("/fake/dir", nil).Once()
+
+	expectedError := "open /fake/dir/cert.pem: no such file or directory"
+	data, err := generateTemporaryMumbleCertificate()
+
+	c.Assert(data, Equals, "")
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Equals, expectedError)
+}
