@@ -9,6 +9,25 @@ import (
 )
 
 // helper functions
+func createFakeClient(c *C, tempConfigFile, content string) *client {
+
+	fakeDBContent := []byte(content)
+	fakeDBProvider := func() []byte { return fakeDBContent }
+
+	fakeClient := &client{
+		configFile:       tempConfigFile,
+		databaseProvider: fakeDBProvider,
+	}
+
+	return fakeClient
+}
+
+func createTempDirAndFile(c *C, filename, content string) (string, string) {
+	tempDir := createTempDir(c)
+	tempFile := createTempFile(c, tempDir, filename, content)
+	return tempDir, tempFile
+}
+
 func createTempDir(c *C) string {
 	tempDir, err := ioutil.TempDir("", "test")
 	c.Assert(err, IsNil)
@@ -50,8 +69,8 @@ func (s *clientSuite) Test_write_writesDBContent(c *C) {
 }
 
 func (s *clientSuite) Test_write_handlesError(c *C) {
-	tempDir := createTempDir(c)
-	tempFile := createTempFile(c, tempDir, "testfile.txt", "")
+
+	tempDir, tempFile := createTempDirAndFile(c, "testfile.txt", "")
 	defer removeTempDir(c, tempDir)
 
 	err := os.Chmod(tempFile, 0400)
@@ -110,11 +129,10 @@ func (s *clientSuite) Test_replaceString_findsAndReplacesContentInDB(c *C) {
 func (s *clientSuite) Test_readBinaryContent_readsFileContent(c *C) {
 	content := "example binary content"
 
-	tempDir := createTempDir(c)
-	tempFile := createTempFile(c, tempDir, "testfile.bin", content)
+	tempDir, tempFile := createTempDirAndFile(c, "testfile.bin", content)
 	defer removeTempDir(c, tempDir)
 
-	expectedContent := []byte("example binary content")
+	expectedContent := []byte(content)
 
 	readContent, err := readBinaryContent(tempFile)
 
@@ -133,8 +151,7 @@ func (s *clientSuite) Test_readBinaryContent_handlesFileNotFoundError(c *C) {
 func (s *clientSuite) Test_loadDBFromFile_loadsDatabaseSuccessfully(c *C) {
 	content := "example database content"
 
-	tempDir := createTempDir(c)
-	tempFile := createTempFile(c, tempDir, "testfile.db", content)
+	tempDir, tempFile := createTempDirAndFile(c, "testfile.db", content)
 	defer removeTempDir(c, tempDir)
 
 	expectedContent := []byte(content)
@@ -158,26 +175,22 @@ func (s *clientSuite) Test_loadDBFromFile_handlesFileNotFoundError(c *C) {
 }
 
 func (s *clientSuite) Test_db_createsDatabase(c *C) {
-	tempDir := createTempDir(c)
-	tempConfigFile := createTempFile(c, tempDir, "config.yaml", "configuration data")
+	tempDir, tempConfigFile := createTempDirAndFile(c, "config.yaml", "configuration data")
 	defer removeTempDir(c, tempDir)
 
-	fakeDBContent := []byte("fake database content")
-	fakeDBProvider := func() []byte { return fakeDBContent }
+	content := "database example content"
+	fakeDBContent := []byte(content)
 
-	fakeClient := &client{
-		configFile:       tempConfigFile,
-		databaseProvider: fakeDBProvider,
-	}
+	fakeClient := createFakeClient(c, tempConfigFile, content)
 
 	db, err := fakeClient.db()
 	c.Assert(err, IsNil)
 	c.Assert(db, NotNil)
 
 	sqlFile := filepath.Join(tempDir, ".mumble.sqlite")
-
 	_, err = os.Stat(sqlFile)
 
 	c.Assert(err, IsNil)
+	c.Assert(db.filename, Equals, sqlFile)
 	c.Assert(db.content, DeepEquals, fakeDBContent)
 }
