@@ -33,10 +33,6 @@ func (s *clientSuite) Test_write_writesDBContent(c *C) {
 	tempFile := createTempFile(c, tempDir, "testfile.txt", "")
 	defer removeTempDir(c, tempDir)
 
-	file, err := os.Create(tempFile)
-	c.Assert(err, IsNil)
-	defer file.Close()
-
 	content := []byte("example content")
 
 	db := &dbData{
@@ -44,7 +40,7 @@ func (s *clientSuite) Test_write_writesDBContent(c *C) {
 		content:  content,
 	}
 
-	err = db.write()
+	err := db.write()
 	c.Assert(err, IsNil)
 
 	readContent, err := ioutil.ReadFile(tempFile)
@@ -54,17 +50,11 @@ func (s *clientSuite) Test_write_writesDBContent(c *C) {
 }
 
 func (s *clientSuite) Test_write_handlesError(c *C) {
-	tempDir, err := ioutil.TempDir("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
+	tempDir := createTempDir(c)
+	tempFile := createTempFile(c, tempDir, "testfile.txt", "")
+	defer removeTempDir(c, tempDir)
 
-	tempFile := filepath.Join(tempDir, "testfile.txt")
-
-	file, err := os.Create(tempFile)
-	c.Assert(err, IsNil)
-	file.Close()
-
-	err = os.Chmod(tempFile, 0400)
+	err := os.Chmod(tempFile, 0400)
 	c.Assert(err, IsNil)
 
 	content := []byte("example content")
@@ -77,7 +67,6 @@ func (s *clientSuite) Test_write_handlesError(c *C) {
 	err = db.write()
 
 	c.Assert(err, NotNil)
-
 }
 
 func (s *clientSuite) Test_exists_returnsTrueIfStringExistsInContent(c *C) {
@@ -119,21 +108,18 @@ func (s *clientSuite) Test_replaceString_findsAndReplacesContentInDB(c *C) {
 }
 
 func (s *clientSuite) Test_readBinaryContent_readsFileContent(c *C) {
-	tempDir, err := ioutil.TempDir("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
+	content := "example binary content"
 
-	tempFile := filepath.Join(tempDir, "testfile.bin")
+	tempDir := createTempDir(c)
+	tempFile := createTempFile(c, tempDir, "testfile.bin", content)
+	defer removeTempDir(c, tempDir)
+
 	expectedContent := []byte("example binary content")
 
-	defer os.Remove(tempFile)
+	readContent, err := readBinaryContent(tempFile)
 
-	err = ioutil.WriteFile(tempFile, expectedContent, 0600)
 	c.Assert(err, IsNil)
-
-	actualContent, err := readBinaryContent(tempFile)
-	c.Assert(err, IsNil)
-	c.Assert(actualContent, DeepEquals, expectedContent)
+	c.Assert(readContent, DeepEquals, expectedContent)
 }
 
 func (s *clientSuite) Test_readBinaryContent_handlesFileNotFoundError(c *C) {
@@ -145,19 +131,16 @@ func (s *clientSuite) Test_readBinaryContent_handlesFileNotFoundError(c *C) {
 }
 
 func (s *clientSuite) Test_loadDBFromFile_loadsDatabaseSuccessfully(c *C) {
-	tempDir, err := ioutil.TempDir("", "test")
-	c.Assert(err, IsNil)
+	content := "example database content"
+
+	tempDir := createTempDir(c)
+	tempFile := createTempFile(c, tempDir, "testfile.db", content)
 	defer os.RemoveAll(tempDir)
 
-	tempFile := filepath.Join(tempDir, "testfile.db")
-	expectedContent := []byte("example database content")
-
-	defer os.Remove(tempFile)
-
-	err = ioutil.WriteFile(tempFile, expectedContent, 0600)
-	c.Assert(err, IsNil)
+	expectedContent := []byte(content)
 
 	db, err := loadDBFromFile(tempFile)
+
 	c.Assert(err, IsNil)
 	c.Assert(db, NotNil)
 	c.Assert(db.filename, Equals, tempFile)
@@ -168,6 +151,7 @@ func (s *clientSuite) Test_loadDBFromFile_handlesFileNotFoundError(c *C) {
 	nonExistentFile := "/path/to/nonexistent/file.db"
 
 	db, err := loadDBFromFile(nonExistentFile)
+
 	c.Assert(err, NotNil)
 	c.Assert(os.IsNotExist(err), Equals, true)
 	c.Assert(db, IsNil)
