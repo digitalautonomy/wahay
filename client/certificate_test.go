@@ -63,3 +63,19 @@ func (s *clientSuite) Test_storeCertificate_returnsAnErrorWhenBadCertificateHasB
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Equals, "invalid certificate")
 }
+
+func (s *clientSuite) Test_storeCertificate_returnsNoErrorWhenSuccesfullyStoresCertificateInDB(c *C) {
+	var mumbleDBContent []byte
+
+	d := func() []byte {
+		return mumbleDBContent
+	}
+
+	cl := client{
+		databaseProvider: d,
+	}
+
+	cert := []byte(fakeCert)
+	err := cl.storeCertificate("test", 123, cert)
+	c.Assert(err, IsNil)
+}
