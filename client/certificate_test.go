@@ -107,7 +107,7 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	mc := &mockCmd{}
 	defer gostub.New().Stub(&cmdOutput, mc.Output).Reset()
 
-	expectedError := errors.New("")
+	expectedError := errors.New("OpenSSL is not installed on the system.")
 	mc.On("Output").Return([]byte(""), expectedError)
 
 	data, err := generateTemporaryMumbleCertificate()
