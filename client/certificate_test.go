@@ -47,3 +47,19 @@ func (s *clientSuite) Test_requestCertificate_returnsAnErrorWhenFailsExtractingH
 	c.Assert(err, NotNil)
 	c.Assert(err.Error(), Equals, "invalid certificate url")
 }
+
+func (s *clientSuite) Test_storeCertificate_returnsAnErrorWhenBadCertificateHasBeenGiven(c *C) {
+	var mumbleDBContent []byte
+
+	d := func() []byte {
+		return mumbleDBContent
+	}
+
+	cl := client{
+		databaseProvider: d,
+	}
+	cert := []byte("dummy cert")
+	err := cl.storeCertificate("test", 123, cert)
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Equals, "invalid certificate")
+}
