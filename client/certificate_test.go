@@ -117,7 +117,7 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	c.Assert(err, Equals, expectedError)
 }
 
-func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen(c *C) {
+func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenCantReadCertFile(c *C) {
 	mtd := &mockTempDir{}
 	defer gostub.New().Stub(&ioutilTempDir, mtd.tempDir).Reset()
 
