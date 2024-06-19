@@ -9,7 +9,7 @@ import (
 )
 
 // helper functions
-func createFakeClient(c *C, tempConfigFile, content string) *client {
+func createFakeClient(tempConfigFile, content string) *client {
 
 	fakeDBContent := []byte(content)
 	fakeDBProvider := func() []byte { return fakeDBContent }
@@ -181,7 +181,7 @@ func (s *clientSuite) Test_db_createsDatabase(c *C) {
 	content := "database example content"
 	fakeDBContent := []byte(content)
 
-	fakeClient := createFakeClient(c, tempConfigFile, content)
+	fakeClient := createFakeClient(tempConfigFile, content)
 
 	db, err := fakeClient.db()
 	c.Assert(err, IsNil)
