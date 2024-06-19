@@ -6,18 +6,8 @@ import (
 	. "github.com/digitalautonomy/wahay/test"
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
-	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
-
-type mockTempDir struct {
-	mock.Mock
-}
-
-func (m *mockTempDir) tempDir(dir, prefix string) (string, error) {
-	args := m.Called(dir, prefix)
-	return args.String(0), args.Error(1)
-}
 
 func (s *clientSuite) Test_tempFolder_createsATempFolderSuccessfully(c *C) {
 	tempDir, err := tempFolder()
