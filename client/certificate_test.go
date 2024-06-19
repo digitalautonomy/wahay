@@ -40,3 +40,10 @@ func (s *clientSuite) Test_extractHostAndPort_returnsHostAndPortWhenAddressIsCor
 	c.Assert(p, Equals, "666")
 	c.Assert(err, IsNil)
 }
+
+func (s *clientSuite) Test_requestCertificate_returnsAnErrorWhenFailsExtractingHostAndPort(c *C) {
+	cl := client{}
+	err := cl.requestCertificate("http://test")
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Equals, "invalid certificate url")
+}

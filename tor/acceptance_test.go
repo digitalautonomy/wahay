@@ -689,3 +689,28 @@ func (m *mockHTTPImplementation) HTTPRequest(host string, port int, u string) (s
 	testPrint("HTTPRequest(%v, %v, %v)\n", host, port, u)
 	return "", nil
 }
+
+func (s *TorAcceptanceSuite) Test_x(c *C) {
+	mockAll()
+	defer setDefaultFacades()
+
+	tc := &mockTorgoController{}
+	tc.authNoneReturn = nil
+	tc.authPassReturn = errors.New("couldn't auth")
+	tc.authCookieReturn = errors.New("couldn't auth")
+	tc.getVersionReturn1 = "4.0.1"
+	tc.getVersionReturn2 = nil
+
+	mocktorgof.newControllerReturn1 = tc
+
+	mockhttpf.checkConnectionReturn = true
+
+	ix, e := NewInstance(&config.ApplicationConfig{}, nil)
+
+	c.Assert(e, IsNil)
+
+	c.Assert(mocktorgof.newControllerArg, Equals, "127.0.0.1:9051")
+
+	i := ix.(*instance)
+	c.Assert(i.started, Equals, true)
+}
