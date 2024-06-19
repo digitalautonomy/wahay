@@ -8,18 +8,34 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-func (s *clientSuite) Test_write_writesDBContent(c *C) {
+// helper functions
+func createTempDir(c *C) string {
 	tempDir, err := ioutil.TempDir("", "test")
 	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
+	return tempDir
+}
 
-	tempFile := filepath.Join(tempDir, "testfile.txt")
+func createTempFile(c *C, dir, filename, content string) string {
+	tempFile := filepath.Join(dir, filename)
+	err := ioutil.WriteFile(tempFile, []byte(content), 0600)
+	c.Assert(err, IsNil)
+	return tempFile
+}
+
+func removeTempDir(c *C, dir string) {
+	err := os.RemoveAll(dir)
+	c.Assert(err, IsNil)
+}
+
+// tests
+func (s *clientSuite) Test_write_writesDBContent(c *C) {
+	tempDir := createTempDir(c)
+	tempFile := createTempFile(c, tempDir, "testfile.txt", "")
+	defer removeTempDir(c, tempDir)
 
 	file, err := os.Create(tempFile)
 	c.Assert(err, IsNil)
-
 	defer file.Close()
-	defer os.Remove(tempFile)
 
 	content := []byte("example content")
 
