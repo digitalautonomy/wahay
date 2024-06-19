@@ -127,3 +127,32 @@ func (s *clientSuite) Test_readBinaryContent_handlesFileNotFoundError(c *C) {
 	c.Assert(err, NotNil)
 	c.Assert(os.IsNotExist(err), Equals, true)
 }
+
+func (s *clientSuite) Test_loadDBFromFile_loadsDatabaseSuccessfully(c *C) {
+	tempDir, err := ioutil.TempDir("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	tempFile := filepath.Join(tempDir, "testfile.db")
+	expectedContent := []byte("example database content")
+
+	defer os.Remove(tempFile)
+
+	err = ioutil.WriteFile(tempFile, expectedContent, 0600)
+	c.Assert(err, IsNil)
+
+	db, err := loadDBFromFile(tempFile)
+	c.Assert(err, IsNil)
+	c.Assert(db, NotNil)
+	c.Assert(db.filename, Equals, tempFile)
+	c.Assert(db.content, DeepEquals, expectedContent)
+}
+
+func (s *clientSuite) Test_loadDBFromFile_handlesFileNotFoundError(c *C) {
+	nonExistentFile := "/path/to/nonexistent/file.db"
+
+	db, err := loadDBFromFile(nonExistentFile)
+	c.Assert(err, NotNil)
+	c.Assert(os.IsNotExist(err), Equals, true)
+	c.Assert(db, IsNil)
+}
