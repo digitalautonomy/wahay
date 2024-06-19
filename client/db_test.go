@@ -156,3 +156,28 @@ func (s *clientSuite) Test_loadDBFromFile_handlesFileNotFoundError(c *C) {
 	c.Assert(os.IsNotExist(err), Equals, true)
 	c.Assert(db, IsNil)
 }
+
+func (s *clientSuite) Test_db_createsDatabase(c *C) {
+	tempDir := createTempDir(c)
+	tempConfigFile := createTempFile(c, tempDir, "config.yaml", "configuration data")
+	defer removeTempDir(c, tempDir)
+
+	fakeDBContent := []byte("fake database content")
+	fakeDBProvider := func() []byte { return fakeDBContent }
+
+	fakeClient := &client{
+		configFile:       tempConfigFile,
+		databaseProvider: fakeDBProvider,
+	}
+
+	db, err := fakeClient.db()
+	c.Assert(err, IsNil)
+	c.Assert(db, NotNil)
+
+	sqlFile := filepath.Join(tempDir, ".mumble.sqlite")
+
+	_, err = os.Stat(sqlFile)
+
+	c.Assert(err, IsNil)
+	c.Assert(db.content, DeepEquals, fakeDBContent)
+}
