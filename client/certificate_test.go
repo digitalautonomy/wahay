@@ -79,3 +79,10 @@ func (s *clientSuite) Test_storeCertificate_returnsNoErrorWhenSuccesfullyStoresC
 	err := cl.storeCertificate("test", 123, cert)
 	c.Assert(err, IsNil)
 }
+
+func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsCertificateSuccessfully(c *C) {
+	data, err := generateTemporaryMumbleCertificate()
+	c.Assert(err, IsNil)
+	c.Assert(data, NotNil)
+	c.Assert(data, Matches, `@ByteArray\(.*\)`)
+}
