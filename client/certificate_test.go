@@ -102,3 +102,17 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	c.Assert(err, Equals, expectedError)
 	c.Assert(data, Equals, "")
 }
+
+func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenFailsRunningTheOpensslCommand(c *C) {
+	mc := &mockCmd{}
+	defer gostub.New().Stub(&cmdOutput, mc.Output).Reset()
+
+	expectedError := errors.New("")
+	mc.On("Output").Return([]byte(""), expectedError)
+
+	data, err := generateTemporaryMumbleCertificate()
+
+	c.Assert(data, Equals, "")
+	c.Assert(err, NotNil)
+	c.Assert(err, Equals, expectedError)
+}

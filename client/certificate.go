@@ -201,6 +201,8 @@ func genCertInto(certFilename, keyFilename string) error {
 }
 
 var ioutilTempDir = ioutil.TempDir
+var cmd exec.Cmd
+var cmdOutput = cmd.Output
 
 // generateTemporaryMumbleCertificate will generate a certificate and private key and
 // then format that in PKCS12, finally formatting it in the @ByteArray format that
@@ -222,8 +224,8 @@ func generateTemporaryMumbleCertificate() (string, error) {
 		"-in", filepath.Join(dir, "cert.pem"), "-export", "-out", filepath.Join(dir, "transformed.p12")}
 	// This executes the openssl command. The args are completely under our control
 	/* #nosec G204 */
-	cmd := exec.Command("openssl", args...)
-	_, err = cmd.Output()
+	cmd = *exec.Command("openssl", args...)
+	_, err = cmdOutput()
 	if err != nil {
 		return "", err
 	}

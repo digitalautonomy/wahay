@@ -36,3 +36,12 @@ func (m *mockTempDir) tempDir(dir, prefix string) (string, error) {
 	args := m.Called(dir, prefix)
 	return args.String(0), args.Error(1)
 }
+
+type mockCmd struct {
+	mock.Mock
+}
+
+func (m *mockCmd) Output() ([]byte, error) {
+	args := m.Called()
+	return args.Get(0).([]byte), args.Error(1)
+}
