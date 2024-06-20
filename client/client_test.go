@@ -2,7 +2,11 @@ package client
 
 import (
 	"errors"
+	"os"
+	"os/exec"
+	"path/filepath"
 
+	"github.com/digitalautonomy/wahay/config"
 	. "github.com/digitalautonomy/wahay/test"
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
@@ -143,4 +147,99 @@ func (s *clientSuite) Test_binaryEnv_returnsEnvironmentVariableWhenClientIsNotVa
 	envVariable := client.binaryEnv()
 
 	c.Assert(envVariable, DeepEquals, []string{"QT_QPA_PLATFORM=xcb"})
+}
+
+func (s *clientSuite) Test_InitSystem_worksWithAValidConfigurationAndBinaryPath(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	absolutePathForBinary := filepath.Join(tempDir, "path/to/binary")
+	err = os.MkdirAll(absolutePathForBinary, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(absolutePathForBinary, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mc := &mockCommand{}
+	mc.On("Command", srcf.Name(), []string{"-h"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"-h"}}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+
+	i := InitSystem(&config.ApplicationConfig{PathMumble: srcf.Name()}, ti)
+
+	client := i.(*client)
+
+	c.Assert(client.isValid, IsTrue)
+	c.Assert(client.err, IsNil)
+
+	mc.AssertExpectations(c)
+}
+
+func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenAValidMumbleBinaryIsNotAvailable(c *C) {
+
+	ml := &mockLookPath{}
+	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
+	ml.On("LookPath", "mumble").Return("", nil).Once()
+
+	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+
+	i := InitSystem(&config.ApplicationConfig{}, ti)
+
+	client := i.(*client)
+
+	c.Assert(client.isValid, IsFalse)
+	c.Assert(client.err, ErrorMatches, "a valid binary of Mumble is no available in your system")
+
+	ml.AssertExpectations(c)
+}
+
+func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenTemporaryFolderCreationFails(c *C) {
+	tempDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDirectory)
+
+	absolutePathForBinary := filepath.Join(tempDirectory, "path/to/binary")
+	err = os.MkdirAll(absolutePathForBinary, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(absolutePathForBinary, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mc := &mockCommand{}
+	mc.On("Command", srcf.Name(), []string{"-h"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"-h"}}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+
+	mtd := &mockTempDir{}
+
+	defer gostub.New().Stub(&tempDir, mtd.tempDir).Reset()
+
+	mtd.On("tempDir", "", "mumble").Return("", errors.New("Error creating the temp folder")).Once()
+
+	i := InitSystem(&config.ApplicationConfig{PathMumble: srcf.Name()}, ti)
+
+	client := i.(*client)
+
+	c.Assert(client.isValid, IsFalse)
+	c.Assert(client.err, ErrorMatches, "Error creating the temp folder")
+
+	mc.AssertExpectations(c)
+	mtd.AssertExpectations(c)
 }
