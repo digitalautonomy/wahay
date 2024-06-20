@@ -8,11 +8,7 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type FileSuite struct{}
-
-var _ = Suite(&FileSuite{})
-
-func (f *FileSuite) Test_CreateTempDir_createsTempFileInWahayDirectory(c *C) {
+func (cs *ConfigSuite) Test_CreateTempDir_createsTempFileInWahayDirectory(c *C) {
 	dir := CreateTempDir("test")
 
 	tempDir := filepath.Dir(dir)
@@ -26,7 +22,7 @@ func (f *FileSuite) Test_CreateTempDir_createsTempFileInWahayDirectory(c *C) {
 	defer os.RemoveAll(dir)
 }
 
-func (f *FileSuite) Test_FileExists_returnsTrueWhenFileExists(c *C) {
+func (cs *ConfigSuite) Test_FileExists_returnsTrueWhenFileExists(c *C) {
 	tempFile, err := ioutil.TempFile("", "example")
 
 	c.Assert(err, IsNil)
@@ -36,7 +32,7 @@ func (f *FileSuite) Test_FileExists_returnsTrueWhenFileExists(c *C) {
 	c.Assert(exists, Equals, true)
 }
 
-func (f *FileSuite) Test_FileExists_returnsFalseWhenFileDoesNotExist(c *C) {
+func (cs *ConfigSuite) Test_FileExists_returnsFalseWhenFileDoesNotExist(c *C) {
 	tempFile := filepath.Join(os.TempDir(), "non_existent_file.txt")
 
 	exists := FileExists(tempFile)
@@ -45,7 +41,7 @@ func (f *FileSuite) Test_FileExists_returnsFalseWhenFileDoesNotExist(c *C) {
 	defer os.Remove(tempFile)
 }
 
-func (f *FileSuite) Test_EnsureDir_createsDirWhenDirectoryDoesNotExist(c *C) {
+func (cs *ConfigSuite) Test_EnsureDir_createsDirWhenDirectoryDoesNotExist(c *C) {
 	tempDir, err := ioutil.TempDir("", "testdir")
 
 	c.Assert(err, IsNil)
@@ -59,7 +55,7 @@ func (f *FileSuite) Test_EnsureDir_createsDirWhenDirectoryDoesNotExist(c *C) {
 	c.Assert(err, IsNil)
 }
 
-func (f *FileSuite) Test_EnsureDir_doesNothingIfDirectoryAlreadyExists(c *C) {
+func (cs *ConfigSuite) Test_EnsureDir_doesNothingIfDirectoryAlreadyExists(c *C) {
 	tempDir, err := ioutil.TempDir("", "testdir")
 
 	c.Assert(err, IsNil)
@@ -73,7 +69,7 @@ func (f *FileSuite) Test_EnsureDir_doesNothingIfDirectoryAlreadyExists(c *C) {
 	c.Assert(err, IsNil)
 }
 
-func (f *FileSuite) Test_SafeWrite_writesContentOnTempFile(c *C) {
+func (cs *ConfigSuite) Test_SafeWrite_writesContentOnTempFile(c *C) {
 	tempDir, err := ioutil.TempDir("", "testdir")
 
 	c.Assert(err, IsNil)

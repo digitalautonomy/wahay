@@ -10,6 +10,10 @@ import (
 
 func Test(t *testing.T) { TestingT(t) }
 
+type ConfigSuite struct{}
+
+var _ = Suite(&ConfigSuite{})
+
 func init() {
 	logrus.SetOutput(io.Discard)
 }

@@ -17,11 +17,7 @@ import (
 	. "github.com/digitalautonomy/wahay/test"
 )
 
-type UtilsSuite struct{}
-
-var _ = Suite(&UtilsSuite{})
-
-func (u *UtilsSuite) Test_RandomString_returnsARandomStringIfTheReaderHaveEnoughData(c *C) {
+func (cs *ConfigSuite) Test_RandomString_returnsARandomStringIfTheReaderHaveEnoughData(c *C) {
 	defer gostub.New().Stub(&rand.Reader, strings.NewReader("hello")).Reset()
 
 	dest := new([5]byte)
@@ -30,14 +26,14 @@ func (u *UtilsSuite) Test_RandomString_returnsARandomStringIfTheReaderHaveEnough
 	c.Assert(string(dest[:]), Equals, "68656")
 }
 
-func (u *UtilsSuite) Test_RandomString_returnsAnErrorIfTheReaderGivesAnError(c *C) {
+func (cs *ConfigSuite) Test_RandomString_returnsAnErrorIfTheReaderGivesAnError(c *C) {
 	defer gostub.New().Stub(&rand.Reader, iotest.ErrReader(io.EOF)).Reset()
 
 	dest := new([5]byte)
 	res := RandomString(dest[:])
 	c.Assert(res, ErrorMatches, "EOF")
 }
-func (u *UtilsSuite) Test_RandomString_returnsAnErrorIfTheReaderDoesntHaveEnoughData(c *C) {
+func (cs *ConfigSuite) Test_RandomString_returnsAnErrorIfTheReaderDoesntHaveEnoughData(c *C) {
 	defer gostub.New().Stub(&rand.Reader, strings.NewReader("short")).Reset()
 
 	dest := new([10]byte)
@@ -45,7 +41,7 @@ func (u *UtilsSuite) Test_RandomString_returnsAnErrorIfTheReaderDoesntHaveEnough
 	c.Assert(res, ErrorMatches, "unexpected EOF")
 }
 
-func (u *UtilsSuite) Test_WithHome_returnsTheHomeOfTheHostConcatenatedWithTheGivenPath(c *C) {
+func (cs *ConfigSuite) Test_WithHome_returnsTheHomeOfTheHostConcatenatedWithTheGivenPath(c *C) {
 	defer gostub.New().SetEnv("HOME", "/my/custom/home").Reset()
 
 	c.Assert(WithHome("hello/goodbye.txt"), Equals, "/my/custom/home/hello/goodbye.txt")
@@ -54,27 +50,27 @@ func (u *UtilsSuite) Test_WithHome_returnsTheHomeOfTheHostConcatenatedWithTheGiv
 	c.Assert(WithHome("something else/bla/root//foo.ext.jpg"), Equals, "/another/custom/home/something else/bla/root/foo.ext.jpg")
 }
 
-func (u *UtilsSuite) Test_XdgConfigHome_returnsTheCustomEnvironmentVariableDefinedInOrIfStandardEnvIsNotPresent(c *C) {
+func (cs *ConfigSuite) Test_XdgConfigHome_returnsTheCustomEnvironmentVariableDefinedInOrIfStandardEnvIsNotPresent(c *C) {
 	defer gostub.New().SetEnv("XDG_CONFIG_HOME", "").Reset()
 	defer gostub.New().SetEnv("HOME", "/a/custom/home").Reset()
 
 	c.Assert(XdgConfigHome(), Equals, "/a/custom/home/.config")
 }
 
-func (u *UtilsSuite) Test_XdgConfigHome_returnsTheStandardEnvIfItIsPresent(c *C) {
+func (cs *ConfigSuite) Test_XdgConfigHome_returnsTheStandardEnvIfItIsPresent(c *C) {
 	defer gostub.New().SetEnv("XDG_CONFIG_HOME", "/a/config/standard/directory").Reset()
 
 	c.Assert(xdgOrWithHome("XDG_CONFIG_HOME", "/custom/config/directory"), Equals, "/a/config/standard/directory")
 }
 
-func (u *UtilsSuite) Test_XdgDataHome_returnsTheCustomEnvironmentVariableDefinedInOrIfStandardEnvIsNotPresent(c *C) {
+func (cs *ConfigSuite) Test_XdgDataHome_returnsTheCustomEnvironmentVariableDefinedInOrIfStandardEnvIsNotPresent(c *C) {
 	defer gostub.New().SetEnv("XDG_DATA_HOME", "").Reset()
 	defer gostub.New().SetEnv("HOME", "/a/custom/home").Reset()
 
 	c.Assert(XdgConfigHome(), Equals, "/a/custom/home/.config")
 }
 
-func (u *UtilsSuite) Test_XdgDataHome_returnsTheStandardEnvIfItIsPresent(c *C) {
+func (cs *ConfigSuite) Test_XdgDataHome_returnsTheStandardEnvIfItIsPresent(c *C) {
 	defer gostub.New().SetEnv("XDG_DATA_HOME", "/a/config/standard/directory").Reset()
 
 	c.Assert(xdgOrWithHome("XDG_DATA_HOME", "/custom/config/directory"), Equals, "/a/config/standard/directory")
@@ -106,7 +102,7 @@ func (m *mockNet) Listen(network, dir string) (net.Listener, error) {
 	return ret.Get(0).(net.Listener), ret.Error(1)
 }
 
-func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfThePortIsAvailable(c *C) {
+func (cs *ConfigSuite) Test_IsPortAvailable_returnsTrueIfThePortIsAvailable(c *C) {
 	mn := &mockNet{}
 	ml := &mockListener{}
 
@@ -121,7 +117,7 @@ func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfThePortIsAvailable(c *C) 
 	ml.AssertExpectations(c)
 }
 
-func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfAnotherPortIsAvailable(c *C) {
+func (cs *ConfigSuite) Test_IsPortAvailable_returnsTrueIfAnotherPortIsAvailable(c *C) {
 	ml := &mockListener{}
 
 	defer gostub.New().Stub(&listen, func(net string, dir string) (net.Listener, error) {
@@ -135,13 +131,13 @@ func (u *UtilsSuite) Test_IsPortAvailable_returnsTrueIfAnotherPortIsAvailable(c 
 	c.Assert(IsPortAvailable(10002), IsTrue)
 }
 
-func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortIsNotAvailable(c *C) {
+func (cs *ConfigSuite) Test_IsPortAvailable_returnsFalseIfThePortIsNotAvailable(c *C) {
 	defer gostub.New().StubFunc(&listen, nil, errors.New("port already taken")).Reset()
 
 	c.Assert(IsPortAvailable(5555), IsFalse)
 }
 
-func (u *UtilsSuite) Test_IsPortAvailable_returnsFalseIfThePortWasAvailableButSomethingWentWrongWhenTestingIt(c *C) {
+func (cs *ConfigSuite) Test_IsPortAvailable_returnsFalseIfThePortWasAvailableButSomethingWentWrongWhenTestingIt(c *C) {
 	ml := &mockListener{}
 	defer gostub.New().StubFunc(&listen, ml, nil).Reset()
 	ml.On("Close").Return(errors.New("oh no")).Once()
@@ -157,7 +153,7 @@ func (m *mockRandom) Int31n(v int32) int32 {
 	return int32(m.Called(v).Int(0))
 }
 
-func (u *UtilsSuite) Test_GetRandomPort_returnsThePortAvailableBetweenSomePorts(c *C) {
+func (cs *ConfigSuite) Test_GetRandomPort_returnsThePortAvailableBetweenSomePorts(c *C) {
 	mr := &mockRandom{}
 	mn := &mockNet{}
 
@@ -177,7 +173,7 @@ func (u *UtilsSuite) Test_GetRandomPort_returnsThePortAvailableBetweenSomePorts(
 	c.Assert(GetRandomPort(), Equals, 15679)
 }
 
-func (u *UtilsSuite) Test_RandomPort_ReturnsAPortBetween10000And59999(c *C) {
+func (cs *ConfigSuite) Test_RandomPort_ReturnsAPortBetween10000And59999(c *C) {
 	defer gostub.New().StubFunc(&randomInt31, int32(0)).Reset()
 	c.Assert(RandomPort(), Equals, 10000)
 
@@ -188,30 +184,30 @@ func (u *UtilsSuite) Test_RandomPort_ReturnsAPortBetween10000And59999(c *C) {
 	c.Assert(RandomPort(), Equals, 59999)
 }
 
-func (u *UtilsSuite) Test_CheckPort_ReturnsFalseIfTheGivenValueIsNegative(c *C) {
+func (cs *ConfigSuite) Test_CheckPort_ReturnsFalseIfTheGivenValueIsNegative(c *C) {
 	c.Assert(CheckPort(-1), IsFalse)
 	c.Assert(CheckPort(0), IsFalse)
 	c.Assert(CheckPort(65536), IsFalse)
 }
 
-func (u *UtilsSuite) Test_CheckPort_ReturnsTrueIfTheGivenValueIsBetweenOneAnd65535(c *C) {
+func (cs *ConfigSuite) Test_CheckPort_ReturnsTrueIfTheGivenValueIsBetweenOneAnd65535(c *C) {
 	c.Assert(CheckPort(1), IsTrue)
 	c.Assert(CheckPort(90), IsTrue)
 	c.Assert(CheckPort(65535), IsTrue)
 }
 
-func (u *UtilsSuite) Test_DetectLanguage_returnsEngIfCannotDetectTheSystemLanguage(c *C) {
+func (cs *ConfigSuite) Test_DetectLanguage_returnsEngIfCannotDetectTheSystemLanguage(c *C) {
 	defer gostub.New().StubFunc(&detectLanguage, language.Und, nil).Reset()
 
 	c.Assert(DetectLanguage(), Equals, language.English)
 }
 
-func (u *UtilsSuite) Test_DetectLanguage_returnsTheLanguageDetected(c *C) {
+func (cs *ConfigSuite) Test_DetectLanguage_returnsTheLanguageDetected(c *C) {
 	defer gostub.New().StubFunc(&detectLanguage, language.Hindi, nil).Reset()
 
 	c.Assert(DetectLanguage(), Equals, language.Hindi)
 }
-func (u *UtilsSuite) Test_DetectLanguage_returnsEnglishIfEnglishIsDetected(c *C) {
+func (cs *ConfigSuite) Test_DetectLanguage_returnsEnglishIfEnglishIsDetected(c *C) {
 	defer gostub.New().StubFunc(&detectLanguage, language.English, nil).Reset()
 
 	c.Assert(DetectLanguage(), Equals, language.English)

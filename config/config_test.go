@@ -10,10 +10,6 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type ConfigSuite struct{}
-
-var _ = Suite(&ConfigSuite{})
-
 func (cs *ConfigSuite) Test_New_createsNewInstanceOfConfiguration(c *C) {
 	ac := New()
 
