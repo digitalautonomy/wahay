@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,6 +11,7 @@ import (
 	. "github.com/digitalautonomy/wahay/test"
 	"github.com/digitalautonomy/wahay/tor"
 	"github.com/prashantv/gostub"
+	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
 
@@ -242,4 +244,44 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenTemporaryFolde
 
 	mc.AssertExpectations(c)
 	mtd.AssertExpectations(c)
+}
+
+func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenEnsuringTheConfigurationFails(c *C) {
+	tempDirectory, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(tempDirectory)
+
+	absolutePathForBinary := filepath.Join(tempDirectory, "path/to/binary")
+	err = os.MkdirAll(absolutePathForBinary, 0755)
+	if err != nil {
+		c.Fatalf("Failed to create directory: %v", err)
+	}
+
+	srcf, err := os.CreateTemp(absolutePathForBinary, "mumble")
+	if err != nil {
+		c.Fatalf("Failed to create file")
+	}
+
+	mc := &mockCommand{}
+	mc.On("Command", srcf.Name(), []string{"-h"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"-h"}}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
+	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+
+	mm := &mockMkdirAll{}
+	defer gostub.New().Stub(&osMkdirAll, mm.MkdirAll).Reset()
+	var perm fs.FileMode = 0700
+	mm.On("MkdirAll", mock.Anything, perm).Return(errors.New("Error creating directory")).Once()
+
+	i := InitSystem(&config.ApplicationConfig{PathMumble: srcf.Name()}, ti)
+
+	client := i.(*client)
+
+	c.Assert(client.isValid, IsFalse)
+	c.Assert(client.err, ErrorMatches, "invalid client configuration directory")
+
+	mc.AssertExpectations(c)
 }
