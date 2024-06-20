@@ -1,6 +1,7 @@
 package config
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -9,6 +10,22 @@ import (
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
+
+// helper functions
+
+func compareConfigs(c *C, obtained, expected *ApplicationConfig) {
+	c.Assert(obtained.UniqueConfigurationID, Equals, expected.UniqueConfigurationID)
+	c.Assert(obtained.AsSuperUser, Equals, expected.AsSuperUser)
+	c.Assert(obtained.AutoJoin, Equals, expected.AutoJoin)
+	c.Assert(obtained.PathTor, Equals, expected.PathTor)
+	c.Assert(obtained.PathTorsocks, Equals, expected.PathTorsocks)
+	c.Assert(obtained.LogsEnabled, Equals, expected.LogsEnabled)
+	c.Assert(obtained.RawLogFile, Equals, expected.RawLogFile)
+	c.Assert(obtained.PathMumble, Equals, expected.PathMumble)
+	c.Assert(obtained.PortMumble, Equals, expected.PortMumble)
+}
+
+// tests
 
 func (cs *ConfigSuite) Test_New_createsNewInstanceOfConfiguration(c *C) {
 	ac := New()
@@ -88,6 +105,49 @@ func (cs *ConfigSuite) Test_LoadFromFile_showErrorWhenPersistentConfigurationIsT
 	c.Assert(invalid, Equals, false)
 	c.Assert(repeat, Equals, false)
 	c.Assert(err, IsNil)
+}
+
+func (cs *ConfigSuite) Test_LoadFromFile_LoadsPersistentConfigFile(c *C) {
+	mockKeySupplier := MockKeySupplier{}
+
+	expectedKey := EncryptionResult{
+		key:   []byte{0x01, 0x02, 0x03},
+		mac:   []byte{0x04, 0x05, 0x06},
+		valid: true,
+	}
+	mockKeySupplier.On("GenerateKey", mock.Anything).Return(expectedKey)
+
+	fakeAppConfig := &ApplicationConfig{
+		UniqueConfigurationID: "12345ABC",
+		AsSuperUser:           true,
+		AutoJoin:              true,
+		PathTor:               "path/to/tor",
+		PathTorsocks:          "path/to/tor/socks",
+		LogsEnabled:           true,
+		RawLogFile:            "raw_log_file",
+		PathMumble:            "path/to/mumble",
+		PortMumble:            "567",
+	}
+
+	fakeJsonContent, err := json.Marshal(fakeAppConfig)
+	c.Assert(err, IsNil)
+
+	tempDir, err := ioutil.TempDir("", "test")
+	c.Assert(err, IsNil)
+
+	tempFile := filepath.Join(tempDir, "example.json")
+	err = ioutil.WriteFile(tempFile, []byte(fakeJsonContent), 0600)
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	ac := New()
+	ac.Init()
+
+	ac.persistentMode = true
+
+	ac.LoadFromFile(tempFile, &mockKeySupplier)
+
+	compareConfigs(c, ac, fakeAppConfig)
 }
 
 func (cs *ConfigSuite) Test_genUniqueID_generatesUniqueID(c *C) {
