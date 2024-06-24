@@ -293,7 +293,6 @@ func searchBinaryInSystem() (*binary, error) {
 }
 
 var execCommand = exec.Command
-var commandOutput = command.Output
 var command *exec.Cmd
 
 func isThereAnAvailableBinary(path string) *binary {
@@ -320,7 +319,7 @@ func isThereAnAvailableBinary(path string) *binary {
 	b.isBundle = isBundle
 	b.shouldBeCopied = !isBundle
 
-	output, err := commandOutput()
+	output, err := command.Output()
 	if len(output) == 0 && err != nil {
 		b.isValid = false
 		b.lastError = errInvalidCommand
