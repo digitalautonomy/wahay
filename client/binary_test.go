@@ -79,7 +79,7 @@ func (s *clientSuite) Test_checkLibsDependenciesInPath_worksWithMumbleBundledDep
 	defer os.RemoveAll(tempDir)
 
 	mumblePath := filepath.Join(tempDir, "/mumble/mumble")
-	err = os.MkdirAll(mumbleBundlePath, 0755)
+	err = os.MkdirAll(mumblePath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
 	}
