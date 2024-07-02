@@ -123,10 +123,9 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 
 	mtd.On("tempDir", "", "wahay_cert_generation").Return("/fake/dir", nil).Once()
 
-	expectedError := "open /fake/dir/cert.pem: no such file or directory"
 	data, err := generateTemporaryMumbleCertificate()
 
 	c.Assert(data, Equals, "")
 	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Equals, expectedError)
+	c.Assert(err, ErrorMatches, "open /fake/dir/cert.pem: no such file or directory")
 }
