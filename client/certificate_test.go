@@ -94,12 +94,12 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	mtd := &mockTempDir{}
 	defer gostub.New().Stub(&ioutilTempDir, mtd.tempDir).Reset()
 
-	expectedError := errors.New("Error creating the temp folder")
-	mtd.On("tempDir", "", "wahay_cert_generation").Return("", expectedError).Once()
+	expectedError := "Error creating the temp folder"
+	mtd.On("tempDir", "", "wahay_cert_generation").Return("", errors.New(expectedError)).Once()
 
 	data, err := generateTemporaryMumbleCertificate()
 	c.Assert(err, NotNil)
-	c.Assert(err, Equals, expectedError)
+	c.Assert(err, ErrorMatches, expectedError)
 	c.Assert(data, Equals, "")
 }
 
