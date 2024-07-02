@@ -11,22 +11,6 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-// helper functions
-
-func compareConfigs(c *C, obtained, expected *ApplicationConfig) {
-	c.Assert(obtained.UniqueConfigurationID, Equals, expected.UniqueConfigurationID)
-	c.Assert(obtained.AsSuperUser, Equals, expected.AsSuperUser)
-	c.Assert(obtained.AutoJoin, Equals, expected.AutoJoin)
-	c.Assert(obtained.PathTor, Equals, expected.PathTor)
-	c.Assert(obtained.PathTorsocks, Equals, expected.PathTorsocks)
-	c.Assert(obtained.LogsEnabled, Equals, expected.LogsEnabled)
-	c.Assert(obtained.RawLogFile, Equals, expected.RawLogFile)
-	c.Assert(obtained.PathMumble, Equals, expected.PathMumble)
-	c.Assert(obtained.PortMumble, Equals, expected.PortMumble)
-}
-
-// tests
-
 func (cs *ConfigSuite) Test_New_createsNewInstanceOfConfiguration(c *C) {
 	ac := New()
 
@@ -127,6 +111,8 @@ func (cs *ConfigSuite) Test_LoadFromFile_LoadsPersistentConfigFile(c *C) {
 		RawLogFile:            "raw_log_file",
 		PathMumble:            "path/to/mumble",
 		PortMumble:            "567",
+		initialized:           true,
+		persistentMode:        true,
 	}
 
 	fakeJsonContent, err := json.Marshal(fakeAppConfig)
@@ -140,6 +126,7 @@ func (cs *ConfigSuite) Test_LoadFromFile_LoadsPersistentConfigFile(c *C) {
 	c.Assert(err, IsNil)
 	defer os.RemoveAll(tempDir)
 
+	fakeAppConfig.filename = tempFile
 	ac := New()
 	ac.Init()
 
@@ -147,7 +134,7 @@ func (cs *ConfigSuite) Test_LoadFromFile_LoadsPersistentConfigFile(c *C) {
 
 	ac.LoadFromFile(tempFile, &mockKeySupplier)
 
-	compareConfigs(c, ac, fakeAppConfig)
+	c.Assert(ac, DeepEquals, fakeAppConfig)
 }
 
 func (cs *ConfigSuite) Test_genUniqueID_generatesUniqueID(c *C) {
