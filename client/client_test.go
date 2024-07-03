@@ -216,7 +216,7 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenAValidMumbleBi
 	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
 	ml.On("LookPath", "mumble").Return("", nil).Once()
 
-	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+	ti := &MockTorInstance{}
 
 	i := InitSystem(&config.ApplicationConfig{}, ti)
 
