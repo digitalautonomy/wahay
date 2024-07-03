@@ -151,6 +151,30 @@ func (s *clientSuite) Test_binaryEnv_returnsEnvironmentVariableWhenClientIsNotVa
 	c.Assert(envVariable, DeepEquals, []string{"QT_QPA_PLATFORM=xcb"})
 }
 
+type MockTorInstance struct{}
+
+func (m *MockTorInstance) Start() error {
+	return nil
+}
+
+func (m *MockTorInstance) Destroy() {}
+
+func (m *MockTorInstance) GetController() tor.Control {
+	return nil
+}
+
+func (m *MockTorInstance) HTTPrequest(url string) (string, error) {
+	return "mock response", nil
+}
+
+func (m *MockTorInstance) NewService(a string, b []string, c tor.ModifyCommand) (tor.Service, error) {
+	return nil, nil
+}
+
+func (m *MockTorInstance) NewOnionServiceWithMultiplePorts(ports []tor.OnionPort) (tor.Onion, error) {
+	return nil, nil
+}
+
 func (s *clientSuite) Test_InitSystem_worksWithAValidConfigurationAndBinaryPath(c *C) {
 	tempDir, err := os.MkdirTemp("", "test")
 	if err != nil {
@@ -174,7 +198,7 @@ func (s *clientSuite) Test_InitSystem_worksWithAValidConfigurationAndBinaryPath(
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+	ti := &MockTorInstance{}
 
 	i := InitSystem(&config.ApplicationConfig{PathMumble: srcf.Name()}, ti)
 
@@ -227,7 +251,7 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenTemporaryFolde
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+	ti := &MockTorInstance{}
 
 	mtd := &mockTempDir{}
 
@@ -269,7 +293,7 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenEnsuringTheCon
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	ti, _ := tor.NewInstance(&config.ApplicationConfig{}, nil)
+	ti := &MockTorInstance{}
 
 	mm := &mockMkdirAll{}
 	defer gostub.New().Stub(&osMkdirAll, mm.MkdirAll).Reset()
