@@ -357,7 +357,7 @@ func (s *hostingSuite) Test_DataDir_returnsEmptyStringWhenDataDirectoryHasNotBee
 	c.Assert(dir, Equals, "")
 }
 
-func (s *hostingSuite) Test_Cleanup_delete(c *C) {
+func (s *hostingSuite) Test_Cleanup_deleteCurrentServerDataDirSuccessfully(c *C) {
 	path := "/tmp/wahay/"
 	var perm fs.FileMode = 0700
 	e := os.MkdirAll(path, perm)
