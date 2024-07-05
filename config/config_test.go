@@ -223,7 +223,8 @@ func (cs *ConfigSuite) Test_Save_nonPersistentConfiguration(c *C) {
 func (cs *ConfigSuite) Test_DeleteFileIfExists_fileExists(c *C) {
 
 	filename := "temp_file.txt"
-	_, err := os.Create(filename)
+	file, err := os.Create(filename)
+	file.Close()
 	c.Assert(err, IsNil)
 
 	ac := &ApplicationConfig{filename: filename}
