@@ -84,7 +84,7 @@ func getDefinitionWithFileFallback(uiName string) string {
 
 func getActualDefsFolder() string {
 	wd, _ := os.Getwd()
-	if strings.HasSuffix(wd, "/gui") {
+	if strings.HasSuffix(wd, filepath.FromSlash("/gui")) {
 		return "definitions"
 	}
 	return "gui/definitions"
