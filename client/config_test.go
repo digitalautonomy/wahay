@@ -136,6 +136,7 @@ func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationCont
 	if err != nil {
 		c.Fatalf("Failed to create file")
 	}
+	configFile.Close()
 
 	client := &client{configFile: configFile.Name(), configContentProvider: func() string { return "config file content" }}
 
