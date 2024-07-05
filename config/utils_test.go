@@ -6,6 +6,7 @@ import (
 	"io"
 	"net"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing/iotest"
 
@@ -44,17 +45,17 @@ func (cs *ConfigSuite) Test_RandomString_returnsAnErrorIfTheReaderDoesntHaveEnou
 func (cs *ConfigSuite) Test_WithHome_returnsTheHomeOfTheHostConcatenatedWithTheGivenPath(c *C) {
 	defer gostub.New().SetEnv("HOME", "/my/custom/home").Reset()
 
-	c.Assert(WithHome("hello/goodbye.txt"), Equals, "/my/custom/home/hello/goodbye.txt")
+	c.Assert(WithHome("hello/goodbye.txt"), Equals, filepath.FromSlash("/my/custom/home/hello/goodbye.txt"))
 
 	_ = os.Setenv("HOME", "/another/custom/home")
-	c.Assert(WithHome("something else/bla/root//foo.ext.jpg"), Equals, "/another/custom/home/something else/bla/root/foo.ext.jpg")
+	c.Assert(WithHome("something else/bla/root//foo.ext.jpg"), Equals, filepath.FromSlash("/another/custom/home/something else/bla/root/foo.ext.jpg"))
 }
 
 func (cs *ConfigSuite) Test_XdgConfigHome_returnsTheCustomEnvironmentVariableDefinedInOrIfStandardEnvIsNotPresent(c *C) {
 	defer gostub.New().SetEnv("XDG_CONFIG_HOME", "").Reset()
 	defer gostub.New().SetEnv("HOME", "/a/custom/home").Reset()
 
-	c.Assert(XdgConfigHome(), Equals, "/a/custom/home/.config")
+	c.Assert(XdgConfigHome(), Equals, filepath.FromSlash("/a/custom/home/.config"))
 }
 
 func (cs *ConfigSuite) Test_XdgConfigHome_returnsTheStandardEnvIfItIsPresent(c *C) {
@@ -67,7 +68,7 @@ func (cs *ConfigSuite) Test_XdgDataHome_returnsTheCustomEnvironmentVariableDefin
 	defer gostub.New().SetEnv("XDG_DATA_HOME", "").Reset()
 	defer gostub.New().SetEnv("HOME", "/a/custom/home").Reset()
 
-	c.Assert(XdgConfigHome(), Equals, "/a/custom/home/.config")
+	c.Assert(XdgConfigHome(), Equals, filepath.FromSlash("/a/custom/home/.config"))
 }
 
 func (cs *ConfigSuite) Test_XdgDataHome_returnsTheStandardEnvIfItIsPresent(c *C) {
