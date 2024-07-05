@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/prashantv/gostub"
+	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
 
@@ -117,15 +118,24 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	c.Assert(err, Equals, expectedError)
 }
 
-func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenCantReadCertFile(c *C) {
-	mtd := &mockTempDir{}
-	defer gostub.New().Stub(&ioutilTempDir, mtd.tempDir).Reset()
+type mockReadFile struct {
+	mock.Mock
+}
 
-	mtd.On("tempDir", "", "wahay_cert_generation").Return("/fake/dir", nil).Once()
+func (m *mockReadFile) ReadFile(name string) ([]byte, error) {
+	args := m.Called(name)
+	return args.Get(0).([]byte), args.Error(1)
+}
+
+func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenCantReadCertFile(c *C) {
+	mrf := &mockReadFile{}
+	defer gostub.New().Stub(&osReadFile, mrf.ReadFile).Reset()
+
+	mrf.On("ReadFile", mock.Anything).Return([]byte{}, errors.New("error reading certificate file")).Once()
 
 	data, err := generateTemporaryMumbleCertificate()
 
 	c.Assert(data, Equals, "")
 	c.Assert(err, NotNil)
-	c.Assert(err, ErrorMatches, "open /fake/dir/cert.pem: no such file or directory")
+	c.Assert(err, ErrorMatches, "error reading certificate file")
 }

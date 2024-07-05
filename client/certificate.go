@@ -203,6 +203,7 @@ func genCertInto(certFilename, keyFilename string) error {
 var ioutilTempDir = ioutil.TempDir
 var cmd exec.Cmd
 var cmdOutput = cmd.Output
+var osReadFile = os.ReadFile
 
 // generateTemporaryMumbleCertificate will generate a certificate and private key and
 // then format that in PKCS12, finally formatting it in the @ByteArray format that
@@ -230,7 +231,7 @@ func generateTemporaryMumbleCertificate() (string, error) {
 		return "", err
 	}
 
-	data, err := ioutil.ReadFile(filepath.Clean(filepath.Join(dir, "transformed.p12")))
+	data, err := osReadFile(filepath.Clean(filepath.Join(dir, "transformed.p12")))
 	if err != nil {
 		return "", err
 	}
