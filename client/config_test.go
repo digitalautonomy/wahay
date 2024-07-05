@@ -320,27 +320,36 @@ func (s *clientSuite) Test_regenerateConfiguration_regeneratesConfigurationFiles
 	}
 	defer os.RemoveAll(tempDir)
 
-	configurationPath := filepath.Join(tempDir, "/mumble")
+	configurationPath := filepath.Join(tempDir, "mumble")
 	err = os.MkdirAll(configurationPath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
 	}
 
-	_, err = os.Create(filepath.Join(configurationPath, configFileName))
-	if err != nil {
-		c.Fatalf("Failed to create file")
+	files := []string{configFileName, configDBName}
+	for _, file := range files {
+		f, err := os.Create(filepath.Join(configurationPath, file))
+		if err != nil {
+			c.Fatalf("Failed to create file %s: %v", file, err)
+		}
+		f.Close()
 	}
 
-	_, err = os.Create(filepath.Join(configurationPath, configDBName))
-	if err != nil {
-		c.Fatalf("Failed to create file")
+	client := &client{
+		isValid:               true,
+		binary:                &binary{path: configurationPath},
+		configContentProvider: func() string { return "config file content" },
+		databaseProvider:      func() []byte { return []byte("database configuration content") },
 	}
-
-	client := &client{isValid: true, binary: &binary{path: configurationPath}, configDir: "", configContentProvider: func() string { return "config file content" }, databaseProvider: func() []byte { return []byte("database configuration content") }}
 
 	err = client.regenerateConfiguration()
-
 	c.Assert(err, IsNil)
+
+	// Verify that the files were regenerated
+	for _, file := range files {
+		_, err := os.Stat(filepath.Join(configurationPath, file))
+		c.Assert(err, IsNil, Commentf("File %s should exist after regeneration", file))
+	}
 }
 
 func (s *clientSuite) Test_regenerateConfiguration_returnsAnErrorWhenRegeneratingTheConfigurationFilesFails(c *C) {
