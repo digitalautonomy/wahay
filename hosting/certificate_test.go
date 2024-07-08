@@ -17,7 +17,12 @@ import (
 )
 
 func (s *hostingSuite) Test_newCertificateServer_generatesNewCertificatedWebServerSuccesfully(c *C) {
-	path := "/tmp/wahay"
+	path, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
+	}
+	defer os.RemoveAll(path)
+
 	file := "cert.pem"
 	var perm fs.FileMode = 0700
 	e := os.MkdirAll(path, perm)
@@ -48,15 +53,12 @@ func (s *hostingSuite) Test_newCertificateServer_generatesNewCertificatedWebServ
 }
 
 func (s *hostingSuite) Test_newCertificateServer_returnsAnErrorWhenNoCertificateFileExistsOnPath(c *C) {
-	path := "/tmp/wahay"
-	var perm fs.FileMode = 0700
-	e := os.MkdirAll(path, perm)
-
-	if e != nil {
-		c.Fatalf("Failed to create temporary directory: %v", e)
+	path, err := os.MkdirTemp("", "test")
+	if err != nil {
+		c.Fatalf("Failed to create temporary directory: %v", err)
 	}
-
 	defer os.RemoveAll(path)
+
 	httpServer, err := newCertificateServer(path)
 	expectedErr := "the certificate file do not exists"
 
