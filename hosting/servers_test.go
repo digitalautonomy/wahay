@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
-	"strconv"
 
 	grumbleServer "github.com/digitalautonomy/grumble/server"
 	"github.com/prashantv/gostub"
@@ -48,7 +47,7 @@ func (s *hostingSuite) Test_initializeSharedObjects_checkIfServersMapHasBeenCrea
 
 func (s *hostingSuite) Test_initializeDataDirectory_generateExpectedDataDirectory(c *C) {
 	servers := &servers{}
-	expectedDataDir := `/tmp/wahay\d+$`
+	expectedDataDir := `.*[/\\]wahay\d+$`
 
 	c.Assert(servers.dataDir, Equals, "")
 	err := servers.initializeDataDirectory()
@@ -162,11 +161,11 @@ func (s *hostingSuite) Test_initializeCertificates_returnsNotSuchFileOrDirectory
 	servers := &servers{
 		log: log.New(),
 	}
-	expectedErr := `open .*/cert.pem: no such file or directory`
+	expectedErr := `^open .*[/\\]cert.pem: (no such file or directory|The system cannot find the path specified.)$`
 
 	err := servers.initializeCertificates()
 	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Matches, expectedErr)
+	c.Assert(err, ErrorMatches, expectedErr)
 }
 
 func (s *hostingSuite) Test_callAll_executesAllIntroducedFunctions(c *C) {
@@ -332,11 +331,11 @@ func (s *hostingSuite) Test_CreateServer_returnsAnErrorWhenServersDirectoryHasNo
 		servers: make(map[int64]*grumbleServer.Server),
 	}
 
-	expectedError := "mkdir servers/" + strconv.Itoa(servers.nextID+1) + ": no such file or directory"
+	expectedError := `mkdir servers[/\\]2: (no such file or directory|The system cannot find the path specified.)$`
 
 	_, err := servers.CreateServer()
 	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Equals, expectedError)
+	c.Assert(err, ErrorMatches, expectedError)
 }
 
 func (s *hostingSuite) Test_DataDir_returnsTheCorrectDataDirectoryConfiguredOnTheStructure(c *C) {
@@ -365,7 +364,7 @@ func (s *hostingSuite) Test_Cleanup_deleteCurrentServerDataDirSuccessfully(c *C)
 		c.Fatalf("Failed to create temporary directory: %v", e)
 	}
 
-	expectedErr := "open " + path + ": no such file or directory"
+	expectedErr := "open " + path + ": (no such file or directory|The system cannot find the file specified.)$"
 
 	servers := &servers{dataDir: path}
 	_, e = os.ReadDir(path)
@@ -375,5 +374,5 @@ func (s *hostingSuite) Test_Cleanup_deleteCurrentServerDataDirSuccessfully(c *C)
 
 	_, e = os.ReadDir(path)
 	c.Assert(e, NotNil)
-	c.Assert(e.Error(), Equals, expectedErr)
+	c.Assert(e, ErrorMatches, expectedErr)
 }

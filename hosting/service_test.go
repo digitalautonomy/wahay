@@ -8,7 +8,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"strconv"
 
 	"github.com/digitalautonomy/grumble/pkg/logtarget"
 	grumbleServer "github.com/digitalautonomy/grumble/server"
@@ -131,9 +130,9 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsCreatingSer
 	}
 	sud := SuperUserData{}
 	err := srvc.NewConferenceRoom("", sud)
-	expectedError := "mkdir " + path + "servers/" + strconv.Itoa(sID+1) + ": no such file or directory"
+	expectedError := `^mkdir [/\\]tmp[/\\]wahay[/\\]servers[/\\]3: (no such file or directory|The system cannot find the path specified.)$`
 	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Equals, expectedError)
+	c.Assert(err, ErrorMatches, expectedError)
 }
 
 func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsStartingServer(c *C) {
@@ -157,9 +156,9 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsStartingSer
 	}
 	sud := SuperUserData{}
 	err := srvc.NewConferenceRoom("", sud)
-	expectedError := `open .*/cert.pem: no such file or directory`
+	expectedError := `^open .*[/\\]*.pem: (no such file or directory|The system cannot find the file specified.)$`
 	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Matches, expectedError)
+	c.Assert(err, ErrorMatches, expectedError)
 }
 
 func (s *hostingSuite) Test_NewConferenceRoom_returnsNilWhenSuccessfullyCreatesANewConferenceRoom(c *C) {
