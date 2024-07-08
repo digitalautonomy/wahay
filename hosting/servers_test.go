@@ -108,14 +108,14 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 }
 
 func (s *hostingSuite) Test_initializeLogging_returnsAnErrorWhenIsNotPossibleToOpenGrumbleLogFile(c *C) {
-	path := "/tmp/wahay/"
+	path := "/invalid/path/"
 	servers := &servers{
 		dataDir: path,
 	}
 	err := servers.initializeLogging()
-	expectedError := "open " + path + "grumble.log: no such file or directory"
+	expectedError := "open " + path + "grumble.log: (no such file or directory|The system cannot find the path specified.)$"
 	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Equals, expectedError)
+	c.Assert(err, ErrorMatches, expectedError)
 }
 
 func (s *hostingSuite) Test_initializeLogging_returnsNilWhenGrumbleLogHasBeenCreated(c *C) {
