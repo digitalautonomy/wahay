@@ -122,7 +122,7 @@ func (s *WahayGUIUIReaderSuite) Test_uiBuilderFor_panicsIfBuilderCantBeCreated(c
 
 func (s *WahayGUIUIReaderSuite) Test_readFile_failsIfErrorHappens(c *C) {
 	c.Assert(func() { readFile("none_existing_file") }, PanicMatches,
-		"failing on error: open none_existing_file: no such file or directory")
+		"^failing on error: open (.+): (no such file or directory|The system cannot find the file specified.)$")
 }
 
 func (s *WahayGUIUIReaderSuite) Test_getConfigFileFor_returnsTheWahayDesktopConfigFile(c *C) {
