@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -67,7 +68,7 @@ func getConfigFileFor(fileName, extension string) string {
 }
 
 func getCSSFileWithFallback(fileName string) string {
-	content, e := fs.ReadFile(files, filepath.Join(cssDir, fileName+cssExtension))
+	content, e := fs.ReadFile(files, path.Join(cssDir, fileName+cssExtension))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
