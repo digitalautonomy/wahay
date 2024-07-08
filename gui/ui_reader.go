@@ -60,7 +60,7 @@ func getConfigDesktopFile(fileName string) string {
 var files embed.FS
 
 func getConfigFileFor(fileName, extension string) string {
-	content, e := fs.ReadFile(files, filepath.Join(configFilesDir, fileName+extension))
+	content, e := fs.ReadFile(files, path.Join(configFilesDir, fileName+extension))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
@@ -76,7 +76,7 @@ func getCSSFileWithFallback(fileName string) string {
 }
 
 func getDefinitionWithFileFallback(uiName string) string {
-	content, e := fs.ReadFile(files, filepath.Join(definitionsDir, uiName+xmlExtension))
+	content, e := fs.ReadFile(files, path.Join(definitionsDir, uiName+xmlExtension))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
@@ -179,7 +179,7 @@ func (b *uiBuilder) get(name string) glibi.Object {
 }
 
 func getImage(imageName string) []byte {
-	content, e := fs.ReadFile(files, filepath.Join(imagesDir, imageName))
+	content, e := fs.ReadFile(files, path.Join(imagesDir, imageName))
 	if e != nil {
 		panic(fmt.Sprintf("Developer error: %v", e))
 	}
