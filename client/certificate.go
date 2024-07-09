@@ -225,7 +225,7 @@ func generateTemporaryMumbleCertificate() (string, error) {
 		"-in", filepath.Join(dir, "cert.pem"), "-export", "-out", filepath.Join(dir, "transformed.p12")}
 	// This executes the openssl command. The args are completely under our control
 	/* #nosec G204 */
-	cmd = *exec.Command("openssl", args...)
+	cmd = *execCommand("openssl", args...)
 	_, err = cmdOutput()
 	if err != nil {
 		return "", err

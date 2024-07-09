@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"os/exec"
 
 	"github.com/prashantv/gostub"
 	"github.com/stretchr/testify/mock"
@@ -85,10 +86,20 @@ func (s *clientSuite) Test_storeCertificate_returnsNoErrorWhenSuccesfullyStoresC
 }
 
 func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsCertificateSuccessfully(c *C) {
+	mc := &mockCommand{}
+	defer gostub.New().Stub(&cmdOutput, mc.Output).Reset()
+	mc.On("Command", "openssl", mock.Anything).Return(&exec.Cmd{}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+
+	mrf := &mockReadFile{}
+	defer gostub.New().Stub(&osReadFile, mrf.ReadFile).Reset()
+	mrf.On("ReadFile", mock.Anything).Return([]byte("data content"), nil).Once()
+
 	data, err := generateTemporaryMumbleCertificate()
 	c.Assert(err, IsNil)
 	c.Assert(data, NotNil)
-	c.Assert(data, Matches, `@ByteArray\(.*\)`)
+	c.Assert(data, Matches, `@ByteArray\(data content\)`)
 }
 
 func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenFailsCreatingTempDir(c *C) {
@@ -128,6 +139,12 @@ func (m *mockReadFile) ReadFile(name string) ([]byte, error) {
 }
 
 func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenCantReadCertFile(c *C) {
+	mc := &mockCommand{}
+	defer gostub.New().Stub(&cmdOutput, mc.Output).Reset()
+	mc.On("Command", "openssl", mock.Anything).Return(&exec.Cmd{}).Once()
+	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
+	mc.On("Output").Return([]byte("command output"), nil).Once()
+
 	mrf := &mockReadFile{}
 	defer gostub.New().Stub(&osReadFile, mrf.ReadFile).Reset()
 
