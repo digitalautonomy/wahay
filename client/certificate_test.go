@@ -100,6 +100,9 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsCertificate
 	c.Assert(err, IsNil)
 	c.Assert(data, NotNil)
 	c.Assert(data, Matches, `@ByteArray\(data content\)`)
+
+	mc.AssertExpectations(c)
+	mrf.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenFailsCreatingTempDir(c *C) {
@@ -113,6 +116,8 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	c.Assert(err, NotNil)
 	c.Assert(err, ErrorMatches, expectedError)
 	c.Assert(data, Equals, "")
+
+	mtd.AssertExpectations(c)
 }
 
 func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhenFailsRunningTheOpensslCommand(c *C) {
@@ -127,6 +132,8 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	c.Assert(data, Equals, "")
 	c.Assert(err, NotNil)
 	c.Assert(err, Equals, expectedError)
+
+	mc.AssertExpectations(c)
 }
 
 type mockReadFile struct {
@@ -155,4 +162,7 @@ func (s *clientSuite) Test_generateTemporaryMumbleCertificate_returnsAnErrorWhen
 	c.Assert(data, Equals, "")
 	c.Assert(err, NotNil)
 	c.Assert(err, ErrorMatches, "error reading certificate file")
+
+	mc.AssertExpectations(c)
+	mrf.AssertExpectations(c)
 }
