@@ -20,7 +20,7 @@ func (s *clientSuite) Test_readerMumbleDB_returnsTheByteRepresentationFromAStrin
 func (s *clientSuite) Test_readerMumbleIniConfig_returnsTheContentLikeAString(c *C) {
 	result := readerMumbleIniConfig()
 
-	c.Assert(result, HasLen, 467)
+	c.Assert(result, HasLen, 491)
 	c.Assert(result, Contains, "version=1.3.0")
 	c.Assert(result, Contains, "#CERTIFICATE")
 	c.Assert(result, Contains, "#LANGUAGE")
