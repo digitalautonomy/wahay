@@ -113,7 +113,11 @@ sass-watch: gui/styles $(SASS_SRC)
 $(BUILD_DIR)/wahay: $(AUTOGEN) $(SRC)
 	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
 
+$(BUILD_DIR)/wahay.exe: $(AUTOGEN) $(SRC)
+	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)' -H windowsgui" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay.exe
+
 build: $(BUILD_DIR)/wahay
+build-gui-win: $(BUILD_DIR)/wahay.exe
 
 build-ci: $(BUILD_DIR)/wahay
 ifeq ($(TAG_VERSION),)
