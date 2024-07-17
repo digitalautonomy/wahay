@@ -131,7 +131,8 @@ else
 endif
 
 clean:
-	$(RM) -rf $(BUILD_DIR)/wahay*
+	$(RM) -rf $(BUILD_DIR)/wahay
+	$(RM) -rf $(BUILD_DIR)/wahay.exe
 
 # QUALITY TOOLS
 
