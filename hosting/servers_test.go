@@ -98,7 +98,7 @@ func (s *hostingSuite) Test_initializeDataDirectory_returnsAnErrorWhenFailsCreat
 	mo := &mockOs{}
 	defer gostub.New().Stub(&osMkdirAll, mo.MkdirAll).Reset()
 	var perm fs.FileMode = 0700
-	mo.On("MkdirAll", mock.Anything, perm).Return(errors.New("unknown error related to MkdirAll"))
+	mo.On("MkdirAll", "/tmp/wahay/servers", perm).Return(errors.New("unknown error related to MkdirAll"))
 
 	err := servers.initializeDataDirectory()
 	c.Assert(err, ErrorMatches, "unknown error related to MkdirAll")
