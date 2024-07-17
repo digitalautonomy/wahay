@@ -53,6 +53,10 @@ GOBUILD := $(GO) build
 GOTEST := $(GO) test
 GOINSTALL := $(GO) install
 
+LDFLAGS_VARS := -X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.BuildTag=$(TAG_VERSION)'
+LDFLAGS_REGULAR = -ldflags "$(LDFLAGS_VARS)"
+LDFLAGS_WIN = -ldflags "$(LDFLAGS_VARS) -H windowsgui"
+
 COVERPROFILE := coverprofile
 
 export GO111MODULE=on
@@ -111,10 +115,10 @@ sass-watch: gui/styles $(SASS_SRC)
 	`which sass` --watch ./sass/gui.scss:$(CSS_GEN)
 
 $(BUILD_DIR)/wahay: $(AUTOGEN) $(SRC)
-	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)'" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
+	go build $(LDFLAGS_REGULAR) $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
 
 $(BUILD_DIR)/wahay.exe: $(AUTOGEN) $(SRC)
-	go build -ldflags "-X 'main.BuildTimestamp=$(BUILD_TIMESTAMP)' -X 'main.BuildCommit=$(GIT_VERSION)' -X 'main.BuildShortCommit=$(GIT_SHORT_VERSION)' -X 'main.Build=$(TAG_VERSION)' -H windowsgui" $(BINARY_TAGS) -o $(BUILD_DIR)/wahay.exe
+	go build $(LDFLAGS_WIN) $(BINARY_TAGS) -o $(BUILD_DIR)/wahay.exe
 
 build: $(BUILD_DIR)/wahay
 build-gui-win: $(BUILD_DIR)/wahay.exe
