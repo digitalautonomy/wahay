@@ -61,7 +61,7 @@ COVERPROFILE := coverprofile
 
 export GO111MODULE=on
 
-.PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean coverage coverage-tails build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean sass-watch
+.PHONY: default check-deps gen-ui-defs deps optional-deps test test-clean coverage coverage-tails build-ci lint gosec ineffassign vet errcheck golangci-lint quality all clean sass-watch build-gui-win
 
 default: build
 
@@ -131,7 +131,7 @@ else
 endif
 
 clean:
-	$(RM) -rf $(BUILD_DIR)/wahay
+	$(RM) -rf $(BUILD_DIR)/wahay*
 
 # QUALITY TOOLS
 
