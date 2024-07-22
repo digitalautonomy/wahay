@@ -173,11 +173,11 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 
 	b, errTorBinary := isThereConfiguredTorBinary(path)
 
-	// Ensure we have torsocks available in the system
+	// Ensure we have a proxy tool available in the system
 	if errTorBinary == nil {
-		errTorsocks := findTorsocksBinary()
-		if errTorsocks != nil {
-			return b, errTorsocks
+		err := searchProxyTool()
+		if err != nil {
+			return b, err
 		}
 	}
 
