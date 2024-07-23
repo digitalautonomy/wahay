@@ -89,6 +89,9 @@ func torErrorTranslator(err error) string {
 			"For more information please visit:\n\n" +
 			"https://trac.torproject.org/projects/tor/wiki/doc/torsocks")
 
+	case tor.ErrProxychainsNotInstalled:
+		return i18n().Sprintf("Ensure you have installed Proxychains in your system.")
+
 	case tor.ErrInvalidTorPath:
 	default:
 		return "No valid Tor binary found in the system in order to run Wahay."

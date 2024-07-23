@@ -49,6 +49,14 @@ var (
 	// ErrInvalidConfiguredTorBinary is an error to be trown where the user
 	// configure a custom path for Tor binary and it's no valid
 	ErrInvalidConfiguredTorBinary = errors.New("invalid Tor binary user configured path")
+
+	// ErrTorsocksNotInstalled is an error to be trown where
+	// torsocks is not installed in the system
+	ErrTorsocksNotInstalled = errors.New("torsocks not available")
+
+	// ErrProxychainsNotInstalled is an error to be trown where
+	// proxychains is not installed in the system
+	ErrProxychainsNotInstalled = errors.New("proxychains not available")
 )
 
 func findTorBinary(conf *config.ApplicationConfig) (b *binary, err error) {

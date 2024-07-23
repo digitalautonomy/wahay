@@ -3,20 +3,12 @@
 package tor
 
 import (
-	"errors"
-
 	log "github.com/sirupsen/logrus"
 )
 
 func searchProxyTool() error {
 	return findTorsocksBinary()
 }
-
-var (
-	// ErrTorsocksNotInstalled is an error to be trown where
-	// torsocks is not installed in the system
-	ErrTorsocksNotInstalled = errors.New("torsocks not available")
-)
 
 func findTorsocksBinary() (fatalErr error) {
 	return findTorsocksInSystem()
