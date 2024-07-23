@@ -298,6 +298,45 @@ func (cs *ConfigSuite) Test_doAfterSave_addFunctionToList(c *C) {
 	c.Assert(found, Equals, true)
 }
 
+func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
+
+	a := &ApplicationConfig{
+		filename:      "",
+		encryptedFile: true,
+	}
+
+	a.EnsureDestination()
+	fakeEncryptedConfigFile := filepath.Join(SystemConfigDir(), "wahay", "config.axx")
+
+	c.Assert(a.filename, Equals, fakeEncryptedConfigFile)
+}
+
+func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C) {
+
+	a := &ApplicationConfig{
+		filename:      "",
+		encryptedFile: false,
+	}
+
+	a.EnsureDestination()
+	fakeUnencryptedConfigFile := filepath.Join(SystemConfigDir(), "wahay", "config.json")
+
+	c.Assert(a.filename, Equals, fakeUnencryptedConfigFile)
+}
+
+func (cs *ConfigSuite) Test_EnsureDestination_changesFileSuffixToAValidEncryptedSuffix(c *C) {
+
+	a := &ApplicationConfig{
+		filename:      "config.json",
+		encryptedFile: true,
+	}
+
+	a.EnsureDestination()
+	fakeEncryptedConfigFile := filepath.Join(SystemConfigDir(), "wahay", "config.axx")
+
+	c.Assert(a.filename, Equals, fakeEncryptedConfigFile)
+}
+
 type MockKeySupplier struct {
 	mock.Mock
 }
