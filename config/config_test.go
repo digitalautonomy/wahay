@@ -138,6 +138,67 @@ func (cs *ConfigSuite) Test_LoadFromFile_LoadsPersistentConfigFile(c *C) {
 	c.Assert(ac, DeepEquals, fakeAppConfig)
 }
 
+func (cs *ConfigSuite) Test_getRealConfigFile_returnsEncryptedFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	wahayDir := filepath.Join(tempDir, "wahay")
+	err = os.MkdirAll(wahayDir, 0755)
+	c.Assert(err, IsNil)
+
+	encryptedFilePath := filepath.Join(wahayDir, appEncryptedConfigFile)
+	file, err := os.Create(encryptedFilePath)
+	c.Assert(err, IsNil)
+	file.Close()
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+
+	a := &ApplicationConfig{}
+
+	expectedEncryptedConfigFile := encryptedFilePath
+
+	obtainedEncryptedConfigFile := a.getRealConfigFile()
+
+	c.Assert(obtainedEncryptedConfigFile, Equals, expectedEncryptedConfigFile)
+	c.Assert(a.encryptedFile, Equals, true)
+}
+
+func (cs *ConfigSuite) Test_getRealConfigFile_returnsUnencryptedFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	wahayDir := filepath.Join(tempDir, "wahay")
+	err = os.MkdirAll(wahayDir, 0755)
+	c.Assert(err, IsNil)
+
+	unencryptedFilePath := filepath.Join(wahayDir, appConfigFile)
+	file, err := os.Create(unencryptedFilePath)
+	c.Assert(err, IsNil)
+	file.Close()
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+
+	a := &ApplicationConfig{}
+
+	expectedUnencryptedConfigFile := unencryptedFilePath
+
+	obtainedUnencryptedConfigFile := a.getRealConfigFile()
+
+	c.Assert(obtainedUnencryptedConfigFile, Equals, expectedUnencryptedConfigFile)
+	c.Assert(a.encryptedFile, Equals, false)
+}
+
+func (cs *ConfigSuite) Test_getRealConfigFile_returnsEmptyStringWhenFileDoesNotExist(c *C) {
+	a := &ApplicationConfig{}
+
+	result := a.getRealConfigFile()
+
+	c.Assert(result, Equals, "")
+	c.Assert(a.encryptedFile, Equals, false)
+}
+
 func (cs *ConfigSuite) Test_genUniqueID_generatesUniqueID(c *C) {
 	ac := New()
 	ac.genUniqueID()
@@ -313,9 +374,9 @@ func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
 
 	a.EnsureDestination()
 
-	expectedEncryptedConfigFile := filepath.Join(tempDir, "wahay", appEncryptedConfigFile)
+	expectedUnencryptedConfigFile := filepath.Join(tempDir, "wahay", appEncryptedConfigFile)
 
-	c.Assert(a.filename, Equals, expectedEncryptedConfigFile)
+	c.Assert(a.filename, Equals, expectedUnencryptedConfigFile)
 }
 
 func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C) {
