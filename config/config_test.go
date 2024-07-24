@@ -385,10 +385,7 @@ func (cs *ConfigSuite) Test_doAfterSave_addFunctionToList(c *C) {
 }
 
 func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
-	tempDir, err := os.MkdirTemp("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
-
+	tempDir := c.MkDir()
 	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
@@ -404,10 +401,7 @@ func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
 }
 
 func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C) {
-	tempDir, err := os.MkdirTemp("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
-
+	tempDir := c.MkDir()
 	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
@@ -423,10 +417,7 @@ func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C)
 }
 
 func (cs *ConfigSuite) Test_EnsureDestination_changesFileSuffixToAValidEncryptedSuffix(c *C) {
-	tempDir, err := os.MkdirTemp("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
-
+	tempDir := c.MkDir()
 	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
