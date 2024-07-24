@@ -46,12 +46,10 @@ func (cs *ConfigSuite) Test_DetectPersistance_configurationInitializedCorrectly(
 
 }
 func (cs *ConfigSuite) Test_DetectPersistance_setsPersistantConfigTrueWhenFileExists(c *C) {
-	tempDir, err := os.MkdirTemp("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
+	tempDir := c.MkDir()
 
 	wahayDir := filepath.Join(tempDir, "wahay")
-	err = os.MkdirAll(wahayDir, 0755)
+	err := os.MkdirAll(wahayDir, 0755)
 	c.Assert(err, IsNil)
 
 	configFilePath := filepath.Join(wahayDir, appConfigFile)
@@ -163,12 +161,10 @@ func (cs *ConfigSuite) Test_LoadFromFile_LoadsPersistentConfigFile(c *C) {
 }
 
 func (cs *ConfigSuite) Test_getRealConfigFile_returnsEncryptedFile(c *C) {
-	tempDir, err := os.MkdirTemp("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
+	tempDir := c.MkDir()
 
 	wahayDir := filepath.Join(tempDir, "wahay")
-	err = os.MkdirAll(wahayDir, 0755)
+	err := os.MkdirAll(wahayDir, 0755)
 	c.Assert(err, IsNil)
 
 	encryptedFilePath := filepath.Join(wahayDir, appEncryptedConfigFile)
@@ -189,12 +185,10 @@ func (cs *ConfigSuite) Test_getRealConfigFile_returnsEncryptedFile(c *C) {
 }
 
 func (cs *ConfigSuite) Test_getRealConfigFile_returnsUnencryptedFile(c *C) {
-	tempDir, err := os.MkdirTemp("", "test")
-	c.Assert(err, IsNil)
-	defer os.RemoveAll(tempDir)
+	tempDir := c.MkDir()
 
 	wahayDir := filepath.Join(tempDir, "wahay")
-	err = os.MkdirAll(wahayDir, 0755)
+	err := os.MkdirAll(wahayDir, 0755)
 	c.Assert(err, IsNil)
 
 	unencryptedFilePath := filepath.Join(wahayDir, appConfigFile)
