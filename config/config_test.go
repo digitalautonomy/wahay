@@ -45,6 +45,30 @@ func (cs *ConfigSuite) Test_DetectPersistance_configurationInitializedCorrectly(
 	c.Assert(ac.persistentMode, Equals, false)
 
 }
+func (cs *ConfigSuite) Test_DetectPersistance_setsPersistantConfigTrueWhenFileExists(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	wahayDir := filepath.Join(tempDir, "wahay")
+	err = os.MkdirAll(wahayDir, 0755)
+	c.Assert(err, IsNil)
+
+	configFilePath := filepath.Join(wahayDir, appConfigFile)
+	configFile, err := os.Create(configFilePath)
+	c.Assert(err, IsNil)
+	configFile.Close()
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+
+	ac := New()
+	filename, err := ac.DetectPersistence()
+
+	c.Assert(err, IsNil)
+	c.Assert(filename, Equals, configFile.Name())
+	c.Assert(ac.persistentMode, Equals, true)
+
+}
 
 func (cs *ConfigSuite) Test_LoadFromFile_showErrorWhenConfigurationInitIsNotExecuted(c *C) {
 	ac := New()
