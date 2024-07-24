@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"reflect"
 
+	"github.com/prashantv/gostub"
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
@@ -299,6 +300,11 @@ func (cs *ConfigSuite) Test_doAfterSave_addFunctionToList(c *C) {
 }
 
 func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
 		filename:      "",
@@ -306,12 +312,18 @@ func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
 	}
 
 	a.EnsureDestination()
-	fakeEncryptedConfigFile := filepath.Join(SystemConfigDir(), "wahay", "config.axx")
 
-	c.Assert(a.filename, Equals, fakeEncryptedConfigFile)
+	expectedEncryptedConfigFile := filepath.Join(tempDir, "wahay", appEncryptedConfigFile)
+
+	c.Assert(a.filename, Equals, expectedEncryptedConfigFile)
 }
 
 func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
 		filename:      "",
@@ -319,12 +331,18 @@ func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C)
 	}
 
 	a.EnsureDestination()
-	fakeUnencryptedConfigFile := filepath.Join(SystemConfigDir(), "wahay", "config.json")
 
-	c.Assert(a.filename, Equals, fakeUnencryptedConfigFile)
+	expectedEncryptedConfigFile := filepath.Join(tempDir, "wahay", appConfigFile)
+
+	c.Assert(a.filename, Equals, expectedEncryptedConfigFile)
 }
 
 func (cs *ConfigSuite) Test_EnsureDestination_changesFileSuffixToAValidEncryptedSuffix(c *C) {
+	tempDir, err := os.MkdirTemp("", "test")
+	c.Assert(err, IsNil)
+	defer os.RemoveAll(tempDir)
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
 		filename:      "config.json",
@@ -332,9 +350,10 @@ func (cs *ConfigSuite) Test_EnsureDestination_changesFileSuffixToAValidEncrypted
 	}
 
 	a.EnsureDestination()
-	fakeEncryptedConfigFile := filepath.Join(SystemConfigDir(), "wahay", "config.axx")
 
-	c.Assert(a.filename, Equals, fakeEncryptedConfigFile)
+	expectedEncryptedConfigFile := filepath.Join(tempDir, "wahay", appEncryptedConfigFile)
+
+	c.Assert(a.filename, Equals, expectedEncryptedConfigFile)
 }
 
 type MockKeySupplier struct {

@@ -60,8 +60,11 @@ func xdgOrWithHome(env, or string) string {
 	return os.Getenv(env)
 }
 
-// XdgConfigHome returns the standardized XDG Configuration directory
-func XdgConfigHome() string {
+type XdgConfigHomeFunc func() string
+
+var XdgConfigHome XdgConfigHomeFunc = xdgConfigHome
+
+func xdgConfigHome() string {
 	return xdgOrWithHome("XDG_CONFIG_HOME", ".config")
 }
 
