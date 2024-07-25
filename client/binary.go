@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 
 	log "github.com/sirupsen/logrus"
 
@@ -72,10 +71,6 @@ func (b *binary) envIfBundle() []string {
 	return b.env
 }
 
-func isWindows() bool {
-	return runtime.GOOS == "windows"
-}
-
 var filepathJoin = filepath.Join
 
 func (b *binary) copyTo(path string) error {
@@ -87,11 +82,7 @@ func (b *binary) copyTo(path string) error {
 		return errDestinationIsNotADirectory
 	}
 
-	destination := filepathJoin(path, "mumble")
-
-	if isWindows() {
-		destination = filepathJoin(path, "mumble.exe")
-	}
+	destination := generateDestination(path)
 
 	if pathExists(destination) {
 		return errBinaryAlreadyExists

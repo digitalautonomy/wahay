@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 
 	"github.com/digitalautonomy/wahay/config"
 	. "github.com/digitalautonomy/wahay/test"
@@ -642,9 +643,15 @@ func (s *clientSuite) Test_copyTo_returnsAnErrorIfTheBinaryAlreadyExistInThePath
 
 	alreadyExistingBinaryPath := alreadyExistingBinary.Name()
 
+	binaryName := "mumble"
+
+	if runtime.GOOS == "windows" {
+		binaryName = "mumble.exe"
+	}
+
 	mj := &mockJoin{}
 	defer gostub.New().Stub(&filepathJoin, mj.Join).Reset()
-	mj.On("Join", []string{binaryDestinationPath, "mumble"}).Return(alreadyExistingBinaryPath).Once()
+	mj.On("Join", []string{binaryDestinationPath, binaryName}).Return(alreadyExistingBinaryPath).Once()
 
 	binary := &binary{path: srcf.Name(), isValid: true}
 
