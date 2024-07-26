@@ -125,7 +125,7 @@ func (c *client) ensureConfigurationFile() error {
 
 	err := createFile(filenameINI)
 	if err != nil {
-		return errInvalidConfigFileDBFile
+		return errInvalidConfigFile
 	}
 
 	err = c.writeConfigToFile(filenameINI)
@@ -135,7 +135,7 @@ func (c *client) ensureConfigurationFile() error {
 
 	err = createFile(filenameJSON)
 	if err != nil {
-		return errInvalidConfigFileDBFile
+		return errInvalidConfigFile
 	}
 
 	err = c.writeConfigToFile(filenameJSON)
