@@ -320,35 +320,6 @@ type RunningCommand struct {
 // ModifyCommand is a function that will potentially modify a command
 type ModifyCommand func(*exec.Cmd)
 
-func (i *instance) exec(command string, args []string, pre ModifyCommand) (*RunningCommand, error) {
-	ctx, cancelFunc := context.WithCancel(context.Background())
-	// This executes the tor command, and the args which are both under control of the code
-	/* #nosec G204 */
-	cmd := exec.CommandContext(ctx, command, args...)
-
-	if err := setupProxyToolEnvironment(i, cmd, cancelFunc, pre); err != nil {
-		return nil, err
-	}
-
-	if *config.Debug {
-		cmd.Stdout = osf.Stdout()
-		cmd.Stderr = osf.Stderr()
-	}
-
-	if err := execf.StartCommand(cmd); err != nil {
-		cancelFunc()
-		return nil, err
-	}
-
-	rc := &RunningCommand{
-		Ctx:        ctx,
-		Cmd:        cmd,
-		CancelFunc: cancelFunc,
-	}
-
-	return rc, nil
-}
-
 func createOurInstance(enableLogs bool) *instance {
 	d := filesystemf.TempDir("tor")
 

@@ -32,11 +32,16 @@ func findTorsocksInSystem() (fatalErr error) {
 	return nil
 }
 
-func setupProxyToolEnvironment(i *instance, cmd *exec.Cmd, cancelFunc context.CancelFunc, pre ModifyCommand) error {
+func (i *instance) exec(mainArg string, args []string, pre ModifyCommand) (*RunningCommand, error) {
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	// This executes the tor command, and the args which are both under control of the code
+	/* #nosec G204 */
+	cmd := exec.CommandContext(ctx, mainArg, args...)
+
 	pathTorsocks, err := findLibTorsocks(i.pathTorsocks)
 	if err != nil {
 		cancelFunc()
-		return errors.New("error: libtorsocks.so was not found")
+		return nil, errors.New("error: libtorsocks.so was not found")
 	}
 
 	pwd := [32]byte{}
@@ -52,5 +57,21 @@ func setupProxyToolEnvironment(i *instance, cmd *exec.Cmd, cancelFunc context.Ca
 		pre(cmd)
 	}
 
-	return nil
+	if *config.Debug {
+		cmd.Stdout = osf.Stdout()
+		cmd.Stderr = osf.Stderr()
+	}
+
+	if err := execf.StartCommand(cmd); err != nil {
+		cancelFunc()
+		return nil, err
+	}
+
+	rc := &RunningCommand{
+		Ctx:        ctx,
+		Cmd:        cmd,
+		CancelFunc: cancelFunc,
+	}
+
+	return rc, nil
 }
