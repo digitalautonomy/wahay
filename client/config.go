@@ -44,6 +44,11 @@ func (c *client) regenerateConfiguration() error {
 		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
 	}
 
+	err = os.Remove(filepath.Join(location, configFileJSON))
+	if err != nil {
+		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
+	}
+
 	err = os.Remove(filepath.Join(location, configDBName))
 	if err != nil {
 		log.Errorf("Mumble client regenerateConfiguration(): %s", err.Error())
@@ -115,14 +120,25 @@ func (c *client) ensureConfigurationDBFile() error {
 }
 
 func (c *client) ensureConfigurationFile() error {
-	filename := filepath.Join(c.configDir, configFileName)
+	filenameINI := filepath.Join(c.configDir, configFileName)
+	filenameJSON := filepath.Join(c.configDir, configFileJSON)
 
-	err := createFile(filename)
+	err := createFile(filenameINI)
 	if err != nil {
 		return errInvalidConfigFileDBFile
 	}
 
-	err = c.writeConfigToFile(filename)
+	err = c.writeConfigToFile(filenameINI)
+	if err != nil {
+		return errInvalidConfigFile
+	}
+
+	err = createFile(filenameJSON)
+	if err != nil {
+		return errInvalidConfigFileDBFile
+	}
+
+	err = c.writeConfigToFile(filenameJSON)
 	if err != nil {
 		return errInvalidConfigFile
 	}
@@ -131,6 +147,7 @@ func (c *client) ensureConfigurationFile() error {
 }
 
 const (
+	configFileJSON = "mumble_settings.json"
 	configFileName = "mumble.ini"
 	configDBName   = ".mumble.sqlite"
 )
