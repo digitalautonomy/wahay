@@ -29,10 +29,11 @@ func findProxychainsInSystem() (fatalErr error) {
 
 func (i *instance) exec(mumbleBinary string, args []string, pre ModifyCommand) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
-	// This executes the tor command, and the args which are both under control of the code
-	/* #nosec G204 */
+
 	mainArg := "proxychains_win32_x64"
 	args = append([]string{mumbleBinary}, args...)
+	// This executes the proxychains command, and the args which are both under control of the code
+	/* #nosec G204 */
 	cmd := exec.CommandContext(ctx, mainArg, args...)
 
 	if pre != nil {
