@@ -1,0 +1,35 @@
+{
+    "audio": {
+        "echo_cancel_mode": "Disabled",
+        "input_system": "PipeWire",
+        "output_system": "PipeWire",
+        "vad_max": 0.9800103902816772,
+        "vad_min": 0.8000122308731079
+    },
+    "misc": {
+        "audio_wizard_has_been_shown": true
+    },
+    "mumble_has_quit_normally": true,
+    "plugins": {
+        "9e660b56040fd9171240d2b52d26995699df0f2a": {
+            "enabled": false,
+            "keyboard_monitoring_allowed": false,
+            "path": "manual.builtin",
+            "positional_data_enabled": true
+        }
+    },
+    "settings_version": 1,
+    "shortcuts": {
+        "defined": [
+            {
+                "buttons": [
+                    "AAAAAgAAAABp"
+                ],
+                "data": "AAAAAAE=",
+                "index": 1,
+                "suppress": false
+            }
+        ],
+        "enable_global_shortcuts": true
+    }
+}
