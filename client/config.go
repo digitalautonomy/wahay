@@ -120,27 +120,30 @@ func (c *client) ensureConfigurationDBFile() error {
 }
 
 func (c *client) ensureConfigurationFile() error {
-	filenameINI := filepath.Join(c.configDir, configFileName)
-	filenameJSON := filepath.Join(c.configDir, configFileJSON)
-
-	err := createFile(filenameINI)
+	err := c.createAndWriteConfigFile(configFileName)
 	if err != nil {
 		return errInvalidConfigFile
 	}
 
-	err = c.writeConfigToFile(filenameINI)
+	err = c.createAndWriteConfigFile(configFileJSON)
 	if err != nil {
 		return errInvalidConfigFile
 	}
 
-	err = createFile(filenameJSON)
+	return nil
+}
+
+func (c *client) createAndWriteConfigFile(file string) error {
+	filename := filepath.Join(c.configDir, file)
+
+	err := createFile(filename)
 	if err != nil {
-		return errInvalidConfigFile
+		return err
 	}
 
-	err = c.writeConfigToFile(filenameJSON)
+	err = c.writeConfigToFile(filename)
 	if err != nil {
-		return errInvalidConfigFile
+		return err
 	}
 
 	return nil
