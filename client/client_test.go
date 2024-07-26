@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 
 	"github.com/digitalautonomy/wahay/config"
 	. "github.com/digitalautonomy/wahay/test"
@@ -14,6 +15,10 @@ import (
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
+
+func IsWindows() bool {
+	return runtime.GOOS == "windows"
+}
 
 func (s *clientSuite) Test_tempFolder_createsATempFolderSuccessfully(c *C) {
 	tempDir, err := tempFolder()
@@ -133,22 +138,35 @@ func (s *clientSuite) Test_torCommandModifier_setsClientTorCmdModifierAndReturns
 
 	var expected tor.ModifyCommand
 	result := client.torCommandModifier()
-	c.Assert(client.torCmdModifier, NotNil)
-	c.Assert(result, FitsTypeOf, expected)
+
+	if !IsWindows() {
+		c.Assert(client.torCmdModifier, NotNil)
+		c.Assert(result, FitsTypeOf, expected)
+	} else {
+		c.Assert(client.torCmdModifier, IsNil)
+	}
 }
 
 func (s *clientSuite) Test_binaryEnv_appendsEnvironmentVariableWhenTheClientIsValidAndTheBinaryIsNotNil(c *C) {
 	client := &client{binary: &binary{env: []string{"ENVIRONMENT=variable"}, isBundle: true}, isValid: true}
 	envVariables := client.binaryEnv()
 
-	c.Assert(envVariables, DeepEquals, []string{"QT_QPA_PLATFORM=xcb", "ENVIRONMENT=variable"})
+	if !IsWindows() {
+		c.Assert(envVariables, DeepEquals, []string{"QT_QPA_PLATFORM=xcb", "ENVIRONMENT=variable"})
+	} else {
+		c.Assert(envVariables, DeepEquals, []string(nil))
+	}
 }
 
 func (s *clientSuite) Test_binaryEnv_returnsEnvironmentVariableWhenClientIsNotValidAndHasNoBinary(c *C) {
 	client := &client{binary: nil, isValid: false}
 	envVariable := client.binaryEnv()
 
-	c.Assert(envVariable, DeepEquals, []string{"QT_QPA_PLATFORM=xcb"})
+	if !IsWindows() {
+		c.Assert(envVariable, DeepEquals, []string{"QT_QPA_PLATFORM=xcb"})
+	} else {
+		c.Assert(envVariable, DeepEquals, []string(nil))
+	}
 }
 
 type MockTorInstance struct{}

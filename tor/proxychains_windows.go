@@ -1,6 +1,9 @@
 package tor
 
 import (
+	"context"
+	"os/exec"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,5 +23,9 @@ func findProxychainsInSystem() (fatalErr error) {
 	}
 	log.Debugf("findProxychainsInSystem(%s)", path)
 
+	return nil
+}
+
+func setupProxyToolEnvironment(i *instance, cmd *exec.Cmd, cancelFunc context.CancelFunc, pre ModifyCommand) error {
 	return nil
 }
