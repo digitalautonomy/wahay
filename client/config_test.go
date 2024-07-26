@@ -289,7 +289,7 @@ func (s *clientSuite) Test_ensureConfigurationFile_returnsAnErrorWhenTheConfigur
 	mc.On("Create", configFile).Return(&os.File{}, errors.New("Error creating file")).Once()
 
 	err = client.ensureConfigurationFile()
-	c.Assert(err, Equals, errInvalidConfigFileDBFile)
+	c.Assert(err, Equals, errInvalidConfigFile)
 
 	mc.AssertExpectations(c)
 }
