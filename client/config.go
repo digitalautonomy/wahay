@@ -120,12 +120,7 @@ func (c *client) ensureConfigurationDBFile() error {
 }
 
 func (c *client) ensureConfigurationFile() error {
-	err := c.createAndWriteConfigFile(configFileName)
-	if err != nil {
-		return errInvalidConfigFile
-	}
-
-	err = c.createAndWriteConfigFile(configFileJSON)
+	err := c.createAndWriteConfigFiles()
 	if err != nil {
 		return errInvalidConfigFile
 	}
@@ -133,17 +128,24 @@ func (c *client) ensureConfigurationFile() error {
 	return nil
 }
 
-func (c *client) createAndWriteConfigFile(file string) error {
-	filename := filepath.Join(c.configDir, file)
-
-	err := createFile(filename)
-	if err != nil {
-		return err
+func (c *client) createAndWriteConfigFiles() error {
+	var configFileNames = map[string]func() string{
+		configFileName: c.configContentProvider,
+		configFileJSON: c.configJSONProvider,
 	}
 
-	err = c.writeConfigToFile(filename)
-	if err != nil {
-		return err
+	for fileName, template := range configFileNames {
+		filePath := filepath.Join(c.configDir, fileName)
+
+		err := createFile(filePath)
+		if err != nil {
+			return err
+		}
+
+		err = c.writeConfigToFile(fileName, filePath, template)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -155,7 +157,7 @@ const (
 	configDBName   = ".mumble.sqlite"
 )
 
-func (c *client) writeConfigToFile(path string) error {
+func (c *client) writeConfigToFile(fileName string, path string, template func() string) error {
 	if pathExists(c.configFile) {
 		err := os.Remove(c.configFile)
 		if err != nil {
@@ -165,9 +167,9 @@ func (c *client) writeConfigToFile(path string) error {
 
 	var configFile string
 	if isADirectory(path) {
-		configFile = filepath.Join(path, configFileName)
+		configFile = filepath.Join(path, fileName)
 	} else {
-		configFile = filepath.Join(filepath.Dir(path), configFileName)
+		configFile = filepath.Join(filepath.Dir(path), fileName)
 	}
 
 	if !pathExists(configFile) || !isAFile(configFile) {
@@ -177,12 +179,13 @@ func (c *client) writeConfigToFile(path string) error {
 		}
 	}
 
-	err := config.SafeWrite(configFile, []byte(c.configContentProvider()), 0600)
+	err := config.SafeWrite(configFile, []byte(template()), 0600)
 	if err != nil {
 		return err
 	}
 
-	c.configFile = configFile
+	// TODO improve configFile storing
+	// c.configFile = configFile
 
 	return nil
 }

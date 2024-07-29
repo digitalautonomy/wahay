@@ -36,17 +36,19 @@ type client struct {
 	configFile            string
 	configDir             string
 	configContentProvider mumbleIniProvider
+	configJSONProvider    mumbleJSONProvider
 	databaseProvider      databaseProvider
 	err                   error
 	torCmdModifier        tor.ModifyCommand
 	tor                   tor.Instance
 }
 
-func newMumbleClient(p mumbleIniProvider, d databaseProvider, t tor.Instance) *client {
+func newMumbleClient(p mumbleIniProvider, j mumbleJSONProvider, d databaseProvider, t tor.Instance) *client {
 	c := &client{
 		binary:                nil,
 		isValid:               false,
 		configContentProvider: p,
+		configJSONProvider:    j,
 		databaseProvider:      d,
 		err:                   nil,
 		tor:                   t,
@@ -56,12 +58,13 @@ func newMumbleClient(p mumbleIniProvider, d databaseProvider, t tor.Instance) *c
 }
 
 type mumbleIniProvider func() string
+type mumbleJSONProvider func() string
 type databaseProvider func() []byte
 
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
 func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
-	i := newMumbleClient(readerMumbleIniConfig, readerMumbleDB, tor)
+	i := newMumbleClient(readerMumbleIniConfig, readerMumbleJSONConfig, readerMumbleDB, tor)
 
 	b := searchBinary(conf)
 

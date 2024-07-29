@@ -140,7 +140,7 @@ func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationCont
 
 	client := &client{configFile: configFile.Name(), configContentProvider: func() string { return "config file content" }}
 
-	err = client.writeConfigToFile(configFile.Name())
+	err = client.writeConfigToFile(configFileName, configFile.Name(), client.configContentProvider)
 	c.Assert(err, IsNil)
 	c.Assert(client.configFile, Equals, configFile.Name())
 
@@ -161,11 +161,11 @@ func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationCont
 	client := &client{configContentProvider: func() string { return "config file content" }}
 	c.Assert(client.configFile, Equals, "")
 
-	err = client.writeConfigToFile(tempDir)
+	err = client.writeConfigToFile(configFileName, tempDir, client.configContentProvider)
 	c.Assert(err, IsNil)
 
 	expectedConfigFile := filepath.Join(tempDir, configFileName)
-	c.Assert(client.configFile, Equals, expectedConfigFile)
+	c.Assert(client.configFile, Equals, "")
 
 	fileContent, err := os.ReadFile(expectedConfigFile)
 	if err != nil {
@@ -197,7 +197,8 @@ func (s *clientSuite) Test_writeConfigToFile_returnsAnErrorWhenTheConfigFileCrea
 	configFile := filepath.Join(tempDir, configFileName)
 	mc.On("Create", configFile).Return(&os.File{}, errors.New("Error creating file")).Once()
 
-	err = client.writeConfigToFile(tempDir)
+	err = client.writeConfigToFile(configFileName, tempDir, client.configContentProvider)
+
 	c.Assert(err, Equals, errInvalidConfigFileDBFile)
 
 	mc.AssertExpectations(c)
@@ -255,7 +256,7 @@ func (s *clientSuite) Test_ensureConfigurationFile_successfullyCreatesAndWritesA
 		c.Fatalf("Failed to create directory: %v", err)
 	}
 
-	client := &client{configDir: configurationPath, configContentProvider: func() string { return "config file content" }}
+	client := &client{configDir: configurationPath, configContentProvider: func() string { return "config file content" }, configJSONProvider: func() string { return "JSON file content" }}
 
 	err = client.ensureConfigurationFile()
 	c.Assert(err, IsNil)
@@ -307,7 +308,7 @@ func (s *clientSuite) Test_ensureConfiguration_successEnsuringConfiguration(c *C
 		c.Fatalf("Failed to create directory: %v", err)
 	}
 
-	client := &client{isValid: true, binary: &binary{path: configurationPath}, configDir: "", configContentProvider: func() string { return "config file content" }, databaseProvider: func() []byte { return []byte("database configuration content") }}
+	client := &client{isValid: true, binary: &binary{path: configurationPath}, configDir: "", configContentProvider: func() string { return "config file content" }, configJSONProvider: func() string { return "JSON file content" }, databaseProvider: func() []byte { return []byte("database configuration content") }}
 
 	err = client.ensureConfiguration()
 
@@ -340,6 +341,7 @@ func (s *clientSuite) Test_regenerateConfiguration_regeneratesConfigurationFiles
 		isValid:               true,
 		binary:                &binary{path: configurationPath},
 		configContentProvider: func() string { return "config file content" },
+		configJSONProvider:    func() string { return "JSON file content" },
 		databaseProvider:      func() []byte { return []byte("database configuration content") },
 	}
 

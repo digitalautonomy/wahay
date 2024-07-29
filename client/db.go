@@ -11,7 +11,7 @@ import (
 )
 
 func (c *client) db() (*dbData, error) {
-	sqlFile := filepath.Join(filepath.Dir(c.configFile), ".mumble.sqlite")
+	sqlFile := filepath.Join(c.configDir, ".mumble.sqlite")
 
 	if !pathExists(sqlFile) {
 		log.WithFields(log.Fields{

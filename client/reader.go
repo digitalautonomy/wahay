@@ -19,6 +19,13 @@ func readerMumbleIniConfig() string {
 	return mumbleIniContent
 }
 
+//go:embed files/mumble_settings.json
+var mumbleJSONContent string
+
+func readerMumbleJSONConfig() string {
+	return mumbleJSONContent
+}
+
 var osMkdirAll = os.MkdirAll
 
 func createDir(path string) error {

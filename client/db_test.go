@@ -9,14 +9,14 @@ import (
 )
 
 // helper functions
-func createFakeClient(tempConfigFile, content string) *client {
+func createFakeClient(content string, tempDir string) *client {
 
 	fakeDBContent := []byte(content)
 	fakeDBProvider := func() []byte { return fakeDBContent }
 
 	fakeClient := &client{
-		configFile:       tempConfigFile,
 		databaseProvider: fakeDBProvider,
+		configDir:        tempDir,
 	}
 
 	return fakeClient
@@ -155,13 +155,13 @@ func (s *clientSuite) Test_loadDBFromFile_handlesFileNotFoundError(c *C) {
 }
 
 func (s *clientSuite) Test_db_createsDatabase(c *C) {
-	tempDir, tempConfigFile := createTempDirAndFile(c, "config.yaml", "configuration data")
+	tempDir, _ := createTempDirAndFile(c, "config.yaml", "configuration data")
 	defer removeTempDir(c, tempDir)
 
 	content := "database example content"
 	fakeDBContent := []byte(content)
 
-	fakeClient := createFakeClient(tempConfigFile, content)
+	fakeClient := createFakeClient(content, tempDir)
 
 	db, err := fakeClient.db()
 	c.Assert(err, IsNil)
@@ -176,16 +176,15 @@ func (s *clientSuite) Test_db_createsDatabase(c *C) {
 }
 
 func (s *clientSuite) Test_db_loadsExistingDatabase(c *C) {
-
 	content := "database example content"
 	fakeClientContent := "fake client content"
 
-	tempDir, tempConfigFile := createTempDirAndFile(c, "config.yaml", "configuration data")
+	tempDir, _ := createTempDirAndFile(c, "config.yaml", "configuration data")
 	sqlFile := createTempFile(c, tempDir, ".mumble.sqlite", content)
 
 	defer removeTempDir(c, tempDir)
 
-	fakeClient := createFakeClient(tempConfigFile, fakeClientContent)
+	fakeClient := createFakeClient(fakeClientContent, tempDir)
 	fakeDBContent := []byte(content)
 
 	db, err := fakeClient.db()
