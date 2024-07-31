@@ -5,7 +5,7 @@ import (
 	"os/exec"
 
 	"github.com/digitalautonomy/wahay/config"
-	execUtils "github.com/digitalautonomy/wahay/exec"
+	localExec "github.com/digitalautonomy/wahay/exec"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -36,7 +36,7 @@ func (i *instance) exec(mumbleBinary string, args []string, pre ModifyCommand) (
 	// This executes the proxychains command, and the args which are both under control of the code
 	/* #nosec G204 */
 	cmd := exec.CommandContext(ctx, mainArg, args...)
-	execUtils.HideCommandWindow(cmd)
+	localExec.HideCommandWindow(cmd)
 
 	if pre != nil {
 		pre(cmd)
