@@ -13,6 +13,7 @@ import (
 	"strconv"
 
 	"github.com/digitalautonomy/wahay/config"
+	execUtils "github.com/digitalautonomy/wahay/exec"
 	"github.com/wybiral/torgo"
 	"golang.org/x/net/proxy"
 )
@@ -138,6 +139,7 @@ func (*realExecImplementation) ExecWithModify(bin string, args []string, cm Modi
 	// This executes the tor command, which is under control of the code
 	/* #nosec G204 */
 	cmd := exec.Command(bin, args...)
+	execUtils.HideCommandWindow(cmd)
 
 	if cm != nil {
 		cm(cmd)

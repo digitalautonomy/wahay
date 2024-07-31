@@ -11,6 +11,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/digitalautonomy/wahay/config"
+
+	execUtils "github.com/digitalautonomy/wahay/exec"
 )
 
 const libTorsocks = "libtorsocks.so"
@@ -368,6 +370,7 @@ func (b *binary) start(configFile string) (*runningTor, error) {
 	// no user input to these
 	/* #nosec G204 */
 	cmd := exec.CommandContext(ctx, b.path, "-f", configFile)
+	execUtils.HideCommandWindow(cmd)
 
 	if b.isBundle && len(b.env) > 0 {
 		log.Debugf("Tor is bundled with environment variables: %s", b.env)
