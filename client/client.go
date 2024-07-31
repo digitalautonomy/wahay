@@ -69,7 +69,7 @@ func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
 	b := searchBinary(conf)
 
 	if b == nil {
-		return invalidInstance(errors.New("a valid binary of Mumble is no available in your system"))
+		return invalidInstance(errors.New("a valid binary of Mumble is not available in your system"))
 	}
 
 	if b.shouldBeCopied {
