@@ -241,7 +241,7 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenAValidMumbleBi
 	client := i.(*client)
 
 	c.Assert(client.isValid, IsFalse)
-	c.Assert(client.err, ErrorMatches, "a valid binary of Mumble is not available in your system")
+	c.Assert(client.err, Equals, errBinaryUnavailable)
 
 	ml.AssertExpectations(c)
 }
