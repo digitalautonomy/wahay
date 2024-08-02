@@ -212,7 +212,7 @@ func (s *clientSuite) Test_InitSystem_worksWithAValidConfigurationAndBinaryPath(
 	}
 
 	mc := &mockCommand{}
-	mc.On("Command", srcf.Name(), []string{"--version"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", srcf.Name(), []string{"--license"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--license"}}).Once()
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
@@ -265,7 +265,7 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenTemporaryFolde
 	}
 
 	mc := &mockCommand{}
-	mc.On("Command", srcf.Name(), []string{"--version"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", srcf.Name(), []string{"--license"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--license"}}).Once()
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
@@ -307,7 +307,7 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenEnsuringTheCon
 	}
 
 	mc := &mockCommand{}
-	mc.On("Command", srcf.Name(), []string{"--version"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", srcf.Name(), []string{"--license"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--license"}}).Once()
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()

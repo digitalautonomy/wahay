@@ -309,7 +309,7 @@ func isThereAnAvailableBinary(path string) *binary {
 	bin := b.path
 	// This executes the tor command, which is under control of the code
 	/* #nosec G204 */
-	command = *execCommand(bin, "--version")
+	command = *execCommand(bin, "--license")
 
 	isBundle, env := checkLibsDependenciesInPath(b.path)
 	if isBundle && len(env) > 0 {

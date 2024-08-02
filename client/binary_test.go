@@ -159,7 +159,7 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBi
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
 
-	mc.On("Command", mumbleBinaryPath, []string{"--version"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"--version"}}).Once()
+	mc.On("Command", mumbleBinaryPath, []string{"--license"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"--license"}}).Once()
 
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 
@@ -195,7 +195,7 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidAndNotBundledMu
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
 
-	mc.On("Command", mumbleBinaryPath, []string{"--version"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"--version"}}).Once()
+	mc.On("Command", mumbleBinaryPath, []string{"--license"}).Return(&exec.Cmd{Path: mumbleBinaryPath, Args: []string{"--license"}}).Once()
 
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 
@@ -264,7 +264,7 @@ func (s *clientSuite) Test_searchBinaryInSystem_returnsAValidBinaryFoundInTheSys
 	mc := &mockCommand{}
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	mc.On("Command", srcf.Name(), []string{"--version"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", srcf.Name(), []string{"--license"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--license"}}).Once()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 
 	ml := &mockLookPath{}
@@ -313,7 +313,7 @@ func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionWorksWithA
 	conf := &config.ApplicationConfig{PathMumble: srcf.Name()}
 
 	mc := &mockCommand{}
-	mc.On("Command", srcf.Name(), []string{"--version"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", srcf.Name(), []string{"--license"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--license"}}).Once()
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
@@ -699,7 +699,7 @@ func (s *clientSuite) Test_searchBinaryInCurrentWorkingDir_returnsAValidBinaryIf
 
 	mc := &mockCommand{}
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	mc.On("Command", binaryFile.Name(), []string{"--version"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", binaryFile.Name(), []string{"--license"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"--license"}}).Once()
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 
@@ -803,7 +803,7 @@ func (s *clientSuite) Test_searchBinaryInLocalDir_returnsAValidBinaryIfABinaryFi
 
 	mc := &mockCommand{}
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	mc.On("Command", binaryFile.Name(), []string{"--version"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", binaryFile.Name(), []string{"--license"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"--license"}}).Once()
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 
@@ -940,7 +940,7 @@ func (s *clientSuite) Test_searchBinaryInDataDir_returnsAValidBinaryIfABinaryFil
 
 	mc := &mockCommand{}
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	mc.On("Command", binaryFile.Name(), []string{"--version"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"--version"}}).Once()
+	mc.On("Command", binaryFile.Name(), []string{"--license"}).Return(&exec.Cmd{Path: binaryFile.Name(), Args: []string{"--license"}}).Once()
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 
