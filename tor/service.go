@@ -41,10 +41,6 @@ func (s *service) IsClosed() bool {
 	return s.finished
 }
 
-func (s *service) Close() {
-	s.rc.CancelFunc()
-}
-
 func (s *service) OnClose(f func()) {
 	s.onCloseFunctions = append(s.onCloseFunctions, f)
 }

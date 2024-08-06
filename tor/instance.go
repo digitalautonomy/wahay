@@ -310,13 +310,6 @@ func (i *instance) Destroy() {
 	}
 }
 
-// RunningCommand is a representation of a torify command
-type RunningCommand struct {
-	Ctx        context.Context
-	Cmd        *exec.Cmd
-	CancelFunc context.CancelFunc
-}
-
 // ModifyCommand is a function that will potentially modify a command
 type ModifyCommand func(*exec.Cmd)
 

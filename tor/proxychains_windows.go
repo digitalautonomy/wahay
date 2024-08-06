@@ -31,6 +31,12 @@ func findProxychainsInSystem() (fatalErr error) {
 func (i *instance) exec(mumbleBinary string, args []string, pre ModifyCommand) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
+	exitGroup, err := NewProcessExitGroup()
+	if err != nil {
+		cancelFunc()
+		return nil, err
+	}
+
 	mainArg := "proxychains_win32_x64"
 	args = append([]string{mumbleBinary}, args...)
 	// This executes the proxychains command, and the args which are both under control of the code
@@ -52,10 +58,18 @@ func (i *instance) exec(mumbleBinary string, args []string, pre ModifyCommand) (
 		return nil, err
 	}
 
+	if err := exitGroup.AddProcess(cmd.Process); err != nil {
+		cancelFunc()
+		exitGroup.Dispose()
+		cmd.Process.Kill()
+		return nil, err
+	}
+
 	rc := &RunningCommand{
 		Ctx:        ctx,
 		Cmd:        cmd,
 		CancelFunc: cancelFunc,
+		ExitGroup:  exitGroup,
 	}
 
 	return rc, nil
