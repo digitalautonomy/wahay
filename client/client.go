@@ -33,7 +33,7 @@ type client struct {
 	sync.Mutex
 	binary                *binary
 	isValid               bool
-	configFiles           []string
+	configFiles           map[string]struct{}
 	configDir             string
 	configContentProvider mumbleIniProvider
 	configJSONProvider    mumbleJSONProvider
@@ -52,6 +52,7 @@ func newMumbleClient(p mumbleIniProvider, j mumbleJSONProvider, d databaseProvid
 		databaseProvider:      d,
 		err:                   nil,
 		tor:                   t,
+		configFiles:           map[string]struct{}{},
 	}
 
 	return c

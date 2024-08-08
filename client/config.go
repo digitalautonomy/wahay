@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -204,9 +203,7 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 		return err
 	}
 
-	if !slices.Contains(c.configFiles, configFile) {
-		c.configFiles = append(c.configFiles, configFile)
-	}
+	c.configFiles[configFile] = struct{}{}
 
 	return nil
 }
@@ -218,7 +215,7 @@ func (c *client) saveCertificateConfigFile() error {
 		tmc = ""
 	}
 
-	for _, configFile := range c.configFiles {
+	for configFile, _ := range c.configFiles {
 		if !pathExists(configFile) {
 			return errors.New("invalid mumble config file")
 		}
