@@ -33,7 +33,7 @@ type client struct {
 	sync.Mutex
 	binary                *binary
 	isValid               bool
-	configFile            string
+	configFiles           []string
 	configDir             string
 	configContentProvider mumbleIniProvider
 	configJSONProvider    mumbleJSONProvider

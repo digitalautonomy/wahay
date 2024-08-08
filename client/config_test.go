@@ -138,11 +138,11 @@ func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationCont
 	}
 	configFile.Close()
 
-	client := &client{configFile: configFile.Name(), configContentProvider: func() string { return "config file content" }}
+	client := &client{configFiles: []string{configFile.Name()}, configContentProvider: func() string { return "config file content" }}
 
 	err = client.writeConfigToFile(configFileName, configFile.Name(), client.configContentProvider)
 	c.Assert(err, IsNil)
-	c.Assert(client.configFile, Equals, configFile.Name())
+	c.Assert(client.configFiles, DeepEquals, []string{configFile.Name()})
 
 	fileContent, err := os.ReadFile(configFile.Name())
 	if err != nil {
@@ -159,13 +159,13 @@ func (s *clientSuite) Test_writeConfigToFile_successfullyWritesConfigurationCont
 	defer os.RemoveAll(tempDir)
 
 	client := &client{configContentProvider: func() string { return "config file content" }}
-	c.Assert(client.configFile, Equals, "")
+	c.Assert(client.configFiles, DeepEquals, []string(nil))
 
 	err = client.writeConfigToFile(configFileName, tempDir, client.configContentProvider)
 	c.Assert(err, IsNil)
 
 	expectedConfigFile := filepath.Join(tempDir, configFileName)
-	c.Assert(client.configFile, Equals, "")
+	c.Assert(client.configFiles, DeepEquals, []string{expectedConfigFile})
 
 	fileContent, err := os.ReadFile(expectedConfigFile)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -137,6 +138,13 @@ func (c *client) createAndWriteConfigFiles() error {
 	for fileName, template := range configFileNames {
 		filePath := filepath.Join(c.configDir, fileName)
 
+		if pathExists(filePath) {
+			err := os.Remove(filePath)
+			if err != nil {
+				log.Debug(fmt.Sprintf("writeConfigToFile(): %s", err.Error()))
+			}
+		}
+
 		err := createFile(filePath)
 		if err != nil {
 			return err
@@ -158,13 +166,6 @@ const (
 )
 
 func (c *client) writeConfigToFile(fileName string, path string, template func() string) error {
-	if pathExists(c.configFile) {
-		err := os.Remove(c.configFile)
-		if err != nil {
-			log.Debug(fmt.Sprintf("writeConfigToFile(): %s", err.Error()))
-		}
-	}
-
 	var configFile string
 	if isADirectory(path) {
 		configFile = filepath.Join(path, fileName)
@@ -179,51 +180,76 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 		}
 	}
 
-	err := config.SafeWrite(configFile, []byte(template()), 0600)
+	shortcutPtt := strings.Replace(
+		template(),
+		"#SHORTCUTPTT",
+		ctrlRight,
+		1,
+	)
+
+	language := config.DetectLanguage().String()
+	if isIniConfigFile(configFile) {
+		language = fmt.Sprintf("language=%s", language)
+	}
+
+	langSection := strings.Replace(
+		shortcutPtt,
+		"#LANGUAGE",
+		language,
+		1,
+	)
+
+	err := config.SafeWrite(configFile, []byte(langSection), 0600)
 	if err != nil {
 		return err
 	}
 
-	// TODO improve configFile storing
-	// c.configFile = configFile
+	if !slices.Contains(c.configFiles, configFile) {
+		c.configFiles = append(c.configFiles, configFile)
+	}
 
 	return nil
 }
 
 func (c *client) saveCertificateConfigFile() error {
-	if !pathExists(c.configFile) {
-		return errors.New("invalid mumble.ini file")
-	}
-
-	content, err := ioutil.ReadFile(c.configFile)
-	if err != nil {
-		return err
-	}
-
 	tmc, err := generateTemporaryMumbleCertificate()
 	if err != nil {
 		log.Debugf("Error generating temporary mumble certificate: %v, assigning empty string", err)
 		tmc = ""
 	}
 
-	certSectionProp := strings.Replace(
-		string(content),
-		"#CERTIFICATE",
-		fmt.Sprintf("certificate=%s", tmc),
-		1,
-	)
+	for _, configFile := range c.configFiles {
+		if !pathExists(configFile) {
+			return errors.New("invalid mumble config file")
+		}
 
-	langSection := strings.Replace(
-		certSectionProp,
-		"#LANGUAGE",
-		fmt.Sprintf("language=%s", config.DetectLanguage().String()),
-		1,
-	)
+		certificate := fmt.Sprintf(tmc)
 
-	err = ioutil.WriteFile(c.configFile, []byte(langSection), 0600)
-	if err != nil {
-		return err
+		if isIniConfigFile(configFile) {
+			certificate = fmt.Sprintf("certificate=%s", tmc)
+		}
+
+		content, err := ioutil.ReadFile(configFile)
+		if err != nil {
+			return err
+		}
+
+		certSectionProp := strings.Replace(
+			string(content),
+			"#CERTIFICATE",
+			certificate,
+			1,
+		)
+
+		err = ioutil.WriteFile(configFile, []byte(certSectionProp), 0600)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
+}
+
+func isIniConfigFile(configFile string) bool {
+	return filepath.Ext(configFile) == ".ini"
 }
