@@ -179,8 +179,15 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 		}
 	}
 
-	shortcutPtt := strings.Replace(
+	dataBaseLocation := strings.Replace(
 		template(),
+		"#DATABASE",
+		filepathJoin(c.configDir, configDBName),
+		1,
+	)
+
+	shortcutPtt := strings.Replace(
+		dataBaseLocation,
 		"#SHORTCUTPTT",
 		ctrlRight,
 		1,

@@ -7,9 +7,9 @@
         "vad_max": 0.9800103902816772,
         "vad_min": 0.8000122308731079
     },
-    "certificate": "",
     "misc": {
-        "audio_wizard_has_been_shown": true
+        "audio_wizard_has_been_shown": true,
+        "database_location": "#DATABASE"
     },
     "network": {
         "restrict_to_tcp": true
