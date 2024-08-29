@@ -182,7 +182,7 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 	dataBaseLocation := strings.Replace(
 		template(),
 		"#DATABASE",
-		filepathJoin(c.configDir, configDBName),
+		filepath.ToSlash(filepathJoin(c.configDir, configDBName)),
 		1,
 	)
 
