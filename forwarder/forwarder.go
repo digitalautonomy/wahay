@@ -30,7 +30,7 @@ func NewForwarder(data hosting.MeetingData) *Forwarder {
 	return &Forwarder{
 		OnionAddr:     fmt.Sprintf("%s:%d", data.MeetingID, data.Port),
 		LocalAddr:     "127.0.0.1",
-		ListeningPort: 3000,
+		ListeningPort: config.GetRandomPort(),
 		data:          data,
 		ctx:           ctx,
 		cancel:        cancel,
