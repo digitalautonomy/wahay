@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"net/url"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/digitalautonomy/wahay/config"
 	"github.com/digitalautonomy/wahay/hosting"
@@ -40,13 +41,13 @@ func NewForwarder(data hosting.MeetingData) *Forwarder {
 func (f *Forwarder) HandleConnection(clientConn net.Conn, socks5Addr string) {
 	dialer, err := proxy.SOCKS5("tcp", socks5Addr, nil, proxy.Direct)
 	if err != nil {
-		log.Printf("Failed to create SOCKS5 dialer: %v\n", err)
+		log.Errorf("Failed to create SOCKS5 dialer: %v\n", err.Error())
 		return
 	}
 
 	serverConn, err := dialer.Dial("tcp", f.OnionAddr)
 	if err != nil {
-		log.Printf("Failed to connect to Mumble server via SOCKS5: %v\n", err)
+		log.Errorf("Failed to connect to Mumble server via SOCKS5: %v\n", err.Error())
 		return
 	}
 
@@ -82,25 +83,25 @@ func (f *Forwarder) StartForwarder() {
 	listeningAddr := fmt.Sprintf("%s:%d", f.LocalAddr, f.ListeningPort)
 	listener, err := net.Listen("tcp", listeningAddr)
 	if err != nil {
-		log.Fatalf("Failed to set up listener: %v\n", err)
+		log.Errorf("Failed to set up listener: %v\n", err)
 	}
 
 	f.l = listener
 	defer f.l.Close()
 
-	log.Println("TCP to SOCKS5 forwarder is running...")
+	log.Infof("TCP to SOCKS5 forwarder successfully started, listening on %s", listeningAddr)
 
 	socks5Addr := fmt.Sprintf("%s:%d", f.LocalAddr, config.DefaultRoutePort)
 
 	for {
 		select {
 		case <-f.ctx.Done(): // Stop the forwarder when context is canceled
-			log.Println("Stopping forwarder...")
+			log.Info("Stopping forwarder...")
 			return
 		default:
 			clientConn, err := f.l.Accept()
 			if err != nil {
-				log.Printf("Failed to accept connection: %v\n", err)
+				log.Debugf("Failed to accept connection: %v\n", err.Error())
 				continue
 			}
 			go f.HandleConnection(clientConn, socks5Addr)
@@ -126,5 +127,5 @@ func (f *Forwarder) StopForwarder() {
 	f.l.Close()
 
 	f.wg.Wait()
-	log.Println("Forwarder stopped.")
+	log.Info("Forwarder stopped.")
 }

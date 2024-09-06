@@ -126,12 +126,12 @@ func (c *client) Launch(data hosting.MeetingData, onClose func()) (tor.Service, 
 		log.WithFields(log.Fields{"url": c.f.OnionAddr}).Errorf("Launch() client: %s", err.Error())
 	}
 
-	go c.f.StartForwarder()
-
 	return c.execute([]string{c.f.GenerateURL()}, onClose)
 }
 
 func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
+	go c.f.StartForwarder()
+
 	s, err := c.tor.NewService(c.pathToBinary(), args, c.torCommandModifier())
 	if err != nil {
 		log.Errorf("Mumble client execute(): %s", err.Error())
