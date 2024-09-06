@@ -15,19 +15,6 @@ import (
 	localExec "github.com/digitalautonomy/wahay/exec"
 )
 
-const libTorsocks = "libtorsocks.so"
-
-var libPrefixes = []string{
-	"",
-	"/usr",
-	"/usr/local",
-}
-
-var libSuffixes = []string{
-	"",
-	"/torsocks",
-}
-
 var (
 	errInvalidCommand = errors.New("invalid command")
 )
@@ -51,10 +38,6 @@ var (
 	// ErrInvalidConfiguredTorBinary is an error to be trown where the user
 	// configure a custom path for Tor binary and it's no valid
 	ErrInvalidConfiguredTorBinary = errors.New("invalid Tor binary user configured path")
-
-	// ErrTorsocksNotInstalled is an error to be trown where
-	// torsocks is not installed in the system
-	ErrTorsocksNotInstalled = errors.New("torsocks not available")
 
 	// ErrProxychainsNotInstalled is an error to be trown where
 	// proxychains is not installed in the system
@@ -183,12 +166,8 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 
 	b, errTorBinary := isThereConfiguredTorBinary(path)
 
-	// Ensure we have a proxy tool available in the system
-	if errTorBinary == nil {
-		err := searchProxyTool()
-		if err != nil {
-			return b, err
-		}
+	if errTorBinary != nil {
+		return nil, err
 	}
 
 	return b, nil
@@ -301,46 +280,6 @@ func extractVersionFrom(s []byte) string {
 	}
 
 	return result[0]
-}
-
-func allLibDirs() []string {
-	result := make([]string, 0)
-	for _, l := range libDirs {
-		for _, lp := range libPrefixes {
-			for _, ls := range libSuffixes {
-				result = append(result, filepath.Join(lp, l, ls))
-			}
-		}
-	}
-	return result
-}
-
-func findLibTorsocks(filePath string) (string, error) {
-	// Search in user config path
-	f := filepath.Join(filePath, libTorsocks)
-	if filesystemf.FileExists(f) {
-		return f, nil
-	}
-
-	// Search in local directories
-	for _, ld := range allLibDirs() {
-		f = filepath.Join(ld, libTorsocks)
-		if filesystemf.FileExists(f) {
-			return f, nil
-		}
-	}
-
-	// Search in bundle path
-	pathCWD, err := filepath.Abs(filepath.Dir(osf.Args()[0]))
-	if err == nil {
-		c := filepath.Join(pathCWD, "tor/")
-		f = filepath.Join(c, libTorsocks)
-		if filesystemf.FileExists(f) {
-			return f, nil
-		}
-	}
-
-	return "", errors.New("libtorsocks not found")
 }
 
 func listPossibleTorBinary(path string) []string {

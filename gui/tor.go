@@ -84,11 +84,6 @@ func torErrorTranslator(err error) string {
 			"Please, configure another path or download a bundled Wahay with Tor in the following url:" +
 			"\n\nhttps://wahay.org/download.html"
 
-	case tor.ErrTorsocksNotInstalled:
-		return i18n().Sprintf("Ensure you have installed Torsocks in your system.\n\n" +
-			"For more information please visit:\n\n" +
-			"https://trac.torproject.org/projects/tor/wiki/doc/torsocks")
-
 	case tor.ErrProxychainsNotInstalled:
 		return i18n().Sprintf("Ensure you have installed Proxychains in your system.")
 
