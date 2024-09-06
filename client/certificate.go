@@ -28,8 +28,8 @@ import (
 
 const certServerPort = 8181
 
-func (c *client) requestCertificate(address string) error {
-	hostname, port, err := extractHostAndPort(address)
+func (c *client) requestCertificate() error {
+	hostname, port, err := extractHostAndPort(c.f.OnionAddr)
 	if err != nil {
 		return errors.New("invalid certificate url")
 	}
@@ -55,13 +55,10 @@ func (c *client) requestCertificate(address string) error {
 }
 
 func extractHostAndPort(address string) (host string, port string, err error) {
-	u, err := url.Parse(address)
+	host, port, err = net.SplitHostPort(address)
 	if err != nil {
-		return
-	}
-
-	host, port, err = net.SplitHostPort(u.Host)
-	if err != nil {
+		fmt.Println("asdfasdfadsfs")
+		fmt.Println(err)
 		return
 	}
 
@@ -69,9 +66,9 @@ func extractHostAndPort(address string) (host string, port string, err error) {
 }
 
 func (c *client) storeCertificate(hostname string, port int, cert []byte) error {
-	if c.isTheCertificateInDB(hostname) {
-		return nil
-	}
+	// if c.isTheCertificateInDB(hostname) {
+	// 	return nil
+	// }
 
 	block, _ := pem.Decode(cert)
 	if block == nil || block.Type != "CERTIFICATE" {

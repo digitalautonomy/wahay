@@ -9,6 +9,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/digitalautonomy/wahay/config"
+	"github.com/digitalautonomy/wahay/forwarder"
+	"github.com/digitalautonomy/wahay/hosting"
 	"github.com/digitalautonomy/wahay/tor"
 )
 
@@ -24,7 +26,7 @@ type Instance interface {
 	// Launch runs the found client through the Tor proxy with the given Mumble URL.
 	// Before running the client the system will make a request of the certificate to the origin
 	// based on the given url.
-	Launch(url string, onClose func()) (tor.Service, error)
+	Launch(data hosting.MeetingData, onClose func()) (tor.Service, error)
 
 	Destroy()
 }
@@ -41,6 +43,7 @@ type client struct {
 	err                   error
 	torCmdModifier        tor.ModifyCommand
 	tor                   tor.Instance
+	f                     *forwarder.Forwarder
 }
 
 func newMumbleClient(p mumbleIniProvider, j mumbleJSONProvider, d databaseProvider, t tor.Instance) *client {
@@ -113,15 +116,19 @@ func invalidInstance(err error) Instance {
 	return invalidInstance
 }
 
-func (c *client) Launch(url string, onClose func()) (tor.Service, error) {
+func (c *client) Launch(data hosting.MeetingData, onClose func()) (tor.Service, error) {
+	c.f = forwarder.NewForwarder(data)
+
 	// First, we load the certificate from the remote server and if a
 	// valid certificate is found then we execute the client through Tor
-	err := c.requestCertificate(url)
+	err := c.requestCertificate()
 	if err != nil {
-		log.WithFields(log.Fields{"url": url}).Errorf("Launch() client: %s", err.Error())
+		log.WithFields(log.Fields{"url": c.f.OnionAddr}).Errorf("Launch() client: %s", err.Error())
 	}
 
-	return c.execute([]string{url}, onClose)
+	go c.f.StartForwarder()
+
+	return c.execute([]string{c.f.GenerateURL()}, onClose)
 }
 
 func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
@@ -136,6 +143,8 @@ func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
 		if err != nil {
 			log.Errorf("Mumble client Destroy(): %s", err.Error())
 		}
+
+		c.f.StopForwarder()
 
 		if onClose != nil {
 			onClose()

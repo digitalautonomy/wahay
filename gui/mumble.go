@@ -36,7 +36,7 @@ func (u *gtkUI) launchMumbleClient(data hosting.MeetingData, onClose func()) (to
 		return nil, errors.New("error: no client to run")
 	}
 
-	return c.Launch(data.GenerateURL(), onClose)
+	return c.Launch(data, onClose)
 }
 
 func (u *gtkUI) switchContextWhenMumbleFinish() {
