@@ -84,9 +84,6 @@ func torErrorTranslator(err error) string {
 			"Please, configure another path or download a bundled Wahay with Tor in the following url:" +
 			"\n\nhttps://wahay.org/download.html"
 
-	case tor.ErrProxychainsNotInstalled:
-		return i18n().Sprintf("Ensure you have installed Proxychains in your system.")
-
 	case tor.ErrInvalidTorPath:
 	default:
 		return "No valid Tor binary found in the system in order to run Wahay."
