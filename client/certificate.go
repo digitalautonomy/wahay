@@ -57,8 +57,6 @@ func (c *client) requestCertificate() error {
 func extractHostAndPort(address string) (host string, port string, err error) {
 	host, port, err = net.SplitHostPort(address)
 	if err != nil {
-		fmt.Println("asdfasdfadsfs")
-		fmt.Println(err)
 		return
 	}
 

@@ -129,7 +129,6 @@ func (cs *ConfigSuite) Test_LoadFromFile_LoadsPersistentConfigFile(c *C) {
 		AsSuperUser:           true,
 		AutoJoin:              true,
 		PathTor:               "path/to/tor",
-		PathTorsocks:          "path/to/tor/socks",
 		LogsEnabled:           true,
 		RawLogFile:            "raw_log_file",
 		PathMumble:            "path/to/mumble",
