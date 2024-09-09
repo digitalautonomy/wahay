@@ -33,6 +33,13 @@
             "fuzzy": true
         },
         {
+            "id": "Welcome to this server running \u003cb\u003eWahay\u003c/b\u003e.",
+            "message": "Welcome to this server running \u003cb\u003eWahay\u003c/b\u003e.",
+            "translation": "Welcome to this server running \u003cb\u003eWahay\u003c/b\u003e.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "The meeting can't be closed: {Err}",
             "message": "The meeting can't be closed: {Err}",
             "translation": "The meeting can't be closed: {Err}",
@@ -100,6 +107,13 @@
                     "expr": "h.service.URL()"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "The username is required",
+            "message": "The username is required",
+            "translation": "The username is required",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -193,9 +207,9 @@
             "fuzzy": true
         },
         {
-            "id": "the Mumble client can not be used because: {Error}",
-            "message": "the Mumble client can not be used because: {Error}",
-            "translation": "The Mumble client can't be used because: {Error}",
+            "id": "Mumble client can't be used because:\n\n{Error}",
+            "message": "Mumble client can't be used because:\n\n{Error}",
+            "translation": "Mumble client can't be used because:\n\n{Error}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -262,13 +276,6 @@
             "id": "Open",
             "message": "Open",
             "translation": "Open",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
-            "message": "Ensure you have installed Torsocks in your system.\n\nFor more information please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
-            "translation": "Make sure you have Torsocks installed in your system.\n\nFor more information, please visit:\n\nhttps://trac.torproject.org/projects/tor/wiki/doc/torsocks",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

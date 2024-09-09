@@ -9,19 +9,21 @@
             "fuzzy": true
         },
         {
-            "id": "Something went wrong: {Error}",
-            "message": "Something went wrong: {Error}",
-            "translation": "",
+            "id": "Something went wrong: {Err}",
+            "message": "Something went wrong: {Err}",
+            "translation": "Quelque chose s'est mal passée: {Err}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "Error",
+                    "id": "Err",
                     "string": "%[1]s",
                     "type": "error",
                     "underlyingType": "interface{Error() string}",
                     "argNum": 1,
-                    "expr": "e"
+                    "expr": "err"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "we couldn't start the meeting",
@@ -29,6 +31,11 @@
             "translation": "la réunion n'a pas pu commencer",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "Welcome to this server running \u003cb\u003eWahay\u003c/b\u003e.",
+            "message": "Welcome to this server running \u003cb\u003eWahay\u003c/b\u003e.",
+            "translation": ""
         },
         {
             "id": "The meeting can't be closed: {Err}",
@@ -99,6 +106,11 @@
             "fuzzy": true
         },
         {
+            "id": "The username is required",
+            "message": "The username is required",
+            "translation": ""
+        },
+        {
             "id": "Start Meeting \u0026 Join",
             "message": "Start Meeting \u0026 Join",
             "translation": "Démarrer la réunion et rejoindre",
@@ -106,11 +118,21 @@
             "fuzzy": true
         },
         {
+            "id": "Start a new meeting \u0026 join",
+            "message": "Start a new meeting \u0026 join",
+            "translation": ""
+        },
+        {
             "id": "Start Meeting",
             "message": "Start Meeting",
             "translation": "Démarrer la réunion",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "Start a new meeting",
+            "message": "Start a new meeting",
+            "translation": ""
         },
         {
             "id": "The Mumble process is down",
@@ -171,10 +193,9 @@
             "fuzzy": true
         },
         {
-            "id": "the Mumble client can not be used because: {Error}",
-            "message": "the Mumble client can not be used because: {Error}",
-            "translation": "Le client Mumble ne peut pas être utilisé à cause de: {Error}",
-            "translatorComment": "Copied from source.",
+            "id": "Mumble client can't be used because:\n\n{Error}",
+            "message": "Mumble client can't be used because:\n\n{Error}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Error",
@@ -184,8 +205,7 @@
                     "argNum": 1,
                     "expr": "err.Error()"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "please enter a valid password",
@@ -789,6 +809,16 @@
             "id": "Help",
             "message": "Help",
             "translation": "Aide"
+        },
+        {
+            "id": "Join as super user",
+            "message": "Join as super user",
+            "translation": ""
+        },
+        {
+            "id": "As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.",
+            "message": "As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.",
+            "translation": ""
         }
     ]
 }

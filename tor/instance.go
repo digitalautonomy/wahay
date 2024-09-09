@@ -45,7 +45,6 @@ type instance struct {
 	password        string
 	useCookie       bool
 	isLocal         bool
-	pathTorsocks    string
 	enableLogs      bool
 	controller      Control
 	runningTor      *runningTor
@@ -53,9 +52,8 @@ type instance struct {
 	onInitCallbacks []func(Instance)
 }
 
-func (i *instance) setBinary(b *binary, pathTorsocks string) {
+func (i *instance) setBinary(b *binary) {
 	i.binary = b
-	i.pathTorsocks = pathTorsocks
 }
 
 func (i *instance) init() {
@@ -212,7 +210,7 @@ func getOurInstance(b *binary, conf *config.ApplicationConfig, onInit func(Insta
 		i.onInit(onInit)
 	}
 
-	i.setBinary(b, conf.GetPathTorSocks())
+	i.setBinary(b)
 	i.init()
 
 	err := i.Start()

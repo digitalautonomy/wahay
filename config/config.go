@@ -29,7 +29,6 @@ type ApplicationConfig struct {
 	AsSuperUser           bool
 	AutoJoin              bool
 	PathTor               string
-	PathTorsocks          string
 	LogsEnabled           bool
 	RawLogFile            string
 	PathMumble            string
@@ -342,16 +341,6 @@ func (a *ApplicationConfig) GetPathTor() string {
 // SetPathTor set the configuration value for the Tor binary path
 func (a *ApplicationConfig) SetPathTor(p string) {
 	a.PathTor = p
-}
-
-// GetPathTorSocks returns the configured path to Torsocks library
-func (a *ApplicationConfig) GetPathTorSocks() string {
-	return a.PathTorsocks
-}
-
-// SetPathTorSocks sets the configuration value for the path of Torsocks library
-func (a *ApplicationConfig) SetPathTorSocks(ps string) {
-	a.PathTorsocks = ps
 }
 
 // ShouldEncrypt returns a boolean indicating the configuration
