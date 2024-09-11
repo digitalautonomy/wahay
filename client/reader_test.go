@@ -13,7 +13,7 @@ func (s *clientSuite) Test_readerMumbleDB_returnsTheByteRepresentationFromAStrin
 
 	c.Assert(result, HasLen, 122880)
 	c.Assert(result, Contains, "SQLite format 3")
-	c.Assert(result, Contains, "ffaaffaabbddaabbddeeaaddccaaffeebbaabbeeddeeaaddbbeeeeff.onion")
+	c.Assert(result, Contains, "111.1.1.1")
 	c.Assert(result, Contains, "#indexpingcache_host_portpingcach")
 }
 

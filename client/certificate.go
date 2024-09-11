@@ -29,7 +29,7 @@ import (
 const certServerPort = 8181
 
 func (c *client) requestCertificate() error {
-	hostname, port, err := extractHostAndPort(c.f.OnionAddr)
+	hostname, _, err := extractHostAndPort(c.f.OnionAddr)
 	if err != nil {
 		return errors.New("invalid certificate url")
 	}
@@ -45,8 +45,7 @@ func (c *client) requestCertificate() error {
 	}
 
 	cert := []byte(content)
-	p, _ := strconv.Atoi(port)
-	err = c.storeCertificate(hostname, p, cert)
+	err = c.storeCertificate(c.f.LocalAddr, c.f.ListeningPort, cert)
 	if err != nil {
 		return err
 	}
@@ -64,9 +63,9 @@ func extractHostAndPort(address string) (host string, port string, err error) {
 }
 
 func (c *client) storeCertificate(hostname string, port int, cert []byte) error {
-	// if c.isTheCertificateInDB(hostname) {
-	// 	return nil
-	// }
+	if c.isTheCertificateInDB(hostname) {
+		return nil
+	}
 
 	block, _ := pem.Decode(cert)
 	if block == nil || block.Type != "CERTIFICATE" {
@@ -88,7 +87,7 @@ func (c *client) storeCertificate(hostname string, port int, cert []byte) error 
 }
 
 const (
-	defaultHostToReplace   = "ffaaffaabbddaabbddeeaaddccaaffeebbaabbeeddeeaaddbbeeeeff.onion"
+	defaultHostToReplace   = "111.1.1.1"
 	defaultPortToReplace   = 64738
 	defaultDigestToReplace = "AAABACADAFBABBBCBDBEBFCACBCCCDCECFDADBDC"
 )
