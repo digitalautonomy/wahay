@@ -19,20 +19,13 @@ func (u *gtkUI) connectShortcut(accel string, w gtki.Window, action func(gtki.Wi
 func (u *gtkUI) connectShortcutsMainWindow(w gtki.Window) {
 	// <Primary> maps to Command and OS X, but Control on other platforms
 	u.connectShortcut("<Primary>q", w, u.closeApplicationWindow)
-	u.connectShortcut("<Primary>Q", w, u.closeApplicationWindow)
 	u.connectShortcut("<Alt>F4", w, u.closeApplicationWindow)
 	u.connectShortcut("Escape", w, u.closeApplicationWindow)
 	u.connectShortcut("<Primary>F4", w, u.closeApplicationWindow)
 	u.connectShortcut("<Primary>i", w, func(w gtki.Window) {
 		u.hostMeetingHandler()
 	})
-	u.connectShortcut("<Primary>I", w, func(w gtki.Window) {
-		u.hostMeetingHandler()
-	})
 	u.connectShortcut("<Primary>j", w, func(w gtki.Window) {
-		u.joinMeeting()
-	})
-	u.connectShortcut("<Primary>J", w, func(w gtki.Window) {
 		u.joinMeeting()
 	})
 }
