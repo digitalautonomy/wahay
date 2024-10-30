@@ -460,7 +460,7 @@
         {
             "id": "End this meeting for all",
             "message": "End this meeting for all",
-            "translation": "Finaliser cette réunion pour tous"
+            "translation": "Finaliser cette réunion pour tous (Ctrl + W)"
         },
         {
             "id": "General",

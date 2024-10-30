@@ -484,7 +484,7 @@
         {
             "id": "End this meeting for all",
             "message": "End this meeting for all",
-            "translation": "Avsluta detta möte för alla"
+            "translation": "Avsluta detta möte för alla (Ctrl + W)"
         },
         {
             "id": "General",

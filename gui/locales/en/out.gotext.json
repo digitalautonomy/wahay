@@ -429,7 +429,7 @@
         {
             "id": "End this meeting for all",
             "message": "End this meeting for all",
-            "translation": "End this meeting for all"
+            "translation": "End this meeting for all (Ctrl + W)"
         },
         {
             "id": "General",
