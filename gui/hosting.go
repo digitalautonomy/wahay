@@ -122,6 +122,7 @@ func (h *hostData) showMeetingControls() {
 	_ = lblValuePassword.SetProperty("label", h.meetingPassword)
 	_ = lblValueMeetingID.SetProperty("label", h.service.ID())
 
+	h.u.connectShortcutsStartHostingWindow(win, h)
 	h.u.switchToWindow(win)
 }
 
