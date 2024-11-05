@@ -60,7 +60,10 @@ func (u *gtkUI) connectShortcutCurrentHostMeetingWindow(w gtki.Window, h *hostDa
 
 func (u *gtkUI) connectShortcutCurrentMeetingWindow(w gtki.Window, m tor.Service) {
 	// <Primary> maps to Command and OS X, but Control on other platforms
-	u.connectShortcut("<Primary>Q", w, func(w gtki.Window) {
+	u.connectShortcut("<Primary>q", w, func(w gtki.Window) {
+		u.leaveMeeting(m)
+	})
+	u.connectShortcut("<Primary>l", w, func(w gtki.Window) {
 		u.leaveMeeting(m)
 	})
 }
