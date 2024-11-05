@@ -54,7 +54,7 @@ func (u *gtkUI) connectShortcutCurrentHostMeetingWindow(w gtki.Window, h *hostDa
 		h.leaveHostMeeting()
 	})
 	u.connectShortcut("<Primary>w", w, func(w gtki.Window) {
-		h.finishMeeting()
+		h.finishMeetingMumble()
 	})
 }
 
