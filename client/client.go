@@ -126,13 +126,15 @@ func (c *client) Launch(data hosting.MeetingData, onClose func()) (tor.Service, 
 		log.WithFields(log.Fields{"url": c.f.OnionAddr}).Errorf("Launch() client: %s", err.Error())
 	}
 
-	return c.execute([]string{c.f.GenerateURL()}, onClose)
+	return c.execute(data, onClose)
 }
 
-func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
-	go c.f.StartForwarder()
+func (c *client) execute(data hosting.MeetingData, onClose func()) (tor.Service, error) {
+	if !data.IsHost {
+		go c.f.StartForwarder()
+	}
 
-	s, err := c.tor.NewService(c.pathToBinary(), args, c.torCommandModifier())
+	s, err := c.tor.NewService(c.pathToBinary(), []string{c.f.GenerateURL()}, c.torCommandModifier())
 	if err != nil {
 		log.Errorf("Mumble client execute(): %s", err.Error())
 		return nil, errors.New("error: the service can't be started")
@@ -144,7 +146,9 @@ func (c *client) execute(args []string, onClose func()) (tor.Service, error) {
 			log.Errorf("Mumble client Destroy(): %s", err.Error())
 		}
 
-		c.f.StopForwarder()
+		if !data.IsHost {
+			c.f.StopForwarder()
+		}
 
 		if onClose != nil {
 			onClose()

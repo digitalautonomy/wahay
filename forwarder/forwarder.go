@@ -24,6 +24,7 @@ type Forwarder struct {
 	ctx           context.Context
 	cancel        context.CancelFunc
 	l             net.Listener
+	isRunning     bool
 }
 
 func NewForwarder(data hosting.MeetingData) *Forwarder {
@@ -31,11 +32,18 @@ func NewForwarder(data hosting.MeetingData) *Forwarder {
 	return &Forwarder{
 		OnionAddr:     fmt.Sprintf("%s:%d", data.MeetingID, data.Port),
 		LocalAddr:     "127.0.0.1",
-		ListeningPort: config.GetRandomPort(),
+		ListeningPort: assignPort(data),
 		data:          data,
 		ctx:           ctx,
 		cancel:        cancel,
 	}
+}
+
+func assignPort(data hosting.MeetingData) int {
+	if !data.IsHost {
+		return config.GetRandomPort()
+	}
+	return data.Port
 }
 
 func (f *Forwarder) HandleConnection(clientConn net.Conn, socks5Addr string) {
@@ -90,6 +98,7 @@ func (f *Forwarder) StartForwarder() {
 	defer f.l.Close()
 
 	log.Infof("TCP to SOCKS5 forwarder successfully started, listening on %s", listeningAddr)
+	f.isRunning = true
 
 	socks5Addr := fmt.Sprintf("%s:%d", f.LocalAddr, config.DefaultRoutePort)
 
@@ -97,6 +106,7 @@ func (f *Forwarder) StartForwarder() {
 		select {
 		case <-f.ctx.Done(): // Stop the forwarder when context is canceled
 			log.Info("Stopping forwarder...")
+			f.isRunning = false
 			return
 		default:
 			clientConn, err := f.l.Accept()
@@ -120,6 +130,10 @@ func (f *Forwarder) GenerateURL() string {
 }
 
 func (f *Forwarder) StopForwarder() {
+	if !f.isRunning {
+		return
+	}
+
 	if f.cancel != nil {
 		f.cancel()
 	}
@@ -128,4 +142,5 @@ func (f *Forwarder) StopForwarder() {
 
 	f.wg.Wait()
 	log.Info("Forwarder stopped.")
+	f.isRunning = false
 }

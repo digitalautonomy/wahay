@@ -3,7 +3,6 @@ package hosting
 import (
 	"fmt"
 	"io/ioutil"
-	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -31,6 +30,7 @@ type MeetingData struct {
 	Port      int
 	Password  string
 	Username  string
+	IsHost    bool
 }
 
 func create() (Servers, error) {
@@ -46,17 +46,6 @@ type servers struct {
 	nextID  int
 	servers map[int64]*grumbleServer.Server
 	log     *log.Logger
-}
-
-// GenerateURL is a helper function for creating Mumble valid URLs
-func (d *MeetingData) GenerateURL() string {
-	u := url.URL{
-		Scheme: "mumble",
-		User:   url.UserPassword(d.Username, d.Password),
-		Host:   fmt.Sprintf("%s:%d", d.MeetingID, d.Port),
-	}
-
-	return u.String()
 }
 
 func (s *servers) initializeSharedObjects() {

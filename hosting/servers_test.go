@@ -15,24 +15,6 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-func (s *hostingSuite) Test_GenerateURL_returnsEmptyMumbleURLWhenNoMeetingDataHasBeenGiven(c *C) {
-	md := MeetingData{}
-	url := md.GenerateURL()
-	c.Assert(url, Equals, "mumble://:@:0")
-}
-
-func (s *hostingSuite) Test_GenerateURL_returnsValidMumbleURLWhenAllMeetingDataHasBeenGiven(c *C) {
-	md := MeetingData{
-		MeetingID: "meetingId",
-		Port:      23840,
-		Password:  "mypassword",
-		Username:  "TestUser",
-	}
-
-	url := md.GenerateURL()
-	c.Assert(url, Equals, "mumble://TestUser:mypassword@meetingId:23840")
-}
-
 func (s *hostingSuite) Test_initializeSharedObjects_checkIfServersMapHasBeenCreated(c *C) {
 	servers := &servers{}
 	sm := make(map[int64]*grumbleServer.Server)

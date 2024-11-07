@@ -146,7 +146,7 @@ func (h *hostData) joinMeetingHost() {
 func (h *hostData) joinMeetingHostHelper(validOpChannel chan bool) {
 	data := hosting.MeetingData{
 		MeetingID: h.service.ID(),
-		Port:      h.service.ServicePort(),
+		Port:      h.service.Port(),
 		Password: func() string {
 			if h.asSuperUser {
 				return h.superUserPassword
@@ -154,6 +154,7 @@ func (h *hostData) joinMeetingHostHelper(validOpChannel chan bool) {
 			return h.meetingPassword
 		}(),
 		Username: h.meetingUsername,
+		IsHost:   true,
 	}
 
 	var err error
