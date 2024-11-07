@@ -11,6 +11,7 @@
         "audio_wizard_has_been_shown": true,
         "database_location": "#DATABASE"
     },
+    "mumble_has_quit_normally": true,
     "network": {
         "restrict_to_tcp": true
     },
