@@ -44,6 +44,7 @@ type client struct {
 	torCmdModifier        tor.ModifyCommand
 	tor                   tor.Instance
 	f                     *forwarder.Forwarder
+	runningCount          *sync.WaitGroup
 }
 
 func newMumbleClient(p mumbleIniProvider, j mumbleJSONProvider, d databaseProvider, t tor.Instance) *client {
@@ -56,6 +57,7 @@ func newMumbleClient(p mumbleIniProvider, j mumbleJSONProvider, d databaseProvid
 		err:                   nil,
 		tor:                   t,
 		configFiles:           map[string]struct{}{},
+		runningCount:          &sync.WaitGroup{},
 	}
 
 	return c
@@ -140,6 +142,8 @@ func (c *client) execute(data hosting.MeetingData, onClose func()) (tor.Service,
 		return nil, errors.New("error: the service can't be started")
 	}
 
+	c.runningCount.Add(1)
+
 	s.OnClose(func() {
 		err := c.regenerateConfiguration()
 		if err != nil {
@@ -153,6 +157,7 @@ func (c *client) execute(data hosting.MeetingData, onClose func()) (tor.Service,
 		if onClose != nil {
 			onClose()
 		}
+		c.runningCount.Done()
 	})
 
 	return s, nil
@@ -225,7 +230,11 @@ func (c *client) torCommandModifier() tor.ModifyCommand {
 }
 
 func (c *client) Destroy() {
+	log.Debug("Destroy(): waiting for process to terminate")
+	c.runningCount.Wait()
+	log.Debug("Destroy(): process terminated")
 	c.binary.destroy()
+	log.Debug("Destroy(): temporary files deleted")
 }
 
 var tempDir = ioutil.TempDir

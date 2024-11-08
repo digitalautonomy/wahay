@@ -20,8 +20,6 @@ type RunningCommand struct {
 }
 
 func (s *service) Close() {
-	s.rc.Cmd.Process.Kill()
-	s.rc.ExitGroup.Dispose()
 	s.rc.CancelFunc()
 }
 
