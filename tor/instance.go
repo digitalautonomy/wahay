@@ -251,6 +251,12 @@ func newInstance(enableLogs bool) (*instance, error) {
 	return i, err
 }
 
+type RunningCommand struct {
+	Ctx        context.Context
+	Cmd        *exec.Cmd
+	CancelFunc context.CancelFunc
+}
+
 func (i *instance) exec(mumbleBinary string, args []string, pre ModifyCommand) (*RunningCommand, error) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	// This executes the mumble command, and the args which are both under control of the code

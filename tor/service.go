@@ -37,6 +37,10 @@ func (i *instance) NewService(cmd string, args []string, modifier ModifyCommand)
 	return s, nil
 }
 
+func (s *service) Close() {
+	s.rc.CancelFunc()
+}
+
 func (s *service) IsClosed() bool {
 	return s.finished
 }
@@ -59,13 +63,9 @@ func (s *service) listenToFinish() {
 func (s *service) closeWhenFinish() {
 	go func() {
 		<-s.finishChannel
-		// TODO[OB] - Unnecessary if statement
-		if len(s.onCloseFunctions) > 0 {
-			for _, f := range s.onCloseFunctions {
-				f()
-			}
-			// TODO[OB] - you can just set it to nil
-			s.onCloseFunctions = s.onCloseFunctions[:0]
+		for _, f := range s.onCloseFunctions {
+			f()
 		}
+		s.onCloseFunctions = nil
 	}()
 }

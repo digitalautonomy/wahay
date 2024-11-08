@@ -37,16 +37,14 @@ func (h *cleanupHandler) exitOnInterrupt() {
 	os.Exit(0)
 }
 
-func (h *cleanupHandler) doCleanup(cb func()) {
+func (h *cleanupHandler) doCleanup(after func()) {
 	log.Debug("Cleaning Wahay...")
 
-	if len(h.callbacks) != 0 {
-		for _, cb := range h.callbacks {
-			cb()
-		}
+	for _, cb := range h.callbacks {
+		cb()
 	}
 
-	cb()
+	after()
 }
 
 func (h *cleanupHandler) add(cb func()) {
