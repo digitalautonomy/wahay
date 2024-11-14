@@ -218,6 +218,13 @@ func (s *service) Close() error {
 		}
 	}
 
+	if s.checkServer != nil {
+		err = s.checkServer.conn.Close()
+		if err != nil {
+			log.Errorf("hosting stop checking connection service: Close(): %s", err)
+		}
+	}
+
 	if s.room != nil {
 		err = s.room.close()
 		if err != nil {

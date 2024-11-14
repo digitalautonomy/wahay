@@ -1,10 +1,12 @@
 package hosting
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"io"
 	"net"
+	"strings"
 
 	"github.com/digitalautonomy/wahay/config"
 	log "github.com/sirupsen/logrus"
@@ -71,17 +73,22 @@ func (cs *checkService) handleClient() {
 }
 
 func (cs *checkService) waitForClientMessage() (string, error) {
-	clientSignal, err := io.ReadAll(cs.conn)
-	if err != nil && err != io.EOF {
-		e := fmt.Sprintf("Error reading from connection: %s", err.Error())
-		return "", errors.New(e)
+	reader := bufio.NewReader(cs.conn)
+	clientMsg, err := reader.ReadString('\n')
+	if err != nil {
+		if err == io.EOF {
+			return "", errors.New("connecion closed")
+		}
+		return "", fmt.Errorf("error reading from connection: %v", err)
 	}
 
-	if len(clientSignal) == 0 {
-		return "", errors.New("received empty signal from client, waiting for new signal")
+	clientMsg = strings.TrimSpace(clientMsg)
+
+	if len(clientMsg) == 0 {
+		return "", errors.New("received empty message from client, waiting for new message")
 	}
 
-	message := fmt.Sprintf("Received connection check signal from client: %s", string(clientSignal))
+	message := fmt.Sprintf("Message received from client: %s", clientMsg)
 
 	return message, nil
 }
