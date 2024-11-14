@@ -165,7 +165,7 @@ func (s *servers) NewService(port string, t tor.Instance) (Service, error) {
 	onionPorts = append(onionPorts, tor.OnionPort{
 		DestinationHost: defaultHost(),
 		DestinationPort: checkService.port,
-		ServicePort:     checkConnPubPort,
+		ServicePort:     checkConnectionPort,
 	})
 
 	p := DefaultPort
@@ -215,13 +215,6 @@ func (s *service) Close() error {
 		err = s.httpServer.stop()
 		if err != nil {
 			log.Errorf("hosting stop http server: Close(): %s", err)
-		}
-	}
-
-	if s.checkServer != nil {
-		err = s.checkServer.conn.Close()
-		if err != nil {
-			log.Errorf("hosting stop checking connection service: Close(): %s", err)
 		}
 	}
 

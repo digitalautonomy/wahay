@@ -4,9 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"io"
 	"net"
-	"strings"
 
 	"github.com/digitalautonomy/wahay/config"
 	log "github.com/sirupsen/logrus"
@@ -18,7 +16,7 @@ type checkService struct {
 	conn net.Conn
 }
 
-const checkConnPubPort = 12321
+const checkConnectionPort = 12321
 
 func newCheckConnectionService() (*checkService, error) {
 	checkPort := config.GetRandomPort()
@@ -76,13 +74,8 @@ func (cs *checkService) waitForClientMessage() (string, error) {
 	reader := bufio.NewReader(cs.conn)
 	clientMsg, err := reader.ReadString('\n')
 	if err != nil {
-		if err == io.EOF {
-			return "", errors.New("connecion closed")
-		}
 		return "", fmt.Errorf("error reading from connection: %v", err)
 	}
-
-	clientMsg = strings.TrimSpace(clientMsg)
 
 	if len(clientMsg) == 0 {
 		return "", errors.New("received empty message from client, waiting for new message")
