@@ -1,13 +1,12 @@
 package forwarder
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"io"
 	"net"
-	"net/http"
 	"net/url"
-	"strconv"
 	"sync"
 	"time"
 
@@ -16,6 +15,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/proxy"
 )
+
+const checkConnectionPort = 12321
 
 type Forwarder struct {
 	ListeningPort int
@@ -30,6 +31,8 @@ type Forwarder struct {
 	isPaused      bool
 	pauseLock     sync.Mutex
 	pausing       *pausing
+	dialer        proxy.Dialer
+	checkerConn   net.Conn
 }
 
 func NewForwarder(data hosting.MeetingData) *Forwarder {
@@ -86,6 +89,13 @@ func (f *Forwarder) setupListener() error {
 		return fmt.Errorf("failed to set up listener: %w", err)
 	}
 	f.l = listener
+
+	socks5Addr := fmt.Sprintf("%s:%d", f.LocalAddr, config.DefaultRoutePort)
+	f.dialer, err = proxy.SOCKS5("tcp", socks5Addr, nil, proxy.Direct)
+	if err != nil {
+		return fmt.Errorf("failed to create socks5 dialer: %v", err)
+	}
+
 	return nil
 }
 
@@ -106,14 +116,8 @@ func assignPort(data hosting.MeetingData) int {
 	return data.Port
 }
 
-func (f *Forwarder) HandleConnection(clientConn net.Conn, socks5Addr string) {
-	dialer, err := proxy.SOCKS5("tcp", socks5Addr, nil, proxy.Direct)
-	if err != nil {
-		log.Errorf("Failed to create SOCKS5 dialer: %v\n", err)
-		return
-	}
-
-	serverConn, err := dialer.Dial("tcp", f.OnionAddr)
+func (f *Forwarder) HandleConnection(clientConn net.Conn) {
+	serverConn, err := f.dialer.Dial("tcp", f.OnionAddr)
 	if err != nil {
 		log.Errorf("Failed to connect to Mumble server via SOCKS5: %v\n", err)
 		return
@@ -146,31 +150,54 @@ func (f *Forwarder) forwardTraffic(conn1, conn2 *net.TCPConn) {
 }
 
 func (f *Forwarder) CheckConnection() bool {
-	proxyURL, err := url.Parse("socks5://" + net.JoinHostPort(f.LocalAddr, strconv.Itoa(config.DefaultRoutePort)))
+	err := f.connectToCheckerService()
 	if err != nil {
-		log.Errorf("Error parsing proxy URL: %v", err)
+		return false
+	}
+	defer f.checkerConn.Close()
+
+	message := "Testing connection\n"
+	_, err = f.checkerConn.Write([]byte(message))
+	if err != nil {
+		log.Errorf("Writing failed. Error: %v", err.Error())
+		return false
+	}
+	log.Debug("Message sent")
+
+	reader := bufio.NewReader(f.checkerConn)
+	response, err := reader.ReadString('\n')
+	if err != nil {
+		log.Debugf("Error while reading from connection: %s", err.Error())
 		return false
 	}
 
-	dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
-	if err != nil {
-		log.Errorf("Error creating SOCKS5 dialer: %v", err)
+	log.Debugf("Server responds with: %v", response)
+
+	if response != "OK\n" {
+		log.Error("Connection lost or server not responding")
 		return false
 	}
 
-	client := &http.Client{
-		Transport: &http.Transport{Dial: dialer.Dial},
-		Timeout:   5 * time.Second,
-	}
-
-	resp, err := client.Get("https://check.torproject.org/api/ip")
-	if err != nil {
-		log.Errorf("Error reaching Tor check service: %v", err)
-		return false
-	}
-
-	defer resp.Body.Close()
+	log.Debug("OK signal received:", response)
 	return true
+}
+
+func (f *Forwarder) connectToCheckerService() error {
+	h, _, err := net.SplitHostPort(f.OnionAddr)
+	if err != nil {
+		log.Errorf("Unable to extract onion address, error: %v", err)
+		return err
+	}
+
+	conn, err := f.dialer.Dial("tcp", fmt.Sprintf("%s:%d", h, checkConnectionPort))
+	if err != nil {
+		log.Debugf("Disconected (no net or service unavailable): %v", err)
+		return err
+	}
+
+	f.checkerConn = conn
+	log.Debug("Connected to check service.")
+	return nil
 }
 
 func (f *Forwarder) StartForwarder() {
@@ -198,8 +225,6 @@ func (f *Forwarder) StartForwarder() {
 }
 
 func (f *Forwarder) acceptConnections() {
-	socks5Addr := fmt.Sprintf("%s:%d", f.LocalAddr, config.DefaultRoutePort)
-
 	for {
 		select {
 		case <-f.ctx.Done():
@@ -221,7 +246,7 @@ func (f *Forwarder) acceptConnections() {
 				continue
 			}
 
-			go f.HandleConnection(clientConn, socks5Addr)
+			go f.HandleConnection(clientConn)
 		}
 	}
 }
