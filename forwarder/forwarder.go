@@ -19,9 +19,10 @@ import (
 const checkConnectionPort = 12321
 
 type Forwarder struct {
+	OnionAddr     string
+	mumblePort    int
 	ListeningPort int
 	LocalAddr     string
-	OnionAddr     string
 	data          hosting.MeetingData
 	wg            sync.WaitGroup
 	ctx           context.Context
@@ -37,7 +38,8 @@ type Forwarder struct {
 
 func NewForwarder(data hosting.MeetingData) *Forwarder {
 	f := &Forwarder{
-		OnionAddr:     fmt.Sprintf("%s:%d", data.MeetingID, data.Port),
+		OnionAddr:     data.MeetingID,
+		mumblePort:    data.Port,
 		LocalAddr:     "127.0.0.1",
 		ListeningPort: assignPort(data),
 		data:          data,
@@ -117,7 +119,7 @@ func assignPort(data hosting.MeetingData) int {
 }
 
 func (f *Forwarder) HandleConnection(clientConn net.Conn) {
-	serverConn, err := f.dialer.Dial("tcp", f.OnionAddr)
+	serverConn, err := f.dialer.Dial("tcp", fmt.Sprintf("%s:%d", f.OnionAddr, f.mumblePort))
 	if err != nil {
 		log.Errorf("Failed to connect to Mumble server via SOCKS5: %v\n", err)
 		return
@@ -183,13 +185,7 @@ func (f *Forwarder) CheckConnection() bool {
 }
 
 func (f *Forwarder) connectToCheckerService() error {
-	h, _, err := net.SplitHostPort(f.OnionAddr)
-	if err != nil {
-		log.Errorf("Unable to extract onion address, error: %v", err)
-		return err
-	}
-
-	conn, err := f.dialer.Dial("tcp", fmt.Sprintf("%s:%d", h, checkConnectionPort))
+	conn, err := f.dialer.Dial("tcp", fmt.Sprintf("%s:%d", f.OnionAddr, checkConnectionPort))
 	if err != nil {
 		log.Debugf("Disconected (no net or service unavailable): %v", err)
 		return err
