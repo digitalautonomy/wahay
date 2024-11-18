@@ -1,7 +1,6 @@
 package forwarder
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"io"
@@ -15,8 +14,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/proxy"
 )
-
-const checkConnectionPort = 12321
 
 type Forwarder struct {
 	OnionAddr     string
@@ -33,7 +30,7 @@ type Forwarder struct {
 	pauseLock     sync.Mutex
 	pausing       *pausing
 	dialer        proxy.Dialer
-	checkerConn   net.Conn
+	checker
 }
 
 func NewForwarder(data hosting.MeetingData) *Forwarder {
@@ -77,6 +74,11 @@ func (f *Forwarder) onWake() {
 		return
 	}
 
+	if err := f.setupSocks5Dialer(); err != nil {
+		log.Errorf("Failed to set up socks5 dialer: %v", err)
+		return
+	}
+
 	f.isPaused = false
 	log.Debug("Forwarder resumed.")
 
@@ -92,12 +94,21 @@ func (f *Forwarder) setupListener() error {
 	}
 	f.l = listener
 
+	return nil
+}
+
+func (f *Forwarder) setupSocks5Dialer() error {
 	socks5Addr := fmt.Sprintf("%s:%d", f.LocalAddr, config.DefaultRoutePort)
-	f.dialer, err = proxy.SOCKS5("tcp", socks5Addr, nil, proxy.Direct)
+	var err error
+
+	customDialer := &net.Dialer{
+		Timeout: 10 * time.Second,
+	}
+
+	f.dialer, err = proxy.SOCKS5("tcp", socks5Addr, nil, customDialer)
 	if err != nil {
 		return fmt.Errorf("failed to create socks5 dialer: %v", err)
 	}
-
 	return nil
 }
 
@@ -151,51 +162,6 @@ func (f *Forwarder) forwardTraffic(conn1, conn2 *net.TCPConn) {
 	f.wg.Wait()
 }
 
-func (f *Forwarder) CheckConnection() bool {
-	err := f.connectToCheckerService()
-	if err != nil {
-		return false
-	}
-	defer f.checkerConn.Close()
-
-	message := "Testing connection\n"
-	_, err = f.checkerConn.Write([]byte(message))
-	if err != nil {
-		log.Errorf("Writing failed. Error: %v", err.Error())
-		return false
-	}
-	log.Debug("Message sent")
-
-	reader := bufio.NewReader(f.checkerConn)
-	response, err := reader.ReadString('\n')
-	if err != nil {
-		log.Debugf("Error while reading from connection: %s", err.Error())
-		return false
-	}
-
-	log.Debugf("Server responds with: %v", response)
-
-	if response != "OK\n" {
-		log.Error("Connection lost or server not responding")
-		return false
-	}
-
-	log.Debug("OK signal received:", response)
-	return true
-}
-
-func (f *Forwarder) connectToCheckerService() error {
-	conn, err := f.dialer.Dial("tcp", fmt.Sprintf("%s:%d", f.OnionAddr, checkConnectionPort))
-	if err != nil {
-		log.Debugf("Disconected (no net or service unavailable): %v", err)
-		return err
-	}
-
-	f.checkerConn = conn
-	log.Debug("Connected to check service.")
-	return nil
-}
-
 func (f *Forwarder) StartForwarder() {
 	ctx, cancel := context.WithCancel(context.Background())
 	f.ctx = ctx
@@ -208,6 +174,11 @@ func (f *Forwarder) StartForwarder() {
 	if err := f.setupListener(); err != nil {
 		log.Errorf("Failed to set up listener in StartForwarder: %v", err)
 		f.isRunning = false
+		return
+	}
+
+	if err := f.setupSocks5Dialer(); err != nil {
+		log.Errorf("Failed to set up socks5 dialer: %v", err)
 		return
 	}
 
