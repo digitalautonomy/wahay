@@ -22,12 +22,15 @@ func (u *gtkUI) connectShortcutsMainWindow(w gtki.Window) {
 	u.connectShortcut("<Alt>F4", w, u.closeApplicationWindow)
 	u.connectShortcut("Escape", w, u.closeApplicationWindow)
 	u.connectShortcut("<Primary>F4", w, u.closeApplicationWindow)
-	u.connectShortcut("<Primary>i", w, func(w gtki.Window) {
-		u.hostMeetingHandler()
-	})
-	u.connectShortcut("<Primary>j", w, func(w gtki.Window) {
-		u.joinMeeting()
-	})
+
+	if !u.errorHandler.isThereAnyStartupError() {
+		u.connectShortcut("<Primary>i", w, func(w gtki.Window) {
+			u.hostMeetingHandler()
+		})
+		u.connectShortcut("<Primary>j", w, func(w gtki.Window) {
+			u.joinMeeting()
+		})
+	}
 }
 
 func (u *gtkUI) connectShortcutsHostingMeetingConfigurationWindow(w gtki.Window, b *uiBuilder, h *hostData) {
