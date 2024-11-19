@@ -701,6 +701,11 @@
             "translation": "Security"
         },
         {
+            "id": "Open settings window",
+            "message": "Open settings window",
+            "translation": "Open settings window (Ctrl + S)"
+        },
+        {
             "id": "Settings",
             "message": "Settings",
             "translation": "Settings"

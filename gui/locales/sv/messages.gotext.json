@@ -702,6 +702,11 @@
             "translation": "Säkerhet"
         },
         {
+            "id": "Open settings window",
+            "message": "Open settings window",
+            "translation": "TRANSLATE ME (Ctrl + S)"
+        },
+        {
             "id": "Settings",
             "message": "Settings",
             "translation": "Inställningar"
