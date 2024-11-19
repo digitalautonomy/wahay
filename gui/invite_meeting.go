@@ -31,7 +31,8 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.Window, *uiBuilder) {
 		"placeholder", "entMeetingID",
 		"placeholder", "entMeetingPassword",
 		"button", "btnCancel",
-		"button", "btnJoin")
+		"button", "btnJoin",
+		"tooltip", "btnJoin")
 
 	win := builder.get("inviteWindow").(gtki.ApplicationWindow)
 	win.SetApplication(u.app)
@@ -119,14 +120,42 @@ func (u *gtkUI) joinMeetingHandler(data hosting.MeetingData) {
 	u.openCurrentMeetingWindow(mumble)
 }
 
+func (u *gtkUI) handleOnJoinMeeting(b *uiBuilder) {
+	entMeetingID, _ := b.get("entMeetingID").(gtki.Entry)
+	entScreenName, _ := b.get("entScreenName").(gtki.Entry)
+	entMeetingPassword, _ := b.get("entMeetingPassword").(gtki.Entry)
+
+	url, _ := entMeetingID.GetText()
+	username, _ := entScreenName.GetText()
+	password, _ := entMeetingPassword.GetText()
+
+	// TODO: remove this if we show a custom input field to enter
+	// the SERVICE URL and the PORT
+	meetingID, port, err := extractMeetingIDandPort(url)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"url":  url,
+			"ID":   meetingID,
+			"port": port,
+		}).Error("Invalid meeting ID provided")
+		u.reportError(i18n().Sprintf("Invalid meeting ID provided"))
+		return
+	}
+
+	data := hosting.MeetingData{
+		MeetingID: meetingID,
+		Port:      port,
+		Username:  username,
+		Password:  password,
+	}
+
+	go u.joinMeetingHandler(data)
+}
+
 // Test Onion that can be used:
 // qvdjpoqcg572ibylv673qr76iwashlazh6spm47ly37w65iwwmkbmtid.onion
 func (u *gtkUI) openJoinWindow() {
 	win, builder := u.getInviteCodeEntities()
-
-	entMeetingID, _ := builder.get("entMeetingID").(gtki.Entry)
-	entScreenName, _ := builder.get("entScreenName").(gtki.Entry)
-	entMeetingPassword, _ := builder.get("entMeetingPassword").(gtki.Entry)
 
 	cleanup := func() {
 		win.Destroy()
@@ -135,35 +164,13 @@ func (u *gtkUI) openJoinWindow() {
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_join": func() {
-			url, _ := entMeetingID.GetText()
-			username, _ := entScreenName.GetText()
-			password, _ := entMeetingPassword.GetText()
-
-			// TODO: remove this if we show a custom input field to enter
-			// the SERVICE URL and the PORT
-			meetingID, port, err := extractMeetingIDandPort(url)
-			if err != nil {
-				log.WithFields(log.Fields{
-					"url":  url,
-					"ID":   meetingID,
-					"port": port,
-				}).Error("Invalid meeting ID provided")
-				u.reportError(i18n().Sprintf("Invalid meeting ID provided"))
-				return
-			}
-
-			data := hosting.MeetingData{
-				MeetingID: meetingID,
-				Port:      port,
-				Username:  username,
-				Password:  password,
-			}
-
-			go u.joinMeetingHandler(data)
+			u.handleOnJoinMeeting(builder)
 		},
 		"on_cancel": cleanup,
 		"on_close":  cleanup,
 	})
+
+	u.connectShortcutsInviteMeetingWindow(win, builder)
 
 	win.Show()
 	u.setCurrentWindow(win)
