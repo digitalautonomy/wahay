@@ -76,6 +76,7 @@ type service struct {
 	room        *conferenceRoom
 	httpServer  *webserver
 	collection  Servers
+	checkServer *checkService
 }
 
 func (s *service) ID() string {
@@ -132,6 +133,8 @@ func (s *service) NewConferenceRoom(password string, u SuperUserData) error {
 		log.Fatalf("Mumble certificate HTTP server: %v", err)
 	})
 
+	s.checkServer.start()
+
 	return nil
 }
 
@@ -152,6 +155,17 @@ func (s *servers) NewService(port string, t tor.Instance) (Service, error) {
 		DestinationHost: defaultHost(),
 		DestinationPort: httpServer.port,
 		ServicePort:     certServerPort,
+	})
+
+	checkService, err := newCheckConnectionService()
+	if err != nil {
+		return nil, err
+	}
+
+	onionPorts = append(onionPorts, tor.OnionPort{
+		DestinationHost: defaultHost(),
+		DestinationPort: checkService.port,
+		ServicePort:     checkConnectionPort,
 	})
 
 	p := DefaultPort
@@ -176,11 +190,12 @@ func (s *servers) NewService(port string, t tor.Instance) (Service, error) {
 	}
 
 	ss := &service{
-		port:       serverPort,
-		mumblePort: p,
-		onion:      onion,
-		httpServer: httpServer,
-		collection: s,
+		port:        serverPort,
+		mumblePort:  p,
+		onion:       onion,
+		httpServer:  httpServer,
+		collection:  s,
+		checkServer: checkService,
 	}
 
 	return ss, nil

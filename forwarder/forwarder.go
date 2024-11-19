@@ -7,35 +7,117 @@ import (
 	"net"
 	"net/url"
 	"sync"
-
-	log "github.com/sirupsen/logrus"
+	"time"
 
 	"github.com/digitalautonomy/wahay/config"
 	"github.com/digitalautonomy/wahay/hosting"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/proxy"
 )
 
 type Forwarder struct {
+	OnionAddr     string
+	mumblePort    int
 	ListeningPort int
 	LocalAddr     string
-	OnionAddr     string
 	data          hosting.MeetingData
-	wg            sync.WaitGroup
 	ctx           context.Context
 	cancel        context.CancelFunc
 	l             net.Listener
 	isRunning     bool
+	isPaused      bool
+	pauseLock     sync.Mutex
+	pausing       *pausing
+	dialer        proxy.Dialer
+	checker
 }
 
 func NewForwarder(data hosting.MeetingData) *Forwarder {
-	ctx, cancel := context.WithCancel(context.Background()) // Create a context with cancel
-	return &Forwarder{
-		OnionAddr:     fmt.Sprintf("%s:%d", data.MeetingID, data.Port),
+	f := &Forwarder{
+		OnionAddr:     data.MeetingID,
+		mumblePort:    data.Port,
 		LocalAddr:     "127.0.0.1",
 		ListeningPort: assignPort(data),
 		data:          data,
-		ctx:           ctx,
-		cancel:        cancel,
+		pausing:       newPausing(),
+	}
+
+	f.pausing.check = f.CheckConnection
+	f.pausing.onPause = f.onPause
+	f.pausing.onWake = f.onWake
+
+	return f
+}
+
+func (f *Forwarder) onPause() {
+	f.pauseLock.Lock()
+	defer f.pauseLock.Unlock()
+
+	if f.l != nil {
+		err := f.l.Close()
+		if err != nil {
+			log.Errorf("Error closing listener: %v", err)
+		}
+	}
+
+	f.isPaused = true
+	log.Debug("Forwarder paused.")
+}
+
+func (f *Forwarder) onWake() {
+	f.pauseLock.Lock()
+	defer f.pauseLock.Unlock()
+
+	if err := f.setupListener(); err != nil {
+		log.Errorf("Failed to set up listener on wake: %v", err)
+		return
+	}
+
+	if err := f.setupSocks5Dialer(); err != nil {
+		log.Errorf("Failed to set up socks5 dialer: %v", err)
+		return
+	}
+
+	f.isPaused = false
+	log.Debug("Forwarder resumed.")
+
+	go f.acceptConnections()
+
+}
+
+func (f *Forwarder) setupListener() error {
+	listeningAddr := fmt.Sprintf("%s:%d", f.LocalAddr, f.ListeningPort)
+	listener, err := net.Listen("tcp", listeningAddr)
+	if err != nil {
+		return fmt.Errorf("failed to set up listener: %w", err)
+	}
+	f.l = listener
+
+	return nil
+}
+
+func (f *Forwarder) setupSocks5Dialer() error {
+	socks5Addr := fmt.Sprintf("%s:%d", f.LocalAddr, config.DefaultRoutePort)
+	var err error
+
+	customDialer := &net.Dialer{
+		Timeout: 10 * time.Second,
+	}
+
+	f.dialer, err = proxy.SOCKS5("tcp", socks5Addr, nil, customDialer)
+	if err != nil {
+		return fmt.Errorf("failed to create socks5 dialer: %v", err)
+	}
+	return nil
+}
+
+func (f *Forwarder) shutdownListener() {
+	if f.l != nil {
+		err := f.l.Close()
+		if err != nil {
+			log.Errorf("Error closing listener: %v", err)
+		}
+		f.l = nil
 	}
 }
 
@@ -46,75 +128,91 @@ func assignPort(data hosting.MeetingData) int {
 	return data.Port
 }
 
-func (f *Forwarder) HandleConnection(clientConn net.Conn, socks5Addr string) {
-	dialer, err := proxy.SOCKS5("tcp", socks5Addr, nil, proxy.Direct)
+func (f *Forwarder) HandleConnection(clientConn net.Conn) {
+	serverConn, err := f.dialer.Dial("tcp", fmt.Sprintf("%s:%d", f.OnionAddr, f.mumblePort))
 	if err != nil {
-		log.Errorf("Failed to create SOCKS5 dialer: %v\n", err.Error())
-		return
-	}
-
-	serverConn, err := dialer.Dial("tcp", f.OnionAddr)
-	if err != nil {
-		log.Errorf("Failed to connect to Mumble server via SOCKS5: %v\n", err.Error())
+		log.Errorf("Failed to connect to Mumble server via SOCKS5: %v\n", err)
 		return
 	}
 
 	tcpClientConn, _ := clientConn.(*net.TCPConn)
 	tcpServerConn, _ := serverConn.(*net.TCPConn)
 
-	go f.forwardTraffic(tcpClientConn, tcpServerConn)
+	f.forwardTraffic(tcpClientConn, tcpServerConn)
 }
 
 func (f *Forwarder) forwardTraffic(conn1, conn2 *net.TCPConn) {
 	defer conn1.Close()
 	defer conn2.Close()
 
-	f.wg.Add(2)
+	var wg sync.WaitGroup
+
+	wg.Add(2)
 
 	go func() {
-		defer f.wg.Done()
+		defer wg.Done()
 		io.Copy(conn1, conn2)
-		// Signal peer that no more data is coming.
-		conn1.CloseWrite()
 	}()
 	go func() {
-		defer f.wg.Done()
+		defer wg.Done()
 		io.Copy(conn2, conn1)
-		// Signal peer that no more data is coming.
-		conn2.CloseWrite()
 	}()
 
-	f.wg.Wait()
+	wg.Wait()
 }
 
 func (f *Forwarder) StartForwarder() {
-	listeningAddr := fmt.Sprintf("%s:%d", f.LocalAddr, f.ListeningPort)
-	listener, err := net.Listen("tcp", listeningAddr)
-	if err != nil {
-		log.Errorf("Failed to set up listener: %v\n", err)
+	ctx, cancel := context.WithCancel(context.Background())
+	f.ctx = ctx
+	f.cancel = cancel
+	f.isRunning = true
+	f.isPaused = false
+
+	f.pausing.run()
+
+	if err := f.setupListener(); err != nil {
+		log.Errorf("Failed to set up listener in StartForwarder: %v", err)
+		f.isRunning = false
+		return
 	}
 
-	f.l = listener
-	defer f.l.Close()
+	if err := f.setupSocks5Dialer(); err != nil {
+		log.Errorf("Failed to set up socks5 dialer: %v", err)
+		return
+	}
 
-	log.Infof("TCP to SOCKS5 forwarder successfully started, listening on %s", listeningAddr)
-	f.isRunning = true
+	log.Debugf("TCP to SOCKS5 forwarder started on %s:%d", f.LocalAddr, f.ListeningPort)
 
-	socks5Addr := fmt.Sprintf("%s:%d", f.LocalAddr, config.DefaultRoutePort)
+	go f.acceptConnections()
 
+	<-ctx.Done()
+
+	log.Debug("Forwarder stopping...")
+}
+
+func (f *Forwarder) acceptConnections() {
 	for {
 		select {
-		case <-f.ctx.Done(): // Stop the forwarder when context is canceled
-			log.Info("Stopping forwarder...")
-			f.isRunning = false
+		case <-f.ctx.Done():
 			return
 		default:
+			f.pauseLock.Lock()
+			if f.isPaused {
+				f.pauseLock.Unlock()
+				return
+			}
+			f.pauseLock.Unlock()
+
 			clientConn, err := f.l.Accept()
 			if err != nil {
-				log.Debugf("Failed to accept connection: %v\n", err.Error())
+				if f.isPaused {
+					return
+				}
+				log.Errorf("Failed to accept connection: %v", err)
 				continue
 			}
-			go f.HandleConnection(clientConn, socks5Addr)
+
+			go f.HandleConnection(clientConn)
 		}
 	}
 }
@@ -138,9 +236,63 @@ func (f *Forwarder) StopForwarder() {
 		f.cancel()
 	}
 
-	f.l.Close()
+	f.shutdownListener()
 
-	f.wg.Wait()
-	log.Info("Forwarder stopped.")
+	f.pausing.stop()
+	log.Debug("Forwarder stopped.")
 	f.isRunning = false
+}
+
+type pausing struct {
+	interval time.Duration
+	paused   bool
+	stopC    chan bool
+	onPause  func()
+	onWake   func()
+	check    func() bool
+}
+
+func newPausing() *pausing {
+	return &pausing{
+		interval: 10 * time.Second,
+		paused:   false,
+		stopC:    make(chan bool),
+	}
+}
+
+func (p *pausing) stop() {
+	p.stopC <- true
+}
+
+func (p *pausing) run() {
+	go p.runCheck()
+}
+
+func (p *pausing) runCheck() {
+	ticker := time.NewTicker(p.interval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-p.stopC:
+			return
+		case <-ticker.C:
+			result := p.check()
+			if !result && !p.paused {
+				p.pause()
+			} else if result && p.paused {
+				p.wake()
+			}
+		}
+	}
+}
+
+func (p *pausing) pause() {
+	p.paused = true
+	p.onPause()
+}
+
+func (p *pausing) wake() {
+	p.paused = false
+	p.onWake()
 }

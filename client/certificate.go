@@ -29,14 +29,9 @@ import (
 const certServerPort = 8181
 
 func (c *client) requestCertificate() error {
-	hostname, _, err := extractHostAndPort(c.f.OnionAddr)
-	if err != nil {
-		return errors.New("invalid certificate url")
-	}
-
 	u := &url.URL{
 		Scheme: "http",
-		Host:   net.JoinHostPort(hostname, strconv.Itoa(certServerPort)),
+		Host:   net.JoinHostPort(c.f.OnionAddr, strconv.Itoa(certServerPort)),
 	}
 
 	content, err := c.tor.HTTPrequest(u.String())
