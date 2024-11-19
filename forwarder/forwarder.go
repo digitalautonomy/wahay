@@ -21,7 +21,6 @@ type Forwarder struct {
 	ListeningPort int
 	LocalAddr     string
 	data          hosting.MeetingData
-	wg            sync.WaitGroup
 	ctx           context.Context
 	cancel        context.CancelFunc
 	l             net.Listener
@@ -146,20 +145,20 @@ func (f *Forwarder) forwardTraffic(conn1, conn2 *net.TCPConn) {
 	defer conn1.Close()
 	defer conn2.Close()
 
-	f.wg.Add(2)
+	var wg sync.WaitGroup
+
+	wg.Add(2)
 
 	go func() {
-		defer f.wg.Done()
+		defer wg.Done()
 		io.Copy(conn1, conn2)
-		conn1.CloseWrite()
 	}()
 	go func() {
-		defer f.wg.Done()
+		defer wg.Done()
 		io.Copy(conn2, conn1)
-		conn2.CloseWrite()
 	}()
 
-	f.wg.Wait()
+	wg.Wait()
 }
 
 func (f *Forwarder) StartForwarder() {
@@ -239,7 +238,6 @@ func (f *Forwarder) StopForwarder() {
 
 	f.shutdownListener()
 
-	f.wg.Wait()
 	f.pausing.stop()
 	log.Debug("Forwarder stopped.")
 	f.isRunning = false
