@@ -815,6 +815,11 @@
             "translation": "TRANSLATE ME"
         },
         {
+            "id": "Open help window",
+            "message": "Open help window",
+            "translation": "TRANSLATE ME (Ctrl + H)"
+        },
+        {
             "id": "Help",
             "message": "Help",
             "translation": "TRANSLATE ME"

@@ -815,6 +815,11 @@
             "translation": "Esta opción permite al usuario acceder a una reunión ya existente, para esto debe ingresar la identificación de la reunión (requerido), el nombre de usuario (no requerido) y la contraseña (si fue configurada previamente)."
         },
         {
+            "id": "Open help window",
+            "message": "Open help window",
+            "translation": "TRANSLATE ME (Ctrl + H)"
+        },
+        {
             "id": "Help",
             "message": "Help",
             "translation": "Ayuda"

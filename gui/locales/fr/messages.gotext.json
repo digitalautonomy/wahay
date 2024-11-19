@@ -863,6 +863,11 @@
             "translation": "Cette option permet à l'utilisateur d'accéder à une réunion si elle existe déjà. Pour cela, vous devez saisir l'identifiant de la réunion (requis), le nom d'utilisateur (non requis) et le mot de passe (si celui-ci a été défini)."
         },
         {
+            "id": "Open help window",
+            "message": "Open help window",
+            "translation": "TRANSLATE ME (Ctrl + H)"
+        },
+        {
             "id": "Help",
             "message": "Help",
             "translation": "Aide"

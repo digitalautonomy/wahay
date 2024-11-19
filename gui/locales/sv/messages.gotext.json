@@ -887,6 +887,11 @@
             "translation": "Detta alternativ gör det möjligt för en användare att ansluta till ett möte som redan existerar. För detta behöver du ange en mötes-kod, ett användarnamn (inte nödvändigt) och ett lösenord (om ett var konfigurerar för mötet)."
         },
         {
+            "id": "Open help window",
+            "message": "Open help window",
+            "translation": "TRANSLATE ME (Ctrl + H)"
+        },
+        {
             "id": "Help",
             "message": "Help",
             "translation": "Hjälp"

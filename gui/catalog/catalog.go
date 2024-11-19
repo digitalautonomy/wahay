@@ -50,7 +50,7 @@ var messageKeyToIndex = map[string]int{
 	"Are you sure you want to do this action?":                     30,
 	"Are you sure you want to end this meeting?":                   31,
 	"Are you sure you want to leave this meeting?":                 32,
-	"As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.": 138,
+	"As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.": 139,
 	"Automatically join a meeting":                     34,
 	"Automatically join this meeting":                  33,
 	"Automatically join this meeting when starting it": 35,
@@ -84,7 +84,7 @@ var messageKeyToIndex = map[string]int{
 	"Functionalities":                                         130,
 	"General":                                                 57,
 	"Gmail":                                                   58,
-	"Help":                                                    136,
+	"Help":                                                    137,
 	"Host a meeting":                                          132,
 	"Host a new meeting":                                      59,
 	"Host meeting":                                            61,
@@ -101,7 +101,7 @@ var messageKeyToIndex = map[string]int{
 	"Join":                                      67,
 	"Join Wahay Meeting":                        6,
 	"Join a meeting":                            68,
-	"Join as super user":                        137,
+	"Join as super user":                        138,
 	"Join meeting":                              69,
 	"Join the meeting":                          70,
 	"Join this meeting":                         71,
@@ -115,13 +115,14 @@ var messageKeyToIndex = map[string]int{
 	"Meeting ID:":      80,
 	"Meeting password": 81,
 	"Mumble":           82,
-	"Mumble client can't be used because:\n\n%s": 141,
+	"Mumble client can't be used because:\n\n%s": 142,
 	"Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.": 129,
 	"Mumble service port":            120,
 	"No, cancel":                     83,
 	"Now you are hosting a meeting.": 84,
 	"Open":                           26,
 	"Open file":                      24,
+	"Open help window":               136,
 	"Open settings window":           94,
 	"Outlook":                        85,
 	"Password":                       86,
@@ -151,7 +152,7 @@ var messageKeyToIndex = map[string]int{
 	"The meeting can't be closed: %s":                       3,
 	"The option to automatically join this meeting allows you to start the server and enter it, if you do not select it, you can access it later by selecting the join button. It is also possible to copy the meeting ID and send the invitation by the most used email clients.": 134,
 	"The provided meeting ID is invalid: \n\n%s": 15,
-	"The username is required":                   140,
+	"The username is required":                   141,
 	"This action cannot be undone":               101,
 	"This option allows starting the server that will support the connection of users to a meeting which is defined by its ID (meeting identifier), this ID must be used by the rest of users who wish to access it. Additionally it is possible to define the user name (not mandatory) that will be used to identify the user in the meeting, it is also possible to configure the password to access the meeting, which will be required by users who wish to access Wahay.": 133,
 	"This option allows the user to access a meeting if already exist, for this you must enter the meeting id (required), username (not required) and password (if was set).": 135,
@@ -170,7 +171,7 @@ var messageKeyToIndex = map[string]int{
 	"We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?": 110,
 	"We've found errors": 27,
 	"Welcome":            111,
-	"Welcome to this server running <b>Wahay</b>.": 139,
+	"Welcome to this server running <b>Wahay</b>.": 140,
 	"What is Mumble?": 128,
 	"What is Tor?":    126,
 	"What is Wahay?":  123,
@@ -186,7 +187,7 @@ var messageKeyToIndex = map[string]int{
 	"we couldn't start the meeting":                                          2,
 }
 
-var arIndex = []uint32{ // 143 elements
+var arIndex = []uint32{ // 144 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -226,11 +227,11 @@ var arIndex = []uint32{ // 143 elements
 	// Entry 80 - 9F
 	0x000006fc, 0x00000709, 0x00000716, 0x00000723,
 	0x00000730, 0x0000073d, 0x0000074a, 0x00000757,
-	0x00000764, 0x00000771, 0x0000077e, 0x0000078b,
-	0x0000078b, 0x0000078b, 0x0000078b,
-} // Size: 596 bytes
+	0x00000764, 0x0000077c, 0x00000789, 0x00000796,
+	0x000007a3, 0x000007a3, 0x000007a3, 0x000007a3,
+} // Size: 600 bytes
 
-const arData string = "" + // Size: 1931 bytes
+const arData string = "" + // Size: 1955 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME (Ctrl + I)\x02TRANSLATE ME\x02TRANSLATE" +
@@ -263,9 +264,9 @@ const arData string = "" + // Size: 1931 bytes
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME\x02TRANSLATE ME"
+	" (Ctrl + H)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-var enIndex = []uint32{ // 143 elements
+var enIndex = []uint32{ // 144 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x00000022, 0x00000040,
 	0x00000063, 0x00000093, 0x000000c9, 0x000000dc,
@@ -305,11 +306,11 @@ var enIndex = []uint32{ // 143 elements
 	// Entry 80 - 9F
 	0x00001433, 0x00001443, 0x000014cd, 0x000014dd,
 	0x00001574, 0x00001583, 0x0000174c, 0x0000185d,
-	0x0000190a, 0x0000190f, 0x00001922, 0x000019af,
-	0x000019dc, 0x000019f5, 0x00001a21,
-} // Size: 596 bytes
+	0x0000190a, 0x00001926, 0x0000192b, 0x0000193e,
+	0x000019cb, 0x000019f8, 0x00001a11, 0x00001a3d,
+} // Size: 600 bytes
 
-const enData string = "" + // Size: 6689 bytes
+const enData string = "" + // Size: 6717 bytes
 	"\x02Error\x02Something went wrong: %[1]s\x02We couldn't start the meetin" +
 	"g\x02The meeting can't be closed: %[1]s\x02The meeting ID has been copie" +
 	"d to the clipboard\x02The invitation email has been copied to the clipbo" +
@@ -405,13 +406,13 @@ const enData string = "" + // Size: 6689 bytes
 	"ion through the most used email clients.\x02This option allows the user " +
 	"to access a meeting if it already exists. For this, you must enter the m" +
 	"eeting id (required), username (not required) and password (if was set)." +
-	"\x02Help\x02Join as Super User\x02As a super user you will be able to do" +
-	" things that others do not, such as silencing another user or expelling " +
-	"him/her from the meeting, etc.\x02Welcome to this server running <b>Waha" +
-	"y</b>.\x02The username is required\x02Mumble client can't be used becaus" +
-	"e:\x0a\x0a%[1]s"
+	"\x02Open help window (Ctrl + H)\x02Help\x02Join as Super User\x02As a su" +
+	"per user you will be able to do things that others do not, such as silen" +
+	"cing another user or expelling him/her from the meeting, etc.\x02Welcome" +
+	" to this server running <b>Wahay</b>.\x02The username is required\x02Mum" +
+	"ble client can't be used because:\x0a\x0a%[1]s"
 
-var esIndex = []uint32{ // 143 elements
+var esIndex = []uint32{ // 144 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x0000001d, 0x0000003d,
 	0x00000062, 0x00000096, 0x000000cf, 0x000000f8,
@@ -451,11 +452,11 @@ var esIndex = []uint32{ // 143 elements
 	// Entry 80 - 9F
 	0x00001820, 0x00001830, 0x000018d4, 0x000018e4,
 	0x00001984, 0x00001998, 0x00001b9f, 0x00001cdb,
-	0x00001dbe, 0x00001dc4, 0x00001dde, 0x00001e52,
-	0x00001e52, 0x00001e52, 0x00001e52,
-} // Size: 596 bytes
+	0x00001dbe, 0x00001dd6, 0x00001ddc, 0x00001df6,
+	0x00001e6a, 0x00001e6a, 0x00001e6a, 0x00001e6a,
+} // Size: 600 bytes
 
-const esData string = "" + // Size: 7762 bytes
+const esData string = "" + // Size: 7786 bytes
 	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
 	"La reunión no se pudo cerrar: %[1]s\x02El ID de la reunion ha sido copia" +
 	"do al portapapeles\x02El correo de invitación ha sido copiado al portapa" +
@@ -565,11 +566,11 @@ const esData string = "" + // Size: 7762 bytes
 	"ción permite al usuario acceder a una reunión ya existente, para esto de" +
 	"be ingresar la identificación de la reunión (requerido), el nombre de us" +
 	"uario (no requerido) y la contraseña (si fue configurada previamente)." +
-	"\x02Ayuda\x02Unirse como super usuario\x02Como super usuario podrás hace" +
-	"r cosas que otros no, como silenciar a otro usuario o expulsarlo de la r" +
-	"eunion, etc."
+	"\x02TRANSLATE ME (Ctrl + H)\x02Ayuda\x02Unirse como super usuario\x02Com" +
+	"o super usuario podrás hacer cosas que otros no, como silenciar a otro u" +
+	"suario o expulsarlo de la reunion, etc."
 
-var frIndex = []uint32{ // 143 elements
+var frIndex = []uint32{ // 144 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000007, 0x0000002e, 0x0000004f,
 	0x0000007e, 0x000000b8, 0x000000f4, 0x00000115,
@@ -609,11 +610,11 @@ var frIndex = []uint32{ // 143 elements
 	// Entry 80 - 9F
 	0x0000189a, 0x000018b0, 0x0000195e, 0x0000196f,
 	0x00001a22, 0x00001a4b, 0x00001c6a, 0x00001dc0,
-	0x00001eaf, 0x00001eb4, 0x00001eb4, 0x00001eb4,
-	0x00001eb4, 0x00001eb4, 0x00001eb4,
-} // Size: 596 bytes
+	0x00001eaf, 0x00001ec7, 0x00001ecc, 0x00001ecc,
+	0x00001ecc, 0x00001ecc, 0x00001ecc, 0x00001ecc,
+} // Size: 600 bytes
 
-const frData string = "" + // Size: 7860 bytes
+const frData string = "" + // Size: 7884 bytes
 	"\x02Erreur\x02Quelque chose s'est mal passée: %[1]s\x02la réunion n'a pa" +
 	"s pu commencer\x02La réunion n'a pas pu être clôturée: %[1]s\x02L'ID de " +
 	"la réunion a été copié dans le presse-papiers\x02L'e-mail d'invitation a" +
@@ -726,9 +727,9 @@ const frData string = "" + // Size: 7860 bytes
 	"\x02Cette option permet à l'utilisateur d'accéder à une réunion si elle " +
 	"existe déjà. Pour cela, vous devez saisir l'identifiant de la réunion (r" +
 	"equis), le nom d'utilisateur (non requis) et le mot de passe (si celui-c" +
-	"i a été défini).\x02Aide"
+	"i a été défini).\x02TRANSLATE ME (Ctrl + H)\x02Aide"
 
-var svIndex = []uint32{ // 143 elements
+var svIndex = []uint32{ // 144 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000004, 0x0000001b, 0x00000036,
 	0x00000056, 0x00000084, 0x000000ba, 0x000000da,
@@ -768,11 +769,11 @@ var svIndex = []uint32{ // 143 elements
 	// Entry 80 - 9F
 	0x000014e2, 0x000014f2, 0x00001581, 0x00001592,
 	0x00001640, 0x00001652, 0x00001879, 0x000019cb,
-	0x00001abb, 0x00001ac2, 0x00001acf, 0x00001adc,
-	0x00001adc, 0x00001adc, 0x00001adc,
-} // Size: 596 bytes
+	0x00001abb, 0x00001ad3, 0x00001ada, 0x00001ae7,
+	0x00001af4, 0x00001af4, 0x00001af4, 0x00001af4,
+} // Size: 600 bytes
 
-const svData string = "" + // Size: 6876 bytes
+const svData string = "" + // Size: 6900 bytes
 	"\x02Fel\x02Något gick fel: %[1]s\x02vi kunde inte start mötet\x02Mötet k" +
 	"an inte stängas: %[1]s\x02Mötes-koden har kopierats till din clipboard" +
 	"\x02Emailet med inbjudan har koperiats till din clipboard\x02Anslut dig " +
@@ -870,6 +871,6 @@ const svData string = "" + // Size: 6876 bytes
 	"tiv gör det möjligt för en användare att ansluta till ett möte som redan" +
 	" existerar. För detta behöver du ange en mötes-kod, ett användarnamn (in" +
 	"te nödvändigt) och ett lösenord (om ett var konfigurerar för mötet).\x02" +
-	"Hjälp\x02TRANSLATE ME\x02TRANSLATE ME"
+	"TRANSLATE ME (Ctrl + H)\x02Hjälp\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 34098 bytes (33KiB); checksum: EE02B2E7
+	// Total table size 34242 bytes (33KiB); checksum: EFBC8378

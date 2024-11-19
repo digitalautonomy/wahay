@@ -888,6 +888,11 @@
             "translation": "This option allows the user to access a meeting if it already exists. For this, you must enter the meeting id (required), username (not required) and password (if was set)."
         },
         {
+            "id": "Open help window",
+            "message": "Open help window",
+            "translation": "Open help window (Ctrl + H)"
+        },
+        {
             "id": "Help",
             "message": "Help",
             "translation": "Help"

@@ -110,6 +110,7 @@
                     <property name="focus_on_click">False</property>
                     <property name="receives_default">True</property>
                     <property name="margin_left">10</property>
+                    <property name="tooltip_text" translatable="yes">Open help window</property>
                     <signal name="clicked" handler="on_open_help" swapped="no"/>
                     <child>
                       <object class="GtkBox">
