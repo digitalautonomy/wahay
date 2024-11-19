@@ -230,7 +230,9 @@ func (u *gtkUI) disableMainWindowControls(builder *uiBuilder) {
 
 	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
 	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
+	btnSettings := builder.get("btnSettings").(gtki.Button)
 
+	btnSettings.SetSensitive(false)
 	btnHostMeeting.SetSensitive(false)
 	btnJoinMeeting.SetSensitive(false)
 }
