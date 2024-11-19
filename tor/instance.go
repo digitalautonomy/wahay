@@ -14,6 +14,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/digitalautonomy/wahay/config"
+	localExec "github.com/digitalautonomy/wahay/exec"
 )
 
 const (
@@ -262,7 +263,7 @@ func (i *instance) exec(mumbleBinary string, args []string, pre ModifyCommand) (
 	// This executes the mumble command, and the args which are both under control of the code
 	/* #nosec G204 */
 	cmd := exec.CommandContext(ctx, mumbleBinary, args...)
-
+	localExec.HideCommandWindow(cmd)
 	cmd.Env = osf.Environ()
 
 	if pre != nil {
