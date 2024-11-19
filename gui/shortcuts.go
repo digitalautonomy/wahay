@@ -22,6 +22,9 @@ func (u *gtkUI) connectShortcutsMainWindow(w gtki.Window) {
 	u.connectShortcut("<Alt>F4", w, u.closeApplicationWindow)
 	u.connectShortcut("Escape", w, u.closeApplicationWindow)
 	u.connectShortcut("<Primary>F4", w, u.closeApplicationWindow)
+	u.connectShortcut("<Primary>h", w, func(w gtki.Window) {
+		u.openHelpWindow()
+	})
 
 	if !u.errorHandler.isThereAnyStartupError() {
 		u.connectShortcut("<Primary>i", w, func(w gtki.Window) {
