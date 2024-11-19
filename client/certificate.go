@@ -23,6 +23,7 @@ import (
 	"strings"
 	"time"
 
+	localExec "github.com/digitalautonomy/wahay/exec"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -215,6 +216,8 @@ func generateTemporaryMumbleCertificate() (string, error) {
 	// This executes the openssl command. The args are completely under our control
 	/* #nosec G204 */
 	cmd = *execCommand("openssl", args...)
+	localExec.HideCommandWindow(&cmd)
+
 	_, err = cmdOutput()
 	if err != nil {
 		return "", err
