@@ -205,28 +205,32 @@ func (u *gtkUI) onSettingsToggleOption(s *settings) {
 	s.processLogsOption()
 }
 
+func (u *gtkUI) cleanupSettings(s *settings) {
+	if u.mainWindow != nil {
+		u.enableWindow(u.mainWindow)
+	}
+	s.dialog.Destroy()
+	u.currentWindow = nil
+}
+
+func (u *gtkUI) handleOnSaveSettings(s *settings) {
+	s.processMumblePort()
+	u.saveConfigOnly()
+	u.cleanupSettings(s)
+}
+
 func (u *gtkUI) openSettingsWindow() {
 	s := createSettings(u)
-
-	cleanup := func() {
-		if u.mainWindow != nil {
-			u.enableWindow(u.mainWindow)
-		}
-		s.dialog.Destroy()
-		u.currentWindow = nil
-	}
 
 	s.b.ConnectSignals(map[string]interface{}{
 		"on_toggle_option": func() {
 			u.onSettingsToggleOption(s)
 		},
 		"on_save": func() {
-			s.processMumblePort()
-			u.saveConfigOnly()
-			cleanup()
+			u.handleOnSaveSettings(s)
 		},
 		"on_close_window": func() {
-			cleanup()
+			u.cleanupSettings(s)
 		},
 		"on_rawLogFile_icon_press_event":        s.setCustomLogFile,
 		"on_rawLogFile_button_clicked_event":    s.setCustomLogFile,
@@ -235,6 +239,8 @@ func (u *gtkUI) openSettingsWindow() {
 		"on_portMumble_insert_text":             s.onInsertPortMumble,
 		"on_portMumble_delete_text":             s.onDeletePortMumble,
 	})
+
+	u.connectShortcutsSettingsWindow(s.dialog)
 
 	if u.mainWindow != nil {
 		s.dialog.SetTransientFor(u.mainWindow)
