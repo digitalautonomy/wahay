@@ -89,6 +89,17 @@ func (u *gtkUI) connectShortcutsSettingsWindow(w gtki.Window) {
 	u.connectShortcut("<Primary>q", w, u.closeApplicationWindow)
 }
 
+func (u *gtkUI) connectShortcutsHelpWindow(w gtki.Window) {
+	// <Primary> maps to Command and OS X, but Control on other platforms
+	u.connectShortcut("<Primary>q", w, u.closeApplicationWindow)
+	u.connectShortcut("<Primary>F4", w, func(_ gtki.Window) {
+		u.closeHelpWindow(w)
+	})
+	u.connectShortcut("Escape", w, func(_ gtki.Window) {
+		u.closeHelpWindow(w)
+	})
+}
+
 func (u *gtkUI) closeApplicationWindow(_ gtki.Window) {
 	u.quit()
 }

@@ -28,19 +28,23 @@ func (u *gtkUI) openHelpWindow() {
 
 	dialog := builder.get("helpWindow").(gtki.Window)
 
-	cleanup := func() {
-		dialog.Hide()
-		u.enableCurrentWindow()
-	}
-
 	builder.ConnectSignals(map[string]interface{}{
-		"on_close_window_signal": cleanup,
+		"on_close_window_signal": func() {
+			u.closeHelpWindow(dialog)
+		},
 	})
+
+	u.connectShortcutsHelpWindow(dialog)
 
 	u.doInUIThread(func() {
 		u.disableCurrentWindow()
 		dialog.Show()
 	})
+}
+
+func (u *gtkUI) closeHelpWindow(dialog gtki.Window) {
+	dialog.Hide()
+	u.enableCurrentWindow()
 }
 
 func (u *gtkUI) setImage(builder *uiBuilder, filename string, idComponent string) {
