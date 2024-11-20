@@ -117,7 +117,7 @@ func (h *hostingSuite) Test_NewService_returnsAnErrorWhenWrongPortIsGiven(c *C) 
 	c.Assert(srvc, IsNil)
 }
 
-func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsCreatingServer(c *C) {
+func (h *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsCreatingServer(c *C) {
 	path := "/tmp/wahay/"
 	sID := 2
 	servers := &servers{
@@ -135,7 +135,7 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsCreatingSer
 	c.Assert(err, ErrorMatches, expectedError)
 }
 
-func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsStartingServer(c *C) {
+func (h *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsStartingServer(c *C) {
 	path := "/tmp/wahay/"
 	var perm fs.FileMode = 0700
 
@@ -161,7 +161,7 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsAnErrorWhenFailsStartingSer
 	c.Assert(err, ErrorMatches, expectedError)
 }
 
-func (s *hostingSuite) Test_NewConferenceRoom_returnsNilWhenSuccessfullyCreatesANewConferenceRoom(c *C) {
+func (h *hostingSuite) Test_NewConferenceRoom_returnsNilWhenSuccessfullyCreatesANewConferenceRoom(c *C) {
 	servers := &servers{
 		nextID: 2,
 	}
@@ -185,6 +185,7 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsNilWhenSuccessfullyCreatesA
 			server:  &http.Server{},
 			address: "127.0.0.1:5545",
 		},
+		checkServer: mockCheckService(),
 	}
 	sud := SuperUserData{}
 	err := srvc.NewConferenceRoom("", sud)
@@ -192,7 +193,7 @@ func (s *hostingSuite) Test_NewConferenceRoom_returnsNilWhenSuccessfullyCreatesA
 	c.Assert(err, IsNil)
 }
 
-func (s *hostingSuite) Test_Close_returnsErrorNilWhenHttpServerRoomAndOnionAreAlreadyEmpty(c *C) {
+func (h *hostingSuite) Test_Close_returnsErrorNilWhenHttpServerRoomAndOnionAreAlreadyEmpty(c *C) {
 	srvc := &service{
 		collection: &servers{
 			dataDir: "tmp/wahay",
@@ -202,7 +203,7 @@ func (s *hostingSuite) Test_Close_returnsErrorNilWhenHttpServerRoomAndOnionAreAl
 	c.Assert(err, IsNil)
 }
 
-func (s *hostingSuite) Test_Close_returnsAnErrorWhenFailsClosingRoom(c *C) {
+func (h *hostingSuite) Test_Close_returnsAnErrorWhenFailsClosingRoom(c *C) {
 	srvc := &service{
 		room: &conferenceRoom{
 			server: &server{
