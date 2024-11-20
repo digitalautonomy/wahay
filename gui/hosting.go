@@ -218,10 +218,6 @@ func (h *hostData) openHostJoinMeetingWindow() {
 
 	builder := h.u.getCurrentHostMeetingWindow()
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
-	builder.i18nProperties(
-		"button", "btnInviteOthers",
-		"tooltip", "btnInviteOthers")
-
 	onInviteOpen := func(d gtki.Window) {
 		h.currentWindow = d
 		// Hide the current window because we don't want
