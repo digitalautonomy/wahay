@@ -49,15 +49,6 @@ func (c *client) requestCertificate() error {
 	return c.saveCertificateConfigFile()
 }
 
-func extractHostAndPort(address string) (host string, port string, err error) {
-	host, port, err = net.SplitHostPort(address)
-	if err != nil {
-		return
-	}
-
-	return host, port, nil
-}
-
 func (c *client) storeCertificate(hostname string, port int, cert []byte) error {
 	if c.isTheCertificateInDB(hostname) {
 		return nil

@@ -2,37 +2,12 @@ package client
 
 import (
 	"errors"
-	"fmt"
 	"os/exec"
 
-	"github.com/digitalautonomy/wahay/forwarder"
 	"github.com/prashantv/gostub"
 	"github.com/stretchr/testify/mock"
 	. "gopkg.in/check.v1"
 )
-
-func (s *clientSuite) Test_extractHostAndPort_returnsAnErrorWhenFailsSplittingAddress(c *C) {
-	addr := "invalidAddress"
-	h, p, err := extractHostAndPort(addr)
-	c.Assert(h, Equals, "")
-	c.Assert(p, Equals, "")
-	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Equals, fmt.Sprintf("address %s: missing port in address", addr))
-}
-
-func (s *clientSuite) Test_extractHostAndPort_returnsHostAndPortWhenAddressIsCorrect(c *C) {
-	h, p, err := extractHostAndPort("test:666")
-	c.Assert(h, Equals, "test")
-	c.Assert(p, Equals, "666")
-	c.Assert(err, IsNil)
-}
-
-func (s *clientSuite) Test_requestCertificate_returnsAnErrorWhenFailsExtractingHostAndPort(c *C) {
-	cl := client{f: &forwarder.Forwarder{OnionAddr: ""}}
-	err := cl.requestCertificate()
-	c.Assert(err, NotNil)
-	c.Assert(err.Error(), Equals, "invalid certificate url")
-}
 
 func (s *clientSuite) Test_storeCertificate_returnsAnErrorWhenBadCertificateHasBeenGiven(c *C) {
 	var mumbleDBContent []byte
