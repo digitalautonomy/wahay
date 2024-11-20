@@ -94,7 +94,8 @@ func (h *hostData) showMeetingControls() {
 		"button", "btnJoinMeeting",
 		"button", "btnInviteOthers",
 		"button", "btnCopyMeetingID",
-		"tooltip", "btnJoinMeeting")
+		"tooltip", "btnJoinMeeting",
+		"tooltip", "btnInviteOthers")
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": h.finishMeetingReal,
@@ -121,7 +122,6 @@ func (h *hostData) showMeetingControls() {
 	_ = lblValueHost.SetProperty("label", h.meetingUsername)
 	_ = lblValuePassword.SetProperty("label", h.meetingPassword)
 	_ = lblValueMeetingID.SetProperty("label", h.service.ID())
-
 	h.u.connectShortcutsStartHostingWindow(win, h)
 	h.u.switchToWindow(win)
 }
@@ -218,6 +218,9 @@ func (h *hostData) openHostJoinMeetingWindow() {
 
 	builder := h.u.getCurrentHostMeetingWindow()
 	win := builder.get("hostMeetingWindow").(gtki.ApplicationWindow)
+	builder.i18nProperties(
+		"button", "btnInviteOthers",
+		"tooltip", "btnInviteOthers")
 
 	onInviteOpen := func(d gtki.Window) {
 		h.currentWindow = d

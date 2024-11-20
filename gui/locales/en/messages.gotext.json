@@ -536,9 +536,20 @@
             "translation": "Invite others"
         },
         {
+            "id": "Invite others this meeting",
+            "message": "Invite others this meeting",
+            "translation": "Invite others this meeting (Ctrl + I)"
+        },
+        
+        {
             "id": "Join",
             "message": "Join",
             "translation": "Join"
+        },
+        {
+            "id": "Join this meeting hosting",
+            "message": "Join this meeting hosting",
+            "translation": "Join this meeting (Ctrl + J)"
         },
         {
             "id": "Join a meeting",
@@ -560,6 +571,8 @@
             "message": "Join this meeting",
             "translation": "Join this meeting"
         },
+
+
         {
             "id": "Keep configuration file when Wahay closes",
             "message": "Keep configuration file when Wahay closes",

@@ -52,6 +52,22 @@ func (u *gtkUI) connectShortcutsStartHostingWindow(w gtki.Window, h *hostData) {
 	u.connectShortcut("<Primary>w", w, func(_ gtki.Window) {
 		h.finishMeeting()
 	})
+	u.connectShortcut("<Primary>j", w, func(_ gtki.Window) {
+		h.u.hideCurrentWindow()
+		go h.joinMeetingHost()
+	})
+	u.connectShortcut("<Primary>i", w, func(_ gtki.Window) {
+		onInviteOpen := func(d gtki.Window) {
+			h.currentWindow = d
+			w.Hide()
+		}
+		onInviteClose := func(gtki.Window) {
+			w.Show()
+			h.currentWindow = nil
+		}
+		h.onInviteParticipants(onInviteOpen, onInviteClose)
+	})
+
 }
 
 func (u *gtkUI) connectShortcutsCurrentHostMeetingWindow(w gtki.Window, h *hostData) {

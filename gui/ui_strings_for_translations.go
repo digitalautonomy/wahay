@@ -63,7 +63,9 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt2() {
 	_ = i18n().Sprintf("Invalid configuration file")
 	_ = i18n().Sprintf("Invalid password. Please, try again.")
 	_ = i18n().Sprintf("Invite others")
+	_ = i18n().Sprintf("Invite others this meeting")
 	_ = i18n().Sprintf("Join")
+	_ = i18n().Sprintf("Join this meeting hosting")
 	_ = i18n().Sprintf("Join a meeting")
 	_ = i18n().Sprintf("Join meeting")
 	_ = i18n().Sprintf("Join the meeting")
@@ -78,6 +80,7 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt2() {
 	_ = i18n().Sprintf("Meeting ID")
 	_ = i18n().Sprintf("Tip: Push right control to talk")
 	_ = i18n().Sprintf("Invite others")
+
 }
 
 func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3() {

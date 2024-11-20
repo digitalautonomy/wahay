@@ -537,9 +537,19 @@
             "translation": "Invitar a otros"
         },
         {
+            "id": "Invite others this meeting",
+            "message": "Invite others this meeting",
+            "translation": "Invitar a otros a esta reunión (Ctrl + I)"
+        },
+        {
             "id": "Join",
             "message": "Join",
             "translation": "Unirse"
+        },
+        {
+            "id": "Join this meeting hosting",
+            "message": "Join this meeting hosting",
+            "translation": "Unirse a la reunión (Ctrl + J)"
         },
         {
             "id": "Join a meeting",
