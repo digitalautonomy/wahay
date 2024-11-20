@@ -243,7 +243,7 @@ func (h *hostData) openHostJoinMeetingWindow() {
 		},
 	})
 
-	h.u.connectShortcutCurrentHostMeetingWindow(win, h)
+	h.u.connectShortcutsCurrentHostMeetingWindow(win, h)
 
 	h.u.switchToWindow(win)
 }
