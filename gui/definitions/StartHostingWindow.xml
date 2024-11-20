@@ -50,7 +50,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Join this meeting</property>
+                    <property name="tooltip_text" translatable="yes">Join this meeting hosting</property>
                     <property name="valign">end</property>
                     <property name="margin_left">10</property>
                     <signal name="clicked" handler="on_join_meeting" swapped="no"/>
@@ -355,6 +355,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Invite others this meeting</property>
                     <property name="halign">start</property>
                     <property name="valign">center</property>
                     <signal name="clicked" handler="on_invite_others" swapped="no"/>

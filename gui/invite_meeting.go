@@ -35,6 +35,7 @@ func (u *gtkUI) getInviteCodeEntities() (gtki.Window, *uiBuilder) {
 		"tooltip", "btnJoin")
 
 	win := builder.get("inviteWindow").(gtki.ApplicationWindow)
+
 	win.SetApplication(u.app)
 
 	return win, builder

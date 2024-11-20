@@ -513,9 +513,19 @@
             "translation": "Inviter d'autres personnes"
         },
         {
+            "id": "Invite others this meeting",
+            "message": "Invite others this meeting",
+            "translation": "TRANSLATE ME (Ctrl + I)"
+        },
+        {
             "id": "Join",
             "message": "Join",
             "translation": "Rejoindre"
+        },
+        {
+            "id": "Join this meeting hosting",
+            "message": "Join this meeting hosting",
+            "translation": "TRANSLATE ME (Ctrl + J)"
         },
         {
             "id": "Join a meeting",
