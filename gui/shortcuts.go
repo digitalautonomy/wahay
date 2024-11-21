@@ -49,6 +49,9 @@ func (u *gtkUI) connectShortcutsHostingMeetingConfigurationWindow(w gtki.Window,
 
 func (u *gtkUI) connectShortcutsStartHostingWindow(w gtki.Window, h *hostData) {
 	// <Primary> maps to Command and OS X, but Control on other platforms
+	u.connectShortcut("<Primary>q", w, u.closeApplicationWindow)
+	u.connectShortcut("<Primary>F4", w, u.closeWindow)
+	u.connectShortcut("Escape", w, u.closeWindow)
 	u.connectShortcut("<Primary>w", w, func(_ gtki.Window) {
 		h.finishMeeting()
 	})
