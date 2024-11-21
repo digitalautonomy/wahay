@@ -206,35 +206,35 @@ var arIndex = []uint32{ // 146 elements
 	0x00000252, 0x00000282, 0x0000028f, 0x0000029c,
 	0x000002a9, 0x000002b6, 0x000002c3, 0x000002d0,
 	0x000002dd, 0x000002ea, 0x000002f7, 0x00000304,
-	0x0000031c, 0x00000334, 0x00000341, 0x0000034e,
-	0x00000366, 0x00000373, 0x00000380, 0x0000038d,
+	0x00000311, 0x00000329, 0x00000336, 0x00000343,
+	0x0000035b, 0x00000368, 0x00000375, 0x00000382,
 	// Entry 40 - 5F
-	0x0000039a, 0x000003a7, 0x000003b4, 0x000003c1,
-	0x000003d9, 0x000003e6, 0x000003fe, 0x00000416,
-	0x00000423, 0x00000430, 0x0000043d, 0x0000044a,
-	0x00000457, 0x00000470, 0x0000047d, 0x0000048a,
-	0x00000497, 0x000004a4, 0x000004b1, 0x000004be,
-	0x000004cb, 0x000004d8, 0x000004e5, 0x000004f2,
-	0x000004ff, 0x0000050c, 0x00000519, 0x00000526,
-	0x00000533, 0x00000540, 0x0000054d, 0x0000055a,
+	0x0000038f, 0x0000039c, 0x000003a9, 0x000003b6,
+	0x000003ce, 0x000003db, 0x000003f3, 0x0000040b,
+	0x00000418, 0x00000425, 0x00000432, 0x0000043f,
+	0x0000044c, 0x00000465, 0x00000472, 0x0000047f,
+	0x0000048c, 0x00000499, 0x000004a6, 0x000004b3,
+	0x000004c0, 0x000004cd, 0x000004da, 0x000004e7,
+	0x000004f4, 0x00000501, 0x0000050e, 0x0000051b,
+	0x00000528, 0x00000535, 0x00000542, 0x0000054f,
 	// Entry 60 - 7F
-	0x00000567, 0x0000057f, 0x0000058c, 0x00000599,
-	0x000005a6, 0x000005b3, 0x000005c0, 0x000005cd,
-	0x000005da, 0x000005e7, 0x000005f4, 0x00000601,
-	0x0000060e, 0x0000061b, 0x00000628, 0x00000635,
-	0x00000642, 0x0000064f, 0x0000065c, 0x00000669,
-	0x00000676, 0x00000683, 0x00000690, 0x0000069d,
-	0x000006aa, 0x000006b7, 0x000006c4, 0x000006d1,
-	0x000006de, 0x000006eb, 0x000006f8, 0x00000705,
+	0x0000055c, 0x00000574, 0x00000581, 0x0000058e,
+	0x0000059b, 0x000005a8, 0x000005b5, 0x000005c2,
+	0x000005cf, 0x000005dc, 0x000005e9, 0x000005f6,
+	0x00000603, 0x00000610, 0x0000061d, 0x0000062a,
+	0x00000637, 0x00000644, 0x00000651, 0x0000065e,
+	0x0000066b, 0x00000678, 0x00000685, 0x00000692,
+	0x0000069f, 0x000006ac, 0x000006b9, 0x000006c6,
+	0x000006d3, 0x000006e0, 0x000006ed, 0x000006fa,
 	// Entry 80 - 9F
-	0x00000712, 0x0000071f, 0x0000072c, 0x00000739,
-	0x00000746, 0x00000753, 0x00000760, 0x0000076d,
-	0x0000077a, 0x00000787, 0x00000794, 0x000007ac,
-	0x000007b9, 0x000007c6, 0x000007d3, 0x000007d3,
-	0x000007d3, 0x000007d3,
+	0x00000707, 0x00000714, 0x00000721, 0x0000072e,
+	0x0000073b, 0x00000748, 0x00000755, 0x00000762,
+	0x0000076f, 0x0000077c, 0x00000789, 0x000007a1,
+	0x000007ae, 0x000007bb, 0x000007c8, 0x000007c8,
+	0x000007c8, 0x000007c8,
 } // Size: 608 bytes
 
-const arData string = "" + // Size: 2003 bytes
+const arData string = "" + // Size: 1992 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME (Ctrl + I)\x02TRANSLATE ME\x02TRANSLATE" +
@@ -248,27 +248,27 @@ const arData string = "" + // Size: 2003 bytes
 	"SLATE ME\x02...الاتصال الرجاء الانتظار\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	" (Ctrl + W)\x02TRANSLATE ME (Ctrl + W)\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME (Ctrl + I)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE" +
-	" ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02T" +
-	"RANSLATE ME (Ctrl + I)\x02TRANSLATE ME\x02TRANSLATE ME (Ctrl + J)\x02TRA" +
-	"NSLATE ME (Ctrl + J)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02" +
-	"TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME  (Ctrl + L)\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME (Ctrl + W)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE" +
+	" ME (Ctrl + I)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSL" +
+	"ATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME (" +
+	"Ctrl + I)\x02TRANSLATE ME\x02TRANSLATE ME (Ctrl + J)\x02TRANSLATE ME (Ct" +
+	"rl + J)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME  (Ctrl + L)\x02TRANSLATE ME\x02TRANSLAT" +
+	"E ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02" +
+	"TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLAT" +
+	"E ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02" +
+	"TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLAT" +
+	"E ME (Ctrl + S)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANS" +
+	"LATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
 	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
-	"\x02TRANSLATE ME (Ctrl + S)\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE" +
-	" ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02T" +
-	"RANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE" +
-	" ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02T" +
-	"RANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE" +
-	" ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02T" +
-	"RANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE" +
-	" ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02T" +
-	"RANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE" +
-	" ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME (Ctrl + H)\x02TRANSL" +
-	"ATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME" +
+	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
+	"SLATE ME\x02TRANSLATE ME\x02TRANSLATE ME (Ctrl + H)\x02TRANSLATE ME\x02T" +
+	"RANSLATE ME\x02TRANSLATE ME"
 
 var enIndex = []uint32{ // 146 elements
 	// Entry 0 - 1F
@@ -287,35 +287,35 @@ var enIndex = []uint32{ // 146 elements
 	0x000005f2, 0x0000060d, 0x00000616, 0x00000626,
 	0x00000636, 0x0000063f, 0x0000067e, 0x000006af,
 	0x000006b9, 0x000006c7, 0x000006e6, 0x000006ed,
-	0x00000709, 0x0000072d, 0x00000735, 0x0000073b,
-	0x00000759, 0x00000761, 0x0000076e, 0x00000834,
+	0x000006fe, 0x00000722, 0x0000072a, 0x00000730,
+	0x0000074e, 0x00000756, 0x00000763, 0x00000829,
 	// Entry 40 - 5F
-	0x00000887, 0x000008a2, 0x000008c7, 0x000008d5,
-	0x000008fb, 0x00000900, 0x0000091d, 0x00000937,
-	0x00000944, 0x00000956, 0x00000968, 0x00000992,
-	0x00000998, 0x000009b6, 0x000009c5, 0x00000a45,
-	0x00000a55, 0x00000a60, 0x00000a80, 0x00000a8c,
-	0x00000a9d, 0x00000aa4, 0x00000aaf, 0x00000ace,
-	0x00000ad6, 0x00000adf, 0x00000b1c, 0x00000b21,
-	0x00000b33, 0x00000b40, 0x00000b54, 0x00000b61,
+	0x0000087c, 0x00000897, 0x000008bc, 0x000008ca,
+	0x000008f0, 0x000008f5, 0x00000912, 0x0000092c,
+	0x00000939, 0x0000094b, 0x0000095d, 0x00000987,
+	0x0000098d, 0x000009ab, 0x000009ba, 0x00000a3a,
+	0x00000a4a, 0x00000a55, 0x00000a75, 0x00000a81,
+	0x00000a92, 0x00000a99, 0x00000aa4, 0x00000ac3,
+	0x00000acb, 0x00000ad4, 0x00000b11, 0x00000b16,
+	0x00000b28, 0x00000b35, 0x00000b49, 0x00000b56,
 	// Entry 60 - 7F
-	0x00000b6a, 0x00000b8a, 0x00000b93, 0x00000b98,
-	0x00000bbb, 0x00000bc9, 0x00000bdb, 0x00000bff,
-	0x00000c1b, 0x00000c36, 0x00000c66, 0x00000c78,
-	0x00000c9e, 0x00000cbe, 0x00000cd4, 0x00000cdd,
-	0x00000cf3, 0x00000d71, 0x00000d79, 0x00000dcf,
-	0x00000dda, 0x00000df9, 0x00000e06, 0x00000e4a,
-	0x00000e65, 0x00000e82, 0x00000ef2, 0x00000f06,
-	0x00000f0f, 0x00000f7d, 0x00000f8c, 0x00001180,
+	0x00000b5f, 0x00000b7f, 0x00000b88, 0x00000b8d,
+	0x00000bb0, 0x00000bbe, 0x00000bd0, 0x00000bf4,
+	0x00000c10, 0x00000c2b, 0x00000c5b, 0x00000c6d,
+	0x00000c93, 0x00000cb3, 0x00000cc9, 0x00000cd2,
+	0x00000ce8, 0x00000d66, 0x00000d6e, 0x00000dc4,
+	0x00000dcf, 0x00000dee, 0x00000dfb, 0x00000e3f,
+	0x00000e5a, 0x00000e77, 0x00000ee7, 0x00000efb,
+	0x00000f04, 0x00000f72, 0x00000f81, 0x00001175,
 	// Entry 80 - 9F
-	0x00001306, 0x00001313, 0x00001476, 0x00001486,
-	0x00001510, 0x00001520, 0x000015b7, 0x000015c6,
-	0x0000178f, 0x000018a0, 0x0000194d, 0x00001969,
-	0x0000196e, 0x00001981, 0x00001a0e, 0x00001a3b,
-	0x00001a54, 0x00001a80,
+	0x000012fb, 0x00001308, 0x0000146b, 0x0000147b,
+	0x00001505, 0x00001515, 0x000015ac, 0x000015bb,
+	0x00001784, 0x00001895, 0x00001942, 0x0000195e,
+	0x00001963, 0x00001976, 0x00001a03, 0x00001a30,
+	0x00001a49, 0x00001a75,
 } // Size: 608 bytes
 
-const enData string = "" + // Size: 6784 bytes
+const enData string = "" + // Size: 6773 bytes
 	"\x02Error\x02Something went wrong: %[1]s\x02We couldn't start the meetin" +
 	"g\x02The meeting can't be closed: %[1]s\x02The meeting ID has been copie" +
 	"d to the clipboard\x02The invitation email has been copied to the clipbo" +
@@ -343,80 +343,80 @@ const enData string = "" + // Size: 6784 bytes
 	"n\x02Copy Meeting ID\x02Copy URL\x02Check this option to automatically j" +
 	"oin every meeting you host\x02Choose your email service to send the invi" +
 	"tation\x02Debugging\x02Default Email\x02Encrypt the configuration file" +
-	"\x02Finish\x02End this meeting (Ctrl + W)\x02End this meeting for all (C" +
-	"trl + W)\x02General\x02Gmail\x02Host a new meeting (Ctrl + I)\x02Hosting" +
-	"\x02Host meeting\x02If you backup the configuration file, we will reset " +
-	"the settings and continue normally. If the configuration file is encrypt" +
-	"ed, then we will ask you for a password to encrypt the new settings file" +
-	".\x02If you set this option to a file name, low level information will b" +
-	"e logged there.\x02Invalid configuration file\x02Invalid password. Pleas" +
-	"e, try again.\x02Invite others\x02Invite others this meeting (Ctrl + I)" +
-	"\x02Join\x02Join this meeting (Ctrl + J)\x02Join a meeting (Ctrl + J)" +
-	"\x02Join meeting\x02Join this meeting\x02Join this meeting\x02Keep confi" +
-	"guration file when Wahay closes\x02Leave\x02Leave this meeting (Ctrl + L" +
-	")\x02Log debug info\x02Log debug output to the selected log file. If no " +
-	"file is selected, then the log output will be written to the default log" +
-	" file.\x02Master password\x02Meeting ID\x02Tip: Push right control to ta" +
-	"lk\x02Meeting ID:\x02Meeting password\x02Mumble\x02No, cancel\x02Now you" +
-	" are hosting a meeting.\x02Outlook\x02Password\x02Please enter the maste" +
-	"r password for the configuration file.\x02Port\x02Port out of range\x02R" +
-	"aw log file\x02Repeat the password\x02Save changes\x02Security\x02Open s" +
-	"ettings window (Ctrl + S)\x02Settings\x02Show\x02Specify a password for " +
-	"the meeting\x02Start meeting\x02The error message\x02A valid port is bet" +
-	"ween 1 and 65535\x02This action can't be undone\x02Toggle password visib" +
-	"ility\x02Type the Meeting ID (normally a .onion address)\x02Type the pas" +
-	"sword\x02Type the password to join the meeting\x02Type your preferred sc" +
-	"reen name\x02Type your screen name\x02Username\x02Wahay is ready to use" +
-	"\x02We have detected that the configuration file is invalid or corrupted" +
-	". Do you want to make a copy (backup) of it and continue?\x02Welcome\x02" +
-	"When this option is checked, the configuration settings will be stored i" +
-	"n the device.\x02Yahoo Mail\x02Yes, back it up &amp; continue\x02Yes, co" +
-	"nfirm\x02You won't be asked for this password again until you restart Wa" +
-	"hay.\x02Executable Mumble location\x02Ex. /home/user/mumble/mumble\x02If" +
-	" you want to use your own Mumble instance, please enter the location whe" +
-	"re Mumble is available in the system.\x02Mumble service port\x02Ex. 9800" +
-	"\x02If you want to set up a custom port to run the Mumble service, pleas" +
-	"e enter a port number between 1 and 65535\x02What is Wahay?\x02Communica" +
-	"tion is a basic need of the human being. In the beginning, it's carried " +
-	"out verbally from person to person; through the use of technology, vario" +
-	"us tools have been developed for this purpose, for instance: Skype, Zoom" +
-	", Google Hangouts, etc. However, there are several aspects that have not" +
-	" been considered in the development of these solutions: centralized serv" +
-	"ers, proprietary technology, security. Those are some features that have" +
-	" not been contemplated or have been partially implemented.\x02Wahay (htt" +
-	"ps://wahay.org) has been developed as a tool for conducting voice confer" +
-	"ences in an easy, extremely secure and decentralized manner (without the" +
-	" need for any centralized server or service). Internally it uses Tor (ht" +
-	"tps://www.torproject.org/) as a tool to establish secure communications " +
-	"and Mumble (https://www.mumble.com/) as a client to establish voice comm" +
-	"unications over IP.\x02What is Tor?\x02Tor is a free and open source too" +
-	"l that allows you to establish anonymous and distributed communications." +
-	" Tor directs its internet traffic through a series of routers called 'On" +
-	"ion routers' allowing anonymous communication between its nodes. This ne" +
-	"twork works from a set of organizations and individuals that donate thei" +
-	"r bandwidth and processing power.\x02What is Mumble?\x02Mumble is a free" +
-	" and open source application that allows voice over IP conferences betwe" +
-	"en users with high quality sound and low latency.\x02Functionalities\x02" +
-	"Wahay allows you to host a meeting or join an existing one. For this, yo" +
-	"u establish an ID that will serve as the identifier to be used in the me" +
-	"eting.\x02Host a meeting\x02This option allows to start the server that " +
-	"will support the connection of users to a meeting, which is defined by i" +
-	"ts ID (meeting identifier). This ID must be used by the rest of users wh" +
-	"o aim to access it. Additionally it is possible of defining the user nam" +
-	"e (not mandatory) that will serve to identify the user in the meeting. I" +
-	"t's also possible to configure the password to access the meeting, which" +
-	" will be required by users who wish to access Wahay.\x02The option to au" +
-	"tomatically join this meeting allows you to start the server and enter i" +
-	"t, if you do not select it, you can access it later by selecting the joi" +
-	"n button. It's also possible to copy the meeting ID and send the invitat" +
-	"ion through the most used email clients.\x02This option allows the user " +
-	"to access a meeting if it already exists. For this, you must enter the m" +
-	"eeting id (required), username (not required) and password (if was set)." +
-	"\x02Open help window (Ctrl + H)\x02Help\x02Join as Super User\x02As a su" +
-	"per user you will be able to do things that others do not, such as silen" +
-	"cing another user or expelling him/her from the meeting, etc.\x02Welcome" +
-	" to this server running <b>Wahay</b>.\x02The username is required\x02Mum" +
-	"ble client can't be used because:\x0a\x0a%[1]s"
+	"\x02Finish\x02End this meeting\x02End this meeting for all (Ctrl + W)" +
+	"\x02General\x02Gmail\x02Host a new meeting (Ctrl + I)\x02Hosting\x02Host" +
+	" meeting\x02If you backup the configuration file, we will reset the sett" +
+	"ings and continue normally. If the configuration file is encrypted, then" +
+	" we will ask you for a password to encrypt the new settings file.\x02If " +
+	"you set this option to a file name, low level information will be logged" +
+	" there.\x02Invalid configuration file\x02Invalid password. Please, try a" +
+	"gain.\x02Invite others\x02Invite others this meeting (Ctrl + I)\x02Join" +
+	"\x02Join this meeting (Ctrl + J)\x02Join a meeting (Ctrl + J)\x02Join me" +
+	"eting\x02Join this meeting\x02Join this meeting\x02Keep configuration fi" +
+	"le when Wahay closes\x02Leave\x02Leave this meeting (Ctrl + L)\x02Log de" +
+	"bug info\x02Log debug output to the selected log file. If no file is sel" +
+	"ected, then the log output will be written to the default log file.\x02M" +
+	"aster password\x02Meeting ID\x02Tip: Push right control to talk\x02Meeti" +
+	"ng ID:\x02Meeting password\x02Mumble\x02No, cancel\x02Now you are hostin" +
+	"g a meeting.\x02Outlook\x02Password\x02Please enter the master password " +
+	"for the configuration file.\x02Port\x02Port out of range\x02Raw log file" +
+	"\x02Repeat the password\x02Save changes\x02Security\x02Open settings win" +
+	"dow (Ctrl + S)\x02Settings\x02Show\x02Specify a password for the meeting" +
+	"\x02Start meeting\x02The error message\x02A valid port is between 1 and " +
+	"65535\x02This action can't be undone\x02Toggle password visibility\x02Ty" +
+	"pe the Meeting ID (normally a .onion address)\x02Type the password\x02Ty" +
+	"pe the password to join the meeting\x02Type your preferred screen name" +
+	"\x02Type your screen name\x02Username\x02Wahay is ready to use\x02We hav" +
+	"e detected that the configuration file is invalid or corrupted. Do you w" +
+	"ant to make a copy (backup) of it and continue?\x02Welcome\x02When this " +
+	"option is checked, the configuration settings will be stored in the devi" +
+	"ce.\x02Yahoo Mail\x02Yes, back it up &amp; continue\x02Yes, confirm\x02Y" +
+	"ou won't be asked for this password again until you restart Wahay.\x02Ex" +
+	"ecutable Mumble location\x02Ex. /home/user/mumble/mumble\x02If you want " +
+	"to use your own Mumble instance, please enter the location where Mumble " +
+	"is available in the system.\x02Mumble service port\x02Ex. 9800\x02If you" +
+	" want to set up a custom port to run the Mumble service, please enter a " +
+	"port number between 1 and 65535\x02What is Wahay?\x02Communication is a " +
+	"basic need of the human being. In the beginning, it's carried out verbal" +
+	"ly from person to person; through the use of technology, various tools h" +
+	"ave been developed for this purpose, for instance: Skype, Zoom, Google H" +
+	"angouts, etc. However, there are several aspects that have not been cons" +
+	"idered in the development of these solutions: centralized servers, propr" +
+	"ietary technology, security. Those are some features that have not been " +
+	"contemplated or have been partially implemented.\x02Wahay (https://wahay" +
+	".org) has been developed as a tool for conducting voice conferences in a" +
+	"n easy, extremely secure and decentralized manner (without the need for " +
+	"any centralized server or service). Internally it uses Tor (https://www." +
+	"torproject.org/) as a tool to establish secure communications and Mumble" +
+	" (https://www.mumble.com/) as a client to establish voice communications" +
+	" over IP.\x02What is Tor?\x02Tor is a free and open source tool that all" +
+	"ows you to establish anonymous and distributed communications. Tor direc" +
+	"ts its internet traffic through a series of routers called 'Onion router" +
+	"s' allowing anonymous communication between its nodes. This network work" +
+	"s from a set of organizations and individuals that donate their bandwidt" +
+	"h and processing power.\x02What is Mumble?\x02Mumble is a free and open " +
+	"source application that allows voice over IP conferences between users w" +
+	"ith high quality sound and low latency.\x02Functionalities\x02Wahay allo" +
+	"ws you to host a meeting or join an existing one. For this, you establis" +
+	"h an ID that will serve as the identifier to be used in the meeting.\x02" +
+	"Host a meeting\x02This option allows to start the server that will suppo" +
+	"rt the connection of users to a meeting, which is defined by its ID (mee" +
+	"ting identifier). This ID must be used by the rest of users who aim to a" +
+	"ccess it. Additionally it is possible of defining the user name (not man" +
+	"datory) that will serve to identify the user in the meeting. It's also p" +
+	"ossible to configure the password to access the meeting, which will be r" +
+	"equired by users who wish to access Wahay.\x02The option to automaticall" +
+	"y join this meeting allows you to start the server and enter it, if you " +
+	"do not select it, you can access it later by selecting the join button. " +
+	"It's also possible to copy the meeting ID and send the invitation throug" +
+	"h the most used email clients.\x02This option allows the user to access " +
+	"a meeting if it already exists. For this, you must enter the meeting id " +
+	"(required), username (not required) and password (if was set).\x02Open h" +
+	"elp window (Ctrl + H)\x02Help\x02Join as Super User\x02As a super user y" +
+	"ou will be able to do things that others do not, such as silencing anoth" +
+	"er user or expelling him/her from the meeting, etc.\x02Welcome to this s" +
+	"erver running <b>Wahay</b>.\x02The username is required\x02Mumble client" +
+	" can't be used because:\x0a\x0a%[1]s"
 
 var esIndex = []uint32{ // 146 elements
 	// Entry 0 - 1F
@@ -756,35 +756,35 @@ var svIndex = []uint32{ // 146 elements
 	0x00000678, 0x00000694, 0x0000069e, 0x000006af,
 	0x000006c2, 0x000006d0, 0x00000726, 0x00000757,
 	0x00000761, 0x0000076f, 0x0000078c, 0x00000794,
-	0x000007b3, 0x000007dc, 0x000007e5, 0x000007eb,
-	0x0000080b, 0x00000813, 0x0000081f, 0x000008f2,
+	0x000007a8, 0x000007d1, 0x000007da, 0x000007e0,
+	0x00000800, 0x00000808, 0x00000814, 0x000008e7,
 	// Entry 40 - 5F
-	0x00000956, 0x00000970, 0x0000099b, 0x000009a9,
-	0x000009cf, 0x000009d6, 0x000009ee, 0x00000a0f,
-	0x00000a21, 0x00000a34, 0x00000a4c, 0x00000a7c,
-	0x00000a83, 0x00000aa1, 0x00000ab8, 0x00000b2f,
-	0x00000b3e, 0x00000b49, 0x00000b7c, 0x00000b88,
-	0x00000b98, 0x00000b9f, 0x00000bab, 0x00000bcb,
-	0x00000bd3, 0x00000bdd, 0x00000c19, 0x00000c1e,
-	0x00000c42, 0x00000c4e, 0x00000c63, 0x00000c74,
+	0x0000094b, 0x00000965, 0x00000990, 0x0000099e,
+	0x000009c4, 0x000009cb, 0x000009e3, 0x00000a04,
+	0x00000a16, 0x00000a29, 0x00000a41, 0x00000a71,
+	0x00000a78, 0x00000a96, 0x00000aad, 0x00000b24,
+	0x00000b33, 0x00000b3e, 0x00000b71, 0x00000b7d,
+	0x00000b8d, 0x00000b94, 0x00000ba0, 0x00000bc0,
+	0x00000bc8, 0x00000bd2, 0x00000c0e, 0x00000c13,
+	0x00000c37, 0x00000c43, 0x00000c58, 0x00000c69,
 	// Entry 60 - 7F
-	0x00000c7e, 0x00000c96, 0x00000ca5, 0x00000caa,
-	0x00000cc3, 0x00000cd1, 0x00000ce0, 0x00000d06,
-	0x00000d26, 0x00000d3f, 0x00000d6c, 0x00000d7d,
-	0x00000dab, 0x00000dc9, 0x00000dde, 0x00000dec,
-	0x00000e09, 0x00000e83, 0x00000e8e, 0x00000edf,
-	0x00000eea, 0x00000f10, 0x00000f1e, 0x00000f6a,
-	0x00000f89, 0x00000fa6, 0x0000100a, 0x0000101e,
-	0x00001027, 0x0000108a, 0x00001099, 0x0000123e,
+	0x00000c73, 0x00000c8b, 0x00000c9a, 0x00000c9f,
+	0x00000cb8, 0x00000cc6, 0x00000cd5, 0x00000cfb,
+	0x00000d1b, 0x00000d34, 0x00000d61, 0x00000d72,
+	0x00000da0, 0x00000dbe, 0x00000dd3, 0x00000de1,
+	0x00000dfe, 0x00000e78, 0x00000e83, 0x00000ed4,
+	0x00000edf, 0x00000f05, 0x00000f13, 0x00000f5f,
+	0x00000f7e, 0x00000f9b, 0x00000fff, 0x00001013,
+	0x0000101c, 0x0000107f, 0x0000108e, 0x00001233,
 	// Entry 80 - 9F
-	0x00001398, 0x000013a5, 0x00001520, 0x00001530,
-	0x000015bf, 0x000015d0, 0x0000167e, 0x00001690,
-	0x000018b7, 0x00001a09, 0x00001af9, 0x00001b11,
-	0x00001b18, 0x00001b25, 0x00001b32, 0x00001b32,
-	0x00001b32, 0x00001b32,
+	0x0000138d, 0x0000139a, 0x00001515, 0x00001525,
+	0x000015b4, 0x000015c5, 0x00001673, 0x00001685,
+	0x000018ac, 0x000019fe, 0x00001aee, 0x00001b06,
+	0x00001b0d, 0x00001b1a, 0x00001b27, 0x00001b27,
+	0x00001b27, 0x00001b27,
 } // Size: 608 bytes
 
-const svData string = "" + // Size: 6962 bytes
+const svData string = "" + // Size: 6951 bytes
 	"\x02Fel\x02Något gick fel: %[1]s\x02vi kunde inte start mötet\x02Mötet k" +
 	"an inte stängas: %[1]s\x02Mötes-koden har kopierats till din clipboard" +
 	"\x02Emailet med inbjudan har koperiats till din clipboard\x02Anslut dig " +
@@ -813,76 +813,76 @@ const svData string = "" + // Size: 6962 bytes
 	"a mötes-kod\x02Koperia länk\x02Välj detta alterntiv för att automatiskt " +
 	"ansluta till varje möte du är värd för\x02Välj din epost-tjänst för att " +
 	"skicka inbjudan\x02Debugging\x02Standardepost\x02Kryptera konfigurations" +
-	"filen\x02Avsluta\x02Avsluta detta möte (Ctrl + W)\x02Avsluta detta möte " +
-	"för alla (Ctrl + W)\x02Allmäna\x02Gmail\x02Skapa ett nytt möte (Ctrl + I" +
-	")\x02Anordna\x02Skapa möte\x02Om du säkerhetskopierar konfigurationsfile" +
-	"n kommer vi återställa inställningarna och fortsätta normalt. Om konfigu" +
-	"rationsfilen är krypterad kommer vi be om ett lösenorder för att krypter" +
-	"a den nya filen.\x02Om du sätter den här inställningen till ett filnamn " +
-	"kommer lågnivåinformation bli loggad där.\x02Ogiltig konfigurationsfil" +
-	"\x02Ogiltigt lösenord, var god försök igen.\x02Bjud in andra\x02Invite o" +
-	"thers this meeting (Ctrl + I)\x02Anslut\x02TRANSLATE ME (Ctrl + J)\x02An" +
-	"slut till ett möte (Ctrl + J)\x02Anslut till möte\x02Anslut till mötet" +
-	"\x02Anslut till detta möte\x02Behåll konfigurationsfilen tills Wahay stä" +
-	"ngs\x02Lämna\x02Lämna detta möte (Ctrl + L)\x02Logga debuginformation" +
-	"\x02Logga debugutmatning till den valda loggfilen. Om ingen fil är val k" +
-	"ommer utmatningen skrivas till standardloggfilen.\x02Huvudlösenord\x02Mö" +
-	"tes-kod\x02Tryck på högra kontroll-tangenten för att prata\x02Mötes-kod:" +
-	"\x02Möteslösenord\x02Mumble\x02Nej, avbryt\x02Du är nu värd för ett möte" +
-	".\x02Outlook\x02Lösenord\x02Var god skriv in huvudlösenordet för konfigu" +
-	"rationsfilen.\x02Port\x02Porten är utanför giltiga värden\x02Rå loggfil" +
-	"\x02Repetera lösenordet\x02Spara ändringar\x02Säkerhet\x02TRANSLATE ME (" +
-	"Ctrl + S)\x02Inställningar\x02Visa\x02Ange ett möteslösenord\x02Starta m" +
-	"ötet\x02Felmeddelandet\x02En giltig port är mellan 1 och 65535\x02Denna" +
-	" åtgärd kan inte ångras\x02Växla lösenordsvisning\x02Ange mötes-koden (n" +
-	"ormalt en .onion-adress)\x02Ange lösenordet\x02Ange lösenordet för att a" +
-	"nsluta till mötet\x02Ange ditt önskade skärmnamn\x02Ange ditt skärmnamn" +
-	"\x02Användarnamn\x02Wahay är redo att användas\x02Vi har noterat att kon" +
-	"figurationsfilen är ogiltig eller korrupt. Vill du skapa en säkerhetskop" +
-	"ia av den och fortsätta?\x02Välkommen\x02När det här alternativet är val" +
-	"t kommer inställningarna sparas på maskinen.\x02Yahoo Mail\x02Ja, säkerh" +
-	"etskopiera &amp; fortsätt\x02Ja, bekräfta\x02Du kommer inte bli tillfråg" +
-	"ad om lösenord igen tills du startar om Wahay.\x02Plats för Mumble-progr" +
-	"amfilen\x02Ex. /home/user/mumble/mumble\x02Om du vill använda din egen M" +
-	"umble-instans, var god ange platsen där Mumble finns på ditt system\x02M" +
-	"umble tjänsteport\x02Ex. 9800\x02Om du vill använda en egen port för Mum" +
-	"ble-tjänsten, var god ange ett nummer mellan 1 och 65535\x02Vad är Wahay" +
-	"?\x02Kommunikation är ett grundläggande behöv för människor. Vi har unde" +
-	"r en längre tid använt röst-kommunikation via teknologi, genom olika ver" +
-	"ktyg som har utvecklats, såsom Skype, Zoom, Google Hangouts och många an" +
-	"dra. Tyvärr finns det ett antal aspekter av dessa verktyg som inte har v" +
-	"arit i fokus: centraliserade servrar, proprietär teknologi, säkerhet. De" +
-	"ssa problem finns med de flesta lösningar där ute.\x02Wahay (https://wah" +
-	"ay.org) har utvecklats som ett verktyg för att skapa röst-samtal enkelt," +
-	" säkert och decentraliserat (utan behov av en centraliserad server eller" +
-	" tjänst). Internt använder Wahay Tor (https://www.torproject.org/) som e" +
-	"tt verktyg för säker kommunikation och Mumble (https://www.mumble.com/) " +
-	"som en klient för röst-samtal.\x02Vad är Tor?\x02Tor är ett verktyg med " +
-	"fri och öppen källkod som tillåter dig att etablera anonyma och distribu" +
-	"erade kommunikationskanaler. Tor leder din internet-trafik genom ett ant" +
-	"al routrar som kallas 'onion-routers', vilket tillåter anonym kommunikat" +
-	"ion mellan deras noder. Detta nätverk är sammansatt av många organisatio" +
-	"ner och individer som donerar sin bandbredd och datorkraft.\x02Vad är Mu" +
-	"mble?\x02Mumble är ett program med fri och öppen källkod som tillåter rö" +
-	"st-samtal med en eller flera parter med hög ljudkvalitet och låg latens." +
-	"\x02Funktionaliteter\x02Wahay tillåter dig att anordna möten eller anslu" +
-	"ta till existerande möten. För detta behöver du etablera en kod som tjän" +
-	"ar till att identifiera mötet du vill delta i.\x02Anordna ett möte\x02De" +
-	"tta alternativ tillåter dig att starta en server som kommer att tillåta " +
-	"att användare ansluter till ett möte, vilket är definierat genom en möte" +
-	"s-kod. Denna mötes-kod måste användas av resten av användarna somm vill " +
-	"delta i mötet. Det är också möjligt att definiera ett användarnamn som k" +
-	"an identifiera användaren i ett möte - men detta är inte nödvändigt. Det" +
-	" är även möjligt att sätta ett lösenord för att ansluta till mötet - i s" +
-	"ådana fall måste all användare ange detta lösenord för att kunna anslut" +
-	"a till Wahay.\x02Alternativet att automatiskt ansluta till ett möte till" +
-	"åter dig att start mötet och omedelbart bli ansluten till det. Om du in" +
-	"te väljer det kan du också ansluta senare till mötet genom att trycka på" +
-	" knappen som säger 'anslut'. Det är även möjligt att kopiera mötes-koden" +
-	" och skicka en inbjudan genom de flesta epost-klienter.\x02Detta alterna" +
-	"tiv gör det möjligt för en användare att ansluta till ett möte som redan" +
-	" existerar. För detta behöver du ange en mötes-kod, ett användarnamn (in" +
-	"te nödvändigt) och ett lösenord (om ett var konfigurerar för mötet).\x02" +
-	"TRANSLATE ME (Ctrl + H)\x02Hjälp\x02TRANSLATE ME\x02TRANSLATE ME"
+	"filen\x02Avsluta\x02Avsluta detta möte\x02Avsluta detta möte för alla (C" +
+	"trl + W)\x02Allmäna\x02Gmail\x02Skapa ett nytt möte (Ctrl + I)\x02Anordn" +
+	"a\x02Skapa möte\x02Om du säkerhetskopierar konfigurationsfilen kommer vi" +
+	" återställa inställningarna och fortsätta normalt. Om konfigurationsfile" +
+	"n är krypterad kommer vi be om ett lösenorder för att kryptera den nya f" +
+	"ilen.\x02Om du sätter den här inställningen till ett filnamn kommer lågn" +
+	"ivåinformation bli loggad där.\x02Ogiltig konfigurationsfil\x02Ogiltigt " +
+	"lösenord, var god försök igen.\x02Bjud in andra\x02Invite others this me" +
+	"eting (Ctrl + I)\x02Anslut\x02TRANSLATE ME (Ctrl + J)\x02Anslut till ett" +
+	" möte (Ctrl + J)\x02Anslut till möte\x02Anslut till mötet\x02Anslut till" +
+	" detta möte\x02Behåll konfigurationsfilen tills Wahay stängs\x02Lämna" +
+	"\x02Lämna detta möte (Ctrl + L)\x02Logga debuginformation\x02Logga debug" +
+	"utmatning till den valda loggfilen. Om ingen fil är val kommer utmatning" +
+	"en skrivas till standardloggfilen.\x02Huvudlösenord\x02Mötes-kod\x02Tryc" +
+	"k på högra kontroll-tangenten för att prata\x02Mötes-kod:\x02Möteslöseno" +
+	"rd\x02Mumble\x02Nej, avbryt\x02Du är nu värd för ett möte.\x02Outlook" +
+	"\x02Lösenord\x02Var god skriv in huvudlösenordet för konfigurationsfilen" +
+	".\x02Port\x02Porten är utanför giltiga värden\x02Rå loggfil\x02Repetera " +
+	"lösenordet\x02Spara ändringar\x02Säkerhet\x02TRANSLATE ME (Ctrl + S)\x02" +
+	"Inställningar\x02Visa\x02Ange ett möteslösenord\x02Starta mötet\x02Felme" +
+	"ddelandet\x02En giltig port är mellan 1 och 65535\x02Denna åtgärd kan in" +
+	"te ångras\x02Växla lösenordsvisning\x02Ange mötes-koden (normalt en .oni" +
+	"on-adress)\x02Ange lösenordet\x02Ange lösenordet för att ansluta till mö" +
+	"tet\x02Ange ditt önskade skärmnamn\x02Ange ditt skärmnamn\x02Användarnam" +
+	"n\x02Wahay är redo att användas\x02Vi har noterat att konfigurationsfile" +
+	"n är ogiltig eller korrupt. Vill du skapa en säkerhetskopia av den och f" +
+	"ortsätta?\x02Välkommen\x02När det här alternativet är valt kommer instäl" +
+	"lningarna sparas på maskinen.\x02Yahoo Mail\x02Ja, säkerhetskopiera &amp" +
+	"; fortsätt\x02Ja, bekräfta\x02Du kommer inte bli tillfrågad om lösenord " +
+	"igen tills du startar om Wahay.\x02Plats för Mumble-programfilen\x02Ex. " +
+	"/home/user/mumble/mumble\x02Om du vill använda din egen Mumble-instans, " +
+	"var god ange platsen där Mumble finns på ditt system\x02Mumble tjänstepo" +
+	"rt\x02Ex. 9800\x02Om du vill använda en egen port för Mumble-tjänsten, v" +
+	"ar god ange ett nummer mellan 1 och 65535\x02Vad är Wahay?\x02Kommunikat" +
+	"ion är ett grundläggande behöv för människor. Vi har under en längre tid" +
+	" använt röst-kommunikation via teknologi, genom olika verktyg som har ut" +
+	"vecklats, såsom Skype, Zoom, Google Hangouts och många andra. Tyvärr fin" +
+	"ns det ett antal aspekter av dessa verktyg som inte har varit i fokus: c" +
+	"entraliserade servrar, proprietär teknologi, säkerhet. Dessa problem fin" +
+	"ns med de flesta lösningar där ute.\x02Wahay (https://wahay.org) har utv" +
+	"ecklats som ett verktyg för att skapa röst-samtal enkelt, säkert och dec" +
+	"entraliserat (utan behov av en centraliserad server eller tjänst). Inter" +
+	"nt använder Wahay Tor (https://www.torproject.org/) som ett verktyg för " +
+	"säker kommunikation och Mumble (https://www.mumble.com/) som en klient f" +
+	"ör röst-samtal.\x02Vad är Tor?\x02Tor är ett verktyg med fri och öppen " +
+	"källkod som tillåter dig att etablera anonyma och distribuerade kommunik" +
+	"ationskanaler. Tor leder din internet-trafik genom ett antal routrar som" +
+	" kallas 'onion-routers', vilket tillåter anonym kommunikation mellan der" +
+	"as noder. Detta nätverk är sammansatt av många organisationer och indivi" +
+	"der som donerar sin bandbredd och datorkraft.\x02Vad är Mumble?\x02Mumbl" +
+	"e är ett program med fri och öppen källkod som tillåter röst-samtal med " +
+	"en eller flera parter med hög ljudkvalitet och låg latens.\x02Funktional" +
+	"iteter\x02Wahay tillåter dig att anordna möten eller ansluta till existe" +
+	"rande möten. För detta behöver du etablera en kod som tjänar till att id" +
+	"entifiera mötet du vill delta i.\x02Anordna ett möte\x02Detta alternativ" +
+	" tillåter dig att starta en server som kommer att tillåta att användare " +
+	"ansluter till ett möte, vilket är definierat genom en mötes-kod. Denna m" +
+	"ötes-kod måste användas av resten av användarna somm vill delta i mötet" +
+	". Det är också möjligt att definiera ett användarnamn som kan identifier" +
+	"a användaren i ett möte - men detta är inte nödvändigt. Det är även möjl" +
+	"igt att sätta ett lösenord för att ansluta till mötet - i sådana fall må" +
+	"ste all användare ange detta lösenord för att kunna ansluta till Wahay." +
+	"\x02Alternativet att automatiskt ansluta till ett möte tillåter dig att " +
+	"start mötet och omedelbart bli ansluten till det. Om du inte väljer det " +
+	"kan du också ansluta senare till mötet genom att trycka på knappen som s" +
+	"äger 'anslut'. Det är även möjligt att kopiera mötes-koden och skicka e" +
+	"n inbjudan genom de flesta epost-klienter.\x02Detta alternativ gör det m" +
+	"öjligt för en användare att ansluta till ett möte som redan existerar. " +
+	"För detta behöver du ange en mötes-kod, ett användarnamn (inte nödvändig" +
+	"t) och ett lösenord (om ett var konfigurerar för mötet).\x02TRANSLATE ME" +
+	" (Ctrl + H)\x02Hjälp\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 34582 bytes (33KiB); checksum: C632C597
+	// Total table size 34549 bytes (33KiB); checksum: 2547C0C2

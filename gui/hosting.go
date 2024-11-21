@@ -95,7 +95,8 @@ func (h *hostData) showMeetingControls() {
 		"button", "btnInviteOthers",
 		"button", "btnCopyMeetingID",
 		"tooltip", "btnJoinMeeting",
-		"tooltip", "btnInviteOthers")
+		"tooltip", "btnInviteOthers",
+		"tooltip", "btnFinishMeeting")
 
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": h.finishMeetingReal,

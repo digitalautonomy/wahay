@@ -479,7 +479,7 @@
         {
             "id": "End this meeting",
             "message": "End this meeting",
-            "translation": "Avsluta detta möte (Ctrl + W)"
+            "translation": "Avsluta detta möte"
         },
         {
             "id": "End this meeting for all",

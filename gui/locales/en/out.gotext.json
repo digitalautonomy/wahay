@@ -424,7 +424,7 @@
         {
             "id": "End this meeting",
             "message": "End this meeting",
-            "translation": "End this meeting (Ctrl + W)"
+            "translation": "End this meeting"
         },
         {
             "id": "End this meeting for all",
