@@ -470,9 +470,9 @@
             "translation": "Invitar a otros"
         },
         {
-            "id": "Invite others this meeting",
-            "message": "Invite others this meeting",
-            "translation": "Invitar a otros a esta reunión (Ctrl + I)"
+            "id": "btnInviteOthers-tooltip",
+            "message": "btnInviteOthers-tooltip",
+            "translation": "Invitar a otros (Ctrl + I)"
         },
         {
             "id": "Join",
@@ -480,8 +480,8 @@
             "translation": "Unirse"
         },
         {
-            "id": "Join this meeting hosting",
-            "message": "Join this meeting hosting",
+            "id": "btnJoinMeeting-tooltip",
+            "message": "btnJoinMeeting-tooltip",
             "translation": "Unirse a la reunión (Ctrl + J)"
         },
         {

@@ -470,9 +470,9 @@
             "translation": "Bjud in andra"
         },
         {
-            "id": "Invite others this meeting",
-            "message": "Invite others this meeting",
-            "translation": "Invite others this meeting (Ctrl + I)"
+            "id": "btnInviteOthers-tooltip",
+            "message": "btnInviteOthers-tooltip",
+            "translation": "TRANSLATE ME (Ctrl + I)"
         },
         {
             "id": "Join",
@@ -480,8 +480,8 @@
             "translation": "Anslut"
         },
         {
-            "id": "Join this meeting hosting",
-            "message": "Join this meeting hosting",
+            "id": "btnJoinMeeting-tooltip",
+            "message": "btnJoinMeeting-tooltip",
             "translation": "TRANSLATE ME (Ctrl + J)"
         },
         {

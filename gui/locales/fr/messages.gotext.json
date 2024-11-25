@@ -513,9 +513,9 @@
             "translation": "Inviter d'autres personnes"
         },
         {
-            "id": "Invite others this meeting",
-            "message": "Invite others this meeting",
-            "translation": "TRANSLATE ME (Ctrl + I)"
+            "id": "btnInviteOthers-tooltip",
+            "message": "Invite others",
+            "translation": "Inviter d'autres personnes (Ctrl + I)"
         },
         {
             "id": "Join",
@@ -523,9 +523,9 @@
             "translation": "Rejoindre"
         },
         {
-            "id": "Join this meeting hosting",
-            "message": "Join this meeting hosting",
-            "translation": "TRANSLATE ME (Ctrl + J)"
+            "id": "btnJoinMeeting-tooltip",
+            "message": "Join this meeting",
+            "translation": "Rejoignez cette réunion (Ctrl + J)"
         },
         {
             "id": "Join a meeting",

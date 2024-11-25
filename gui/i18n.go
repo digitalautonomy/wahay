@@ -3,6 +3,7 @@ package gui
 //go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,es,sv,ar,fr
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/coyim/gotk3adapter/glibi"
@@ -47,6 +48,7 @@ func (b *uiBuilder) i18nProperties(objs ...string) {
 
 func (b *uiBuilder) i18nProperty(id, property string) {
 	obj := b.get(id).(glibi.Object)
+	orgProperty := property
 	switch property {
 	case "placeholder":
 		property = "placeholder_text"
@@ -63,7 +65,13 @@ func (b *uiBuilder) i18nProperty(id, property string) {
 		fatal(e)
 	}
 
-	e = obj.SetProperty(property, i18n().Sprintf(currentVal))
+	composedID := fmt.Sprintf("%s-%s", id, orgProperty)
+	result := i18n().Sprintf(message.Key(composedID, currentVal.(string)))
+	if result == currentVal {
+		result = i18n().Sprintf(currentVal)
+	}
+
+	e = obj.SetProperty(property, result)
 	if e != nil {
 		log.Errorf("Error setting property '%s' from object with id %s (%v): %v", property, id, obj, e)
 		fatal(e)

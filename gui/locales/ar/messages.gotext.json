@@ -537,8 +537,8 @@
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "Invite others this meeting",
-            "message": "Invite others this meeting",
+            "id": "btnInviteOthers-tooltip",
+            "message": "Invite others",
             "translation": "TRANSLATE ME (Ctrl + I)"
         },
         
@@ -548,8 +548,8 @@
             "translation": "TRANSLATE ME"
         },
         {
-            "id": "Join this meeting hosting",
-            "message": "Join this meeting hosting",
+            "id": "btnJoinMeeting-tooltip",
+            "message": "Join this meeting",
             "translation": "TRANSLATE ME (Ctrl + J)"
         },
         {
