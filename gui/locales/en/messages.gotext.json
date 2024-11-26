@@ -713,9 +713,9 @@
             "translation": "Security"
         },
         {
-            "id": "Open settings window",
+            "id": "btnSettings-tooltip",
             "message": "Open settings window",
-            "translation": "Open settings window (Ctrl + S)"
+            "translation": "Open settings window (Ctrl + ,)"
         },
         {
             "id": "Settings",

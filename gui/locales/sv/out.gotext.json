@@ -615,9 +615,9 @@
             "translation": "Säkerhet"
         },
         {
-            "id": "Open settings window",
-            "message": "Open settings window",
-            "translation": "TRANSLATE ME (Ctrl + S)"
+            "id": "btnSettings-tooltip",
+            "message": "btnSettings-tooltip",
+            "translation": ""
         },
         {
             "id": "Settings",

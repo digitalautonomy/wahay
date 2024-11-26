@@ -98,7 +98,7 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3() {
 	_ = i18n().Sprintf("Repeat the password")
 	_ = i18n().Sprintf("Save changes")
 	_ = i18n().Sprintf("Security")
-	_ = i18n().Sprintf("Open settings window")
+	_ = i18n().Sprintf("btnSettings-tooltip")
 	_ = i18n().Sprintf("Settings")
 	_ = i18n().Sprintf("Show")
 	_ = i18n().Sprintf("Specify a password for the meeting")
