@@ -234,6 +234,7 @@ func (h *hostData) openHostJoinMeetingWindow() {
 	builder.ConnectSignals(map[string]interface{}{
 		"on_close_window_signal": func() {
 			h.leaveHostMeeting()
+			h.finishMeetingReal()
 			h.u.quit()
 		},
 		"on_leave_meeting":  h.leaveHostMeeting,
