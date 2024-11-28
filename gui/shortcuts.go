@@ -23,6 +23,9 @@ func (u *gtkUI) connectShortcutsMainWindow(w gtki.Window) {
 	u.connectShortcut("<Primary>h", w, func(_ gtki.Window) {
 		u.openHelpWindow()
 	})
+	u.connectShortcut("<Primary>comma", w, func(_ gtki.Window) {
+		u.openSettingsWindow()
+	})
 
 	if !u.errorHandler.isThereAnyStartupError() {
 		u.connectShortcut("<Primary>i", w, func(_ gtki.Window) {
@@ -30,9 +33,6 @@ func (u *gtkUI) connectShortcutsMainWindow(w gtki.Window) {
 		})
 		u.connectShortcut("<Primary>j", w, func(_ gtki.Window) {
 			u.joinMeeting()
-		})
-		u.connectShortcut("<Primary>comma", w, func(_ gtki.Window) {
-			u.openSettingsWindow()
 		})
 	}
 }
