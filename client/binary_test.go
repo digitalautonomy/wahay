@@ -930,7 +930,7 @@ func (s *clientSuite) Test_searchBinaryInDataDir_returnsAValidBinaryIfABinaryFil
 	}
 
 	mx := &mockXdgDataHome{}
-	defer gostub.New().Stub(&configXdgDataHome, mx.XdgDataHome).Reset()
+	defer gostub.New().Stub(&SystemDataDir, mx.XdgDataHome).Reset()
 	mx.On("XdgDataHome").Return(dataDir)
 
 	mj := &mockJoin{}
@@ -962,7 +962,7 @@ func (s *clientSuite) Test_searchBinaryInDataDir_returnsNilWhenABinaryDoesNotExi
 	defer os.RemoveAll(dataDir)
 
 	mx := &mockXdgDataHome{}
-	defer gostub.New().Stub(&configXdgDataHome, mx.XdgDataHome).Reset()
+	defer gostub.New().Stub(&SystemDataDir, mx.XdgDataHome).Reset()
 	mx.On("XdgDataHome").Return(dataDir)
 
 	binary, err := searchBinaryInDataDir()

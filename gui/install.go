@@ -25,7 +25,7 @@ func (u *gtkUI) ensureInstallation() {
 		return
 	}
 
-	dataHome := config.XdgDataHome()
+	dataHome := config.SystemDataDir()
 	if len(dataHome) == 0 && !fileExists(dataHome) {
 		log.Fatal("No data home directory is available")
 	}

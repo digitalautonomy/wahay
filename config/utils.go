@@ -7,7 +7,6 @@ import (
 	mrand "math/rand"
 	"net"
 	"os"
-	"os/user"
 	"path/filepath"
 	"strconv"
 
@@ -26,17 +25,6 @@ func RandomString(dest []byte) error {
 	copy(dest, hex.EncodeToString(src))
 
 	return nil
-}
-
-// localHome is a function to return the home directory on Unix-like operating systems
-// Once support for Windows or other operating systems have been added, this
-// should be extracted to a file protected by build tags.
-func localHome() string {
-	u, e := user.Current()
-	if e == nil {
-		return u.HomeDir
-	}
-	return ""
 }
 
 func home() string {

@@ -17,7 +17,7 @@ const (
 	appLogFile              = "application" + fileExtensionLOG
 )
 
-var wahayDataDir = filepath.Join(XdgDataHome(), "wahay")
+var wahayDataDir = filepath.Join(SystemDataDir(), "wahay")
 
 // EnsureFilesAndDir ensure Wahay's required files and/or directories
 func EnsureFilesAndDir() {

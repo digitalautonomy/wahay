@@ -99,7 +99,7 @@ func findTorBinaryInDataDir() (b *binary, fatalErr error) {
 	}
 
 	for _, subdir := range paths {
-		path := filepath.Join(config.XdgDataHome(), subdir)
+		path := filepath.Join(config.SystemDataDir(), subdir)
 
 		log.Debugf("findTorBinaryInDataDir(%s)", path)
 
