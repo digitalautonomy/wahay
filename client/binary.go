@@ -21,12 +21,6 @@ var (
 	errNoClientInConfiguredPath   = errors.New("no client in the configured path")
 )
 
-const (
-	mumbleBundleLibsDir   = "lib"
-	mumbleBundlePath      = "mumble/mumble"
-	wahayMumbleBundlePath = "wahay/mumble/mumble"
-)
-
 type binary struct {
 	// The full path to the found Mumble binary
 	path string
@@ -277,19 +271,6 @@ func searchBinaryInDataDir() (*binary, error) {
 	}
 
 	return nil, nil
-}
-
-var execLookPath = exec.LookPath
-
-func searchBinaryInSystem() (*binary, error) {
-	path, err := execLookPath("mumble")
-	if err != nil {
-		return nil, nil
-	}
-
-	b := isThereAnAvailableBinary(path)
-
-	return b, nil
 }
 
 var execCommand = exec.Command
