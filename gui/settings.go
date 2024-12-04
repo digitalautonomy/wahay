@@ -25,6 +25,7 @@ type settings struct {
 	mumbleBinaryLocation       gtki.Entry
 	mumblePort                 gtki.Entry
 	lblPortMumbleMessage       gtki.Label
+	torBinaryLocation          gtki.Entry
 
 	autoJoinOriginalValue          bool
 	persistConfigFileOriginalValue bool
@@ -33,6 +34,7 @@ type settings struct {
 	rawLogFileOriginalValue        string
 	mumbleBinaryOriginalValue      string
 	mumblePortOriginalValue        string
+	torBinaryOriginalValue         string
 }
 
 func createSettings(u *gtkUI) *settings {
@@ -56,6 +58,7 @@ func createSettings(u *gtkUI) *settings {
 		"mumbleBinaryLocation", &s.mumbleBinaryLocation,
 		"mumblePort", &s.mumblePort,
 		"lblPortMumbleMessage", &s.lblPortMumbleMessage,
+		"torBinaryLocation", &s.torBinaryLocation,
 	)
 
 	s.init()
@@ -88,6 +91,9 @@ func (s *settings) init() {
 	s.mumbleBinaryLocation.SetText(s.mumbleBinaryOriginalValue)
 	s.mumblePortOriginalValue = conf.GetPortMumble()
 	s.mumblePort.SetText(s.mumblePortOriginalValue)
+	s.torBinaryOriginalValue = conf.GetPathTor()
+	s.torBinaryLocation.SetText(s.torBinaryOriginalValue)
+
 }
 
 func (u *gtkUI) getSettingsBuilder() *uiBuilder {
@@ -107,6 +113,7 @@ func (u *gtkUI) getSettingsBuilder() *uiBuilder {
 		"label", "tabSecurity",
 		"label", "tabDebug",
 		"label", "tabMumble",
+		"label", "tabTor",
 		"label", "lblStoreConfigDescription",
 		"label", "lblDebugWarning",
 		"label", "lblDebugLogFile",
@@ -118,6 +125,9 @@ func (u *gtkUI) getSettingsBuilder() *uiBuilder {
 		"label", "lblMumblePort",
 		"label", "lblPortMumbleMessage",
 		"label", "lblMumblePortHelp",
+		"label", "lblTorLocation",
+		"label", "lblTorBinaryDescription",
+		"label", "lblTorBinaryBrowse",
 		"label", "lblMessage",
 		"label", "lblSettingsWarning",
 		"label", "lblConfigFileCorrupted",
@@ -128,7 +138,8 @@ func (u *gtkUI) getSettingsBuilder() *uiBuilder {
 		"button", "btnConfigFileCorruptedCancel",
 		"button", "btnConfigFileCorruptedBackup",
 		"placeholder", "mumbleBinaryLocation",
-		"placeholder", "mumblePort")
+		"placeholder", "mumblePort",
+		"placeholder", "torBinaryLocation")
 
 	return builder
 }
@@ -238,6 +249,8 @@ func (u *gtkUI) openSettingsWindow() {
 		"on_mumbleBinaryLocation_clicked_event": s.setCustomPathForMumble,
 		"on_portMumble_insert_text":             s.onInsertPortMumble,
 		"on_portMumble_delete_text":             s.onDeletePortMumble,
+		"on_torBinaryLocation_icon_press":       s.setCustomPathForTor,
+		"on_torBinaryLocation_clicked_event":    s.setCustomPathForTor,
 	})
 
 	u.connectShortcutsSettingsWindow(s.dialog)
@@ -318,6 +331,15 @@ func (s *settings) setCustomPathForMumble() {
 			s.u.config.SetMumbleBinaryPath(f)
 		})
 }
+func (s *settings) setCustomPathForTor() {
+
+	s.u.setCustomFilePathFor(
+		s.torBinaryLocation,
+		s.torBinaryOriginalValue,
+		func(f string) {
+			s.u.config.SetPathTor(f)
+		})
+}
 
 func (u *gtkUI) initConfig() {
 	u.config = config.New()
@@ -325,6 +347,7 @@ func (u *gtkUI) initConfig() {
 }
 
 func (u *gtkUI) loadConfig() {
+
 	u.config.WhenLoaded(func(c *config.ApplicationConfig) {
 		u.config = c
 		u.doInUIThread(u.initialSetupWindow)
@@ -445,10 +468,12 @@ func (u *gtkUI) askToResetInvalidConfigFile(selectionChannel chan bool) {
 }
 
 func (u *gtkUI) saveConfigOnlyInternal() error {
+
 	return u.config.Save(u.keySupplier)
 }
 
 func (u *gtkUI) saveConfigOnly() {
+
 	// Don't save the configuration file if the user doesn't want it
 	if !u.config.IsPersistentConfiguration() {
 		u.config.DeleteFileIfExists()

@@ -1,76 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.18"/>
   <object class="GtkWindow" id="settingsWindow">
-    <property name="width_request">300</property>
-    <property name="can_focus">False</property>
+    <property name="width-request">300</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">Settings</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
-    <property name="default_width">200</property>
-    <property name="icon_name">preferences-system</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="urgency_hint">True</property>
+    <property name="window-position">center</property>
+    <property name="default-width">200</property>
+    <property name="icon-name">preferences-system</property>
+    <property name="type-hint">dialog</property>
+    <property name="skip-taskbar-hint">True</property>
+    <property name="urgency-hint">True</property>
     <property name="deletable">False</property>
     <signal name="destroy" handler="on_destroy" swapped="no"/>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkNotebook">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="show_border">False</property>
+            <property name="can-focus">True</property>
+            <property name="show-border">False</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">20</property>
+                <property name="margin-right">20</property>
+                <property name="margin-top">20</property>
+                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkFrame">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
-                    <property name="label_yalign">0</property>
-                    <property name="shadow_type">none</property>
+                    <property name="can-focus">False</property>
+                    <property name="label-xalign">0</property>
+                    <property name="label-yalign">0</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkAlignment">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkCheckButton" id="chkAutojoin">
                                     <property name="label" translatable="yes">Automatically join a meeting</property>
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="focus_on_click">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="focus-on-click">False</property>
+                                    <property name="receives-default">False</property>
+                                    <property name="tooltip-text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
                                     <property name="xalign">0</property>
                                     <property name="yalign">0.5</property>
-                                    <property name="draw_indicator">True</property>
+                                    <property name="draw-indicator">True</property>
                                     <signal name="toggled" handler="on_toggle_option" swapped="no"/>
                                   </object>
                                   <packing>
@@ -82,8 +79,8 @@
                                 <child>
                                   <object class="GtkLabel" id="lblAutojoin">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="margin_top">10</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="margin-top">10</property>
                                     <property name="label" translatable="yes">Check this option to automatically join every meeting you host</property>
                                     <property name="selectable">True</property>
                                     <property name="xalign">0</property>
@@ -115,8 +112,8 @@
                     <child type="label">
                       <object class="GtkLabel" id="lblHostingGroup">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_bottom">10</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-bottom">10</property>
                         <property name="label" translatable="yes">Hosting</property>
                         <property name="selectable">True</property>
                         <attributes>
@@ -145,39 +142,39 @@
             <child type="tab">
               <object class="GtkLabel" id="tabGeneral">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">General</property>
               </object>
               <packing>
-                <property name="tab_fill">False</property>
+                <property name="tab-fill">False</property>
               </packing>
             </child>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">20</property>
+                <property name="margin-right">20</property>
+                <property name="margin-top">20</property>
+                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_bottom">20</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-bottom">20</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkCheckButton" id="chkPersistentConfiguration">
                         <property name="label" translatable="yes">Keep configuration file when Wahay closes</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
-                        <property name="receives_default">False</property>
-                        <property name="tooltip_text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
+                        <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
+                        <property name="receives-default">False</property>
+                        <property name="tooltip-text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="draw-indicator">True</property>
                         <signal name="toggled" handler="on_toggle_option" swapped="no"/>
                         <style>
                           <class name="label-checkbox"/>
@@ -191,16 +188,16 @@
                     </child>
                     <child>
                       <object class="GtkLabel" id="lblStoreConfigDescription">
-                        <property name="width_request">100</property>
+                        <property name="width-request">100</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="margin_top">10</property>
+                        <property name="margin-top">10</property>
                         <property name="label" translatable="yes">When this option is checked, the configuration settings will be stored in the device.</property>
                         <property name="wrap">True</property>
                         <property name="selectable">True</property>
-                        <property name="width_chars">1</property>
-                        <property name="track_visited_links">False</property>
+                        <property name="width-chars">1</property>
+                        <property name="track-visited-links">False</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <style>
@@ -223,19 +220,19 @@
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkCheckButton" id="chkEncryptFile">
                         <property name="label" translatable="yes">Encrypt the configuration file</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
-                        <property name="receives_default">False</property>
+                        <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
+                        <property name="receives-default">False</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0.5</property>
-                        <property name="draw_indicator">True</property>
+                        <property name="draw-indicator">True</property>
                         <signal name="toggled" handler="on_toggle_option" swapped="no"/>
                         <style>
                           <class name="label-checkbox"/>
@@ -265,42 +262,42 @@
             <child type="tab">
               <object class="GtkLabel" id="tabSecurity">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Security</property>
               </object>
               <packing>
                 <property name="position">1</property>
-                <property name="tab_fill">False</property>
+                <property name="tab-fill">False</property>
               </packing>
             </child>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">20</property>
+                <property name="margin-right">20</property>
+                <property name="margin-top">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_bottom">20</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-bottom">20</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel" id="lblDebugWarning">
-                            <property name="width_request">100</property>
+                            <property name="width-request">100</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Be very careful. This information is sensitive and could potentially contain very private information. Only turn on these settings if you absolutely need it for debugging.</property>
                             <property name="wrap">True</property>
                             <property name="selectable">True</property>
-                            <property name="track_visited_links">False</property>
+                            <property name="track-visited-links">False</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <style>
@@ -323,20 +320,20 @@
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_bottom">20</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-bottom">20</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkCheckButton" id="chkEnableLogging">
                             <property name="label" translatable="yes">Log debug info</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="focus_on_click">False</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
+                            <property name="can-focus">True</property>
+                            <property name="focus-on-click">False</property>
+                            <property name="receives-default">False</property>
+                            <property name="tooltip-text" translatable="yes">Allow the host to automatically join a newly created meeting</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
-                            <property name="draw_indicator">True</property>
+                            <property name="draw-indicator">True</property>
                             <signal name="toggled" handler="on_toggle_option" swapped="no"/>
                             <style>
                               <class name="label-checkbox"/>
@@ -350,16 +347,16 @@
                         </child>
                         <child>
                           <object class="GtkLabel" id="lblDebugLogFileDescription">
-                            <property name="width_request">100</property>
+                            <property name="width-request">100</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="halign">start</property>
-                            <property name="margin_top">10</property>
+                            <property name="margin-top">10</property>
                             <property name="label" translatable="yes">Log debug output to the selected log file. If no file is selected then the log output will be written to the default log file.</property>
                             <property name="wrap">True</property>
                             <property name="selectable">True</property>
-                            <property name="width_chars">1</property>
-                            <property name="track_visited_links">False</property>
+                            <property name="width-chars">1</property>
+                            <property name="track-visited-links">False</property>
                             <property name="xalign">0</property>
                             <property name="yalign">0</property>
                             <style>
@@ -382,12 +379,12 @@
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel" id="lblDebugLogFile">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Raw log file</property>
                             <property name="selectable">True</property>
                             <property name="xalign">0</property>
@@ -405,13 +402,13 @@
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="margin_bottom">10</property>
+                            <property name="can-focus">False</property>
+                            <property name="margin-bottom">10</property>
                             <child>
                               <object class="GtkEntry" id="rawLogFile">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="secondary_icon_stock">gtk-file</property>
+                                <property name="can-focus">True</property>
+                                <property name="secondary-icon-stock">gtk-file</property>
                                 <signal name="icon-press" handler="on_rawLogFile_icon_press_event" swapped="no"/>
                                 <style>
                                   <class name="form-control"/>
@@ -427,19 +424,19 @@
                               <object class="GtkButton" id="btnRawLogFile">
                                 <property name="visible">True</property>
                                 <property name="sensitive">False</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="margin_left">20</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">True</property>
+                                <property name="margin-left">20</property>
                                 <signal name="clicked" handler="on_rawLogFile_button_clicked_event" swapped="no"/>
                                 <child>
                                   <object class="GtkBox">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <child>
                                       <object class="GtkImage">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_right">5</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="margin-right">5</property>
                                         <property name="stock">gtk-find</property>
                                       </object>
                                       <packing>
@@ -451,8 +448,8 @@
                                     <child>
                                       <object class="GtkLabel" id="lblDebugLogFileBrowse">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="margin_left">10</property>
+                                        <property name="can-focus">False</property>
+                                        <property name="margin-left">10</property>
                                         <property name="label" translatable="yes">Browse</property>
                                       </object>
                                       <packing>
@@ -484,7 +481,7 @@
                         <child>
                           <object class="GtkLabel" id="lblDebugLogFileWarning">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">If you set this option to a file name, low level information will be logged there.</property>
                             <property name="selectable">True</property>
                             <property name="xalign">0</property>
@@ -524,32 +521,32 @@
             <child type="tab">
               <object class="GtkLabel" id="tabDebug">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Debugging</property>
               </object>
               <packing>
                 <property name="position">2</property>
-                <property name="tab_fill">False</property>
+                <property name="tab-fill">False</property>
               </packing>
             </child>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">20</property>
+                <property name="margin-right">20</property>
+                <property name="margin-top">20</property>
+                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="lblMumbleLocation">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Executable Mumble location</property>
                         <property name="selectable">True</property>
                         <property name="xalign">0</property>
@@ -567,14 +564,14 @@
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_bottom">10</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-bottom">10</property>
                         <child>
                           <object class="GtkEntry" id="mumbleBinaryLocation">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="secondary_icon_stock">gtk-file</property>
-                            <property name="placeholder_text" translatable="yes">Ex. /home/user/mumble/mumble</property>
+                            <property name="can-focus">True</property>
+                            <property name="secondary-icon-stock">gtk-file</property>
+                            <property name="placeholder-text" translatable="yes">Ex. /home/user/mumble/mumble</property>
                             <signal name="icon-press" handler="on_mumbleBinaryLocation_icon_press" swapped="no"/>
                             <style>
                               <class name="form-control"/>
@@ -589,19 +586,19 @@
                         <child>
                           <object class="GtkButton" id="btnBrowseMumbleBinary">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="focus_on_click">False</property>
-                            <property name="receives_default">True</property>
-                            <property name="margin_left">20</property>
+                            <property name="can-focus">True</property>
+                            <property name="focus-on-click">False</property>
+                            <property name="receives-default">True</property>
+                            <property name="margin-left">20</property>
                             <signal name="clicked" handler="on_mumbleBinaryLocation_clicked_event" swapped="no"/>
                             <child>
                               <object class="GtkBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <child>
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="stock">gtk-find</property>
                                   </object>
                                   <packing>
@@ -613,8 +610,8 @@
                                 <child>
                                   <object class="GtkLabel" id="lblMumbleBinaryBrowse">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="margin_left">10</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="margin-left">10</property>
                                     <property name="label" translatable="yes">Browse</property>
                                   </object>
                                   <packing>
@@ -646,16 +643,16 @@
                     </child>
                     <child>
                       <object class="GtkLabel" id="lblMumbleBinaryDescription">
-                        <property name="width_request">100</property>
+                        <property name="width-request">100</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="margin_top">10</property>
+                        <property name="margin-top">10</property>
                         <property name="label" translatable="yes">If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.</property>
                         <property name="wrap">True</property>
                         <property name="selectable">True</property>
-                        <property name="width_chars">1</property>
-                        <property name="track_visited_links">False</property>
+                        <property name="width-chars">1</property>
+                        <property name="track-visited-links">False</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <style>
@@ -678,19 +675,19 @@
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_top">20</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-top">20</property>
                         <property name="hexpand">False</property>
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel" id="lblMumblePort">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="label" translatable="yes">Mumble service port</property>
                             <property name="selectable">True</property>
                             <property name="xalign">0</property>
@@ -708,9 +705,9 @@
                         <child>
                           <object class="GtkEntry" id="mumblePort">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="placeholder_text" translatable="yes">Ex. 9800</property>
-                            <property name="input_purpose">digits</property>
+                            <property name="can-focus">True</property>
+                            <property name="placeholder-text" translatable="yes">Ex. 9800</property>
+                            <property name="input-purpose">digits</property>
                             <signal name="delete-text" handler="on_portMumble_delete_text" swapped="no"/>
                             <signal name="insert-text" handler="on_portMumble_insert_text" swapped="no"/>
                             <style>
@@ -725,8 +722,8 @@
                         </child>
                         <child>
                           <object class="GtkLabel" id="lblPortMumbleMessage">
-                            <property name="can_focus">False</property>
-                            <property name="margin_top">10</property>
+                            <property name="can-focus">False</property>
+                            <property name="margin-top">10</property>
                             <property name="label" translatable="yes">Port out of range</property>
                             <property name="selectable">True</property>
                             <property name="xalign">0</property>
@@ -751,9 +748,9 @@
                     <child>
                       <object class="GtkLabel" id="lblMumblePortHelp">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="halign">start</property>
-                        <property name="margin_top">10</property>
+                        <property name="margin-top">10</property>
                         <property name="label" translatable="yes">If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535</property>
                         <property name="selectable">True</property>
                         <style>
@@ -784,12 +781,169 @@
             <child type="tab">
               <object class="GtkLabel" id="tabMumble">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Mumble</property>
               </object>
               <packing>
                 <property name="position">3</property>
-                <property name="tab_fill">False</property>
+                <property name="tab-fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">20</property>
+                <property name="margin-right">20</property>
+                <property name="margin-top">20</property>
+                <property name="margin-bottom">20</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="lblTorLocation">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Executable Tor location</property>
+                        <property name="selectable">True</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <style>
+                          <class name="control-label"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-bottom">10</property>
+                        <child>
+                          <object class="GtkEntry" id="torBinaryLocation">
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="secondary-icon-stock">gtk-file</property>
+                            <property name="placeholder-text" translatable="yes">Ex. \Desktop\Tor Browser\Browser\TorBrowser\Tor</property>
+                            <signal name="icon-press" handler="on_torBinaryLocation_icon_press" swapped="no"/>
+                            <style>
+                              <class name="form-control"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="btnBrowseTorBinary">
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="focus-on-click">False</property>
+                            <property name="receives-default">True</property>
+                            <signal name="clicked" handler="on_torBinaryLocation_clicked_event" swapped="no"/>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="stock">gtk-find</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="lblTorBinaryBrowse">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="label" translatable="yes">Browse</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                            <style>
+                              <class name="btn"/>
+                              <class name="btn-sm"/>
+                              <class name="btn-invisible"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="lblTorBinaryDescription">
+                        <property name="width-request">100</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="margin-top">10</property>
+                        <property name="label" translatable="yes">If you want to use your own Tor instance, please enter the location where Tor is available in the system.</property>
+                        <property name="wrap">True</property>
+                        <property name="selectable">True</property>
+                        <property name="width-chars">1</property>
+                        <property name="track-visited-links">False</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">0</property>
+                        <style>
+                          <class name="control-help"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="tabTor">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Tor</property>
+              </object>
+              <packing>
+                <property name="position">4</property>
+                <property name="tab-fill">False</property>
               </packing>
             </child>
           </object>
@@ -802,11 +956,11 @@
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkLabel" id="lblMessage">
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Configuration settings will be lost in the next session</property>
                 <property name="selectable">True</property>
                 <style>
@@ -829,18 +983,18 @@
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkButton" id="btnCancelSettings">
                     <property name="label" translatable="yes">Cancel</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_left">10</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                    <property name="margin-left">10</property>
                     <signal name="clicked" handler="on_close_window" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -856,9 +1010,9 @@
                   <object class="GtkButton" id="btnSaveSettings">
                     <property name="label" translatable="yes">Save changes</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_left">10</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                    <property name="margin-left">10</property>
                     <signal name="clicked" handler="on_save" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -879,7 +1033,7 @@
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="padding">20</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -891,7 +1045,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="pack_type">end</property>
+            <property name="pack-type">end</property>
             <property name="position">2</property>
           </packing>
         </child>
@@ -899,45 +1053,42 @@
     </child>
   </object>
   <object class="GtkWindow" id="winDeleteConfigFileConfirm">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
-    <property name="default_width">300</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="urgency_hint">True</property>
+    <property name="window-position">center</property>
+    <property name="default-width">300</property>
+    <property name="type-hint">dialog</property>
+    <property name="skip-taskbar-hint">True</property>
+    <property name="urgency-hint">True</property>
     <property name="deletable">False</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_left">20</property>
-            <property name="margin_right">20</property>
-            <property name="margin_top">20</property>
-            <property name="margin_bottom">20</property>
+            <property name="can-focus">False</property>
+            <property name="margin-left">20</property>
+            <property name="margin-right">20</property>
+            <property name="margin-top">20</property>
+            <property name="margin-bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">20</property>
+                <property name="margin-right">20</property>
+                <property name="margin-top">20</property>
+                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="lblSettingsWarning">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_bottom">20</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-bottom">20</property>
                     <property name="label" translatable="yes">Invalid configuration file</property>
                     <property name="selectable">True</property>
                     <property name="xalign">0</property>
@@ -957,14 +1108,14 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="lblConfigFileCorrupted">
-                    <property name="width_request">100</property>
+                    <property name="width-request">100</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_bottom">20</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-bottom">20</property>
                     <property name="label" translatable="yes">We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?</property>
                     <property name="wrap">True</property>
                     <property name="selectable">True</property>
-                    <property name="track_visited_links">False</property>
+                    <property name="track-visited-links">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <style>
@@ -979,13 +1130,13 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="lblConfigFileCorruptedHelp">
-                    <property name="width_request">100</property>
+                    <property name="width-request">100</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.</property>
                     <property name="wrap">True</property>
                     <property name="selectable">True</property>
-                    <property name="track_visited_links">False</property>
+                    <property name="track-visited-links">False</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <style>
@@ -1019,25 +1170,25 @@
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="margin_left">20</property>
-                <property name="margin_right">20</property>
-                <property name="margin_top">20</property>
-                <property name="margin_bottom">20</property>
+                <property name="margin-left">20</property>
+                <property name="margin-right">20</property>
+                <property name="margin-top">20</property>
+                <property name="margin-bottom">20</property>
                 <child>
                   <object class="GtkButton" id="btnConfigFileCorruptedCancel">
                     <property name="label" translatable="yes">No, cancel</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_left">10</property>
+                    <property name="can-focus">False</property>
+                    <property name="receives-default">True</property>
+                    <property name="margin-left">10</property>
                     <signal name="clicked" handler="on_cancel" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -1053,9 +1204,9 @@
                   <object class="GtkButton" id="btnConfigFileCorruptedBackup">
                     <property name="label" translatable="yes">Yes, back it up &amp; continue</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_left">10</property>
+                    <property name="can-focus">False</property>
+                    <property name="receives-default">True</property>
+                    <property name="margin-left">10</property>
                     <signal name="clicked" handler="on_delete" swapped="no"/>
                     <style>
                       <class name="btn"/>
@@ -1072,7 +1223,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">0</property>
               </packing>
             </child>

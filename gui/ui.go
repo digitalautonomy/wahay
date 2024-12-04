@@ -227,7 +227,6 @@ func (u *gtkUI) disableMainWindowControls(builder *uiBuilder) {
 	if !u.errorHandler.isThereAnyStartupError() {
 		return // nothing to do
 	}
-
 	btnHostMeeting := builder.get("btnHostMeeting").(gtki.Button)
 	btnJoinMeeting := builder.get("btnJoinMeeting").(gtki.Button)
 
