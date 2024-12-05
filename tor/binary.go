@@ -241,8 +241,6 @@ func listPossibleTorBinary(path string) []string {
 
 	matches, _ := filepathf.Glob(filepath.Join(path, "Tor*"))
 
-	fmt.Println(matches)
-
 	for _, match := range matches {
 		filename := filepath.Base(match)
 
