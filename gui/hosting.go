@@ -91,7 +91,6 @@ func (h *hostData) showMeetingControls() {
 		"label", "lblInfoMeetingID",
 		"button", "btnFinishMeeting",
 		"button", "btnJoinMeeting",
-		"button", "btnJoinMeeting",
 		"button", "btnInviteOthers",
 		"button", "btnCopyMeetingID",
 		"tooltip", "btnJoinMeeting",
