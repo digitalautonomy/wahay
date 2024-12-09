@@ -412,7 +412,7 @@ func (s *clientSuite) Test_copyBinaryToDir_copyTheBinaryToANewFile(c *C) {
 	_, err = os.Stat(mumbleBinaryDestinationPath + "/mumble")
 	c.Assert(err, NotNil)
 
-	err = binary.copyBinaryToDir(mumbleBinaryDestinationPath + "/mumble")
+	err = binary.copyBinaryFilesToDir(mumbleBinaryDestinationPath + "/mumble")
 	c.Assert(err, IsNil)
 
 	// Assert that the Mumble binary now exists in the destination directory
@@ -440,7 +440,7 @@ func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsInv
 
 	binary := &binary{path: srcf.Name()}
 
-	err = binary.copyBinaryToDir("invalid/binary/destination")
+	err = binary.copyBinaryFilesToDir("invalid/binary/destination")
 	c.Assert(err, NotNil)
 
 	// Assert that the Mumble binary does not exist in the destination directory
@@ -452,7 +452,7 @@ func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheBinaryPathDoesNo
 
 	binary := &binary{path: "invalid/binary/path"}
 
-	err := binary.copyBinaryToDir("valid/binary/destination")
+	err := binary.copyBinaryFilesToDir("valid/binary/destination")
 	c.Assert(err, NotNil)
 
 	// Assert that the Mumble binary does not exist in the src directory
@@ -486,7 +486,7 @@ func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationFileI
 
 	binary := &binary{path: srcf.Name()}
 
-	err = binary.copyBinaryToDir(mumbleBinaryDestinationPath)
+	err = binary.copyBinaryFilesToDir(mumbleBinaryDestinationPath)
 	c.Assert(err, NotNil)
 
 	c.Assert(isADirectory(mumbleBinaryDestinationPath), IsTrue)
@@ -523,7 +523,7 @@ func (s *clientSuite) Test_copyBinaryToDir_shouldOverwriteAnExistingFile(c *C) {
 
 	binary := &binary{path: srcf.Name()}
 
-	err = binary.copyBinaryToDir(dstf.Name())
+	err = binary.copyBinaryFilesToDir(dstf.Name())
 
 	c.Assert(err, IsNil)
 }
