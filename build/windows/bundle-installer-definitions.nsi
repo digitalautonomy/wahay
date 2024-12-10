@@ -20,9 +20,9 @@ InstallDir "$ProgramFiles\${Name}"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
+!insertmacro MUI_PAGE_LICENSE "LICENSE"
 !define MUI_COMPONENTSPAGE_NODESC
-!define MUI_COMPONENTSPAGE_TEXT_TOP "We received an encrypted message which can't be read, since private communication is not currently turned on. You should ask your peer to repeat what they said."
+!define MUI_COMPONENTSPAGE_TEXT_TOP "Select the components you want to include in your installation. You can install Wahay along with additional tools like Tor and Mumble if you don't have them yet."
 !define MUI_COMPONENTSPAGE_TEXT_COMPLIST "Choose the features you want to install. Uncheck any components you don't need."
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
@@ -39,7 +39,6 @@ InstallDir "$ProgramFiles\${Name}"
 !insertmacro MUI_LANGUAGE "English"
 
 SectionGroup /e "Wahay"
-
     Section "Wahay Installer"
         SetOutPath "$INSTDIR"
 
@@ -70,19 +69,17 @@ SectionGroup /e "Wahay"
     SectionGroupEnd
 
     SectionGroup /e "Requirements"
-        Section "Mumble" 
-            SetOutPath "$INSTDIR\Mumble"
-            File /r "Mumble\"
-
+        Section "Mumble"
+            SetOutPath "$INSTDIR"
+            File /r "Mumble"
         SectionEnd
 
         Section "Tor"
-            SetOutPath "$INSTDIR\Tor" 
+            SetOutPath "$INSTDIR" 
             File "tor.exe"
         SectionEnd
 
     SectionGroupEnd
-
 SectionGroupEnd
 
 Section "Uninstall"
@@ -91,16 +88,13 @@ Section "Uninstall"
   Delete "$INSTDIR\wahay.ico"
   RMDir /r "$INSTDIR\lib"
   RMDir /r "$INSTDIR\share"
-  Delete "$INSTDIR\Mumble"
   RMDir /r "$INSTDIR\Mumble"
-  Delete "$INSTDIR\Tor"
-  RMDir /r "$INSTDIR\Tor"
+  Delete "$INSTDIR\tor.exe"
+  Delete "$INSTDIR\gdbus.exe"
 
   Delete "$SMPROGRAMS\${NAME}.lnk"
   Delete "$DESKTOP\${NAME}.lnk"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}"
   Delete "$INSTDIR\Uninstall.exe"
-  Delete "$INSTDIR\gdbus.exe"
   RMDir "$INSTDIR"
-
 SectionEnd

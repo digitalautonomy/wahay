@@ -22,9 +22,14 @@ InstallDir "$ProgramFiles\${Name}"
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "LICENSE"
 !define MUI_COMPONENTSPAGE_NODESC
+!define MUI_COMPONENTSPAGE_TEXT_TOP "Select the components you want to include in your installation."
+!define MUI_COMPONENTSPAGE_TEXT_COMPLIST "Choose the features you want to install. Uncheck any components you don't need."
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
+
+!define MUI_FINISHPAGE_LINK "https://wahay.org/"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://wahay.org/"
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -41,6 +46,8 @@ Section "Wahay"
   File "dll\*.dll"
   File /r "share"
   File /r "lib"
+  File "gdbus.exe"
+
   File /oname=wahay.ico "wahay-256x256.ico"
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -62,6 +69,7 @@ Section "Uninstall"
   Delete "$INSTDIR\wahay.ico"
   RMDir /r "$INSTDIR\lib"
   RMDir /r "$INSTDIR\share"
+  Delete "$INSTDIR\gdbus.exe"
 
   Delete "$SMPROGRAMS\${NAME}.lnk"
   Delete "$DESKTOP\${NAME}.lnk"
