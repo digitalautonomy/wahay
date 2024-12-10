@@ -13,13 +13,16 @@ const (
 	wahayMumbleBundlePath = "wahay/Mumble/client/mumble.exe"
 )
 
-var execLookPath = exec.LookPath
+var (
+	execLookPath = exec.LookPath
+	osGetenv     = os.Getenv
+)
 
 func searchBinaryInSystem() (*binary, error) {
 	//Here we ignore the error because we handle the empty string returned.
 	path, _ := execLookPath("mumble.exe")
-	programFilesDir := os.Getenv("PROGRAMFILES")
-	programFilesX86Dir := os.Getenv("PROGRAMFILES(X86)")
+	programFilesDir := osGetenv("PROGRAMFILES")
+	programFilesX86Dir := osGetenv("PROGRAMFILES(X86)")
 	dirs := []string{
 		programFilesX86Dir,
 		programFilesDir,

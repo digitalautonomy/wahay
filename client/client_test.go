@@ -228,11 +228,28 @@ func (s *clientSuite) Test_InitSystem_worksWithAValidConfigurationAndBinaryPath(
 	mc.AssertExpectations(c)
 }
 
+type mockGetenv struct {
+	mock.Mock
+}
+
+func (m *mockGetenv) Getenv(key string) string {
+	args := m.Called(key)
+	return args.String(0)
+}
+
 func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenAValidMumbleBinaryIsNotAvailable(c *C) {
 
 	ml := &mockLookPath{}
 	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
-	ml.On("LookPath", "mumble").Return("", nil).Once()
+	if IsWindows() {
+		mge := &mockGetenv{}
+		defer gostub.New().Stub(&osGetenv, mge.Getenv).Reset()
+		mge.On("Getenv", "PROGRAMFILES").Return("").Once()
+		mge.On("Getenv", "PROGRAMFILES(X86)").Return("").Once()
+		ml.On("LookPath", "mumble.exe").Return("", nil).Once()
+	} else {
+		ml.On("LookPath", "mumble").Return("", nil).Once()
+	}
 
 	ti := &MockTorInstance{}
 

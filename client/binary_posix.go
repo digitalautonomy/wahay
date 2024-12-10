@@ -14,7 +14,10 @@ const (
 	wahayMumbleBundlePath = "wahay/mumble/mumble"
 )
 
-var execLookPath = exec.LookPath
+var (
+	execLookPath = exec.LookPath
+	osGetenv     = os.Getenv
+)
 
 func searchBinaryInSystem() (*binary, error) {
 	path, err := execLookPath("mumble")
