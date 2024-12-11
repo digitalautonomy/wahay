@@ -39,7 +39,7 @@ InstallDir "$ProgramFiles\${Name}"
 !insertmacro MUI_LANGUAGE "English"
 
 SectionGroup /e "Wahay"
-    Section "Wahay Installer"
+    Section "Wahay App"
         SetOutPath "$INSTDIR"
 
         SectionIn 1 RO
@@ -68,7 +68,12 @@ SectionGroup /e "Wahay"
     
     SectionGroupEnd
 
-    SectionGroup /e "Requirements"
+    SectionGroup /e "Dependencies"
+        Section "Microsoft Visual C++"
+                SetOutPath $ProgramFiles
+                ExecWait "VC_redist.x64.exe"
+        SectionEnd
+
         Section "Mumble"
             SetOutPath "$INSTDIR"
             File /r "Mumble"
