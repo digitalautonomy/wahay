@@ -70,8 +70,8 @@ SectionGroup /e "Wahay"
 
     SectionGroup /e "Dependencies"
         Section "Microsoft Visual C++"
-                SetOutPath $ProgramFiles
-                ExecWait "VC_redist.x64.exe"
+            SetOutPath $ProgramFiles
+            ExecWait "VC_redist.x64.exe"
         SectionEnd
 
         Section "Mumble"

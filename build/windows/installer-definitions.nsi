@@ -37,7 +37,7 @@ InstallDir "$ProgramFiles\${Name}"
 
 !insertmacro MUI_LANGUAGE "English"
 
-Section "Wahay"
+Section "Wahay App"
   SetOutPath "$INSTDIR"
 
   SectionIn 1 RO
@@ -55,13 +55,16 @@ Section "Wahay"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}"   "UninstallString" "$INSTDIR\Uninstall.exe"
 SectionEnd
 
-Section "Start Menu shortcut"
-  CreateShortCut "$SMPROGRAMS\${NAME}.lnk" "$INSTDIR\wahay.exe" "" "$INSTDIR\wahay.ico"
-SectionEnd
+SectionGroup /e "Shortcuts"
+  Section "Start Menu"
+    CreateShortCut "$SMPROGRAMS\${NAME}.lnk" "$INSTDIR\wahay.exe" "" "$INSTDIR\wahay.ico"
+  SectionEnd
 
-Section "Desktop shortcut"
-  CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\wahay.exe" "" "$INSTDIR\wahay.ico"
-SectionEnd
+  Section "Desktop"
+    CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\wahay.exe" "" "$INSTDIR\wahay.ico"
+  SectionEnd
+SectionGroupEnd
+
 
 Section "Uninstall"
   Delete "$INSTDIR\wahay.exe"
