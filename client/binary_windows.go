@@ -5,6 +5,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -40,7 +42,16 @@ func searchBinaryInSystem() (*binary, error) {
 }
 
 func (b *binary) copyBinaryFilesToDir(destination string) error {
-	err := filepath.Walk(filepath.Dir(b.path), func(path string, info os.FileInfo, err error) error {
+	// Check if the destination directory exists
+	_, err := os.Stat(destination)
+	if os.IsNotExist(err) {
+		log.Errorf("destination directory does not exist: %s", destination)
+	}
+	if err != nil {
+		return err
+	}
+
+	err = filepath.Walk(filepath.Dir(b.path), func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
