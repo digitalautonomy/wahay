@@ -24,9 +24,9 @@ func searchBinaryInSystem() (*binary, error) {
 	programFilesDir := osGetenv("PROGRAMFILES")
 	programFilesX86Dir := osGetenv("PROGRAMFILES(X86)")
 	dirs := []string{
+		path,
 		programFilesX86Dir,
 		programFilesDir,
-		path,
 	}
 
 	for _, d := range dirs {

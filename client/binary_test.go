@@ -47,7 +47,14 @@ func (s *clientSuite) Test_newBinary_worksWithValidBinaryPath(c *C) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	mumblePath := filepath.Join(tempDir, "/mumble/mumble")
+	var mumblePath string
+
+	if IsWindows() {
+		mumblePath = filepath.Join(tempDir, "/Mumble/client/mumble.exe")
+	} else {
+		mumblePath = filepath.Join(tempDir, "/mumble/mumble")
+	}
+
 	err = os.MkdirAll(mumblePath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
@@ -142,19 +149,22 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBi
 	}
 	defer os.RemoveAll(tempDir)
 
-	mumbleLibPath := filepath.Join(tempDir, "/mumble/lib")
+	var (
+		mumbleLibPath    string
+		mumbleBinaryPath string
+	)
+
+	if IsWindows() {
+		mumbleLibPath = filepath.Join(tempDir, "/Mumble/client/lib")
+		mumbleBinaryPath = filepath.Join(tempDir, "Mumble/client/mumble.exe")
+	} else {
+		mumbleLibPath = filepath.Join(tempDir, "/mumble/lib")
+		mumbleBinaryPath = filepath.Join(tempDir, "/mumble/mumble")
+	}
+
 	err = os.MkdirAll(mumbleLibPath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
-	}
-
-	var mumbleBinaryPath string
-
-	if IsWindows() {
-		mumbleBinaryPath = filepath.Join(tempDir, "Mumble/client/mumble.exe")
-
-	} else {
-		mumbleBinaryPath = filepath.Join(tempDir, "/mumble/mumble")
 	}
 
 	err = os.MkdirAll(mumbleBinaryPath, 0755)
@@ -286,12 +296,18 @@ func (s *clientSuite) Test_searchBinaryInSystem_returnsAValidBinaryFoundInTheSys
 	mc := &mockCommand{}
 	defer gostub.New().Stub(&execCommand, mc.Command).Reset()
 	defer gostub.New().Stub(&commandOutput, mc.Output).Reset()
-	mc.On("Command", srcf.Name(), []string{"--license"}).Return(&exec.Cmd{Path: srcf.Name(), Args: []string{"--license"}}).Once()
+	mc.On("Command", srcf.Name(), []string{"--license"}).Return(&exec.Cmd{Path: srcf.Name(),
+		Args: []string{"--license"}}).Once()
 	mc.On("Output").Return([]byte("command output"), nil).Once()
 
 	ml := &mockLookPath{}
 	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
-	ml.On("LookPath", "mumble").Return(srcf.Name(), nil).Once()
+
+	if IsWindows() {
+		ml.On("LookPath", "mumble.exe").Return(srcf.Name(), nil).Once()
+	} else {
+		ml.On("LookPath", "mumble").Return(srcf.Name(), nil).Once()
+	}
 
 	binary, err := searchBinaryInSystem()
 	c.Assert(binary, NotNil)
@@ -307,7 +323,16 @@ func (s *clientSuite) Test_searchBinaryInSystem_returnsNilWhenTheBinaryIsNotFoun
 	ml := &mockLookPath{}
 	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
 
-	ml.On("LookPath", "mumble").Return("", errors.New("Error looking for executable")).Once()
+	if IsWindows() {
+		mge := &mockGetenv{}
+		defer gostub.New().Stub(&osGetenv, mge.Getenv).Reset()
+
+		mge.On("Getenv", "PROGRAMFILES").Return("").Once()
+		mge.On("Getenv", "PROGRAMFILES(X86)").Return("").Once()
+		ml.On("LookPath", "mumble.exe").Return("", nil).Once()
+	} else {
+		ml.On("LookPath", "mumble").Return("", errors.New("Error looking for executable")).Once()
+	}
 
 	binary, _ := searchBinaryInSystem()
 	c.Assert(binary, IsNil)
@@ -1019,7 +1044,17 @@ func (s *clientSuite) Test_searchBinary_returnsNilWhenNoBinaryIsFound(c *C) {
 
 	ml := &mockLookPath{}
 	defer gostub.New().Stub(&execLookPath, ml.LookPath).Reset()
-	ml.On("LookPath", "mumble").Return("", nil).Once()
+
+	if IsWindows() {
+		mge := &mockGetenv{}
+		defer gostub.New().Stub(&osGetenv, mge.Getenv).Reset()
+
+		mge.On("Getenv", "PROGRAMFILES").Return("").Once()
+		mge.On("Getenv", "PROGRAMFILES(X86)").Return("").Once()
+		ml.On("LookPath", "mumble.exe").Return("", nil).Once()
+	} else {
+		ml.On("LookPath", "mumble").Return("", nil).Once()
+	}
 
 	binary := searchBinary(conf)
 	c.Assert(binary, IsNil)
