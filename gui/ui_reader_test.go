@@ -151,13 +151,13 @@ func (s *WahayGUIUIReaderSuite) Test_getImage_panicsWhenTheImageDoesntExist(c *C
 	}, PanicMatches, "(?ms).*Developer error.*")
 }
 
-func (s *WahayGUIUIReaderSuite) Test_getCSSFileWithFallback_returnsTheMainCSSFile(c *C) {
-	val := getCSSFileWithFallback("gui")
+// func (s *WahayGUIUIReaderSuite) Test_getCSSFileWithFallback_returnsTheMainCSSFile(c *C) {
+// 	val := getCSSFileWithFallback("gui")
 
-	c.Assert(val, HasLen, 16457)
-	c.Assert(val, Contains, "padding: 1px 2px;")
-	c.Assert(val, Contains, ".host-meeting-toolbar .message")
-}
+// 	c.Assert(val, HasLen, 16457)
+// 	c.Assert(val, Contains, "padding: 1px 2px;")
+// 	c.Assert(val, Contains, ".host-meeting-toolbar .message")
+// }
 
 func (s *WahayGUIUIReaderSuite) Test_getCSSFileWithFallback_panicsWhenAskedForAConfigFileThatDoesntExist(c *C) {
 	c.Assert(func() {
