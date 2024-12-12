@@ -314,14 +314,14 @@ dialog {
   font-size: inherit;
   border-radius: 6px; }
 
-.btn-invisible, .main-window-status-bar .status-show-errors {
+.btn-invisible {
   color: #1a202c;
   background: #f7fafc;
   border: 2px solid #cbd5e0;
   outline-width: 0;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   font-weight: 500; }
-  .btn-invisible:hover, .main-window-status-bar .status-show-errors:hover, .btn-invisible:active, .main-window-status-bar .status-show-errors:active, .btn-invisible:focus, .main-window-status-bar .status-show-errors:focus {
+  .btn-invisible:hover, .btn-invisible:active, .btn-invisible:focus {
     color: #1a202c;
     background: #fff;
     border: 2px solid #a0aec0;
@@ -433,16 +433,18 @@ label.label-text {
   .main-window-status-bar .status-label {
     font-size: 18px; }
   .main-window-status-bar .status-show-errors {
-    color: #fff;
+    background: #e2e8f0;
+    color: #718096;
     font-weight: 400;
     font-size: 18px;
     padding: 5px 20px;
     border-radius: 10em;
-    border: 2px solid rgba(255, 255, 255, 0.1); }
-    .main-window-status-bar .status-show-errors:hover {
-      color: #fff;
-      background: #9b2c2c;
-      border-color: #9b2c2c; }
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
+    .main-window-status-bar .status-show-errors:hover, .main-window-status-bar .status-show-errors:active, .main-window-status-bar .status-show-errors:focus {
+      border: 2px solid rgba(160, 174, 192, 0.3);
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+      background: #cbd5e0; }
 
 .help-content {
   padding: 20px; }
