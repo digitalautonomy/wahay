@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.12" />
   <object class="GtkApplicationWindow" id="startHostingWindow">
     <property name="width_request">300</property>
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="default_width">300</property>
-    <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
+    <signal name="destroy" handler="on_close_window_signal" swapped="no" />
     <child type="titlebar">
-      <placeholder/>
+      <placeholder />
     </child>
     <child>
       <object class="GtkBox">
@@ -30,7 +30,7 @@
                 <property name="selectable">True</property>
                 <property name="track_visited_links">False</property>
                 <style>
-                  <class name="message"/>
+                  <class name="message" />
                 </style>
               </object>
               <packing>
@@ -53,11 +53,10 @@
                     <property name="tooltip_text" translatable="yes"></property>
                     <property name="valign">end</property>
                     <property name="margin_left">10</property>
-                    <signal name="clicked" handler="on_join_meeting" swapped="no"/>
+                    <signal name="clicked" handler="on_join_meeting" swapped="no" />
                     <style>
+                      <class name="btn-secondary" />
                       <class name="btn"/>
-                      <class name="btn-invisible"/>
-                      <class name="btn-sm"/>
                     </style>
                   </object>
                   <packing>
@@ -68,7 +67,7 @@
                   </packing>
                 </child>
                 <style>
-                  <class name="actions"/>
+                  <class name="actions" />
                 </style>
               </object>
               <packing>
@@ -78,7 +77,7 @@
               </packing>
             </child>
             <style>
-              <class name="host-meeting-toolbar"/>
+              <class name="host-meeting-toolbar" />
             </style>
           </object>
           <packing>
@@ -112,7 +111,7 @@
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <style>
-                          <class name="label-bold"/>
+                          <class name="label-bold" />
                         </style>
                       </object>
                       <packing>
@@ -129,7 +128,7 @@
                         <property name="selectable">True</property>
                         <property name="track_visited_links">False</property>
                         <style>
-                          <class name="label-value"/>
+                          <class name="label-value" />
                         </style>
                       </object>
                       <packing>
@@ -139,7 +138,7 @@
                       </packing>
                     </child>
                     <style>
-                      <class name="meeting-info-line"/>
+                      <class name="meeting-info-line" />
                     </style>
                   </object>
                   <packing>
@@ -163,7 +162,7 @@
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <style>
-                          <class name="label-bold"/>
+                          <class name="label-bold" />
                         </style>
                       </object>
                       <packing>
@@ -180,7 +179,7 @@
                         <property name="selectable">True</property>
                         <property name="track_visited_links">False</property>
                         <style>
-                          <class name="label-value"/>
+                          <class name="label-value" />
                         </style>
                       </object>
                       <packing>
@@ -190,7 +189,7 @@
                       </packing>
                     </child>
                     <style>
-                      <class name="meeting-info-line"/>
+                      <class name="meeting-info-line" />
                     </style>
                   </object>
                   <packing>
@@ -215,7 +214,7 @@
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <style>
-                          <class name="label-bold"/>
+                          <class name="label-bold" />
                         </style>
                       </object>
                       <packing>
@@ -243,8 +242,8 @@
                             <property name="max_width_chars">30</property>
                             <property name="track_visited_links">False</property>
                             <style>
-                              <class name="label-value"/>
-                              <class name="mb"/>
+                              <class name="label-value" />
+                              <class name="mb" />
                             </style>
                           </object>
                           <packing>
@@ -260,10 +259,10 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">start</property>
-                            <signal name="clicked" handler="on_copy_meeting_id" swapped="no"/>
+                            <signal name="clicked" handler="on_copy_meeting_id" swapped="no" />
                             <style>
-                              <class name="btn-link"/>
-                              <class name="btn"/>
+                              <class name="btn-link" />
+                              <class name="btn" />
                             </style>
                           </object>
                           <packing>
@@ -280,7 +279,7 @@
                       </packing>
                     </child>
                     <style>
-                      <class name="meeting-info-line"/>
+                      <class name="meeting-info-line" />
                     </style>
                   </object>
                   <packing>
@@ -290,7 +289,7 @@
                   </packing>
                 </child>
                 <style>
-                  <class name="window-content"/>
+                  <class name="vertical-space"/>
                 </style>
               </object>
               <packing>
@@ -300,7 +299,7 @@
               </packing>
             </child>
             <style>
-              <class name="window-content"/>
+              <class name="window-content" />
             </style>
           </object>
           <packing>
@@ -319,11 +318,12 @@
                 <property name="sensitive">False</property>
                 <property name="can_focus">False</property>
                 <property name="double_buffered">False</property>
-                <property name="label" translatable="yes">The meeting ID has been copied to the clipboard</property>
+                <property name="label" translatable="yes">The meeting ID has been copied to the
+                  clipboard</property>
                 <property name="selectable">True</property>
                 <property name="track_visited_links">False</property>
                 <style>
-                  <class name="label-success"/>
+                  <class name="label-success" />
                 </style>
               </object>
               <packing>
@@ -358,10 +358,10 @@
                     <property name="tooltip_text" translatable="yes"></property>
                     <property name="halign">start</property>
                     <property name="valign">center</property>
-                    <signal name="clicked" handler="on_invite_others" swapped="no"/>
+                    <signal name="clicked" handler="on_invite_others" swapped="no" />
                     <style>
-                      <class name="btn"/>
-                      <class name="btn-invisible"/>
+                      <class name="btn-md" />
+                      <class name="btn-invisible" />
                     </style>
                   </object>
                   <packing>
@@ -391,10 +391,9 @@
                     <property name="receives_default">True</property>
                     <property name="tooltip_text" translatable="yes">End this meeting for all</property>
                     <property name="halign">end</property>
-                    <signal name="clicked" handler="on_finish_meeting" swapped="no"/>
+                    <signal name="clicked" handler="on_finish_meeting" swapped="no" />
                     <style>
-                      <class name="btn-danger"/>
-                      <class name="btn-md"/>
+                      <class name="control-end-meeting"/>
                     </style>
                   </object>
                   <packing>
@@ -411,8 +410,8 @@
               </packing>
             </child>
             <style>
-              <class name="window-actions"/>
-              <class name="bordered"/>
+              <class name="window-actions" />
+              <class name="bordered" />
             </style>
           </object>
           <packing>

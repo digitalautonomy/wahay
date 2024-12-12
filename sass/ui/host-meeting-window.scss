@@ -1,12 +1,21 @@
 .host-meeting-toolbar {
-  background: $green-200;
+  background: $green-100;
   box-shadow: 0 2px 4px rgba($black, 0.12);
   padding: $spacing;
   font-size: $font-size-large;
   color: $green-900;
-  border-bottom: 2px solid $white;
 
   .message {
     font-weight: $font-weight-semibold;
   }
+}
+
+.control-end-meeting {
+  padding: $spacing/1.5 $spacing;
+  border-radius: $border-radius;
+  @include btn-solid($text-white, $red-600, $red-700);
+}
+
+.vertical-space {
+  padding: $spacing 0;
 }
