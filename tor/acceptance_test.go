@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"runtime"
 
 	"github.com/digitalautonomy/wahay/config"
 	"github.com/wybiral/torgo"
@@ -298,6 +299,10 @@ func (s *TorAcceptanceSuite) Test_thatThingsWillFailIfTheresASystemTorWithOldVer
 
 	mocktorgof.newControllerReturn2 = errors.New("no connection possible")
 
+	if IsWindows() {
+		mockexecf.lookPathReturn1 = "C:\\Program Files\\tor\\tor.exe"
+		mockfilepathf.joinReturn1 = ""
+	}
 	mockexecf.lookPathReturn1 = systemTorBinary
 
 	calledAfter := 0
@@ -438,6 +443,10 @@ func verifyAllAssertions(c *C, e error, tc *mockTorgoController, i *instance) {
 // - there is a "bundle" tor available
 // - there is a system tor executable available
 
+func IsWindows() bool {
+	return runtime.GOOS == "windows"
+}
+
 const shouldTestPrint = false
 
 func testPrint(s string, args ...interface{}) {
@@ -472,6 +481,11 @@ func mockAll() {
 type mockOsImplementation struct {
 	onIsPortAvailable func(int) bool
 	onGetRandomPort   func() int
+}
+
+func (*mockOsImplementation) Getenv(key string) string {
+	testPrint("Getenv(%s)\n", key)
+	return ""
 }
 
 func (*mockOsImplementation) Getwd() (string, error) {
@@ -525,11 +539,18 @@ func (m *mockOsImplementation) GetRandomPort() int {
 	return 0
 }
 
-type mockFilepathImplementation struct{}
+type mockFilepathImplementation struct {
+	joinReturn1 string
+}
 
 func (*mockFilepathImplementation) Glob(p string) ([]string, error) {
 	testPrint("Glob(%v)\n", p)
 	return nil, nil
+}
+
+func (m *mockFilepathImplementation) Join(elem ...string) string {
+	testPrint("Join(%v)\n", elem)
+	return m.joinReturn1
 }
 
 type mockExecImplementation struct {
