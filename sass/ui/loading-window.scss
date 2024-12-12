@@ -1,5 +1,9 @@
 .loading-window {
   color: $black;
   background: $white;
-  font-size: $font-size-medium;
+
+  .spinner {
+    min-width: 50px;
+    min-height: 50px;
+  }
 }
