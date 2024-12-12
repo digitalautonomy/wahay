@@ -148,7 +148,15 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidMumbleBundledBi
 		c.Fatalf("Failed to create directory: %v", err)
 	}
 
-	mumbleBinaryPath := filepath.Join(tempDir, "/mumble/mumble")
+	var mumbleBinaryPath string
+
+	if IsWindows() {
+		mumbleBinaryPath = filepath.Join(tempDir, "Mumble/client/mumble.exe")
+
+	} else {
+		mumbleBinaryPath = filepath.Join(tempDir, "/mumble/mumble")
+	}
+
 	err = os.MkdirAll(mumbleBinaryPath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
@@ -184,7 +192,15 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAValidAndNotBundledMu
 	}
 	defer os.RemoveAll(tempDir)
 
-	mumbleBinaryPath := filepath.Join(tempDir, "/mumble/mumble")
+	var mumbleBinaryPath string
+
+	if IsWindows() {
+		mumbleBinaryPath = filepath.Join(tempDir, "Mumble/client/mumble.exe")
+
+	} else {
+		mumbleBinaryPath = filepath.Join(tempDir, "/mumble/mumble")
+	}
+
 	err = os.MkdirAll(mumbleBinaryPath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
@@ -214,7 +230,13 @@ func (s *clientSuite) Test_isThereAnAvailableBinary_returnsAInValidMumbleBinaryO
 	}
 	defer os.RemoveAll(tempDir)
 
-	mumbleBinaryPath := filepath.Join(tempDir, "/mumble/mumble")
+	var mumbleBinaryPath string
+
+	if IsWindows() {
+		mumbleBinaryPath = filepath.Join(tempDir, "Mumble/client/mumble.exe")
+	} else {
+		mumbleBinaryPath = filepath.Join(tempDir, "/mumble/mumble")
+	}
 	err = os.MkdirAll(mumbleBinaryPath, 0755)
 	if err != nil {
 		c.Fatalf("Failed to create directory: %v", err)
@@ -409,18 +431,18 @@ func (s *clientSuite) Test_copyBinaryToDir_copyTheBinaryToANewFile(c *C) {
 	binary := &binary{path: srcf.Name()}
 
 	// Assert that the Mumble binary does not exist in the destination directory
-	_, err = os.Stat(mumbleBinaryDestinationPath + "/mumble")
+	_, err = os.Stat(filepathJoin(mumbleBinaryDestinationPath, "/mumble"))
 	c.Assert(err, NotNil)
 
-	err = binary.copyBinaryFilesToDir(mumbleBinaryDestinationPath + "/mumble")
+	err = binary.copyBinaryFilesToDir(filepathJoin(mumbleBinaryDestinationPath, "/mumble"))
 	c.Assert(err, IsNil)
 
 	// Assert that the Mumble binary now exists in the destination directory
-	_, err = os.Stat(mumbleBinaryDestinationPath + "/mumble")
+	_, err = os.Stat(filepathJoin(mumbleBinaryDestinationPath, "/mumble"))
 	c.Assert(err, IsNil)
 }
 
-func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsInvalid(c *C) {
+func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsEmpty(c *C) {
 	tempDir, err := os.MkdirTemp("", "test")
 	if err != nil {
 		c.Fatalf("Failed to create temporary directory: %v", err)
@@ -440,11 +462,11 @@ func (s *clientSuite) Test_copyBinaryToDir_returnsAnErrorWhenTheDestinationIsInv
 
 	binary := &binary{path: srcf.Name()}
 
-	err = binary.copyBinaryFilesToDir("invalid/binary/destination")
+	err = binary.copyBinaryFilesToDir("")
 	c.Assert(err, NotNil)
 
 	// Assert that the Mumble binary does not exist in the destination directory
-	_, err = os.Stat("invalid/binary/destination")
+	_, err = os.Stat("")
 	c.Assert(err, NotNil)
 }
 
