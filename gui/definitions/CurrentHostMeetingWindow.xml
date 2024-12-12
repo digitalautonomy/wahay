@@ -28,7 +28,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Tip: Push right control to talk</property>
-                <property name="selectable">True</property>
+                <property name="selectable">False</property>
                 <style>
                   <class name="text"/>
                 </style>
