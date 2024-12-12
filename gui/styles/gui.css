@@ -462,7 +462,8 @@ label.label-text {
   background: #fff; }
   .loading-window .spinner {
     min-width: 50px;
-    min-height: 50px; }
+    min-height: 50px;
+    color: #48bb78; }
 
 .invite-email-link {
   border-radius: 100%;

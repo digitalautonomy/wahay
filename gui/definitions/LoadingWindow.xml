@@ -9,7 +9,7 @@
     <property name="window_position">center</property>
     <property name="type_hint">dialog</property>
     <property name="default_width">400</property>
-    <property name="default_height">140</property>
+    <property name="default_height">150</property>
     <signal name="remove" handler="on_close" swapped="no" />
     <child type="titlebar">
       <placeholder />
