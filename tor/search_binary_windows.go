@@ -84,10 +84,10 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 	//Here we ignore the error because we handle the empty string returned.
 	path, _ := execf.LookPath("tor.exe")
 	homeDir, _ := os.UserHomeDir()
-	desktopDir := filepath.Join(homeDir, "Desktop")
-	oneDriveDesktopDir := filepath.Join(homeDir, "OneDrive/Desktop")
-	programFilesDir := os.Getenv("PROGRAMFILES")
-	programFilesX86Dir := os.Getenv("PROGRAMFILES(X86)")
+	desktopDir := filepathf.Join(homeDir, "Desktop")
+	oneDriveDesktopDir := filepathf.Join(homeDir, "OneDrive/Desktop")
+	programFilesDir := osf.Getenv("PROGRAMFILES")
+	programFilesX86Dir := osf.Getenv("PROGRAMFILES(X86)")
 
 	dirs := []string{
 		path,

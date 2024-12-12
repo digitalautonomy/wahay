@@ -26,6 +26,7 @@ import (
 // implementation details.
 
 type osFacade interface {
+	Getenv(string) string
 	Getwd() (string, error)
 	Args() []string
 	Environ() []string
@@ -39,6 +40,7 @@ type osFacade interface {
 
 type filepathFacade interface {
 	Glob(string) ([]string, error)
+	Join(...string) string
 }
 
 type execFacade interface {
@@ -87,6 +89,10 @@ func init() {
 
 type realOsImplementation struct{}
 
+func (*realOsImplementation) Getenv(key string) string {
+	return os.Getenv(key)
+}
+
 func (*realOsImplementation) Getwd() (string, error) {
 	return os.Getwd()
 }
@@ -127,6 +133,10 @@ type realFilepathImplementation struct{}
 
 func (*realFilepathImplementation) Glob(p string) ([]string, error) {
 	return filepath.Glob(p)
+}
+
+func (*realFilepathImplementation) Join(elem ...string) string {
+	return filepath.Join(elem...)
 }
 
 type realExecImplementation struct{}
