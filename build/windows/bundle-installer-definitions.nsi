@@ -12,7 +12,7 @@ Unicode True
 Caption "Wahay Installer"
 BrandingText " "
 
-InstallDir "$ProgramFiles\${Name}"
+InstallDir "$PROGRAMFILES64\${Name}"
 
 !define MUI_WELCOMEPAGE_TITLE "Welcome to Wahay Installer"
 !define MUI_WELCOMEPAGE_TEXT "This installer will guide you through the installation of Wahay.$\r$\n$\r$\n$\r$\n$\r$\n$_CLICK"
@@ -70,16 +70,15 @@ SectionGroup /e "Wahay"
 
     SectionGroup /e "Dependencies"
         Section "Microsoft Visual C++"
+            File "VC_redist.x64.exe"
             ExecWait "VC_redist.x64.exe"
         SectionEnd
 
         Section "Mumble"
-            SetOutPath "$INSTDIR"
             File /r "Mumble"
         SectionEnd
 
         Section "Tor"
-            SetOutPath "$INSTDIR" 
             File "tor.exe"
         SectionEnd
 
