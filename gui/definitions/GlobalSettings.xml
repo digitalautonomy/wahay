@@ -849,6 +849,7 @@
                             <property name="can-focus">True</property>
                             <property name="focus-on-click">False</property>
                             <property name="receives-default">True</property>
+                            <property name="margin-left">20</property>
                             <signal name="clicked" handler="on_torBinaryLocation_clicked_event" swapped="no"/>
                             <child>
                               <object class="GtkBox">
@@ -870,6 +871,7 @@
                                   <object class="GtkLabel" id="lblTorBinaryBrowse">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
+                                    <property name="margin-left">10</property>
                                     <property name="label" translatable="yes">Browse</property>
                                   </object>
                                   <packing>
@@ -923,6 +925,9 @@
                         <property name="position">2</property>
                       </packing>
                     </child>
+                    <style>
+                      <class name="window-content" />
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
