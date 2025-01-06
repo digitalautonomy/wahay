@@ -33,6 +33,8 @@ window {
     window .window-actions.bordered {
       border-top: 2px solid #fff;
       background: #edf2f7; }
+    window .window-actions.background-gray {
+      background: #edf2f7; }
   window .actions .btn, window .actions .main-window-top-bar .main-window-btn-settings, .main-window-top-bar window .actions .main-window-btn-settings,
   window .actions .main-window-top-bar .main-window-btn-help,
   .main-window-top-bar window .actions .main-window-btn-help, window .actions .main-window-actions .btn-host-meeting, .main-window-actions window .actions .btn-host-meeting,

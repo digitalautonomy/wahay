@@ -14,6 +14,10 @@ window {
       border-top: 2px solid $white;
       background: $gray-200;
     }
+    
+    &.background-gray {
+      background: $gray-200;
+    }
   }
 
   .actions {
