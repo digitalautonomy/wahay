@@ -11,8 +11,7 @@
 }
 
 .control-end-meeting {
-  padding: $spacing/1.5 $spacing;
-  border-radius: $border-radius;
+  @extend .btn;
   @include btn-solid($text-white, $red-600, $red-700);
 }
 

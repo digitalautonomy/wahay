@@ -25,11 +25,9 @@ window {
       padding: $spacing;
 
       %meeting-control {
+        @extend .btn;
         padding: $spacing/1.5 $spacing;
         font-size: $font-size-large;
-        font-weight: $font-weight-semibold;
-        border-radius: $border-radius;
-        text-shadow: none;
         border: 2px solid transparent;
       }
 
