@@ -69,7 +69,7 @@ SectionGroup /e "Wahay"
     SectionGroupEnd
 
     SectionGroup /e "Dependencies"
-        Section "Microsoft Visual C++"
+        Section "Microsoft Visual C++ (2015 - 2022)"
             File "VC_redist.x64.exe"
             ExecWait "VC_redist.x64.exe"
         SectionEnd
