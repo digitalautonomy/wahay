@@ -1044,7 +1044,7 @@
             </child>
             <style>
               <class name="window-actions"/>
-              <class name="bordered"/>
+              <class name="background-gray"/>
             </style>
           </object>
           <packing>
