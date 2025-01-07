@@ -571,7 +571,7 @@
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="secondary-icon-stock">gtk-file</property>
-                            <property name="placeholder-text" translatable="yes">Ex. /home/user/mumble/mumble</property>
+                            <property name="placeholder-text" translatable="yes"></property>
                             <signal name="icon-press" handler="on_mumbleBinaryLocation_icon_press" swapped="no"/>
                             <style>
                               <class name="form-control"/>
@@ -831,7 +831,7 @@
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="secondary-icon-stock">gtk-file</property>
-                            <property name="placeholder-text" translatable="yes">Ex. \Desktop\Tor Browser\Browser\TorBrowser\Tor</property>
+                            <property name="placeholder-text" translatable="yes"></property>
                             <signal name="icon-press" handler="on_torBinaryLocation_icon_press" swapped="no"/>
                             <style>
                               <class name="form-control"/>

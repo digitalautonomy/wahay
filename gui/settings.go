@@ -8,6 +8,7 @@ import (
 
 	"github.com/coyim/gotk3adapter/gtki"
 	"github.com/digitalautonomy/wahay/config"
+	"github.com/digitalautonomy/wahay/gui/placeholders"
 )
 
 type settings struct {
@@ -88,11 +89,13 @@ func (s *settings) init() {
 	s.btnRawLogFile.SetSensitive(s.logOriginalValue)
 
 	s.mumbleBinaryOriginalValue = conf.MumbleBinaryPath()
+	s.mumbleBinaryLocation.SetPlaceholderText(placeholders.GetPlaceholderConfigMumble())
 	s.mumbleBinaryLocation.SetText(s.mumbleBinaryOriginalValue)
 	s.mumblePortOriginalValue = conf.GetPortMumble()
 	s.mumblePort.SetText(s.mumblePortOriginalValue)
 	s.torBinaryOriginalValue = conf.GetPathTor()
 	s.torBinaryLocation.SetText(s.torBinaryOriginalValue)
+	s.torBinaryLocation.SetPlaceholderText(placeholders.GetPlaceholderConfigTor())
 
 }
 
