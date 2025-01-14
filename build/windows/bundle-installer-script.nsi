@@ -6,8 +6,8 @@ Name "${NAME}"
 OutFile "${NAME} Bundle Installer.exe"
 Unicode True
 
-!define MUI_ICON "build/windows/wahay_256x256.ico"
-!define MUI_UNICON "build/windows/wahay_256x256.ico"
+!define MUI_ICON "wahay-256x256.ico"
+!define MUI_UNICON "wahay-256x256.ico"
 
 Caption "Wahay Installer"
 BrandingText " "
