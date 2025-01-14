@@ -41,5 +41,10 @@
         "display_talking_state_in_tray": false,
         "channel_drag_mode": "DoNothing",
         "language" : "#LANGUAGE"
+    },
+
+    "update": {
+        "check_for_plugin_updates": false,
+        "check_for_updates": false
     }
 }
