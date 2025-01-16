@@ -23,7 +23,7 @@
   margin-top: 20px; }
 
 window {
-  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-family: "Liberation Sans", Arial, sans-serif;
   background: #fff;
   font-size: 18px; }
   window .window-content {
@@ -51,7 +51,7 @@ window {
       background: #fff; }
 
 dialog {
-  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-family: "Liberation Sans", Arial, sans-serif;
   background: #fff;
   font-size: 18px; }
   dialog .dialog-content {
@@ -67,7 +67,7 @@ dialog {
       background: #fff; }
 
 .form-control {
-  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-family: "Liberation Sans", Arial, sans-serif;
   background: #fff;
   border: 2px solid #cbd5e0;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
@@ -100,7 +100,7 @@ dialog {
   padding-top: 10px; }
 
 .form-control-font {
-  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-family: "Liberation Sans", Arial, sans-serif;
   background: #fff;
   border: 2px solid #cbd5e0;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
@@ -115,7 +115,7 @@ dialog {
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
 
 .meeting-id-control {
-  font-family: "Inter", Helvetica, Arial, sans-serif;
+  font-family: "Liberation Sans", Arial, sans-serif;
   background: #fff;
   border: 2px solid #cbd5e0;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
