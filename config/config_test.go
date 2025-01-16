@@ -36,7 +36,15 @@ func (cs *ConfigSuite) Test_InitDefault_initializesWithDefaultValues(c *C) {
 	c.Assert(ac.RawLogFile, NotNil)
 }
 
-func (cs *ConfigSuite) Test_DetectPersistance_configurationInitializedCorrectly(c *C) {
+func (cs *ConfigSuite) Test_DetectPersistance_setsPersistentModeToFalseWhenFileDoesNotExist(c *C) {
+	tempDir := c.MkDir()
+
+	wahayDir := filepath.Join(tempDir, "wahay")
+	err := os.MkdirAll(wahayDir, 0755)
+	c.Assert(err, IsNil)
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+
 	ac := New()
 	filename, err := ac.DetectPersistence()
 
@@ -45,7 +53,8 @@ func (cs *ConfigSuite) Test_DetectPersistance_configurationInitializedCorrectly(
 	c.Assert(ac.persistentMode, Equals, false)
 
 }
-func (cs *ConfigSuite) Test_DetectPersistance_setsPersistantConfigTrueWhenFileExists(c *C) {
+
+func (cs *ConfigSuite) Test_DetectPersistance_setsPersistentModeToTrueWhenFileExists(c *C) {
 	tempDir := c.MkDir()
 
 	wahayDir := filepath.Join(tempDir, "wahay")
@@ -208,6 +217,14 @@ func (cs *ConfigSuite) Test_getRealConfigFile_returnsUnencryptedFile(c *C) {
 }
 
 func (cs *ConfigSuite) Test_getRealConfigFile_returnsEmptyStringWhenFileDoesNotExist(c *C) {
+	tempDir := c.MkDir()
+
+	wahayDir := filepath.Join(tempDir, "wahay")
+	err := os.MkdirAll(wahayDir, 0755)
+	c.Assert(err, IsNil)
+
+	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+
 	a := &ApplicationConfig{}
 
 	result := a.getRealConfigFile()
