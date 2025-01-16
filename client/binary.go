@@ -18,7 +18,7 @@ var (
 	errInvalidBinaryFile          = errors.New("the defined binary file don't exists")
 	errBinaryAlreadyExists        = errors.New("the binary already exists in the destination directory")
 	errDestinationIsNotADirectory = errors.New("the destination to copy the binary is not a directory")
-	errNoClientInConfiguredPath   = errors.New("no client in the configured path")
+	errNoClientInConfiguredPath   = errors.New("no Mumble binary in the configured path")
 )
 
 type binary struct {
@@ -142,7 +142,7 @@ func realBinaryPath(path string) string {
 	return path
 }
 
-func searchBinary(conf *config.ApplicationConfig) *binary {
+func searchBinary(conf *config.ApplicationConfig) (*binary, error) {
 	callbacks := []func() (*binary, error){
 		searchBinaryInConf(conf),
 		searchBinaryInLocalDir,
@@ -155,8 +155,8 @@ func searchBinary(conf *config.ApplicationConfig) *binary {
 		b, err := c()
 
 		if err != nil {
-			log.Fatalf("searchBinary() fatal error: %s", err)
-			break
+			log.Debugf("searchBinary() error: %s", err)
+			return nil, err
 		}
 
 		if b == nil {
@@ -173,10 +173,10 @@ func searchBinary(conf *config.ApplicationConfig) *binary {
 			continue
 		}
 
-		return b
+		return b, nil
 	}
 
-	return nil
+	return nil, nil
 }
 
 func searchBinaryInConf(conf *config.ApplicationConfig) func() (*binary, error) {

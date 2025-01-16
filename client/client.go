@@ -75,7 +75,10 @@ var errBinaryUnavailable = errors.New("a valid Mumble binary is not available on
 func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
 	i := newMumbleClient(readerMumbleIniConfig, readerMumbleJSONConfig, readerMumbleDB, tor)
 
-	b := searchBinary(conf)
+	b, err := searchBinary(conf)
+	if err != nil {
+		return invalidInstance(err)
+	}
 
 	if b == nil {
 		return invalidInstance(errBinaryUnavailable)
@@ -93,7 +96,7 @@ func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
 		}
 	}
 
-	err := i.setBinary(b)
+	err = i.setBinary(b)
 	if err != nil {
 		return invalidInstance(err)
 	}

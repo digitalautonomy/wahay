@@ -1056,8 +1056,10 @@ func (s *clientSuite) Test_searchBinary_returnsNilWhenNoBinaryIsFound(c *C) {
 		ml.On("LookPath", "mumble").Return("", nil).Once()
 	}
 
-	binary := searchBinary(conf)
+	binary, err := searchBinary(conf)
+
 	c.Assert(binary, IsNil)
+	c.Assert(err, IsNil)
 
 	ml.AssertExpectations(c)
 }
