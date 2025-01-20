@@ -18,7 +18,7 @@ var (
 	errInvalidBinaryFile          = errors.New("the defined binary file don't exists")
 	errBinaryAlreadyExists        = errors.New("the binary already exists in the destination directory")
 	errDestinationIsNotADirectory = errors.New("the destination to copy the binary is not a directory")
-	errNoClientInConfiguredPath   = errors.New("no Mumble binary in the configured path")
+	errNoClientInConfiguredPath   = errors.New("mumble binary not found in the configured path. Please ensure the path is correctly set and the binary is accessible.")
 )
 
 type binary struct {
