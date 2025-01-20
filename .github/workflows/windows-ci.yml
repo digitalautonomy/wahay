@@ -1,0 +1,325 @@
+name: Wahay Windows CI
+
+on: [push]
+
+jobs:
+  
+  build-release-windows:
+    name: Build release (Windows)
+    runs-on: windows-2022
+    if: startsWith( github.ref, 'refs/tags/')
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - name: Setup msys2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          path-type: inherit
+          install: make
+      - name: update msys2 again
+        run: pacman --noconfirm --needed -Syuu
+        continue-on-error: true
+      - name: install dependencies
+        run: >
+          pacman --noconfirm --needed -Sy
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-pkg-config
+          mingw-w64-x86_64-glib2
+          mingw-w64-x86_64-gtk3
+      - name: Copy release dependencies
+        run: |
+          mkdir -p release/share
+          mkdir -p release/lib
+          mkdir -p release/dll
+          export LDIR=/mingw64/bin
+
+          cp $LDIR/gdbus.exe release
+
+          cp $LDIR/libatk-1.0-0.dll release/dll
+          cp $LDIR/libbrotlicommon.dll release/dll
+          cp $LDIR/libbrotlidec.dll release/dll
+          cp $LDIR/libbz2-1.dll release/dll
+          cp $LDIR/libcairo-2.dll release/dll
+          cp $LDIR/libcairo-gobject-2.dll release/dll
+          cp $LDIR/libdatrie-1.dll release/dll
+          cp $LDIR/libdeflate.dll release/dll
+          cp $LDIR/libepoxy-0.dll release/dll
+          cp $LDIR/libexpat-1.dll release/dll
+          cp $LDIR/libffi-8.dll release/dll
+          cp $LDIR/libfontconfig-1.dll release/dll
+          cp $LDIR/libfreetype-6.dll release/dll
+          cp $LDIR/libfribidi-0.dll release/dll
+          cp $LDIR/libgcc_s_seh-1.dll release/dll
+          cp $LDIR/libgdk-3-0.dll release/dll
+          cp $LDIR/libgdk_pixbuf-2.0-0.dll release/dll
+          cp $LDIR/libgio-2.0-0.dll release/dll
+          cp $LDIR/libglib-2.0-0.dll release/dll
+          cp $LDIR/libgmodule-2.0-0.dll release/dll
+          cp $LDIR/libgobject-2.0-0.dll release/dll
+          cp $LDIR/libgraphite2.dll release/dll
+          cp $LDIR/libgtk-3-0.dll release/dll
+          cp $LDIR/libharfbuzz-0.dll release/dll
+          cp $LDIR/libiconv-2.dll release/dll
+          cp $LDIR/libintl-8.dll release/dll
+          cp $LDIR/libjbig-0.dll release/dll
+          cp $LDIR/libjpeg-8.dll release/dll
+          cp $LDIR/libLerc.dll release/dll
+          cp $LDIR/liblzma-5.dll release/dll
+          cp $LDIR/libpango-1.0-0.dll release/dll
+          cp $LDIR/libpangocairo-1.0-0.dll release/dll
+          cp $LDIR/libpangoft2-1.0-0.dll release/dll
+          cp $LDIR/libpangowin32-1.0-0.dll release/dll
+          cp $LDIR/libpcre2-8-0.dll release/dll
+          cp $LDIR/libpixman-1-0.dll release/dll
+          cp $LDIR/libpng16-16.dll release/dll
+          cp $LDIR/librsvg-2-2.dll release/dll
+          cp $LDIR/libsharpyuv-0.dll release/dll
+          cp $LDIR/libstdc++-6.dll release/dll
+          cp $LDIR/libthai-0.dll release/dll
+          cp $LDIR/libtiff-6.dll release/dll
+          cp $LDIR/libwebp-7.dll release/dll
+          cp $LDIR/libwinpthread-1.dll release/dll
+          cp $LDIR/libxml2-2.dll release/dll
+          cp $LDIR/libzstd.dll release/dll
+          cp $LDIR/zlib1.dll release/dll
+
+          cp -r /mingw64/lib/gdk-pixbuf-2.0 release/lib
+          cp -r /mingw64/share/icons release/share
+          cp -r /mingw64/share/glib-2.0 release/share
+      
+      - name: Copy necessary files
+        run: |
+          cp build/windows/wahay-256x256.ico release/
+          cp build/windows/bundle-installer-script.nsi release/
+          cp LICENSE release/
+
+      - name: Download Tor Expert Bundle
+        run: |
+          cd release
+          wget https://archive.torproject.org/tor-package-archive/torbrowser/14.0.4/tor-expert-bundle-windows-i686-14.0.4.tar.gz -O tor-bundle.tar.gz
+          tar -xvzf tor-bundle.tar.gz
+          rm tor-bundle.tar.gz 
+          cp tor/tor.exe .
+          rm -rf ./tor/
+          rm -rf ./data/
+          
+      - name: Download Mumble Client from Powershell
+        shell: powershell
+        run: |
+          cd release
+          wget https://dl.mumble.info/latest/stable/client-windows-x64 -O mumble.msi
+          touch install.log
+          
+          $file = "mumble.msi"
+          $log = "install.log"
+          $procMain = Start-Process "msiexec" "/i `"$file`" /qn /l*! `"$log`"" -NoNewWindow -PassThru
+          $procLog = Start-Process "powershell" "Get-Content -Path `"$log`" -Wait" -NoNewWindow -PassThru 
+          $procMain.WaitForExit() 
+          $procLog.Kill()
+
+          rm mumble.msi
+          rm install.log
+
+          cp -r "C:\Program Files\Mumble" .
+
+      - name: Download Microsoft Visual C++
+        run: |
+          cd release
+          wget https://aka.ms/vs/17/release/vc_redist.x64.exe
+      
+      - name: Build wahay.exe
+        run: |  
+          touch gui/styles/gui.css
+          make build-gui-win
+          cp bin/wahay.exe release/
+      
+      - name: Create Wahay checksum
+        run: |
+          cd release
+          openssl dgst -sha256 wahay.exe  >> wahay.exe_checksum
+
+      - name: Create zip file
+        run: cd release && 7z a -tzip wahay.zip *
+      
+      - name: Create checksum for zip-file
+        run: openssl dgst -sha256 release/wahay.zip  >> release/wahay.zip_checksum
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-win
+          path: |
+            ${{ github.workspace }}/release/wahay.zip
+            ${{ github.workspace }}/release/wahay.zip_checksum
+          retention-days: 5
+          if-no-files-found: error
+
+  test-windows:
+    runs-on: windows-2022
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    strategy:
+      fail-fast: false
+
+    name: Test go-1.19 (Windows)
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - name: setup msys2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          path-type: inherit
+          install: make
+      - name: update msys2 again
+        run: pacman --noconfirm --needed -Syuu
+        continue-on-error: true
+      - name: install dependencies
+        run: >
+          pacman --noconfirm --needed -Sy
+          mingw-w64-x86_64-pkg-config
+          mingw-w64-x86_64-glib2
+          mingw-w64-x86_64-gtk3
+      - name: Configure git
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+          git checkout -- .
+      - run: make deps-ci
+      - run: make test 
+   
+  build-windows-installer:
+    runs-on: windows-2022
+    needs: build-release-windows
+
+    defaults:
+      run: 
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup msys2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          path-type: inherit
+      - name: update msys2 again
+        run: pacman --noconfirm --needed -Syuu
+        continue-on-error: true
+      - name: Install dependencies
+        run: |
+          pacman --noconfirm --needed -Sy mingw-w64-x86_64-nsis
+      - uses: actions/download-artifact@v4
+        name: dist-win
+      - name: Create windows installer input files
+        run: |
+          mkdir -p win_installer
+          cd win_installer
+          7z x -y -r -tzip ../dist-win/wahay.zip
+      - name: Get the current tag
+        id: current_tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      - name: Create installer
+        uses: joncloud/makensis-action@v3.4
+        with:
+          script-file: win_installer/bundle-installer-script.nsi
+          arguments: "/V3 /DVERSION=${{ steps.current_tag.outputs.VERSION }}"
+      - name: Create checksum for installer file
+        run: |
+          cd win_installer 
+          openssl dgst -sha256 "Wahay Bundle Installer.exe" >> "Wahay Bundle Installer.exe_checksum"
+      - name: Archive installer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-windows
+          path: |
+            win_installer/Wahay Bundle Installer.exe
+            win_installer/Wahay Bundle Installer.exe_checksum
+          retention-days: 5
+          if-no-files-found: error
+
+  create-release-from-tag:
+    name: Create release from tag
+    needs: test-windows
+    runs-on: ubuntu-24.04
+    if: startsWith( github.ref, 'refs/tags/v' )
+    outputs:
+      upload-url: ${{ steps.create_release.outputs.upload_url }}
+
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+  upload-release-win:
+    name: Upload release (Windows)
+    needs: [build-release-windows, build-windows-installer, create-release-from-tag]
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/download-artifact@v4
+        name: dist-win
+      - uses: actions/download-artifact@v4
+        name: installer-win
+      - name: Upload Windows zip
+        uses: actions/upload-release-asset@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
+          asset_path: dist-win/wahay.zip
+          asset_name: "Wahay (Windows).zip"
+          asset_content_type: application/zip
+      - name: Upload Windows zip checksum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
+          asset_path: dist-win/wahay.zip_checksum
+          asset_name: "Wahay (Windows).zip_checksum"
+          asset_content_type: text/plain
+      - name: Upload Windows Installer
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
+          asset_path: "installer-windows/Wahay Bundle Installer.exe"
+          asset_name: "Wahay Installer.exe"
+          asset_content_type: application/octet-stream
+      - name: Upload Windows Installer checksum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
+          asset_path: "installer-windows/Wahay Bundle Installer.exe_checksum"
+          asset_name: "Wahay Installer.exe_checksum"
+          asset_content_type: text/plain
