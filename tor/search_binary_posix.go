@@ -10,10 +10,7 @@ func isThereConfiguredTorBinary(path string) (b *binary, err error) {
 	}
 
 	if !filesystemf.IsADirectory(path) {
-		// We ommit the error here because it's ok while
-		// we are checking multiple possible paths where
-		// the Tor binary can be
-		b, _ = getBinaryForPath(path)
+		b, err = getBinaryForPath(path)
 		return
 	}
 
