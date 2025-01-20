@@ -313,6 +313,9 @@
                     <property name="yalign">0</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_chkAutoJoin_toggled" swapped="no"/>
+                    <style>
+                      <class name="GtkCheckButton"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -336,6 +339,9 @@
                 <property name="tooltip_text" translatable="yes">As a super user you will be able to do things that others do not, such as silencing another user or expelling him/her from the meeting, etc.</property>
                 <property name="draw_indicator">True</property>
                 <signal name="toggled" handler="on_chkAutoJoinSuperUser_toggled" swapped="no"/>
+                <style>
+                  <class name="GtkCheckButton"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
