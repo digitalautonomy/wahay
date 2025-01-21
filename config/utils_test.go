@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing/iotest"
+	"time"
 
 	"github.com/prashantv/gostub"
 	"github.com/stretchr/testify/mock"
@@ -103,6 +104,55 @@ func (m *mockNet) Listen(network, dir string) (net.Listener, error) {
 	return ret.Get(0).(net.Listener), ret.Error(1)
 }
 
+func (m *mockNet) DialTimeout(network, address string, timeout time.Duration) (net.Conn, error) {
+	ret := m.Called(network, address, timeout)
+	return ret.Get(0).(net.Conn), ret.Error(1)
+}
+
+type mockConn struct {
+	mock.Mock
+}
+
+func (m *mockConn) Close() error {
+	ret := m.Called()
+	return ret.Error(0)
+}
+
+func (m *mockConn) Read(b []byte) (int, error) {
+	ret := m.Called(b)
+	return ret.Int(0), ret.Error(1)
+}
+
+func (m *mockConn) Write(b []byte) (int, error) {
+	ret := m.Called(b)
+	return ret.Int(0), ret.Error(1)
+}
+
+func (m *mockConn) LocalAddr() net.Addr {
+	ret := m.Called()
+	return ret.Get(0).(net.Addr)
+}
+
+func (m *mockConn) RemoteAddr() net.Addr {
+	ret := m.Called()
+	return ret.Get(0).(net.Addr)
+}
+
+func (m *mockConn) SetDeadline(t time.Time) error {
+	ret := m.Called(t)
+	return ret.Error(0)
+}
+
+func (m *mockConn) SetReadDeadline(t time.Time) error {
+	ret := m.Called(t)
+	return ret.Error(0)
+}
+
+func (m *mockConn) SetWriteDeadline(t time.Time) error {
+	ret := m.Called(t)
+	return ret.Error(0)
+}
+
 func (cs *ConfigSuite) Test_IsPortAvailable_returnsTrueIfThePortIsAvailable(c *C) {
 	mn := &mockNet{}
 	ml := &mockListener{}
@@ -139,6 +189,12 @@ func (cs *ConfigSuite) Test_IsPortAvailable_returnsFalseIfThePortIsNotAvailable(
 }
 
 func (cs *ConfigSuite) Test_IsPortAvailable_returnsFalseIfThePortWasAvailableButSomethingWentWrongWhenTestingIt(c *C) {
+	if IsWindows() {
+		mc := &mockConn{}
+		defer gostub.New().StubFunc(&dialTimeout, mc, nil).Reset()
+		mc.On("Close").Return(nil).Once()
+	}
+
 	ml := &mockListener{}
 	defer gostub.New().StubFunc(&listen, ml, nil).Reset()
 	ml.On("Close").Return(errors.New("oh no")).Once()

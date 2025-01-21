@@ -7,6 +7,11 @@ import (
 	"unsafe"
 )
 
+// IsWindows returns true if this is running under windows
+func IsWindows() bool {
+	return true
+}
+
 var (
 	shell32           = syscall.NewLazyDLL("shell32.dll")
 	procGetFolderPath = shell32.NewProc("SHGetFolderPathW")

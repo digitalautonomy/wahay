@@ -5,10 +5,8 @@ import (
 	"encoding/hex"
 	"io"
 	mrand "math/rand"
-	"net"
 	"os"
 	"path/filepath"
-	"strconv"
 
 	"github.com/cubiest/jibberjabber"
 	"golang.org/x/text/language"
@@ -59,21 +57,6 @@ func xdgConfigHome() string {
 // XdgDataHome returns the standardized XDG Data directory
 func XdgDataHome() string {
 	return xdgOrWithHome("XDG_DATA_HOME", ".local/share")
-}
-
-// IsPortAvailable return a boolean indicating if a specific
-// port is available to use
-
-var listen = net.Listen
-
-func IsPortAvailable(port int) bool {
-	ln, err := listen("tcp", net.JoinHostPort("", strconv.Itoa(port)))
-
-	if err != nil {
-		return false
-	}
-
-	return ln.Close() == nil
 }
 
 var randomInt31 = mrand.Int31n
