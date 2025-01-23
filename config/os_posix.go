@@ -11,7 +11,10 @@ func IsWindows() bool {
 }
 
 // SystemDataDir points to the function that gets the data directory for this system
-var SystemDataDir = XdgDataHome
+var (
+	SystemDataDir   = XdgDataHome
+	SystemConfigDir = XdgConfigHome
+)
 
 func localHome() string {
 	u, e := user.Current()

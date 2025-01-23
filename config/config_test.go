@@ -43,7 +43,7 @@ func (cs *ConfigSuite) Test_DetectPersistance_setsPersistentModeToFalseWhenFileD
 	err := os.MkdirAll(wahayDir, 0755)
 	c.Assert(err, IsNil)
 
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	ac := New()
 	filename, err := ac.DetectPersistence()
@@ -66,7 +66,7 @@ func (cs *ConfigSuite) Test_DetectPersistance_setsPersistentModeToTrueWhenFileEx
 	c.Assert(err, IsNil)
 	configFile.Close()
 
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	ac := New()
 	filename, err := ac.DetectPersistence()
@@ -180,7 +180,7 @@ func (cs *ConfigSuite) Test_getRealConfigFile_returnsEncryptedFile(c *C) {
 	c.Assert(err, IsNil)
 	file.Close()
 
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{}
 
@@ -204,7 +204,7 @@ func (cs *ConfigSuite) Test_getRealConfigFile_returnsUnencryptedFile(c *C) {
 	c.Assert(err, IsNil)
 	file.Close()
 
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{}
 
@@ -223,7 +223,7 @@ func (cs *ConfigSuite) Test_getRealConfigFile_returnsEmptyStringWhenFileDoesNotE
 	err := os.MkdirAll(wahayDir, 0755)
 	c.Assert(err, IsNil)
 
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{}
 
@@ -396,7 +396,7 @@ func (cs *ConfigSuite) Test_doAfterSave_addFunctionToList(c *C) {
 
 func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
 	tempDir := c.MkDir()
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
 		filename:      "",
@@ -412,7 +412,7 @@ func (cs *ConfigSuite) Test_EnsureDestination_createsEncryptedConfigFile(c *C) {
 
 func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C) {
 	tempDir := c.MkDir()
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
 		filename:      "",
@@ -428,7 +428,7 @@ func (cs *ConfigSuite) Test_EnsureDestination_createsUnencryptedConfigFile(c *C)
 
 func (cs *ConfigSuite) Test_EnsureDestination_changesFileSuffixToAValidEncryptedSuffix(c *C) {
 	tempDir := c.MkDir()
-	defer gostub.New().Stub(&XdgConfigHome, func() string { return tempDir }).Reset()
+	defer gostub.New().Stub(&SystemConfigDir, func() string { return tempDir }).Reset()
 
 	a := &ApplicationConfig{
 		filename:      "config.json",

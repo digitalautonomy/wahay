@@ -31,7 +31,10 @@ func appdataFolderPath() string {
 }
 
 // SystemDataDir points to the function that gets the data directory for this system
-var SystemDataDir = appdataFolderPath
+var (
+	SystemDataDir   = appdataFolderPath
+	SystemConfigDir = appdataFolderPath
+)
 
 func firstEnvironmentVariable(vs ...string) string {
 	for _, v := range vs {
