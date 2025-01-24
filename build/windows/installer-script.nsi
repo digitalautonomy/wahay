@@ -6,8 +6,8 @@ Name "${NAME}"
 OutFile "${NAME} Installer.exe"
 Unicode True
 
-!define MUI_ICON "wahay.ico"
-!define MUI_UNICON "wahay.ico"
+!define MUI_ICON "wahay-256x256.ico"
+!define MUI_UNICON "wahay-256x256.ico"
 
 Caption "Wahay (${VERSION}) Installer"
 BrandingText " "
