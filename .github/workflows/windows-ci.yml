@@ -317,13 +317,31 @@ jobs:
           asset_path: dist-win/wahay.zip_checksum
           asset_name: "Wahay (Windows).zip_checksum"
           asset_content_type: text/plain
-      - name: Upload Windows Installer
+      - name: Upload Windows Bundle Installer
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
           asset_path: "installer-windows/Wahay Bundle Installer.exe"
+          asset_name: "Wahay Bundle Installer.exe"
+          asset_content_type: application/octet-stream
+      - name: Upload Windows Bundle Installer checksum
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
+          asset_path: "installer-windows/Wahay Bundle Installer.exe_checksum"
+          asset_name: "Wahay Bundle Installer.exe_checksum"
+          asset_content_type: text/plain
+      - name: Upload Windows Installer
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
+          asset_path: "installer-windows/Wahay Installer.exe"
           asset_name: "Wahay Installer.exe"
           asset_content_type: application/octet-stream
       - name: Upload Windows Installer checksum
@@ -332,6 +350,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
-          asset_path: "installer-windows/Wahay Bundle Installer.exe_checksum"
+          asset_path: "installer-windows/Wahay Installer.exe_checksum"
           asset_name: "Wahay Installer.exe_checksum"
           asset_content_type: text/plain
