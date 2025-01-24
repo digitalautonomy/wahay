@@ -9,7 +9,7 @@ Unicode True
 !define MUI_ICON "wahay-256x256.ico"
 !define MUI_UNICON "wahay-256x256.ico"
 
-Caption "Wahay Installer"
+Caption "Wahay (${VERSION}) Installer"
 BrandingText " "
 
 InstallDir "$PROGRAMFILES64\${Name}"

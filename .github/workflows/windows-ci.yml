@@ -102,6 +102,7 @@ jobs:
         run: |
           cp build/windows/wahay-256x256.ico release/
           cp build/windows/bundle-installer-script.nsi release/
+          cp build/windows/installer-script.nsi release/
           cp LICENSE release/
 
       - name: Download Tor Expert Bundle
@@ -238,15 +239,24 @@ jobs:
       - name: Get the current tag
         id: current_tag
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-      - name: Create installer
+      - name: Create bundle installer
         uses: joncloud/makensis-action@v3.4
         with:
           script-file: win_installer/bundle-installer-script.nsi
           arguments: "/V3 /DVERSION=${{ steps.current_tag.outputs.VERSION }}"
-      - name: Create checksum for installer file
+      - name: Create checksum for bundle installer file
         run: |
           cd win_installer 
           openssl dgst -sha256 "Wahay Bundle Installer.exe" >> "Wahay Bundle Installer.exe_checksum"
+      - name: Create installer
+        uses: joncloud/makensis-action@v3.4
+        with:
+          script-file: win_installer/installer-script.nsi
+          arguments: "/V3 /DVERSION=${{ steps.current_tag.outputs.VERSION }}"
+      - name: Create checksum for installer file
+        run: |
+          cd win_installer 
+          openssl dgst -sha256 "Wahay Installer.exe" >> "Wahay Installer.exe_checksum"
       - name: Archive installer artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -254,6 +264,8 @@ jobs:
           path: |
             win_installer/Wahay Bundle Installer.exe
             win_installer/Wahay Bundle Installer.exe_checksum
+            win_installer/Wahay Installer.exe
+            win_installer/Wahay Installer.exe_checksum
           retention-days: 5
           if-no-files-found: error
 
