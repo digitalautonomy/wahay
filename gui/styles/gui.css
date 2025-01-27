@@ -430,8 +430,7 @@ label.label-text {
   background: #1a202c;
   background-image: linear-gradient(-180deg, #141922 0%, black 90%); }
   .main-window-status-bar.error {
-    background: #742a2a;
-    background-image: linear-gradient(-180deg, #f45757 0%, #692626 90%); }
+    background: #c53030; }
   .main-window-status-bar .status-label {
     font-size: 18px; }
   .main-window-status-bar .status-show-errors {

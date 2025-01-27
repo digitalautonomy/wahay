@@ -65,12 +65,7 @@
   );
 
   &.error {
-    background: $red-900;
-    background-image: linear-gradient(
-      -180deg,
-      darken($red, 3%) 0%,
-      darken($red-900, 3%) 90%
-    );
+    background: $red-700;
   }
 
   .status-label {
