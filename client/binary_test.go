@@ -395,7 +395,7 @@ func (s *clientSuite) Test_searchBinaryInConf_returnedCallbackFunctionReturnsAnE
 	binary, err := callBack()
 
 	c.Assert(binary, IsNil)
-	c.Assert(err, Equals, errNoClientInConfiguredPath)
+	c.Assert(err, Equals, ErrNoClientInConfiguredPath)
 }
 
 func (s *clientSuite) Test_searchBinaryInConf_returnsAValidFuncWhenANilConfIsProvided(c *C) {

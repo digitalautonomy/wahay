@@ -244,23 +244,6 @@
             "fuzzy": true
         },
         {
-            "id": "the Mumble client can not be used because: {Error}",
-            "message": "the Mumble client can not be used because: {Error}",
-            "translation": "The Mumble client can't be used because: {Error}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Error",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "err.Error()"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
             "id": "please enter a valid password",
             "message": "please enter a valid password",
             "translation": "Please enter a valid password",
@@ -963,6 +946,16 @@
             "id": "No valid Tor binary found in the system in order to run Wahay.",
             "message": "No valid Tor binary found in the system in order to run Wahay.",
             "translation": "No valid Tor binary found in the system in order to run Wahay."
+        },
+        {
+            "id": "No valid Mumble binary found in the system in order to run Wahay.",
+            "message": "No valid Mumble binary found in the system in order to run Wahay.",
+            "translation": "No valid Mumble binary found in the system in order to run Wahay."
+        },
+        {
+            "id": "The configured path to the Mumble binary is not valid or can't be used.\n\n Please configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html",
+            "message": "The configured path to the Mumble binary is not valid or can't be used.\n\n Please configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html",
+            "translation": "The configured path to the Mumble binary is not valid or can't be used.\n\n Please configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html"
         }
     ]
 }

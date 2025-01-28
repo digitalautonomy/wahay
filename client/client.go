@@ -70,7 +70,7 @@ type databaseProvider func() []byte
 // InitSystem do the checking of the current system looking
 // for the  appropriate Mumble binary and check for errors
 
-var errBinaryUnavailable = errors.New("a valid Mumble binary is not available on your system")
+var ErrBinaryUnavailable = errors.New("a valid Mumble binary is not available on your system")
 
 func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
 	i := newMumbleClient(readerMumbleIniConfig, readerMumbleJSONConfig, readerMumbleDB, tor)
@@ -81,7 +81,7 @@ func InitSystem(conf *config.ApplicationConfig, tor tor.Instance) Instance {
 	}
 
 	if b == nil {
-		return invalidInstance(errBinaryUnavailable)
+		return invalidInstance(ErrBinaryUnavailable)
 	}
 
 	if b.shouldBeCopied {

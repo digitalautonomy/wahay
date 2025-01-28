@@ -955,6 +955,16 @@
             "id": "No valid Tor binary found in the system in order to run Wahay.",
             "message": "No valid Tor binary found in the system in order to run Wahay.",
             "translation": "No se encontró un binario de Tor válido en el sistema para ejecutar Wahay."
+        },
+        {
+            "id": "No valid Mumble binary found in the system in order to run Wahay.",
+            "message": "No valid Mumble binary found in the system in order to run Wahay.",
+            "translation": "No se encontró un binario de Mumble válido en el sistema para ejecutar Wahay."
+        },
+        {
+            "id": "The configured path to the Mumble binary is not valid or can't be used.\n\n Please configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html",
+            "message": "The configured path to the Mumble binary is not valid or can't be used.\n\n Please configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html",
+            "translation": "La ruta configurada para el binario de Mumble no es válida o no se puede usar.\n\nPor favor, configura otra ruta o descarga un Wahay con Mumble incluido en el siguiente enlace:\n\nhttps://wahay.org/download.html"
         }
     ]
 }

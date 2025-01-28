@@ -258,7 +258,7 @@ func (s *clientSuite) Test_InitSystem_returnsAnInvalidInstanceWhenAValidMumbleBi
 	client := i.(*client)
 
 	c.Assert(client.isValid, IsFalse)
-	c.Assert(client.err, Equals, errBinaryUnavailable)
+	c.Assert(client.err, Equals, ErrBinaryUnavailable)
 
 	ml.AssertExpectations(c)
 }
