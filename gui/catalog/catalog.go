@@ -149,8 +149,8 @@ var messageKeyToIndex = map[string]int{
 	"The Meeting ID cannot be blank":     14,
 	"The Mumble process is down":         13,
 	"The Tor instance can't be started.": 145,
-	"The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.":                           146,
-	"The configured path to the Tor binary is not valid or can't be used.\n\nPlease, configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html": 151,
+	"The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.":                          146,
+	"The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html": 151,
 	"The current version of Tor is incompatible with Wahay.": 150,
 	"The error message": 100,
 	"The invitation email has been copied to the clipboard": 5,
@@ -324,10 +324,10 @@ var enIndex = []uint32{ // 155 elements
 	0x00001949, 0x000019d6, 0x00001a03, 0x00001a1c,
 	0x00001a48, 0x00001af1, 0x00001b14, 0x00001bbd,
 	0x00001c02, 0x00001c47, 0x00001d16, 0x00001d4d,
-	0x00001e0e, 0x00001e4d, 0x00001e6d,
+	0x00001e0d, 0x00001e4c, 0x00001e6c,
 } // Size: 644 bytes
 
-const enData string = "" + // Size: 7789 bytes
+const enData string = "" + // Size: 7788 bytes
 	"\x02Error\x02Something went wrong: %[1]s\x02We couldn't start the meetin" +
 	"g\x02The meeting can't be closed: %[1]s\x02The meeting ID has been copie" +
 	"d to the clipboard\x02The invitation email has been copied to the clipbo" +
@@ -440,10 +440,10 @@ const enData string = "" + // Size: 7789 bytes
 	"e information available at https://tb-manual.torproject.org/troubleshoot" +
 	"ing/ to know what you can do.\x02The current version of Tor is incompati" +
 	"ble with Wahay.\x02The configured path to the Tor binary is not valid or" +
-	" can't be used.\x0a\x0aPlease, configure another path or download a bund" +
-	"led Wahay with Tor in the following url:\x0a\x0ahttps://wahay.org/downlo" +
-	"ad.html\x02No valid Tor binary found in the system in order to run Wahay" +
-	".\x02Open settings window (Ctrl + ,)"
+	" can't be used.\x0a\x0aPlease configure another path or download a bundl" +
+	"ed Wahay with Tor in the following url:\x0a\x0ahttps://wahay.org/downloa" +
+	"d.html\x02No valid Tor binary found in the system in order to run Wahay." +
+	"\x02Open settings window (Ctrl + ,)"
 
 var esIndex = []uint32{ // 155 elements
 	// Entry 0 - 1F
@@ -934,4 +934,4 @@ const svData string = "" + // Size: 6913 bytes
 	"ar konfigurerar för mötet).\x02TRANSLATE ME (Ctrl + H)\x02Hjälp\x02TRANS" +
 	"LATE ME\x02TRANSLATE ME"
 
-	// Total table size 36798 bytes (35KiB); checksum: EE5B8B8D
+	// Total table size 36797 bytes (35KiB); checksum: D0107E9C

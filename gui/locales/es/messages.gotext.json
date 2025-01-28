@@ -947,8 +947,8 @@
             "translation": "La versión actual de Tor es incompatible con Wahay."
         },
         {
-            "id": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease, configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
-            "message": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease, configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
+            "id": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
+            "message": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
             "translation": "La ruta configurada para el binario de Tor no es válida o no se puede usar.\n\nPor favor, configura otra ruta o descarga un Wahay con Tor incluido en el siguiente enlace:\n\nhttps://wahay.org/download.html"
         },
         {

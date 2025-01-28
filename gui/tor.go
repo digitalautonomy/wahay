@@ -81,7 +81,7 @@ func torErrorTranslator(err error) string {
 
 	case tor.ErrInvalidConfiguredTorBinary:
 		return i18n().Sprintf("The configured path to the Tor binary is not valid or can't be used.\n\n" +
-			"Please, configure another path or download a bundled Wahay with Tor in the following url:" +
+			"Please configure another path or download a bundled Wahay with Tor in the following url:" +
 			"\n\nhttps://wahay.org/download.html")
 
 	case tor.ErrInvalidTorPath:
