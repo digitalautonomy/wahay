@@ -3,7 +3,7 @@
 !define NAME "Wahay"
 
 Name "${NAME}"
-OutFile "${NAME} Installer.exe"
+OutFile "${NAME} Bundle Installer.exe"
 Unicode True
 
 !define MUI_ICON "wahay-256x256.ico"
