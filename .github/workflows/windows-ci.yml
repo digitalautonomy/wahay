@@ -324,7 +324,7 @@ jobs:
         with:
           upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
           asset_path: "installer-windows/Wahay Bundle Installer.exe"
-          asset_name: "Wahay Bundle Installer.exe"
+          asset_name: "Wahay Bundle Installer x64.exe"
           asset_content_type: application/octet-stream
       - name: Upload Windows Bundle Installer checksum
         uses: actions/upload-release-asset@v1
@@ -333,7 +333,7 @@ jobs:
         with:
           upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
           asset_path: "installer-windows/Wahay Bundle Installer.exe_checksum"
-          asset_name: "Wahay Bundle Installer.exe_checksum"
+          asset_name: "Wahay Bundle Installer x64.exe_checksum"
           asset_content_type: text/plain
       - name: Upload Windows Installer
         uses: actions/upload-release-asset@v1
@@ -342,7 +342,7 @@ jobs:
         with:
           upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
           asset_path: "installer-windows/Wahay Installer.exe"
-          asset_name: "Wahay Installer.exe"
+          asset_name: "Wahay Installer x64.exe"
           asset_content_type: application/octet-stream
       - name: Upload Windows Installer checksum
         uses: actions/upload-release-asset@v1
@@ -351,5 +351,5 @@ jobs:
         with:
           upload_url: ${{ needs.create-release-from-tag.outputs.upload-url }}
           asset_path: "installer-windows/Wahay Installer.exe_checksum"
-          asset_name: "Wahay Installer.exe_checksum"
+          asset_name: "Wahay Installer x64.exe_checksum"
           asset_content_type: text/plain
