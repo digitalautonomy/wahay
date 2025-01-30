@@ -32,15 +32,14 @@ InstallDir "$PROGRAMFILES64\${Name}"
 !define MUI_FINISHPAGE_LINK_LOCATION "https://wahay.org/"
 !insertmacro MUI_PAGE_FINISH
 
-
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "Spanish"
 
-LangString Caption ${LANG_ENGLISH} "Wahay (${VERSION}) Installer"
-LangString Caption ${LANG_SPANISH} "Instalador de Wahay (${VERSION})"
+LangString Caption ${LANG_ENGLISH} "Wahay (${VERSION}) Bundle Installer (64 bits)"
+LangString Caption ${LANG_SPANISH} "Instalador de Wahay Paquete (${VERSION}) (64 bits)"
 
 LangString WelcomeTitle ${LANG_ENGLISH} "Welcome to Wahay Installer"
 LangString WelcomeTitle ${LANG_SPANISH} "Bienvenido al Instalador de Wahay"
