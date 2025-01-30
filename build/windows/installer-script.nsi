@@ -73,7 +73,7 @@ Function .onInit
   WriteRegDWORD HKLM "Software\${NAME}" "Installer Language" $LANGUAGE
 FunctionEnd
 
-SectionGroup /e "$(SecWahayName)"
+Section /e "$(SecWahayName)"
   SetOutPath "$INSTDIR"
 
   SectionIn 1 RO
