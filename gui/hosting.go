@@ -529,14 +529,6 @@ func (h *hostData) handleOnStartMeeting(b *uiBuilder) {
 	username := b.get("inpMeetingUsername").(gtki.Entry)
 	password := b.get("inpMeetingPassword").(gtki.Entry)
 
-	if h.asSuperUser {
-		u, _ := username.GetText()
-		if len(u) == 0 {
-			h.u.reportError(i18n().Sprintf("The username is required"))
-			return
-		}
-	}
-
 	h.handlerOnStartMeeting(username, password)
 }
 
@@ -569,6 +561,10 @@ func (h *hostData) handlerOnAutoJoinToggled(ch gtki.CheckButton, b gtki.Button) 
 func (h *hostData) handlerOnStartMeeting(u, p gtki.Entry) {
 	h.meetingUsername, _ = u.GetText()
 	h.meetingPassword, _ = p.GetText()
+
+	if h.meetingUsername == "" {
+		h.meetingUsername = getRandomName()
+	}
 
 	h.startMeetingHandler()
 }

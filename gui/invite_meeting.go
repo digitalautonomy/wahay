@@ -128,6 +128,9 @@ func (u *gtkUI) handleOnJoinMeeting(b *uiBuilder) {
 
 	url, _ := entMeetingID.GetText()
 	username, _ := entScreenName.GetText()
+	if username == "" {
+		username = getRandomName()
+	}
 	password, _ := entMeetingPassword.GetText()
 
 	// TODO: remove this if we show a custom input field to enter
