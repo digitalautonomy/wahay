@@ -142,21 +142,22 @@ func (f *Forwarder) HandleConnection(clientConn net.Conn) {
 }
 
 func (f *Forwarder) forwardTraffic(conn1, conn2 *net.TCPConn) {
-	defer conn1.Close()
-	defer conn2.Close()
+	if conn1 == nil || conn2 == nil {
+		return
+	}
 
 	var wg sync.WaitGroup
 
 	wg.Add(2)
 
-	go func() {
+	copyConn := func(dst, src *net.TCPConn) {
 		defer wg.Done()
-		io.Copy(conn1, conn2)
-	}()
-	go func() {
-		defer wg.Done()
-		io.Copy(conn2, conn1)
-	}()
+		defer dst.CloseWrite()
+		io.Copy(dst, src)
+	}
+
+	go copyConn(conn1, conn2)
+	go copyConn(conn2, conn1)
 
 	wg.Wait()
 }

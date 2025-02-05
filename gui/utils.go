@@ -14,14 +14,15 @@ const (
 )
 
 func (u *gtkUI) switchToMainWindow() {
-	if u.currentWindow != nil {
-		u.currentWindow.Hide()
-		u.currentWindow = nil
-	}
-
-	if u.mainWindow != nil {
-		u.switchToWindow(u.mainWindow)
-	}
+	u.g.glib.IdleAdd(func() {
+		if u.currentWindow != nil {
+			u.currentWindow.Hide()
+			u.currentWindow = nil
+		}
+		if u.mainWindow != nil {
+			u.switchToWindow(u.mainWindow)
+		}
+	})
 }
 
 func (u *gtkUI) switchToWindow(win gtki.ApplicationWindow) {
