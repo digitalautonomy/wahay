@@ -14,7 +14,7 @@ const (
 )
 
 func (u *gtkUI) switchToMainWindow() {
-	u.g.glib.IdleAdd(func() {
+	u.doInUIThread(func() {
 		if u.currentWindow != nil {
 			u.currentWindow.Hide()
 			u.currentWindow = nil
