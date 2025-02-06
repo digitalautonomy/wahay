@@ -54,39 +54,39 @@ func torErrorTranslator(err error) string {
 	switch err {
 	case tor.ErrTorBinaryNotFound:
 		return i18n().Sprintf("In order to run Wahay, you must have Tor installed in your system.\n\n" +
-			"You can also download the Wahay's bundle with Tor from our website:\n\n" +
-			"https://wahay.org/download.html")
+			"You can also download the Wahay bundle with Tor from our website:\n\n" +
+			"https://wahay.org/download.html\n")
 
 	case tor.ErrTorInstanceCantStart:
-		return i18n().Sprintf("The Tor instance can't be started.")
+		return i18n().Sprintf("The Tor instance can't be started.\n")
 
 	case tor.ErrTorConnectionTimeout:
 		return i18n().Sprintf("The Tor instance can't connect to the Tor network.\n\n" +
 			"Please check the information available at " +
-			"https://tb-manual.torproject.org/troubleshooting/ to know what you can do.")
+			"https://tb-manual.torproject.org/troubleshooting/ to know what you can do.\n")
 
 	case tor.ErrPartialTorNoControlPort:
-		return i18n().Sprintf("No valid Tor Control Port found in the system in order to run Wahay.")
+		return i18n().Sprintf("No valid Tor Control Port found on the system in order to run Wahay.\n")
 
 	case tor.ErrPartialTorNoValidAuth:
-		return i18n().Sprintf("No valid Tor Control Port authentication method found in the system.")
+		return i18n().Sprintf("No valid Tor Control Port authentication method found on the system.\n")
 
 	case tor.ErrFatalTorNoConnectionAllowed:
 		return i18n().Sprintf("We found a valid Tor in the system but the connection over Tor network " +
 			"is not available.\n\nPlease check the information available at " +
-			"https://tb-manual.torproject.org/troubleshooting/ to know what you can do.")
+			"https://tb-manual.torproject.org/troubleshooting/ to know what you can do.\n")
 
 	case tor.ErrTorVersionNotCompatible:
-		return i18n().Sprintf("The current version of Tor is incompatible with Wahay.")
+		return i18n().Sprintf("The current version of Tor is incompatible with Wahay.\n")
 
 	case tor.ErrInvalidConfiguredTorBinary:
 		return i18n().Sprintf("The configured path to the Tor binary is not valid or can't be used.\n\n" +
 			"Please configure another path or download a bundled Wahay with Tor in the following url:" +
-			"\n\nhttps://wahay.org/download.html")
+			"\n\nhttps://wahay.org/download.html\n")
 
 	case tor.ErrInvalidTorPath:
 	default:
-		return i18n().Sprintf("No valid Tor binary found in the system in order to run Wahay.")
+		return i18n().Sprintf("No valid Tor binary found on the system in order to run Wahay.\n")
 	}
 
 	return err.Error()

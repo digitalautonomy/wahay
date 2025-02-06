@@ -110,13 +110,6 @@
             "fuzzy": true
         },
         {
-            "id": "The username is required",
-            "message": "The username is required",
-            "translation": "The username is required",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Start Meeting \u0026 Join",
             "message": "Start Meeting \u0026 Join",
             "translation": "Start Meeting \u0026 Join",
@@ -214,9 +207,11 @@
             "fuzzy": true
         },
         {
-            "id": "No valid Mumble binary found in the system in order to run Wahay.",
-            "message": "No valid Mumble binary found in the system in order to run Wahay.",
-            "translation": "No valid Mumble binary found in the system in order to run Wahay."
+            "id": "No valid Mumble binary found on the system in order to run Wahay.",
+            "message": "No valid Mumble binary found on the system in order to run Wahay.",
+            "translation": "No valid Mumble binary found on the system in order to run Wahay.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "please enter a valid password",
@@ -275,49 +270,67 @@
             "fuzzy": true
         },
         {
-            "id": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay's bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
-            "message": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay's bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
-            "translation": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay's bundle with Tor from our website:\n\nhttps://wahay.org/download.html"
+            "id": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
+            "message": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
+            "translation": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The Tor instance can't be started.",
             "message": "The Tor instance can't be started.",
-            "translation": "The Tor instance can't be started."
+            "translation": "The Tor instance can't be started.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.",
             "message": "The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.",
-            "translation": "The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do."
+            "translation": "The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
-            "id": "No valid Tor Control Port found in the system in order to run Wahay.",
-            "message": "No valid Tor Control Port found in the system in order to run Wahay.",
-            "translation": "No valid Tor Control Port found in the system in order to run Wahay."
+            "id": "No valid Tor Control Port found on the system in order to run Wahay.",
+            "message": "No valid Tor Control Port found on the system in order to run Wahay.",
+            "translation": "No valid Tor Control Port found on the system in order to run Wahay.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
-            "id": "No valid Tor Control Port authentication method found in the system.",
-            "message": "No valid Tor Control Port authentication method found in the system.",
-            "translation": "No valid Tor Control Port authentication method found in the system."
+            "id": "No valid Tor Control Port authentication method found on the system.",
+            "message": "No valid Tor Control Port authentication method found on the system.",
+            "translation": "No valid Tor Control Port authentication method found on the system.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "We found a valid Tor in the system but the connection over Tor network is not available.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.",
             "message": "We found a valid Tor in the system but the connection over Tor network is not available.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.",
-            "translation": "We found a valid Tor in the system but the connection over Tor network is not available.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do."
+            "translation": "We found a valid Tor in the system but the connection over Tor network is not available.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The current version of Tor is incompatible with Wahay.",
             "message": "The current version of Tor is incompatible with Wahay.",
-            "translation": "The current version of Tor is incompatible with Wahay."
+            "translation": "The current version of Tor is incompatible with Wahay.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
             "message": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
-            "translation": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html"
+            "translation": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
-            "id": "No valid Tor binary found in the system in order to run Wahay.",
-            "message": "No valid Tor binary found in the system in order to run Wahay.",
-            "translation": "No valid Tor binary found in the system in order to run Wahay."
+            "id": "No valid Tor binary found on the system in order to run Wahay.",
+            "message": "No valid Tor binary found on the system in order to run Wahay.",
+            "translation": "No valid Tor binary found on the system in order to run Wahay.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "We've found errors",

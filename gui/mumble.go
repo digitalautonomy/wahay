@@ -55,9 +55,9 @@ func mumbleErrorTranslator(err error) string {
 	case client.ErrNoClientInConfiguredPath:
 		return i18n().Sprintf("The configured path to the Mumble binary is not valid or can't be used.\n\n" +
 			"Please configure another path or download a bundled Wahay with Mumble in the following url:" +
-			"\n\nhttps://wahay.org/download.html")
+			"\n\nhttps://wahay.org/download.html\n")
 	case client.ErrBinaryUnavailable:
-		return i18n().Sprintf("No valid Mumble binary found in the system in order to run Wahay.")
+		return i18n().Sprintf("No valid Mumble binary found on the system in order to run Wahay.\n")
 	}
 
 	return err.Error()

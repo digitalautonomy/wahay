@@ -106,11 +106,6 @@
             "fuzzy": true
         },
         {
-            "id": "The username is required",
-            "message": "The username is required",
-            "translation": ""
-        },
-        {
             "id": "Start Meeting \u0026 Join",
             "message": "Start Meeting \u0026 Join",
             "translation": "Starta mötet \u0026 anslut",
@@ -202,8 +197,8 @@
             "translation": ""
         },
         {
-            "id": "No valid Mumble binary found in the system in order to run Wahay.",
-            "message": "No valid Mumble binary found in the system in order to run Wahay.",
+            "id": "No valid Mumble binary found on the system in order to run Wahay.",
+            "message": "No valid Mumble binary found on the system in order to run Wahay.",
             "translation": ""
         },
         {
@@ -263,8 +258,8 @@
             "fuzzy": true
         },
         {
-            "id": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay's bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
-            "message": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay's bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
+            "id": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
+            "message": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
             "translation": ""
         },
         {
@@ -278,13 +273,13 @@
             "translation": ""
         },
         {
-            "id": "No valid Tor Control Port found in the system in order to run Wahay.",
-            "message": "No valid Tor Control Port found in the system in order to run Wahay.",
+            "id": "No valid Tor Control Port found on the system in order to run Wahay.",
+            "message": "No valid Tor Control Port found on the system in order to run Wahay.",
             "translation": ""
         },
         {
-            "id": "No valid Tor Control Port authentication method found in the system.",
-            "message": "No valid Tor Control Port authentication method found in the system.",
+            "id": "No valid Tor Control Port authentication method found on the system.",
+            "message": "No valid Tor Control Port authentication method found on the system.",
             "translation": ""
         },
         {
@@ -303,8 +298,8 @@
             "translation": ""
         },
         {
-            "id": "No valid Tor binary found in the system in order to run Wahay.",
-            "message": "No valid Tor binary found in the system in order to run Wahay.",
+            "id": "No valid Tor binary found on the system in order to run Wahay.",
+            "message": "No valid Tor binary found on the system in order to run Wahay.",
             "translation": ""
         },
         {
