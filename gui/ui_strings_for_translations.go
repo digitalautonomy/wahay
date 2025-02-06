@@ -111,8 +111,7 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3() {
 	_ = i18n().Sprintf("Type the Meeting ID (normally a .onion address)")
 	_ = i18n().Sprintf("Type the password")
 	_ = i18n().Sprintf("Type the password to join the meeting")
-	_ = i18n().Sprintf("Type your preferred screen name")
-	_ = i18n().Sprintf("Type your screen name")
+	_ = i18n().Sprintf("Type your screen name (or leave empty for a random one)")
 	_ = i18n().Sprintf("Username")
 	_ = i18n().Sprintf("Wahay is ready to use")
 	_ = i18n().Sprintf("We have detected that the configuration file is invalid or corrupted. " +

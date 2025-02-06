@@ -742,14 +742,9 @@
             "translation": "Type the password to join the meeting"
         },
         {
-            "id": "Type your preferred screen name",
-            "message": "Type your preferred screen name",
-            "translation": "Type your preferred screen name"
-        },
-        {
-            "id": "Type your screen name",
-            "message": "Type your screen name",
-            "translation": "Type your screen name"
+            "id": "Type your screen name (or leave empty for a random one)",
+            "message": "Type your screen name (or leave empty for a random one)",
+            "translation": "Type your screen name (or leave empty for a random one)"
         },
         {
             "id": "Username",

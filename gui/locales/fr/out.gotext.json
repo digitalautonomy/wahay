@@ -706,14 +706,9 @@
             "translation": "Saisissez le mot de passe pour rejoindre la réunion"
         },
         {
-            "id": "Type your preferred screen name",
-            "message": "Type your preferred screen name",
-            "translation": "Saisissez votre nom d'utilisateur préféré"
-        },
-        {
-            "id": "Type your screen name",
-            "message": "Type your screen name",
-            "translation": "Saisissez votre nom d'utilisateur"
+            "id": "Type your screen name (or leave empty for a random one)",
+            "message": "Type your screen name (or leave empty for a random one)",
+            "translation": ""
         },
         {
             "id": "Username",

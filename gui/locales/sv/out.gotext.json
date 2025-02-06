@@ -710,14 +710,9 @@
             "translation": "Ange lösenordet för att ansluta till mötet"
         },
         {
-            "id": "Type your preferred screen name",
-            "message": "Type your preferred screen name",
-            "translation": "Ange ditt önskade skärmnamn"
-        },
-        {
-            "id": "Type your screen name",
-            "message": "Type your screen name",
-            "translation": "Ange ditt skärmnamn"
+            "id": "Type your screen name (or leave empty for a random one)",
+            "message": "Type your screen name (or leave empty for a random one)",
+            "translation": ""
         },
         {
             "id": "Username",
