@@ -144,6 +144,9 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">General</property>
+                <style>
+                  <class name="settings-tab"/>
+                </style>
               </object>
               <packing>
                 <property name="tab-fill">False</property>
@@ -264,6 +267,9 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Security</property>
+                <style>
+                  <class name="settings-tab"/>
+                </style>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -523,6 +529,9 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Debugging</property>
+                <style>
+                  <class name="settings-tab"/>
+                </style>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -783,6 +792,9 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Mumble</property>
+                <style>
+                  <class name="settings-tab"/>
+                </style>
               </object>
               <packing>
                 <property name="position">3</property>
@@ -945,6 +957,9 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">Tor</property>
+                <style>
+                  <class name="settings-tab"/>
+                </style>
               </object>
               <packing>
                 <property name="position">4</property>

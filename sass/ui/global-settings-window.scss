@@ -1,3 +1,7 @@
 .label-settings-warning {
     @extend .label-warning;
 }
+
+.settings-tab {
+    color: $gray-900;
+}

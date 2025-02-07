@@ -569,6 +569,12 @@ window.meeting-controls {
         border-color: transparent;
         box-shadow: none; }
 
+.settings-tab {
+  color: #1a202c; }
+
+.settings-background {
+  background-color: #fafbfc; }
+
 .meeting-info-line {
   padding-top: 4px;
   padding-bottom: 4px; }
