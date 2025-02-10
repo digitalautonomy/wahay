@@ -482,6 +482,13 @@ label.label-text {
   padding-left: 20px;
   padding-right: 20px; }
 
+.invite-description {
+  color: #2d3748; }
+
+.invite-option {
+  color: #2d3748;
+  font-weight: bold; }
+
 .host-meeting-toolbar {
   background: #f0fff4;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
