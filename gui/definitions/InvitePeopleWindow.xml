@@ -41,7 +41,7 @@
                     <property name="label" translatable="yes">Choose your email service to send invitation</property>
                     <property name="selectable">False</property>
                     <style>
-                      <class name="invite-description"/>
+                      <class name="description"/>
                     </style> 
                   </object>
                   <packing>

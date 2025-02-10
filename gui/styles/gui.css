@@ -482,9 +482,6 @@ label.label-text {
   padding-left: 20px;
   padding-right: 20px; }
 
-.invite-description {
-  color: #2d3748; }
-
 .invite-option {
   color: #2d3748;
   font-weight: bold; }
@@ -580,6 +577,9 @@ window.meeting-controls {
 
 .settings-tab {
   color: #1a202c; }
+
+.description {
+  color: #2d3748; }
 
 .meeting-info-line {
   padding-top: 4px;
