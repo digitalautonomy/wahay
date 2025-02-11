@@ -45,7 +45,7 @@ SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
 SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
 
 SASS_SRC := sass/components/*.scss sass/mixins/*.scss sass/ui/*.scss sass/utilities/*.scss sass/variables/*.scss sass/*.scss
-CSS_GEN := gui/styles/gui.css
+CSS_GEN := gui/styles/light-mode-gui.css
 AUTOGEN := gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/* tor/files/* client/files/*
 
 GO := go
@@ -108,11 +108,11 @@ gui/styles:
 
 $(CSS_GEN): gui/styles $(SASS_SRC)
 	# this is necessary because we have a directory named sass as well, so Make gets confused
-	`which sass` ./sass/gui.scss:$@
+	`which sass` ./sass/light-mode-gui.scss:$@
 
 sass-watch: gui/styles $(SASS_SRC)
 	# this is necessary because we have a directory named sass as well, so Make gets confused
-	`which sass` --watch ./sass/gui.scss:$(CSS_GEN)
+	`which sass` --watch ./sass/light-mode-gui.scss:$(CSS_GEN)
 
 $(BUILD_DIR)/wahay: $(AUTOGEN) $(SRC)
 	go build $(LDFLAGS_REGULAR) $(BINARY_TAGS) -o $(BUILD_DIR)/wahay

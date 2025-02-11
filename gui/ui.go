@@ -239,7 +239,7 @@ func (u *gtkUI) setGlobalStyles() {
 		return
 	}
 
-	prov := u.g.cssFor("gui")
+	prov := u.g.cssFor("light-mode-gui")
 	screen, _ := u.g.gdk.ScreenGetDefault()
 	u.g.gtk.AddProviderForScreen(screen, prov, uint(gtki.STYLE_PROVIDER_PRIORITY_APPLICATION))
 }
