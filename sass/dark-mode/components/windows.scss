@@ -1,0 +1,71 @@
+window {
+  font-family: $desktop-font;
+  background: $gray-800;
+  font-size: $desktop-font-size;
+
+  .window-content {
+    padding: $spacing;
+  }
+
+  .window-actions {
+    padding: $spacing;
+
+    &.bordered {
+      border-top: 2px solid $white;
+      background: $gray-200;
+    }
+    
+    &.background-gray {
+      background: $gray-200;
+    }
+  }
+
+  .actions {
+    .btn {
+      margin-left: $spacing/1.5;
+    }
+  }
+
+  .actions-right {
+    padding-left: $spacing;
+  }
+
+  .actions-left {
+    padding-right: $spacing;
+  }
+
+  &.light {
+    background: $white;
+
+    .window-actions.bordered {
+      background: $white;
+    }
+  }
+}
+
+dialog {
+  font-family: $desktop-font;
+  background: $white;
+  font-size: $desktop-font-size;
+
+  .dialog-content {
+    padding: $spacing;
+  }
+
+  .dialog-actions {
+    padding: $spacing;
+
+    &.bordered {
+      border-top: 1px solid $gray-300;
+      background: $gray-100;
+    }
+  }
+
+  &.light {
+    background: $gray-100;
+
+    .window-actions.bordered {
+      background: $white;
+    }
+  }
+}

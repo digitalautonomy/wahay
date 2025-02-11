@@ -1,0 +1,454 @@
+.box-shadow {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
+
+.box-shadow-medium {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15); }
+
+.box-shadow-large {
+  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.15); }
+
+.box-shadow-extra-large {
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.07); }
+
+.box-shadow-none {
+  box-shadow: none; }
+
+.text-danger {
+  color: #e53e3e; }
+
+.description {
+  color: #2d3748; }
+
+.mb {
+  margin-bottom: 20px; }
+
+.mt {
+  margin-top: 20px; }
+
+window {
+  font-family: "Liberation Sans", Arial, sans-serif;
+  background: #2d3748;
+  font-size: 18px; }
+  window .window-content {
+    padding: 20px; }
+  window .window-actions {
+    padding: 20px; }
+    window .window-actions.bordered {
+      border-top: 2px solid #fff;
+      background: #edf2f7; }
+    window .window-actions.background-gray {
+      background: #edf2f7; }
+  window .actions .btn, window .actions .main-window-top-bar .main-window-btn-settings, .main-window-top-bar window .actions .main-window-btn-settings,
+  window .actions .main-window-top-bar .main-window-btn-help,
+  .main-window-top-bar window .actions .main-window-btn-help, window .actions .main-window-actions .btn-host-meeting, .main-window-actions window .actions .btn-host-meeting,
+  window .actions .main-window-actions .btn-join-meeting,
+  .main-window-actions window .actions .btn-join-meeting {
+    margin-left: 13.3333333333px; }
+  window .actions-right {
+    padding-left: 20px; }
+  window .actions-left {
+    padding-right: 20px; }
+  window.light {
+    background: #fff; }
+    window.light .window-actions.bordered {
+      background: #fff; }
+
+dialog {
+  font-family: "Liberation Sans", Arial, sans-serif;
+  background: #fff;
+  font-size: 18px; }
+  dialog .dialog-content {
+    padding: 20px; }
+  dialog .dialog-actions {
+    padding: 20px; }
+    dialog .dialog-actions.bordered {
+      border-top: 1px solid #e2e8f0;
+      background: #f7fafc; }
+  dialog.light {
+    background: #f7fafc; }
+    dialog.light .window-actions.bordered {
+      background: #fff; }
+
+.form-control {
+  font-family: "Liberation Sans", Arial, sans-serif;
+  background: #fff;
+  border: 2px solid #cbd5e0;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
+  color: #1a202c;
+  font-size: 18px;
+  border-radius: 4.2px;
+  padding: 13.3333333333px 10px;
+  text-shadow: none; }
+  .form-control.append {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0; }
+  .form-control:disabled {
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none; }
+  .form-control:not(:disabled):focus {
+    border-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); }
+
+.form-legend {
+  margin-bottom: 20px; }
+
+.form-legend-title {
+  color: #000;
+  font-size: 20px;
+  font-weight: 600; }
+
+.form-legend-content {
+  border-top: 1px solid #f8fafc;
+  margin-top: 10px;
+  padding-top: 10px; }
+
+.form-control-font {
+  font-family: "Liberation Sans", Arial, sans-serif;
+  background: #fff;
+  border: 2px solid #cbd5e0;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
+  color: #1a202c;
+  font-size: 18px;
+  border-radius: 4.2px;
+  padding: 13.3333333333px 10px;
+  text-shadow: none; }
+  .form-control-font:active, .form-control-font:focus {
+    color: #1a202c;
+    border: 2px solid #718096;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
+
+.meeting-id-control {
+  font-family: "Liberation Sans", Arial, sans-serif;
+  background: #fff;
+  border: 2px solid #cbd5e0;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
+  color: #1a202c;
+  font-size: 18px;
+  border-radius: 4.2px;
+  padding: 13.3333333333px 10px;
+  text-shadow: none; }
+  .meeting-id-control:active, .meeting-id-control:focus {
+    color: #1a202c;
+    border: 2px solid #718096;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
+
+.btn, .main-window-top-bar .main-window-btn-settings,
+.main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting {
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  text-shadow: none;
+  border-radius: 4.384px; }
+  .btn.append, .main-window-top-bar .append.main-window-btn-settings,
+  .main-window-top-bar .append.main-window-btn-help, .main-window-actions .append.btn-host-meeting,
+  .main-window-actions .append.btn-join-meeting {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-width: 0; }
+
+.btn, .main-window-top-bar .main-window-btn-settings,
+.main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting {
+  color: #1a202c;
+  background: #fff; }
+  .btn:focus, .main-window-top-bar .main-window-btn-settings:focus,
+  .main-window-top-bar .main-window-btn-help:focus, .main-window-actions .btn-host-meeting:focus,
+  .main-window-actions .btn-join-meeting:focus {
+    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.3); }
+  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover,
+  .main-window-top-bar .main-window-btn-help:hover, .main-window-actions .btn-host-meeting:hover,
+  .main-window-actions .btn-join-meeting:hover {
+    background: #f7f7f7;
+    border-color: rgba(0, 0, 0, 0.35); }
+  .btn:active, .main-window-top-bar .main-window-btn-settings:active,
+  .main-window-top-bar .main-window-btn-help:active, .main-window-actions .btn-host-meeting:active,
+  .main-window-actions .btn-join-meeting:active {
+    background: #e9ecef;
+    border-color: rgba(0, 0, 0, 0.35);
+    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+  .btn:checked, .main-window-top-bar .main-window-btn-settings:checked,
+  .main-window-top-bar .main-window-btn-help:checked, .main-window-actions .btn-host-meeting:checked,
+  .main-window-actions .btn-join-meeting:checked {
+    background: #e9ecef;
+    border-color: rgba(0, 0, 0, 0.35);
+    box-shadow: inset 0 0.3em 0.5em rgba(0, 0, 0, 0.3); }
+  .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled,
+  .main-window-top-bar .main-window-btn-help:disabled, .main-window-actions .btn-host-meeting:disabled,
+  .main-window-actions .btn-join-meeting:disabled {
+    color: rgba(26, 32, 44, 0.4);
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none; }
+
+.btn-primary, .main-window-actions .btn-host-meeting {
+  color: #fff;
+  background: #4299e1;
+  border-color: #4299e1; }
+  .btn-primary:focus, .main-window-actions .btn-host-meeting:focus {
+    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
+  .btn-primary:hover, .main-window-actions .btn-host-meeting:hover {
+    background: #3994e0;
+    border-color: #3994e0; }
+  .btn-primary:active, .main-window-actions .btn-host-meeting:active {
+    background: #2388dc;
+    border-color: #3994e0;
+    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+  .btn-primary:disabled, .main-window-actions .btn-host-meeting:disabled {
+    color: rgba(255, 255, 255, 0.65);
+    background: #a1ccf0;
+    border-color: transparent;
+    box-shadow: none; }
+
+.btn-secondary, .main-window-actions .btn-join-meeting {
+  color: #fff;
+  background: #38a169;
+  border-color: #38a169; }
+  .btn-secondary:focus, .main-window-actions .btn-join-meeting:focus {
+    box-shadow: 0 0 0 0.2em rgba(72, 187, 120, 0.4); }
+  .btn-secondary:hover, .main-window-actions .btn-join-meeting:hover {
+    background: #359964;
+    border-color: #359964; }
+  .btn-secondary:active, .main-window-actions .btn-join-meeting:active {
+    background: #369460;
+    border-color: #359964;
+    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+  .btn-secondary:disabled, .main-window-actions .btn-join-meeting:disabled {
+    color: rgba(255, 255, 255, 0.65);
+    background: #9cd0b4;
+    border-color: transparent;
+    box-shadow: none; }
+
+.btn-blue {
+  color: #fff;
+  background: #3994e0;
+  border-color: #3994e0; }
+  .btn-blue:focus {
+    box-shadow: 0 0 0 0.2em rgba(101, 172, 231, 0.4); }
+  .btn-blue:hover {
+    background: #308fde;
+    border-color: #308fde; }
+  .btn-blue:active {
+    background: #308fdf;
+    border-color: #308fde;
+    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+  .btn-blue:disabled {
+    color: rgba(255, 255, 255, 0.65);
+    background: #9ccaf0;
+    border-color: transparent;
+    box-shadow: none; }
+
+.btn-danger {
+  color: #e53e3e;
+  background: #fafbfc;
+  border: 2px solid;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.12); }
+  .btn-danger:focus {
+    box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
+  .btn-danger:hover {
+    color: #fff;
+    background: #e53e3e;
+    border-color: rgba(0, 0, 0, 0.5); }
+  .btn-danger:active {
+    color: #fff;
+    background: #e22828;
+    border-color: rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+  .btn-danger:disabled {
+    color: rgba(229, 62, 62, 0.4);
+    background: #f0f5f9;
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: none; }
+
+.btn-orange {
+  color: #fff;
+  background: #d4671f;
+  border-color: #d4671f; }
+  .btn-orange:focus {
+    box-shadow: 0 0 0 0.2em rgba(221, 107, 32, 0.4); }
+  .btn-orange:hover {
+    background: #cb621d;
+    border-color: #cb621d; }
+  .btn-orange:active {
+    background: #ba5a1b;
+    border-color: #cb621d;
+    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+  .btn-orange:disabled {
+    color: rgba(255, 255, 255, 0.65);
+    background: #eab38f;
+    border-color: transparent;
+    box-shadow: none; }
+
+.btn-outline {
+  color: #4299e1;
+  background: #fff; }
+  .btn-outline:hover, .btn-outline:active {
+    color: #fff;
+    background: #4299e1;
+    border-color: #4299e1; }
+  .btn-outline:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
+  .btn-outline:disabled {
+    color: rgba(0, 0, 0, 0.3);
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: none; }
+
+.btn-lg, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting {
+  border-radius: 0.2em;
+  padding: 15px 20px;
+  font-size: 20px; }
+
+.btn-md {
+  border-radius: 0.2em;
+  padding: 12px 25px;
+  font-size: 18px; }
+
+.btn-sm, .main-window-top-bar .main-window-btn-settings,
+.main-window-top-bar .main-window-btn-help {
+  border-radius: 4.8px;
+  padding: 8px 18px;
+  font-size: 14px; }
+
+.btn-large {
+  padding: 0.75em 1.25em;
+  font-size: inherit;
+  border-radius: 6px; }
+
+.btn-invisible {
+  color: #1a202c;
+  background: #f7fafc;
+  border: 2px solid #cbd5e0;
+  outline-width: 0;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 500; }
+  .btn-invisible:hover, .btn-invisible:active, .btn-invisible:focus {
+    color: #1a202c;
+    background: #fff;
+    border: 2px solid #a0aec0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+
+.btn-link {
+  padding: 1px 2px;
+  background: none;
+  border-width: 0;
+  box-shadow: none;
+  font-size: 20px;
+  color: #3182ce; }
+  .btn-link:hover, .btn-link:active {
+    box-shadow: none;
+    background: none; }
+
+label, .label, .label-success, .label-warning {
+  font-size: 20.4px; }
+
+label.control-label {
+  color: #000;
+  font-weight: 500;
+  margin-bottom: 10px; }
+label.control-help {
+  color: #718096;
+  font-size: 16px; }
+label.label-text {
+  font-size: 16px; }
+
+.label-checkbox {
+  color: #4a5568; }
+
+.label, .label-success, .label-warning {
+  padding: 13.3333333333px 20px; }
+
+.label-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #000; }
+
+.label-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #4a5568; }
+
+.label-success {
+  color: #22543d;
+  background: #f0fff4;
+  font-weight: 500; }
+
+.label-warning {
+  color: #742a2a;
+  background: #fed7d7;
+  font-weight: 500; }
+
+.label-bold {
+  color: #1a202c;
+  font-weight: 600;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-right: 20px; }
+
+.label-value {
+  color: #4a5568;
+  font-weight: 400;
+  padding-top: 1px;
+  padding-bottom: 1px; }
+
+.main-window-top-bar {
+  background: #1a202c;
+  border-bottom: 2px solid #2d3748;
+  padding: 20px; }
+  .main-window-top-bar .main-window-title {
+    color: #edf2f7;
+    font-size: 20px;
+    font-weight: 600; }
+  .main-window-top-bar .main-window-btn-settings,
+  .main-window-top-bar .main-window-btn-help {
+    font-size: 14px;
+    border-radius: 10em;
+    background: #2d3748;
+    color: #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    margin-left: 10px; }
+    .main-window-top-bar .main-window-btn-settings:hover,
+    .main-window-top-bar .main-window-btn-help:hover {
+      color: #edf2f7;
+      background: #4a5568; }
+
+.main-window-actions {
+  padding: 20px; }
+  .main-window-actions .btn-host-meeting,
+  .main-window-actions .btn-join-meeting {
+    text-shadow: none;
+    font-size: 20.4px; }
+    .main-window-actions .btn-host-meeting label,
+    .main-window-actions .btn-join-meeting label {
+      font-size: 20px;
+      font-weight: 500; }
+
+.main-window-status-bar {
+  color: #edf2f7;
+  border-width: 0;
+  padding: 10px 20px;
+  background: #1a202c;
+  background-image: linear-gradient(-180deg, #141922 0%, black 90%); }
+  .main-window-status-bar.error {
+    background: #c53030; }
+  .main-window-status-bar .status-label {
+    font-size: 18px; }
+  .main-window-status-bar .status-show-errors {
+    background: #e2e8f0;
+    color: #718096;
+    font-weight: 400;
+    font-size: 18px;
+    padding: 5px 20px;
+    border-radius: 10em;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
+    .main-window-status-bar .status-show-errors:hover, .main-window-status-bar .status-show-errors:active, .main-window-status-bar .status-show-errors:focus {
+      border: 2px solid rgba(160, 174, 192, 0.3);
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+      background: #cbd5e0; }
+
+/*# sourceMappingURL=dark-mode-gui.css.map */
