@@ -1,0 +1,23 @@
+.invite-email-link {
+  @extend .btn;
+
+  border-radius: 100%;
+  padding: 0;
+}
+
+.invite-window-bottom {
+  padding: $spacing;
+  border-top: 1px solid $border-color;
+}
+
+.invite-window-btn {
+  @extend .btn;
+
+  padding-left: $spacing;
+  padding-right: $spacing;
+}
+
+.invite-option {
+  color: $gray-100;
+  font-weight: bold;
+}

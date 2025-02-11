@@ -17,7 +17,7 @@
   color: #e53e3e; }
 
 .description {
-  color: #2d3748; }
+  color: #edf2f7; }
 
 .mb {
   margin-bottom: 20px; }
@@ -42,7 +42,7 @@ window {
   window .actions .main-window-top-bar .main-window-btn-help,
   .main-window-top-bar window .actions .main-window-btn-help, window .actions .main-window-actions .btn-host-meeting, .main-window-actions window .actions .btn-host-meeting,
   window .actions .main-window-actions .btn-join-meeting,
-  .main-window-actions window .actions .btn-join-meeting, window.meeting-controls .actions .buttons .control-leave-call, window.meeting-controls .buttons .actions .control-leave-call, window.meeting-controls .actions .buttons .control-finish-call, window.meeting-controls .buttons .actions .control-finish-call {
+  .main-window-actions window .actions .btn-join-meeting, window.meeting-controls .actions .buttons .control-leave-call, window.meeting-controls .buttons .actions .control-leave-call, window.meeting-controls .actions .buttons .control-finish-call, window.meeting-controls .buttons .actions .control-finish-call, window .actions .invite-email-link, window .actions .invite-window-btn {
     margin-left: 13.3333333333px; }
   window .actions-right {
     padding-left: 20px; }
@@ -134,7 +134,7 @@ dialog {
 
 .btn, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
-.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call {
+.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call, .invite-email-link, .invite-window-btn {
   padding: 12px 20px;
   font-size: 14px;
   font-weight: 500;
@@ -144,40 +144,40 @@ dialog {
   border-radius: 4.384px; }
   .btn.append, .main-window-top-bar .append.main-window-btn-settings,
   .main-window-top-bar .append.main-window-btn-help, .main-window-actions .append.btn-host-meeting,
-  .main-window-actions .append.btn-join-meeting, window.meeting-controls .buttons .append.control-leave-call, window.meeting-controls .buttons .append.control-finish-call {
+  .main-window-actions .append.btn-join-meeting, window.meeting-controls .buttons .append.control-leave-call, window.meeting-controls .buttons .append.control-finish-call, .append.invite-email-link, .append.invite-window-btn {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left-width: 0; }
 
 .btn, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
-.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call {
+.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call, .invite-email-link, .invite-window-btn {
   color: #1a202c;
   background: #fff; }
   .btn:focus, .main-window-top-bar .main-window-btn-settings:focus,
   .main-window-top-bar .main-window-btn-help:focus, .main-window-actions .btn-host-meeting:focus,
-  .main-window-actions .btn-join-meeting:focus, window.meeting-controls .buttons .control-leave-call:focus, window.meeting-controls .buttons .control-finish-call:focus {
+  .main-window-actions .btn-join-meeting:focus, window.meeting-controls .buttons .control-leave-call:focus, window.meeting-controls .buttons .control-finish-call:focus, .invite-email-link:focus, .invite-window-btn:focus {
     box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.3); }
   .btn:hover, .main-window-top-bar .main-window-btn-settings:hover,
   .main-window-top-bar .main-window-btn-help:hover, .main-window-actions .btn-host-meeting:hover,
-  .main-window-actions .btn-join-meeting:hover, window.meeting-controls .buttons .control-leave-call:hover, window.meeting-controls .buttons .control-finish-call:hover {
+  .main-window-actions .btn-join-meeting:hover, window.meeting-controls .buttons .control-leave-call:hover, window.meeting-controls .buttons .control-finish-call:hover, .invite-email-link:hover, .invite-window-btn:hover {
     background: #f7f7f7;
     border-color: rgba(0, 0, 0, 0.35); }
   .btn:active, .main-window-top-bar .main-window-btn-settings:active,
   .main-window-top-bar .main-window-btn-help:active, .main-window-actions .btn-host-meeting:active,
-  .main-window-actions .btn-join-meeting:active, window.meeting-controls .buttons .control-leave-call:active, window.meeting-controls .buttons .control-finish-call:active {
+  .main-window-actions .btn-join-meeting:active, window.meeting-controls .buttons .control-leave-call:active, window.meeting-controls .buttons .control-finish-call:active, .invite-email-link:active, .invite-window-btn:active {
     background: #e9ecef;
     border-color: rgba(0, 0, 0, 0.35);
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn:checked, .main-window-top-bar .main-window-btn-settings:checked,
   .main-window-top-bar .main-window-btn-help:checked, .main-window-actions .btn-host-meeting:checked,
-  .main-window-actions .btn-join-meeting:checked, window.meeting-controls .buttons .control-leave-call:checked, window.meeting-controls .buttons .control-finish-call:checked {
+  .main-window-actions .btn-join-meeting:checked, window.meeting-controls .buttons .control-leave-call:checked, window.meeting-controls .buttons .control-finish-call:checked, .invite-email-link:checked, .invite-window-btn:checked {
     background: #e9ecef;
     border-color: rgba(0, 0, 0, 0.35);
     box-shadow: inset 0 0.3em 0.5em rgba(0, 0, 0, 0.3); }
   .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled,
   .main-window-top-bar .main-window-btn-help:disabled, .main-window-actions .btn-host-meeting:disabled,
-  .main-window-actions .btn-join-meeting:disabled, window.meeting-controls .buttons .control-leave-call:disabled, window.meeting-controls .buttons .control-finish-call:disabled {
+  .main-window-actions .btn-join-meeting:disabled, window.meeting-controls .buttons .control-leave-call:disabled, window.meeting-controls .buttons .control-finish-call:disabled, .invite-email-link:disabled, .invite-window-btn:disabled {
     color: rgba(26, 32, 44, 0.4);
     background: #fff;
     border-color: rgba(0, 0, 0, 0.2);
@@ -531,5 +531,21 @@ window.meeting-controls {
         background: #e29898;
         border-color: transparent;
         box-shadow: none; }
+
+.invite-email-link {
+  border-radius: 100%;
+  padding: 0; }
+
+.invite-window-bottom {
+  padding: 20px;
+  border-top: 1px solid #edf2f7; }
+
+.invite-window-btn {
+  padding-left: 20px;
+  padding-right: 20px; }
+
+.invite-option {
+  color: #f7fafc;
+  font-weight: bold; }
 
 /*# sourceMappingURL=dark-mode-gui.css.map */

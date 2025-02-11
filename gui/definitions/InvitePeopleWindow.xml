@@ -332,6 +332,7 @@
                     <signal name="clicked" handler="on_copy_meeting_id" swapped="no"/>
                     <style>
                       <class name="invite-window-btn"/>
+                      <class name="btn-invisible"/>
                     </style>
                   </object>
                   <packing>
@@ -351,6 +352,7 @@
                     <signal name="clicked" handler="on_copy_invitation" swapped="no"/>
                     <style>
                       <class name="invite-window-btn"/>
+                      <class name="btn-invisible"/>
                     </style>
                   </object>
                   <packing>

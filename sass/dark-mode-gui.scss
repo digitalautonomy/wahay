@@ -9,7 +9,7 @@
 
 // Utilities
 @import "./utilities/box-shadow";
-@import "./utilities/text";
+@import "./dark-mode/utilities/text";
 @import "./utilities/spacing";
 
 // Components
@@ -23,3 +23,4 @@
 @import "./dark-mode/ui/loading-window";
 @import "./dark-mode/ui/help-window";
 @import "./dark-mode/ui/meeting-controls-window";
+@import "./dark-mode/ui/invite-people-window";
