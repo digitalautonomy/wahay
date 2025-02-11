@@ -225,6 +225,7 @@
                     <signal name="clicked" handler="on_cancel" swapped="no"/>
                     <style>
                       <class name="btn"/>
+                      <class name="btn-invisible"/>
                     </style>
                   </object>
                   <packing>
