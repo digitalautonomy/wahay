@@ -459,4 +459,19 @@ label.label-text {
     min-height: 50px;
     color: #48bb78; }
 
+.help-content {
+  padding: 20px; }
+
+.help-title, .help-primary {
+  font-size: 20px;
+  color: #f7fafc; }
+
+.help-primary {
+  font-weight: 600;
+  font-size: 20px; }
+
+.help-text {
+  font-size: 18px;
+  color: #edf2f7; }
+
 /*# sourceMappingURL=dark-mode-gui.css.map */

@@ -1,0 +1,20 @@
+.help-content {
+  padding: $spacing;
+}
+
+.help-title {
+  font-size: $h3-size;
+  color: $gray-100;
+}
+
+.help-primary {
+  font-weight: $font-weight-bold;
+  font-size: $h3-size;
+
+  @extend .help-title;
+}
+
+.help-text {
+  font-size: $font-size-medium;
+  color: $gray-200;
+}
