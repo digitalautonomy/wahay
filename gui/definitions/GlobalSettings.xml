@@ -65,6 +65,9 @@
                                     <property name="yalign">0.5</property>
                                     <property name="draw-indicator">True</property>
                                     <signal name="toggled" handler="on_toggle_option" swapped="no"/>
+                                    <style>
+                                      <class name="description"/>
+                                    </style>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
