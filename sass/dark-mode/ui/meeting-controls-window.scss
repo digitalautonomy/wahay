@@ -1,0 +1,45 @@
+window {
+  &.meeting-controls {
+    border-radius: 2px;
+
+    .top {
+      background: $green-900;
+      color: $green-200;
+      font-weight: $font-weight-semibold;
+      font-size: $font-size-large * 0.5;
+      box-shadow: 0 1px 2px rgba($black, 0.12);
+      padding: $spacing;
+
+      .text {
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-large * 1.05;
+      }
+    }
+
+    .content {
+      padding: $spacing;
+    }
+
+    .buttons {
+      background: $gray-900;
+      padding: $spacing;
+
+      %meeting-control {
+        @extend .btn;
+        padding: $spacing/1.5 $spacing;
+        font-size: $font-size-large;
+        border: 2px solid transparent;
+      }
+
+      .control-leave-call {
+        @extend %meeting-control;
+        @include btn-solid($text-white, $orange-500, $orange-600);
+      }
+
+      .control-finish-call {
+        @extend %meeting-control;
+        @include btn-solid($text-white, $red-600, $red-700);
+      }
+    }
+  }
+}

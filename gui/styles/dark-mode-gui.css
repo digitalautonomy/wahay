@@ -42,7 +42,7 @@ window {
   window .actions .main-window-top-bar .main-window-btn-help,
   .main-window-top-bar window .actions .main-window-btn-help, window .actions .main-window-actions .btn-host-meeting, .main-window-actions window .actions .btn-host-meeting,
   window .actions .main-window-actions .btn-join-meeting,
-  .main-window-actions window .actions .btn-join-meeting {
+  .main-window-actions window .actions .btn-join-meeting, window.meeting-controls .actions .buttons .control-leave-call, window.meeting-controls .buttons .actions .control-leave-call, window.meeting-controls .actions .buttons .control-finish-call, window.meeting-controls .buttons .actions .control-finish-call {
     margin-left: 13.3333333333px; }
   window .actions-right {
     padding-left: 20px; }
@@ -134,7 +134,7 @@ dialog {
 
 .btn, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
-.main-window-actions .btn-join-meeting {
+.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call {
   padding: 12px 20px;
   font-size: 14px;
   font-weight: 500;
@@ -144,40 +144,40 @@ dialog {
   border-radius: 4.384px; }
   .btn.append, .main-window-top-bar .append.main-window-btn-settings,
   .main-window-top-bar .append.main-window-btn-help, .main-window-actions .append.btn-host-meeting,
-  .main-window-actions .append.btn-join-meeting {
+  .main-window-actions .append.btn-join-meeting, window.meeting-controls .buttons .append.control-leave-call, window.meeting-controls .buttons .append.control-finish-call {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left-width: 0; }
 
 .btn, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
-.main-window-actions .btn-join-meeting {
+.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call {
   color: #1a202c;
   background: #fff; }
   .btn:focus, .main-window-top-bar .main-window-btn-settings:focus,
   .main-window-top-bar .main-window-btn-help:focus, .main-window-actions .btn-host-meeting:focus,
-  .main-window-actions .btn-join-meeting:focus {
+  .main-window-actions .btn-join-meeting:focus, window.meeting-controls .buttons .control-leave-call:focus, window.meeting-controls .buttons .control-finish-call:focus {
     box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.3); }
   .btn:hover, .main-window-top-bar .main-window-btn-settings:hover,
   .main-window-top-bar .main-window-btn-help:hover, .main-window-actions .btn-host-meeting:hover,
-  .main-window-actions .btn-join-meeting:hover {
+  .main-window-actions .btn-join-meeting:hover, window.meeting-controls .buttons .control-leave-call:hover, window.meeting-controls .buttons .control-finish-call:hover {
     background: #f7f7f7;
     border-color: rgba(0, 0, 0, 0.35); }
   .btn:active, .main-window-top-bar .main-window-btn-settings:active,
   .main-window-top-bar .main-window-btn-help:active, .main-window-actions .btn-host-meeting:active,
-  .main-window-actions .btn-join-meeting:active {
+  .main-window-actions .btn-join-meeting:active, window.meeting-controls .buttons .control-leave-call:active, window.meeting-controls .buttons .control-finish-call:active {
     background: #e9ecef;
     border-color: rgba(0, 0, 0, 0.35);
     box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
   .btn:checked, .main-window-top-bar .main-window-btn-settings:checked,
   .main-window-top-bar .main-window-btn-help:checked, .main-window-actions .btn-host-meeting:checked,
-  .main-window-actions .btn-join-meeting:checked {
+  .main-window-actions .btn-join-meeting:checked, window.meeting-controls .buttons .control-leave-call:checked, window.meeting-controls .buttons .control-finish-call:checked {
     background: #e9ecef;
     border-color: rgba(0, 0, 0, 0.35);
     box-shadow: inset 0 0.3em 0.5em rgba(0, 0, 0, 0.3); }
   .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled,
   .main-window-top-bar .main-window-btn-help:disabled, .main-window-actions .btn-host-meeting:disabled,
-  .main-window-actions .btn-join-meeting:disabled {
+  .main-window-actions .btn-join-meeting:disabled, window.meeting-controls .buttons .control-leave-call:disabled, window.meeting-controls .buttons .control-finish-call:disabled {
     color: rgba(26, 32, 44, 0.4);
     background: #fff;
     border-color: rgba(0, 0, 0, 0.2);
@@ -473,5 +473,63 @@ label.label-text {
 .help-text {
   font-size: 18px;
   color: #edf2f7; }
+
+window.meeting-controls {
+  border-radius: 2px; }
+  window.meeting-controls .top {
+    background: #22543d;
+    color: #c6f6d5;
+    font-weight: 500;
+    font-size: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    padding: 20px; }
+    window.meeting-controls .top .text {
+      font-weight: 500;
+      font-size: 21px; }
+  window.meeting-controls .content {
+    padding: 20px; }
+  window.meeting-controls .buttons {
+    background: #1a202c;
+    padding: 20px; }
+    window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call {
+      padding: 13.3333333333px 20px;
+      font-size: 20px;
+      border: 2px solid transparent; }
+    window.meeting-controls .buttons .control-leave-call {
+      color: #fff;
+      background: #dd6b20;
+      border-color: #dd6b20; }
+      window.meeting-controls .buttons .control-leave-call:focus {
+        box-shadow: 0 0 0 0.2em rgba(237, 137, 54, 0.4); }
+      window.meeting-controls .buttons .control-leave-call:hover {
+        background: #d4671f;
+        border-color: #d4671f; }
+      window.meeting-controls .buttons .control-leave-call:active {
+        background: #d2681a;
+        border-color: #d4671f;
+        box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+      window.meeting-controls .buttons .control-leave-call:disabled {
+        color: rgba(255, 255, 255, 0.65);
+        background: #eeb590;
+        border-color: transparent;
+        box-shadow: none; }
+    window.meeting-controls .buttons .control-finish-call {
+      color: #fff;
+      background: #c53030;
+      border-color: #c53030; }
+      window.meeting-controls .buttons .control-finish-call:focus {
+        box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
+      window.meeting-controls .buttons .control-finish-call:hover {
+        background: #bd2e2e;
+        border-color: #bd2e2e; }
+      window.meeting-controls .buttons .control-finish-call:active {
+        background: #c02828;
+        border-color: #bd2e2e;
+        box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
+      window.meeting-controls .buttons .control-finish-call:disabled {
+        color: rgba(255, 255, 255, 0.65);
+        background: #e29898;
+        border-color: transparent;
+        box-shadow: none; }
 
 /*# sourceMappingURL=dark-mode-gui.css.map */
