@@ -922,12 +922,12 @@
                         <property name="position">2</property>
                       </packing>
                     </child>
-                    <style>
-                      <class name="window-content" />
-                      <class name="settings-background" />
-                    </style>
                   </object>
                 </child>
+                <style>
+                  <class name="window-content" />
+                  <class name="settings-background" />
+                </style>
               </object>
               <packing>
                 <property name="position">4</property>
