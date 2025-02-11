@@ -16,6 +16,9 @@
 .text-danger {
   color: #e53e3e; }
 
+.description {
+  color: #2d3748; }
+
 .mb {
   margin-bottom: 20px; }
 
@@ -578,8 +581,8 @@ window.meeting-controls {
 .settings-tab {
   color: #1a202c; }
 
-.description {
-  color: #2d3748; }
+.settings-background {
+  background-color: #fff; }
 
 .meeting-info-line {
   padding-top: 4px;

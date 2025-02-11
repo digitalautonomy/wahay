@@ -29,10 +29,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-left">20</property>
-                <property name="margin-right">20</property>
-                <property name="margin-top">20</property>
-                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkFrame">
@@ -136,6 +132,7 @@
                 </child>
                 <style>
                   <class name="window-content"/>
+                  <class name="settings-background"/>
                 </style>
               </object>
             </child>
@@ -156,10 +153,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-left">20</property>
-                <property name="margin-right">20</property>
-                <property name="margin-top">20</property>
-                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
@@ -256,6 +249,7 @@
                 </child>
                 <style>
                   <class name="window-content"/>
+                  <class name="settings-background"/>
                 </style>
               </object>
               <packing>
@@ -280,9 +274,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-left">20</property>
-                <property name="margin-right">20</property>
-                <property name="margin-top">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
@@ -518,6 +509,7 @@
                 </child>
                 <style>
                   <class name="window-content"/>
+                  <class name="settings-background"/>
                 </style>
               </object>
               <packing>
@@ -542,10 +534,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-left">20</property>
-                <property name="margin-right">20</property>
-                <property name="margin-top">20</property>
-                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
@@ -781,6 +769,7 @@
                 </child>
                 <style>
                   <class name="window-content"/>
+                  <class name="settings-background"/>
                 </style>
               </object>
               <packing>
@@ -805,10 +794,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-left">20</property>
-                <property name="margin-right">20</property>
-                <property name="margin-top">20</property>
-                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
@@ -933,19 +918,15 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
                     <style>
                       <class name="window-content" />
+                      <class name="settings-background" />
                     </style>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
                 </child>
               </object>
               <packing>
@@ -1090,19 +1071,11 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-left">20</property>
-            <property name="margin-right">20</property>
-            <property name="margin-top">20</property>
-            <property name="margin-bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-left">20</property>
-                <property name="margin-right">20</property>
-                <property name="margin-top">20</property>
-                <property name="margin-bottom">20</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="lblSettingsWarning">
@@ -1198,10 +1171,10 @@
                 <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="margin-left">20</property>
+                <!-- <property name="margin-left">20</property>
                 <property name="margin-right">20</property>
                 <property name="margin-top">20</property>
-                <property name="margin-bottom">20</property>
+                <property name="margin-bottom">20</property> -->
                 <child>
                   <object class="GtkButton" id="btnConfigFileCorruptedCancel">
                     <property name="label" translatable="yes">No, cancel</property>
