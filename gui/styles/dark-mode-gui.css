@@ -451,4 +451,12 @@ label.label-text {
       box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
       background: #cbd5e0; }
 
+.loading-window {
+  color: #edf2f7;
+  background: #2d3748; }
+  .loading-window .spinner {
+    min-width: 50px;
+    min-height: 50px;
+    color: #48bb78; }
+
 /*# sourceMappingURL=dark-mode-gui.css.map */

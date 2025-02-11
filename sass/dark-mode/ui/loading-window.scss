@@ -1,0 +1,10 @@
+.loading-window {
+  color: $gray-200;
+  background: $gray-800;
+
+  .spinner {
+    min-width: 50px;
+    min-height: 50px;
+    color: $green-500;
+  }
+}
