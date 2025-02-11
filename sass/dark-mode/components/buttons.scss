@@ -1,0 +1,91 @@
+.btn {
+  padding: 12px 20px;
+  font-size: $body-font-size;
+  font-weight: $font-weight-semibold;
+  border: $border-width $border-style $border-color-button;
+  box-shadow: 0 1px 2px rgba($black, 0.16);
+  text-shadow: none;
+  border-radius: $border-radius * 1.096;
+
+  &.append {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-width: 0;
+  }
+}
+
+.btn           { @include btn-solid($text-gray-dark, $gray-000, $white); }
+.btn-primary   { @include btn-solid($text-white, $blue-500, $blue-500); }
+.btn-secondary { @include btn-solid($text-white, $green-500, $green-600); }
+.btn-blue      { @include btn-solid($text-white, lighten($blue-500, 8%), darken($blue-500, 2%)); }
+.btn-danger    { @include btn-inverse($red-600, $gray-000, darken($gray-100, 2%)); }
+.btn-orange    { @include btn-solid($text-white, $orange-600, darken($orange-600, 2%)); }
+
+// Outline button
+//
+// For when we need a linky-action that's not too heavy in busier
+// areas like conversation timelines.
+.btn-outline {
+  @include btn-outline($text-blue);
+}
+
+// Sizes
+.btn-lg {
+  border-radius: 0.2em;
+  padding: 15px 20px;
+  font-size: $font-size-large;
+}
+
+.btn-md {
+  border-radius: 0.2em;
+  padding: 12px 25px;
+  font-size: $font-size-medium;
+}
+
+.btn-sm {
+  border-radius: $border-radius * 1.2;
+  padding: 8px 18px;
+  font-size: $font-size-small;
+}
+
+.btn-large {
+  padding: $em-spacer-6 1.25em;
+  font-size: inherit;
+  border-radius: 6px;
+}
+
+// Invisible button
+//
+// Typically used as a "cancel" button next to a .btn
+.btn-invisible {
+  color: $text-white;
+  background: $gray-700;
+  border: 2px solid $gray-400;
+  outline-width: 0;
+  box-shadow: 0 2px 3px rgba($black, 0.1);
+  font-weight: $font-weight-semibold;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $text-white;
+    background: $gray-800;
+    border: 2px solid $gray-500;
+    box-shadow: 0 1px 2px rgba($black, 0.2);
+  }
+}
+
+.btn-link {
+  padding: 1px 2px;
+  background: none;
+  border-width: 0;
+  box-shadow: none;
+  font-size: $font-size-large;
+  color: $blue-600;
+
+  &:hover,
+  &:active {
+    box-shadow: none;
+    background: none;
+  }
+}

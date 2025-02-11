@@ -34,8 +34,8 @@ window {
   window .window-actions {
     padding: 20px; }
     window .window-actions.bordered {
-      border-top: 2px solid #fff;
-      background: #edf2f7; }
+      border-top: 2px solid #cbd5e0;
+      background: #1a202c; }
     window .window-actions.background-gray {
       background: #edf2f7; }
   window .actions .btn, window .actions .main-window-top-bar .main-window-btn-settings, .main-window-top-bar window .actions .main-window-btn-settings,
@@ -104,25 +104,25 @@ dialog {
 
 .form-control-font {
   font-family: "Liberation Sans", Arial, sans-serif;
-  background: #fff;
+  background: #2d3748;
   border: 2px solid #cbd5e0;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
-  color: #1a202c;
+  color: #fff;
   font-size: 18px;
   border-radius: 4.2px;
   padding: 13.3333333333px 10px;
   text-shadow: none; }
   .form-control-font:active, .form-control-font:focus {
-    color: #1a202c;
+    color: #fff;
     border: 2px solid #718096;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
 
 .meeting-id-control {
   font-family: "Liberation Sans", Arial, sans-serif;
-  background: #fff;
+  background: #2d3748;
   border: 2px solid #cbd5e0;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
-  color: #1a202c;
+  color: #fff;
   font-size: 18px;
   border-radius: 4.2px;
   padding: 13.3333333333px 10px;
@@ -320,15 +320,15 @@ dialog {
   border-radius: 6px; }
 
 .btn-invisible {
-  color: #1a202c;
-  background: #f7fafc;
+  color: #fff;
+  background: #4a5568;
   border: 2px solid #cbd5e0;
   outline-width: 0;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   font-weight: 500; }
   .btn-invisible:hover, .btn-invisible:active, .btn-invisible:focus {
-    color: #1a202c;
-    background: #fff;
+    color: #fff;
+    background: #2d3748;
     border: 2px solid #a0aec0;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
 
@@ -347,7 +347,7 @@ label, .label, .label-success, .label-warning {
   font-size: 20.4px; }
 
 label.control-label {
-  color: #000;
+  color: #fff;
   font-weight: 500;
   margin-bottom: 10px; }
 label.control-help {
@@ -357,7 +357,7 @@ label.label-text {
   font-size: 16px; }
 
 .label-checkbox {
-  color: #4a5568; }
+  color: #cbd5e0; }
 
 .label, .label-success, .label-warning {
   padding: 13.3333333333px 20px; }

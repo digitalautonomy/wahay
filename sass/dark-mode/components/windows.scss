@@ -11,8 +11,8 @@ window {
     padding: $spacing;
 
     &.bordered {
-      border-top: 2px solid $white;
-      background: $gray-200;
+      border-top: 2px solid $gray-400;
+      background: $gray-900;
     }
     
     &.background-gray {

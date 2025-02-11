@@ -14,9 +14,9 @@
 
 // Components
 @import "./dark-mode/components/windows";
-@import "./components/forms";
-@import "./components/buttons";
-@import "./components/labels";
+@import "./dark-mode/components/forms";
+@import "./dark-mode/components/buttons";
+@import "./dark-mode/components/labels";
 
 // Specific components
 @import "./dark-mode/ui/main-window";
