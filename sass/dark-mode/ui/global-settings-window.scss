@@ -1,0 +1,11 @@
+.label-settings-warning {
+    @extend .label-warning;
+}
+
+.settings-tab {
+    color: $gray-200;
+}
+
+.settings-background {
+    background-color: $gray-800;
+}

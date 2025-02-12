@@ -1,9 +1,9 @@
 .form-control {
   font-family: $desktop-font;
-  background: $white;
+  background: $gray-800;
   border: 2px solid $gray-400;
   box-shadow: inset 0 2px 2px rgba($black, 0.08);
-  color: $gray-900;
+  color: $text-white;
   font-size: $desktop-font-size;
   border-radius: $border-radius * 1.05;
   padding: $spacing/1.5 $spacing/2;
@@ -21,8 +21,9 @@
 
   &:not(:disabled) {
     &:focus {
-      border-color: rgba($black, 0.4);
+      border-color: $gray-600;
       box-shadow: 0 2px 3px rgba($black, 0.2);
+      color: $text-white;
     }
   }
 }
@@ -32,7 +33,7 @@
 }
 
 .form-legend-title {
-  color: $text-black;
+  color: $text-white;
   font-size: $font-size-large;
   font-weight: $font-weight-bold;
 }

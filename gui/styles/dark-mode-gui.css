@@ -71,10 +71,10 @@ dialog {
 
 .form-control {
   font-family: "Liberation Sans", Arial, sans-serif;
-  background: #fff;
+  background: #2d3748;
   border: 2px solid #cbd5e0;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08);
-  color: #1a202c;
+  color: #fff;
   font-size: 18px;
   border-radius: 4.2px;
   padding: 13.3333333333px 10px;
@@ -86,14 +86,15 @@ dialog {
     border-color: rgba(0, 0, 0, 0.2);
     box-shadow: none; }
   .form-control:not(:disabled):focus {
-    border-color: rgba(0, 0, 0, 0.4);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); }
+    border-color: #718096;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    color: #fff; }
 
 .form-legend {
   margin-bottom: 20px; }
 
 .form-legend-title {
-  color: #000;
+  color: #fff;
   font-size: 20px;
   font-weight: 600; }
 
@@ -343,7 +344,7 @@ dialog {
     box-shadow: none;
     background: none; }
 
-label, .label, .label-success, .label-warning {
+label, .label, .label-success, .label-warning, .label-settings-warning {
   font-size: 20.4px; }
 
 label.control-label {
@@ -359,7 +360,7 @@ label.label-text {
 .label-checkbox {
   color: #cbd5e0; }
 
-.label, .label-success, .label-warning {
+.label, .label-success, .label-warning, .label-settings-warning {
   padding: 13.3333333333px 20px; }
 
 .label-title {
@@ -377,7 +378,7 @@ label.label-text {
   background: #f0fff4;
   font-weight: 500; }
 
-.label-warning {
+.label-warning, .label-settings-warning {
   color: #742a2a;
   background: #fed7d7;
   font-weight: 500; }
@@ -582,5 +583,11 @@ window.meeting-controls {
 .meeting-info-line {
   padding-top: 4px;
   padding-bottom: 4px; }
+
+.settings-tab {
+  color: #edf2f7; }
+
+.settings-background {
+  background-color: #2d3748; }
 
 /*# sourceMappingURL=dark-mode-gui.css.map */

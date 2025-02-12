@@ -1002,6 +1002,7 @@
                     <signal name="clicked" handler="on_close_window" swapped="no"/>
                     <style>
                       <class name="btn"/>
+                      <class name="btn-invisible"/>
                     </style>
                   </object>
                   <packing>
