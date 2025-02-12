@@ -44,7 +44,7 @@ SRC_TEST := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*_test.go))
 SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
 SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
 
-SASS_SRC := sass/components/*.scss sass/mixins/*.scss sass/ui/*.scss sass/utilities/*.scss sass/variables/*.scss sass/*.scss
+SASS_SRC := sass/light-mode/components/*.scss sass/mixins/*.scss sass/light-mode/ui/*.scss sass/utilities/*.scss sass/light-mode/utilities/*.scss sass/variables/*.scss sass/*.scss
 CSS_GEN := gui/styles/light-mode-gui.css
 AUTOGEN := gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/* tor/files/* client/files/*
 

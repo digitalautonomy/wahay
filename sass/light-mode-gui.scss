@@ -12,20 +12,20 @@
 
 // Utilities
 @import "./utilities/box-shadow";
-@import "./utilities/text";
+@import "./light-mode/utilities/text";
 @import "./utilities/spacing";
 
 // Components
-@import "./components/windows";
-@import "./components/forms";
-@import "./components/buttons";
-@import "./components/labels";
+@import "./light-mode/components/windows";
+@import "./light-mode/components/forms";
+@import "./light-mode/components/buttons";
+@import "./light-mode/components/labels";
 
 // Specific components
-@import "./ui/main-window";
-@import "./ui/help-window";
-@import "./ui/loading-window";
-@import "./ui/invite-people-window";
-@import "./ui/host-meeting-window";
-@import "./ui/meeting-controls-window";
-@import "./ui/global-settings-window";
+@import "./light-mode/ui/main-window";
+@import "./light-mode/ui/help-window";
+@import "./light-mode/ui/loading-window";
+@import "./light-mode/ui/invite-people-window";
+@import "./light-mode/ui/host-meeting-window";
+@import "./light-mode/ui/meeting-controls-window";
+@import "./light-mode/ui/global-settings-window";
