@@ -44,8 +44,9 @@ SRC_TEST := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*_test.go))
 SRC_ALL := $(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.go))
 SRC := $(filter-out $(SRC_TEST), $(SRC_ALL))
 
-SASS_SRC := sass/light-mode/components/*.scss sass/mixins/*.scss sass/light-mode/ui/*.scss sass/utilities/*.scss sass/light-mode/utilities/*.scss sass/variables/*.scss sass/*.scss
-CSS_GEN := gui/styles/light-mode-gui.css
+SASS_SRC := sass/light-mode/components/*.scss sass/mixins/*.scss sass/light-mode/ui/*.scss sass/utilities/*.scss sass/light-mode/utilities/*.scss sass/variables/*.scss sass/*.scss sass/dark-mode/ui/*.scss sass/dark-mode/utilities/*.scss sass/dark-mode/components/*.scss
+LIGHT_CSS_GEN := gui/styles/light-mode-gui.css
+DARK_CSS_GEN := gui/styles/dark-mode-gui.css
 AUTOGEN := gui/definitions/* gui/styles/* gui/images/* gui/images/help/* gui/config_files/* tor/files/* client/files/*
 
 GO := go
@@ -106,13 +107,18 @@ coverage-dev:
 gui/styles:
 	mkdir -p $@
 
-$(CSS_GEN): gui/styles $(SASS_SRC)
+$(LIGHT_CSS_GEN): gui/styles $(SASS_SRC)
 	# this is necessary because we have a directory named sass as well, so Make gets confused
 	`which sass` ./sass/light-mode-gui.scss:$@
 
+$(DARK_CSS_GEN): gui/styles $(SASS_SRC)
+	# this is necessary because we have a directory named sass as well, so Make gets confused
+	`which sass` ./sass/dark-mode-gui.scss:$@
+
 sass-watch: gui/styles $(SASS_SRC)
 	# this is necessary because we have a directory named sass as well, so Make gets confused
-	`which sass` --watch ./sass/light-mode-gui.scss:$(CSS_GEN)
+	`which sass` --watch ./sass/light-mode-gui.scss:$(LIGHT_CSS_GEN)
+	`which sass` --watch ./sass/dark-mode-gui.scss:$(DARK_CSS_GEN)
 
 $(BUILD_DIR)/wahay: $(AUTOGEN) $(SRC)
 	go build $(LDFLAGS_REGULAR) $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
