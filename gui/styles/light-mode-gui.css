@@ -520,6 +520,10 @@ label.label-text {
 .vertical-space {
   padding: 20px 0; }
 
+.meeting-info-line {
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
 window.meeting-controls {
   border-radius: 2px; }
   window.meeting-controls .top {
@@ -583,9 +587,5 @@ window.meeting-controls {
 
 .settings-background {
   background-color: #fff; }
-
-.meeting-info-line {
-  padding-top: 4px;
-  padding-bottom: 4px; }
 
 /*# sourceMappingURL=light-mode-gui.css.map */
