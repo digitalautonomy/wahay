@@ -435,22 +435,23 @@ label.label-text {
   background: #1a202c;
   background-image: linear-gradient(-180deg, #141922 0%, black 90%); }
   .main-window-status-bar.error {
-    background: #c53030; }
+    background: #9b2c2c; }
   .main-window-status-bar .status-label {
     font-size: 18px; }
   .main-window-status-bar .status-show-errors {
-    background: #e2e8f0;
-    color: #718096;
+    background: #2d3748;
+    color: #fff;
     font-weight: 400;
     font-size: 18px;
     padding: 5px 20px;
     border-radius: 10em;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid #4a5568;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
     .main-window-status-bar .status-show-errors:hover, .main-window-status-bar .status-show-errors:active, .main-window-status-bar .status-show-errors:focus {
-      border: 2px solid rgba(160, 174, 192, 0.3);
+      border: 2px solid #718096;
       box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
-      background: #cbd5e0; }
+      background: #4a5568;
+      color: #edf2f7; }
 
 .loading-window {
   color: #edf2f7;

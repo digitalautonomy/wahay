@@ -66,7 +66,7 @@
     );
   
     &.error {
-      background: $red-700;
+      background: $red-800;
     }
   
     .status-label {
@@ -74,21 +74,22 @@
     }
   
     .status-show-errors {
-      background: $gray-300;
-      color: $gray-600;
+      background: $gray-800;
+      color: $text-white;
       font-weight: $font-weight-normal;
       font-size: $font-size-medium;
       padding: 5px 20px;
       border-radius: 10em;
-      border: 2px solid rgba($white, 0.1);
+      border: 2px solid $gray-700;
       box-shadow: 0 2px 3px rgba($black, 0.1);  
   
       &:hover,
       &:active,
       &:focus {
-        border: 2px solid rgba($gray-500, 0.3);
+        border: 2px solid $gray-600;
         box-shadow: 0 2px 3px rgba($black, 0.3); 
-        background: $gray-400;
+        background: $gray-700;
+        color: $gray-200;
       }
     }
   }
