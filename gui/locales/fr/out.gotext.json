@@ -188,8 +188,8 @@
             "fuzzy": true
         },
         {
-            "id": "The configured path to the Mumble binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html",
-            "message": "The configured path to the Mumble binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html",
+            "id": "The configured path to the Mumble binary is not valid or can't be used. Please configure another path.",
+            "message": "The configured path to the Mumble binary is not valid or can't be used. Please configure another path.",
             "translation": ""
         },
         {
@@ -254,8 +254,8 @@
             "fuzzy": true
         },
         {
-            "id": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
-            "message": "In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html",
+            "id": "In order to run Wahay, you must have Tor installed in your system.",
+            "message": "In order to run Wahay, you must have Tor installed in your system.",
             "translation": ""
         },
         {
@@ -289,8 +289,8 @@
             "translation": ""
         },
         {
-            "id": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
-            "message": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html",
+            "id": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path.",
+            "message": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path.",
             "translation": ""
         },
         {
@@ -574,6 +574,16 @@
             "id": "Tip: Push right control to talk",
             "message": "Tip: Push right control to talk",
             "translation": "Astuce: appuyez sur le bouton droit 'Ctrl' pour parler"
+        },
+        {
+            "id": "One or more errors have been found that prevent Wahay from working properly:",
+            "message": "One or more errors have been found that prevent Wahay from working properly:",
+            "translation": ""
+        },
+        {
+            "id": "You can download the Wahay bundle with Mumble and Tor from our website: https://wahay.org/download.html",
+            "message": "You can download the Wahay bundle with Mumble and Tor from our website: https://wahay.org/download.html",
+            "translation": ""
         },
         {
             "id": "Meeting ID:",

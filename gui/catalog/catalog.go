@@ -90,11 +90,11 @@ var messageKeyToIndex = map[string]int{
 	"Host meeting":                                            61,
 	"Hosting":                                                 60,
 	"If you backup the configuration file, we will reset the settings and continue normally. If the configuration file is encrypted, then we will ask you for a password to encrypt the new settings file.": 62,
-	"If you disable this option, anyone could read your configuration settings":                                                                                                    23,
-	"If you set this option to a file name, low level information will be logged there.":                                                                                           63,
-	"If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535":                                                                      121,
-	"If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.":                                                              118,
-	"In order to run Wahay, you must have Tor installed in your system.\n\nYou can also download the Wahay bundle with Tor from our website:\n\nhttps://wahay.org/download.html\n": 142,
+	"If you disable this option, anyone could read your configuration settings":                                       23,
+	"If you set this option to a file name, low level information will be logged there.":                              63,
+	"If you want to set up a custom port to run the Mumble service, please a port number between 1 and 65535":         121,
+	"If you want to use your own Mumble instance, please enter the location where Mumble is available in the system.": 118,
+	"In order to run Wahay, you must have Tor installed in your system.":                                              142,
 	"Invalid configuration file":                64,
 	"Invalid meeting ID provided":               17,
 	"Invalid password. Please, try again.":      65,
@@ -118,41 +118,42 @@ var messageKeyToIndex = map[string]int{
 	"Mumble":           84,
 	"Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.": 128,
 	"Mumble service port": 119,
-	"No valid Mumble binary found on the system in order to run Wahay.\n":    141,
-	"No valid Tor Control Port authentication method found on the system.\n": 146,
-	"No valid Tor Control Port found on the system in order to run Wahay.\n": 145,
-	"No valid Tor binary found on the system in order to run Wahay.\n":       150,
+	"No valid Mumble binary found on the system in order to run Wahay.":    141,
+	"No valid Tor Control Port authentication method found on the system.": 146,
+	"No valid Tor Control Port found on the system in order to run Wahay.": 145,
+	"No valid Tor binary found on the system in order to run Wahay.":       150,
 	"No, cancel":                     85,
 	"Now you are hosting a meeting.": 86,
-	"Open":                           26,
-	"Open file":                      24,
-	"Open help window":               135,
-	"Outlook":                        87,
-	"Password":                       88,
+	"One or more errors have been found that prevent Wahay from working properly:": 151,
+	"Open":             26,
+	"Open file":        24,
+	"Open help window": 135,
+	"Outlook":          87,
+	"Password":         88,
 	"Please enter the master password for the configuration file.": 89,
 	"Please join the Wahay meeting with the following details:":    7,
-	"Port":                                 90,
-	"Port out of range":                    91,
-	"Raw log file":                         92,
-	"Repeat the password":                  93,
-	"Save changes":                         94,
-	"Security":                             95,
-	"Settings":                             96,
-	"Show":                                 97,
-	"Something went wrong: %s":             1,
-	"Specify a password for the meeting":   98,
-	"Start Meeting":                        11,
-	"Start Meeting & Join":                 9,
-	"Start a new meeting":                  12,
-	"Start a new meeting & join":           10,
-	"Start meeting":                        99,
-	"The Meeting ID cannot be blank":       14,
-	"The Mumble process is down":           13,
-	"The Tor instance can't be started.\n": 143,
-	"The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.\n":                                144,
-	"The configured path to the Mumble binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Mumble in the following url:\n\nhttps://wahay.org/download.html\n": 140,
-	"The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path or download a bundled Wahay with Tor in the following url:\n\nhttps://wahay.org/download.html\n":       149,
-	"The current version of Tor is incompatible with Wahay.\n": 148,
+	"Port":                               90,
+	"Port out of range":                  91,
+	"Raw log file":                       92,
+	"Repeat the password":                93,
+	"Save changes":                       94,
+	"Security":                           95,
+	"Settings":                           96,
+	"Show":                               97,
+	"Something went wrong: %s":           1,
+	"Specify a password for the meeting": 98,
+	"Start Meeting":                      11,
+	"Start Meeting & Join":               9,
+	"Start a new meeting":                12,
+	"Start a new meeting & join":         10,
+	"Start meeting":                      99,
+	"The Meeting ID cannot be blank":     14,
+	"The Mumble process is down":         13,
+	"The Tor instance can't be started.": 143,
+	"The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.": 144,
+	"The configured path to the Mumble binary is not valid or can't be used. Please configure another path.":                                                                     140,
+	"The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path.":                                                                     149,
+	"The current version of Tor is incompatible with Wahay.":                                                                                                                     148,
 	"The error message": 100,
 	"The invitation email has been copied to the clipboard": 5,
 	"The meeting ID has been copied to the clipboard":       4,
@@ -169,13 +170,13 @@ var messageKeyToIndex = map[string]int{
 	"Type the Meeting ID (normally a .onion address)": 104,
 	"Type the password":                                       105,
 	"Type the password to join the meeting":                   106,
-	"Type your screen name (or leave empty for a random one)": 152,
+	"Type your screen name (or leave empty for a random one)": 154,
 	"Username": 107,
 	"Wahay (https://wahay.org) has been developed as a tool for conducting voice conferences in an easy, extremely secure and decentralized manner (without the need for any centralized server or service). Internally it uses Tor (https://www.torproject.org/) as a tool to establish secure communications and Mumble (https://www.mumble.com/) as a client to establish voice over IP.": 124,
 	"Wahay allows you to host a meeting or join an existing meeting, for this you establish an ID that will serve as the identifier of the meeting to use.":                                                                                                                                                                                                                                  130,
 	"Wahay is ready to use": 108,
-	"We found a valid Tor in the system but the connection over Tor network is not available.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.\n": 147,
-	"We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?":                                                                                      109,
+	"We found a valid Tor in the system but the connection over Tor network is not available.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.": 147,
+	"We have detected that the configuration file is invalid or corrupted. Do you want to make a copy (backup) of it and continue?":                                                                                    109,
 	"We've found errors": 27,
 	"Welcome":            110,
 	"Welcome to this server running <b>Wahay</b>.": 139,
@@ -186,10 +187,11 @@ var messageKeyToIndex = map[string]int{
 	"Yahoo Mail":                     112,
 	"Yes, back it up &amp; continue": 113,
 	"Yes, confirm":                   114,
-	"You will not be asked for this password again until you restart Wahay.": 115,
+	"You can download the Wahay bundle with Mumble and Tor from our website: https://wahay.org/download.html": 152,
+	"You will not be asked for this password again until you restart Wahay.":                                  115,
 	"btnInviteOthers-tooltip":                     67,
 	"btnJoinMeeting-tooltip":                      69,
-	"btnSettings-tooltip":                         151,
+	"btnSettings-tooltip":                         153,
 	"enter a password at least 6 characters long": 22,
 	"enter the password confirmation":             20,
 	"passwords do not match":                      21,
@@ -197,7 +199,7 @@ var messageKeyToIndex = map[string]int{
 	"we couldn't start the meeting":               2,
 }
 
-var arIndex = []uint32{ // 154 elements
+var arIndex = []uint32{ // 156 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000000d, 0x0000001a, 0x00000027,
 	0x00000034, 0x00000041, 0x0000004e, 0x0000005b,
@@ -241,8 +243,8 @@ var arIndex = []uint32{ // 154 elements
 	0x00000796, 0x00000796, 0x00000796, 0x00000796,
 	0x00000796, 0x00000796, 0x00000796, 0x00000796,
 	0x00000796, 0x00000796, 0x00000796, 0x00000796,
-	0x00000796, 0x00000796,
-} // Size: 640 bytes
+	0x00000796, 0x00000796, 0x00000796, 0x00000796,
+} // Size: 648 bytes
 
 const arData string = "" + // Size: 1942 bytes
 	"\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRAN" +
@@ -279,7 +281,7 @@ const arData string = "" + // Size: 1942 bytes
 	"E ME\x02TRANSLATE ME\x02TRANSLATE ME\x02TRANSLATE ME (Ctrl + H)\x02TRANS" +
 	"LATE ME\x02TRANSLATE ME\x02TRANSLATE ME"
 
-var enIndex = []uint32{ // 154 elements
+var enIndex = []uint32{ // 156 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x00000022, 0x00000040,
 	0x00000063, 0x00000093, 0x000000c9, 0x000000dc,
@@ -320,13 +322,13 @@ var enIndex = []uint32{ // 154 elements
 	0x00001418, 0x000014a2, 0x000014b2, 0x00001549,
 	0x00001558, 0x00001721, 0x00001832, 0x000018df,
 	0x000018fb, 0x00001900, 0x00001913, 0x000019a0,
-	0x000019cd, 0x00001a99, 0x00001ae0, 0x00001b8d,
-	0x00001bb5, 0x00001c64, 0x00001cae, 0x00001cf8,
-	0x00001dcd, 0x00001e09, 0x00001ecf, 0x00001f13,
-	0x00001f33, 0x00001f6b,
-} // Size: 640 bytes
+	0x000019cd, 0x00001a37, 0x00001a7a, 0x00001abf,
+	0x00001ae3, 0x00001b8d, 0x00001bd3, 0x00001c19,
+	0x00001ce9, 0x00001d21, 0x00001d87, 0x00001dc7,
+	0x00001e14, 0x00001e7c, 0x00001e9c, 0x00001ed4,
+} // Size: 648 bytes
 
-const enData string = "" + // Size: 8043 bytes
+const enData string = "" + // Size: 7892 bytes
 	"\x02Error\x02Something went wrong: %[1]s\x02We couldn't start the meetin" +
 	"g\x02The meeting can't be closed: %[1]s\x02The meeting ID has been copie" +
 	"d to the clipboard\x02The invitation email has been copied to the clipbo" +
@@ -424,33 +426,29 @@ const enData string = "" + // Size: 8043 bytes
 	" and password (if was set).\x02Open help window (Ctrl + H)\x02Help\x02Jo" +
 	"in as Super User\x02As a super user you will be able to do things that o" +
 	"thers do not, such as silencing another user or expelling him/her from t" +
-	"he meeting, etc.\x02Welcome to this server running <b>Wahay</b>.\x04\x00" +
-	"\x01\x0a\xc6\x01\x02The configured path to the Mumble binary is not vali" +
-	"d or can't be used.\x0a\x0aPlease configure another path or download a b" +
-	"undled Wahay with Mumble in the following url:\x0a\x0ahttps://wahay.org/" +
-	"download.html\x04\x00\x01\x0aB\x02No valid Mumble binary found on the sy" +
-	"stem in order to run Wahay.\x04\x00\x01\x0a\xa7\x01\x02In order to run W" +
-	"ahay, you must have Tor installed in your system.\x0a\x0aYou can also do" +
-	"wnload the Wahay bundle with Tor from our website:\x0a\x0ahttps://wahay." +
-	"org/download.html\x04\x00\x01\x0a#\x02The Tor instance can't be started." +
-	"\x04\x00\x01\x0a\xa9\x01\x02The Tor instance can't connect to the Tor ne" +
-	"twork.\x0a\x0aPlease check the information available at https://tb-manua" +
-	"l.torproject.org/troubleshooting/ to know what you can do.\x04\x00\x01" +
-	"\x0aE\x02No valid Tor Control Port found on the system in order to run W" +
-	"ahay.\x04\x00\x01\x0aE\x02No valid Tor Control Port authentication metho" +
-	"d found on the system.\x04\x00\x01\x0a\xcf\x01\x02We found a valid Tor i" +
-	"n the system but the connection over Tor network is not available.\x0a" +
-	"\x0aPlease check the information available at https://tb-manual.torproje" +
-	"ct.org/troubleshooting/ to know what you can do.\x04\x00\x01\x0a7\x02The" +
-	" current version of Tor is incompatible with Wahay.\x04\x00\x01\x0a\xc0" +
-	"\x01\x02The configured path to the Tor binary is not valid or can't be u" +
-	"sed.\x0a\x0aPlease configure another path or download a bundled Wahay wi" +
-	"th Tor in the following url:\x0a\x0ahttps://wahay.org/download.html\x04" +
-	"\x00\x01\x0a?\x02No valid Tor binary found on the system in order to run" +
-	" Wahay.\x02Open settings window (Ctrl + ,)\x02Type your screen name (or " +
-	"leave empty for a random one)"
+	"he meeting, etc.\x02Welcome to this server running <b>Wahay</b>.\x02The " +
+	"configured path to the Mumble binary is not valid or can't be used.\x0a" +
+	"\x0a Please configure another path.\x0a\x02No valid Mumble binary found " +
+	"on the system in order to run Wahay.\x0a\x02In order to run Wahay, you m" +
+	"ust have Tor installed in your system.\x0a\x0a\x02The Tor instance can't" +
+	" be started.\x0a\x02The Tor instance can't connect to the Tor network." +
+	"\x0a\x0aPlease check the information available at https://tb-manual.torp" +
+	"roject.org/troubleshooting/ to know what you can do.\x0a\x02No valid Tor" +
+	" Control Port found on the system in order to run Wahay.\x0a\x02No valid" +
+	" Tor Control Port authentication method found on the system.\x0a\x02We f" +
+	"ound a valid Tor in the system but the connection over Tor network is no" +
+	"t available.\x0a\x0aPlease check the information available at https://tb" +
+	"-manual.torproject.org/troubleshooting/ to know what you can do.\x0a\x02" +
+	"The current version of Tor is incompatible with Wahay.\x0a\x02The config" +
+	"ured path to the Tor binary is not valid or can't be used.\x0a\x0aPlease" +
+	" configure another path.\x0a\x02No valid Tor binary found on the system " +
+	"in order to run Wahay.\x0a\x02One or more errors have been found that pr" +
+	"event Wahay from working properly:\x02You can download the Wahay bundle " +
+	"with Mumble and Tor from our website:\x0ahttps://wahay.org/download.html" +
+	"\x02Open settings window (Ctrl + ,)\x02Type your screen name (or leave e" +
+	"mpty for a random one)"
 
-var esIndex = []uint32{ // 154 elements
+var esIndex = []uint32{ // 156 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000006, 0x0000001d, 0x0000003d,
 	0x00000062, 0x00000096, 0x000000cf, 0x000000f8,
@@ -491,13 +489,13 @@ var esIndex = []uint32{ // 154 elements
 	0x0000180f, 0x000018b3, 0x000018c3, 0x00001963,
 	0x00001977, 0x00001b7e, 0x00001cba, 0x00001d9d,
 	0x00001db5, 0x00001dbb, 0x00001dd5, 0x00001e49,
-	0x00001e49, 0x00001e49, 0x00001e49, 0x00001e49,
-	0x00001e49, 0x00001e49, 0x00001e49, 0x00001e49,
-	0x00001e49, 0x00001e49, 0x00001e49, 0x00001e49,
-	0x00001e49, 0x00001e8c,
-} // Size: 640 bytes
+	0x00001e49, 0x00001ebb, 0x00001f0c, 0x00001f4c,
+	0x00001f76, 0x0000202e, 0x00002086, 0x000020ec,
+	0x000021d6, 0x0000220c, 0x0000227b, 0x000022c9,
+	0x0000231a, 0x00002383, 0x00002383, 0x000023c6,
+} // Size: 648 bytes
 
-const esData string = "" + // Size: 7820 bytes
+const esData string = "" + // Size: 9158 bytes
 	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
 	"La reunión no se pudo cerrar: %[1]s\x02El ID de la reunion ha sido copia" +
 	"do al portapapeles\x02El correo de invitación ha sido copiado al portapa" +
@@ -608,10 +606,30 @@ const esData string = "" + // Size: 7820 bytes
 	"querido), el nombre de usuario (no requerido) y la contraseña (si fue co" +
 	"nfigurada previamente).\x02TRANSLATE ME (Ctrl + H)\x02Ayuda\x02Unirse co" +
 	"mo super usuario\x02Como super usuario podrás hacer cosas que otros no, " +
-	"como silenciar a otro usuario o expulsarlo de la reunion, etc.\x02Ingres" +
-	"a tu nombre de usuario (o déjalo vacío para uno aleatorio)"
+	"como silenciar a otro usuario o expulsarlo de la reunion, etc.\x02La rut" +
+	"a configurada para el binario de Mumble no es válida o no se puede usar." +
+	"\x0a\x0aPor favor, configura otra ruta.\x0a\x02No se encontró un binario" +
+	" de Mumble válido en el sistema para ejecutar Wahay.\x0a\x02Para ejecuta" +
+	"r Wahay, debes tener Tor instalado en tu sistema.\x0a\x0a\x02La instanci" +
+	"a de Tor no se puede iniciar.\x0a\x02La instancia de Tor no puede conect" +
+	"arse a la red Tor.\x0a\x0aPor favor, revisa la información disponible en" +
+	" https://tb-manual.torproject.org/troubleshooting/ para saber qué puedes" +
+	" hacer.\x0a\x02No se encontró un puerto de control de Tor válido en el s" +
+	"istema para ejecutar Wahay.\x0a\x02No se encontró un método de autentica" +
+	"ción válido para el puerto de control de Tor en el sistema.\x0a\x02Encon" +
+	"tramos un Tor válido en el sistema, pero la conexión a través de la red " +
+	"Tor no está disponible.\x0a\x0aPor favor revisa la información disponibl" +
+	"e en https://tb-manual.torproject.org/troubleshooting/ para saber qué pu" +
+	"edes hacer.\x0a\x02La versión actual de Tor es incompatible con Wahay." +
+	"\x0a\x02La ruta configurada para el binario de Tor no es válida o no se " +
+	"puede usar.\x0a\x0aPor favor, configura otra ruta.\x0a\x02No se encontró" +
+	" un binario de Tor válido en el sistema para ejecutar Wahay.\x0a\x02Se h" +
+	"an encontrado uno o mas errores que evitan que Wahay funcione correctame" +
+	"nte:\x02Puedes descargar Wahay con Tor y Mumble incluido en el siguiente" +
+	" enlace:\x0ahttps://wahay.org/download.html\x02Ingresa tu nombre de usua" +
+	"rio (o déjalo vacío para uno aleatorio)"
 
-var frIndex = []uint32{ // 154 elements
+var frIndex = []uint32{ // 156 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000007, 0x0000002e, 0x0000004f,
 	0x0000007e, 0x000000b8, 0x000000f4, 0x00000115,
@@ -655,8 +673,8 @@ var frIndex = []uint32{ // 154 elements
 	0x00001eaf, 0x00001eaf, 0x00001eaf, 0x00001eaf,
 	0x00001eaf, 0x00001eaf, 0x00001eaf, 0x00001eaf,
 	0x00001eaf, 0x00001eaf, 0x00001eaf, 0x00001eaf,
-	0x00001eaf, 0x00001eaf,
-} // Size: 640 bytes
+	0x00001eaf, 0x00001eaf, 0x00001eaf, 0x00001eaf,
+} // Size: 648 bytes
 
 const frData string = "" + // Size: 7855 bytes
 	"\x02Erreur\x02Quelque chose s'est mal passée: %[1]s\x02la réunion n'a pa" +
@@ -773,7 +791,7 @@ const frData string = "" + // Size: 7855 bytes
 	"on requis) et le mot de passe (si celui-ci a été défini).\x02TRANSLATE M" +
 	"E (Ctrl + H)\x02Aide"
 
-var svIndex = []uint32{ // 154 elements
+var svIndex = []uint32{ // 156 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000004, 0x0000001b, 0x00000036,
 	0x00000056, 0x00000084, 0x000000ba, 0x000000da,
@@ -817,8 +835,8 @@ var svIndex = []uint32{ // 154 elements
 	0x00001ace, 0x00001ace, 0x00001ace, 0x00001ace,
 	0x00001ace, 0x00001ace, 0x00001ace, 0x00001ace,
 	0x00001ace, 0x00001ace, 0x00001ace, 0x00001ace,
-	0x00001ace, 0x00001ace,
-} // Size: 640 bytes
+	0x00001ace, 0x00001ace, 0x00001ace, 0x00001ace,
+} // Size: 648 bytes
 
 const svData string = "" + // Size: 6862 bytes
 	"\x02Fel\x02Något gick fel: %[1]s\x02vi kunde inte start mötet\x02Mötet k" +
@@ -920,4 +938,4 @@ const svData string = "" + // Size: 6862 bytes
 	"rd (om ett var konfigurerar för mötet).\x02TRANSLATE ME (Ctrl + H)\x02Hj" +
 	"älp\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 35722 bytes (34KiB); checksum: 519E472E
+	// Total table size 36949 bytes (36KiB); checksum: 18F2898B

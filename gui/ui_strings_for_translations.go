@@ -80,7 +80,8 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt2() {
 	_ = i18n().Sprintf("Meeting ID")
 	_ = i18n().Sprintf("Tip: Push right control to talk")
 	_ = i18n().Sprintf("Invite others")
-
+	_ = i18n().Sprintf("One or more errors have been found that prevent Wahay from working properly:")
+	_ = i18n().Sprintf("You can download the Wahay bundle with Mumble and Tor from our website: https://wahay.org/download.html")
 }
 
 func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt3() {

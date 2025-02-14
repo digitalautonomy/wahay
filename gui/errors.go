@@ -53,6 +53,12 @@ func (u *gtkUI) showStatusErrorsWindow(builder *uiBuilder) {
 	txt := u.errorHandler.getStatusErrorsText()
 
 	dialog := builder.get("mainWindowErrors").(gtki.Dialog)
+
+	builder.i18nProperties(
+		"label", "lblErrorFooter",
+		"label", "lblErrorHeader",
+	)
+
 	buffer := builder.get("helpTextBuffer").(gtki.TextBuffer)
 	buffer.SetText(txt)
 

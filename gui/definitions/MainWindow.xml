@@ -492,7 +492,7 @@
             <property name="margin_bottom">20</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="lblErrorHeader">
                 <property name="visible">True</property>
                 <property name="label">One or more errors have been found that prevent Wahay from working properly:</property>
                 <property name="xalign">0</property>
@@ -518,6 +518,20 @@
                 <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lblErrorFooter">
+                <property name="visible">True</property>
+                <property name="label">You can download the Wahay bundle with Mumble and Tor from our website: https://wahay.org/download.html</property>
+                <property name="xalign">0</property>
+                <property name="margin-top">15</property>
+                <style>
+                  <class name="description"/>
+                </style>
+              </object>
+              <packing>
+                <property name="position">3</property>
               </packing>
             </child>
             <style>
