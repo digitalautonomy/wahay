@@ -191,6 +191,7 @@ func systemInstance() (Instance, error) {
 		authType, total, partial = checker.check()
 
 		if total == nil && partial == nil {
+			defaultControlPort = port
 			break
 		}
 
