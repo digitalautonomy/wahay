@@ -21,9 +21,10 @@ const (
 	torConfigName      = "torrc"
 	torConfigData      = "data"
 	defaultSocksPort   = 9050
-	defaultControlPort = 9051
 	defaultControlHost = "127.0.0.1"
 )
+
+var defaultControlPorts = [2]int{951, 9051}
 
 // Instance contains functions to work with Tor instance
 type Instance interface {
@@ -176,14 +177,27 @@ func NewInstance(conf *config.ApplicationConfig, onInit func(Instance)) (Instanc
 const torStartupTimeout = 2 * time.Minute
 
 func systemInstance() (Instance, error) {
-	checker := newDefaultChecker()
+	var (
+		authType           string
+		defaultControlPort int
+		total              error
+		partial            error
+	)
 
-	log.Debugf("checking system instance...")
-	authType, total, partial := checker.check()
+	for i, port := range defaultControlPorts {
+		checker := newDefaultChecker(port)
 
-	if total != nil || partial != nil {
-		log.Debugf("system instance not possible to use, because: %v - %v", total, partial)
-		return nil, errors.New("error: we can't use system Tor instance")
+		log.Debugf("checking system instance...")
+		authType, total, partial = checker.check()
+
+		if total == nil && partial == nil {
+			break
+		}
+
+		if i == len(defaultControlPorts)-1 {
+			log.Debugf("system instance not possible to use, because: %v - %v", total, partial)
+			return nil, errors.New("error: we can't use system Tor instance")
+		}
 	}
 
 	i := &instance{
@@ -380,7 +394,7 @@ func findAvailablePort(initial int) int {
 }
 
 func findAvailableTorPorts() (controlPort, routePort int) {
-	controlPort = findAvailablePort(defaultControlPort)
+	controlPort = findAvailablePort(9051)
 	routePort = findAvailablePort(defaultSocksPort)
 	return
 }

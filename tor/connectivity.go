@@ -26,7 +26,7 @@ func newCustomChecker(host string, routePort, controlPort int) basicConnectivity
 	return newChecker(host, routePort, controlPort, "")
 }
 
-func newDefaultChecker() basicConnectivity {
+func newDefaultChecker(defaultControlPort int) basicConnectivity {
 	return newChecker(defaultControlHost, defaultSocksPort, defaultControlPort, *config.TorControlPassword)
 }
 
