@@ -197,8 +197,8 @@
             "translation": ""
         },
         {
-            "id": "No valid Mumble binary found on the system in order to run Wahay.",
-            "message": "No valid Mumble binary found on the system in order to run Wahay.",
+            "id": "No valid Mumble binary found on the system.",
+            "message": "No valid Mumble binary found on the system.",
             "translation": ""
         },
         {
@@ -273,8 +273,8 @@
             "translation": ""
         },
         {
-            "id": "No valid Tor Control Port found on the system in order to run Wahay.",
-            "message": "No valid Tor Control Port found on the system in order to run Wahay.",
+            "id": "No valid Tor Control Port found on the system.",
+            "message": "No valid Tor Control Port found on the system.",
             "translation": ""
         },
         {
@@ -298,8 +298,8 @@
             "translation": ""
         },
         {
-            "id": "No valid Tor binary found on the system in order to run Wahay.",
-            "message": "No valid Tor binary found on the system in order to run Wahay.",
+            "id": "No valid Tor binary found on the system.",
+            "message": "No valid Tor binary found on the system.",
             "translation": ""
         },
         {

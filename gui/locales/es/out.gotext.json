@@ -197,9 +197,9 @@
             "translation": "La ruta configurada para el binario de Mumble no es válida o no se puede usar.\n\nPor favor, configura otra ruta.\n"
         },
         {
-            "id": "No valid Mumble binary found on the system in order to run Wahay.",
-            "message": "No valid Mumble binary found on the system in order to run Wahay.",
-            "translation": "No se encontró un binario de Mumble válido en el sistema para ejecutar Wahay.\n"
+            "id": "No valid Mumble binary found on the system.",
+            "message": "No valid Mumble binary found on the system.",
+            "translation": "No se encontró un binario de Mumble válido en el sistema.\n"
         },
         {
             "id": "please enter a valid password",
@@ -260,7 +260,7 @@
         {
             "id": "In order to run Wahay, you must have Tor installed in your system.",
             "message": "In order to run Wahay, you must have Tor installed in your system.",
-            "translation": "Para ejecutar Wahay, debes tener Tor instalado en tu sistema.\n\n"
+            "translation": "Para ejecutar Wahay, debes tener Tor instalado en tu sistema.\n"
         },
         {
             "id": "The Tor instance can't be started.",
@@ -273,9 +273,9 @@
             "translation": "La instancia de Tor no puede conectarse a la red Tor.\n\nPor favor, revisa la información disponible en https://tb-manual.torproject.org/troubleshooting/ para saber qué puedes hacer.\n"
         },
         {
-            "id": "No valid Tor Control Port found on the system in order to run Wahay.",
-            "message": "No valid Tor Control Port found on the system in order to run Wahay.",
-            "translation": "No se encontró un puerto de control de Tor válido en el sistema para ejecutar Wahay.\n"
+            "id": "No valid Tor Control Port found on the system.",
+            "message": "No valid Tor Control Port found on the system.",
+            "translation": "No se encontró un puerto de control de Tor válido en el sistema.\n"
         },
         {
             "id": "No valid Tor Control Port authentication method found on the system.",
@@ -298,9 +298,9 @@
             "translation": "La ruta configurada para el binario de Tor no es válida o no se puede usar.\n\nPor favor, configura otra ruta.\n"
         },
         {
-            "id": "No valid Tor binary found on the system in order to run Wahay.",
-            "message": "No valid Tor binary found on the system in order to run Wahay.",
-            "translation": "No se encontró un binario de Tor válido en el sistema para ejecutar Wahay.\n"
+            "id": "No valid Tor binary found on the system.",
+            "message": "No valid Tor binary found on the system.",
+            "translation": "No se encontró un binario de Tor válido en el sistema.\n"
         },
         {
             "id": "We've found errors",

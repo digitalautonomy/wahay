@@ -117,11 +117,11 @@ var messageKeyToIndex = map[string]int{
 	"Meeting password": 83,
 	"Mumble":           84,
 	"Mumble is a free and open source application that allows voice over IP conferences between users with high sound quality and low latency.": 128,
-	"Mumble service port": 119,
-	"No valid Mumble binary found on the system in order to run Wahay.":    141,
+	"Mumble service port":                                                  119,
+	"No valid Mumble binary found on the system.":                          141,
 	"No valid Tor Control Port authentication method found on the system.": 146,
-	"No valid Tor Control Port found on the system in order to run Wahay.": 145,
-	"No valid Tor binary found on the system in order to run Wahay.":       150,
+	"No valid Tor Control Port found on the system.":                       145,
+	"No valid Tor binary found on the system.":                             150,
 	"No, cancel":                     85,
 	"Now you are hosting a meeting.": 86,
 	"One or more errors have been found that prevent Wahay from working properly:": 151,
@@ -322,13 +322,13 @@ var enIndex = []uint32{ // 156 elements
 	0x00001418, 0x000014a2, 0x000014b2, 0x00001549,
 	0x00001558, 0x00001721, 0x00001832, 0x000018df,
 	0x000018fb, 0x00001900, 0x00001913, 0x000019a0,
-	0x000019cd, 0x00001a37, 0x00001a7a, 0x00001abf,
-	0x00001ae3, 0x00001b8d, 0x00001bd3, 0x00001c19,
-	0x00001ce9, 0x00001d21, 0x00001d87, 0x00001dc7,
-	0x00001e14, 0x00001e7c, 0x00001e9c, 0x00001ed4,
+	0x000019cd, 0x00001a37, 0x00001a64, 0x00001aa8,
+	0x00001acc, 0x00001b76, 0x00001ba6, 0x00001bec,
+	0x00001cbc, 0x00001cf4, 0x00001d5a, 0x00001d84,
+	0x00001dd1, 0x00001e39, 0x00001e59, 0x00001e91,
 } // Size: 648 bytes
 
-const enData string = "" + // Size: 7892 bytes
+const enData string = "" + // Size: 7825 bytes
 	"\x02Error\x02Something went wrong: %[1]s\x02We couldn't start the meetin" +
 	"g\x02The meeting can't be closed: %[1]s\x02The meeting ID has been copie" +
 	"d to the clipboard\x02The invitation email has been copied to the clipbo" +
@@ -429,20 +429,19 @@ const enData string = "" + // Size: 7892 bytes
 	"he meeting, etc.\x02Welcome to this server running <b>Wahay</b>.\x02The " +
 	"configured path to the Mumble binary is not valid or can't be used.\x0a" +
 	"\x0a Please configure another path.\x0a\x02No valid Mumble binary found " +
-	"on the system in order to run Wahay.\x0a\x02In order to run Wahay, you m" +
-	"ust have Tor installed in your system.\x0a\x0a\x02The Tor instance can't" +
-	" be started.\x0a\x02The Tor instance can't connect to the Tor network." +
-	"\x0a\x0aPlease check the information available at https://tb-manual.torp" +
-	"roject.org/troubleshooting/ to know what you can do.\x0a\x02No valid Tor" +
-	" Control Port found on the system in order to run Wahay.\x0a\x02No valid" +
-	" Tor Control Port authentication method found on the system.\x0a\x02We f" +
-	"ound a valid Tor in the system but the connection over Tor network is no" +
-	"t available.\x0a\x0aPlease check the information available at https://tb" +
-	"-manual.torproject.org/troubleshooting/ to know what you can do.\x0a\x02" +
-	"The current version of Tor is incompatible with Wahay.\x0a\x02The config" +
-	"ured path to the Tor binary is not valid or can't be used.\x0a\x0aPlease" +
-	" configure another path.\x0a\x02No valid Tor binary found on the system " +
-	"in order to run Wahay.\x0a\x02One or more errors have been found that pr" +
+	"on the system.\x0a\x02In order to run Wahay, you must have Tor installed" +
+	" in your system.\x0a\x02The Tor instance can't be started.\x0a\x02The To" +
+	"r instance can't connect to the Tor network.\x0a\x0aPlease check the inf" +
+	"ormation available at https://tb-manual.torproject.org/troubleshooting/ " +
+	"to know what you can do.\x0a\x02No valid Tor Control Port found on the s" +
+	"ystem.\x0a\x02No valid Tor Control Port authentication method found on t" +
+	"he system.\x0a\x02We found a valid Tor in the system but the connection " +
+	"over Tor network is not available.\x0a\x0aPlease check the information a" +
+	"vailable at https://tb-manual.torproject.org/troubleshooting/ to know wh" +
+	"at you can do.\x0a\x02The current version of Tor is incompatible with Wa" +
+	"hay.\x0a\x02The configured path to the Tor binary is not valid or can't " +
+	"be used.\x0a\x0aPlease configure another path.\x0a\x02No valid Tor binar" +
+	"y found on the system.\x0a\x02One or more errors have been found that pr" +
 	"event Wahay from working properly:\x02You can download the Wahay bundle " +
 	"with Mumble and Tor from our website:\x0ahttps://wahay.org/download.html" +
 	"\x02Open settings window (Ctrl + ,)\x02Type your screen name (or leave e" +
@@ -489,13 +488,13 @@ var esIndex = []uint32{ // 156 elements
 	0x0000180f, 0x000018b3, 0x000018c3, 0x00001963,
 	0x00001977, 0x00001b7e, 0x00001cba, 0x00001d9d,
 	0x00001db5, 0x00001dbb, 0x00001dd5, 0x00001e49,
-	0x00001e49, 0x00001ebb, 0x00001f0c, 0x00001f4c,
-	0x00001f76, 0x0000202e, 0x00002086, 0x000020ec,
-	0x000021d6, 0x0000220c, 0x0000227b, 0x000022c9,
-	0x0000231a, 0x00002383, 0x00002383, 0x000023c6,
+	0x00001e49, 0x00001ebb, 0x00001ef8, 0x00001f37,
+	0x00001f61, 0x00002019, 0x0000205d, 0x000020c3,
+	0x000021ad, 0x000021e3, 0x00002252, 0x0000228c,
+	0x000022dd, 0x00002346, 0x00002346, 0x00002389,
 } // Size: 648 bytes
 
-const esData string = "" + // Size: 9158 bytes
+const esData string = "" + // Size: 9097 bytes
 	"\x02Error\x02Algo salió mal: %[1]s\x02no se pudo comenzar la reunión\x02" +
 	"La reunión no se pudo cerrar: %[1]s\x02El ID de la reunion ha sido copia" +
 	"do al portapapeles\x02El correo de invitación ha sido copiado al portapa" +
@@ -609,25 +608,24 @@ const esData string = "" + // Size: 9158 bytes
 	"como silenciar a otro usuario o expulsarlo de la reunion, etc.\x02La rut" +
 	"a configurada para el binario de Mumble no es válida o no se puede usar." +
 	"\x0a\x0aPor favor, configura otra ruta.\x0a\x02No se encontró un binario" +
-	" de Mumble válido en el sistema para ejecutar Wahay.\x0a\x02Para ejecuta" +
-	"r Wahay, debes tener Tor instalado en tu sistema.\x0a\x0a\x02La instanci" +
-	"a de Tor no se puede iniciar.\x0a\x02La instancia de Tor no puede conect" +
-	"arse a la red Tor.\x0a\x0aPor favor, revisa la información disponible en" +
-	" https://tb-manual.torproject.org/troubleshooting/ para saber qué puedes" +
-	" hacer.\x0a\x02No se encontró un puerto de control de Tor válido en el s" +
-	"istema para ejecutar Wahay.\x0a\x02No se encontró un método de autentica" +
-	"ción válido para el puerto de control de Tor en el sistema.\x0a\x02Encon" +
-	"tramos un Tor válido en el sistema, pero la conexión a través de la red " +
-	"Tor no está disponible.\x0a\x0aPor favor revisa la información disponibl" +
-	"e en https://tb-manual.torproject.org/troubleshooting/ para saber qué pu" +
-	"edes hacer.\x0a\x02La versión actual de Tor es incompatible con Wahay." +
-	"\x0a\x02La ruta configurada para el binario de Tor no es válida o no se " +
-	"puede usar.\x0a\x0aPor favor, configura otra ruta.\x0a\x02No se encontró" +
-	" un binario de Tor válido en el sistema para ejecutar Wahay.\x0a\x02Se h" +
-	"an encontrado uno o mas errores que evitan que Wahay funcione correctame" +
-	"nte:\x02Puedes descargar Wahay con Tor y Mumble incluido en el siguiente" +
-	" enlace:\x0ahttps://wahay.org/download.html\x02Ingresa tu nombre de usua" +
-	"rio (o déjalo vacío para uno aleatorio)"
+	" de Mumble válido en el sistema.\x0a\x02Para ejecutar Wahay, debes tener" +
+	" Tor instalado en tu sistema.\x0a\x02La instancia de Tor no se puede ini" +
+	"ciar.\x0a\x02La instancia de Tor no puede conectarse a la red Tor.\x0a" +
+	"\x0aPor favor, revisa la información disponible en https://tb-manual.tor" +
+	"project.org/troubleshooting/ para saber qué puedes hacer.\x0a\x02No se e" +
+	"ncontró un puerto de control de Tor válido en el sistema.\x0a\x02No se e" +
+	"ncontró un método de autenticación válido para el puerto de control de T" +
+	"or en el sistema.\x0a\x02Encontramos un Tor válido en el sistema, pero l" +
+	"a conexión a través de la red Tor no está disponible.\x0a\x0aPor favor r" +
+	"evisa la información disponible en https://tb-manual.torproject.org/trou" +
+	"bleshooting/ para saber qué puedes hacer.\x0a\x02La versión actual de To" +
+	"r es incompatible con Wahay.\x0a\x02La ruta configurada para el binario " +
+	"de Tor no es válida o no se puede usar.\x0a\x0aPor favor, configura otra" +
+	" ruta.\x0a\x02No se encontró un binario de Tor válido en el sistema.\x0a" +
+	"\x02Se han encontrado uno o mas errores que evitan que Wahay funcione co" +
+	"rrectamente:\x02Puedes descargar Wahay con Tor y Mumble incluido en el s" +
+	"iguiente enlace:\x0ahttps://wahay.org/download.html\x02Ingresa tu nombre" +
+	" de usuario (o déjalo vacío para uno aleatorio)"
 
 var frIndex = []uint32{ // 156 elements
 	// Entry 0 - 1F
@@ -938,4 +936,4 @@ const svData string = "" + // Size: 6862 bytes
 	"rd (om ett var konfigurerar för mötet).\x02TRANSLATE ME (Ctrl + H)\x02Hj" +
 	"älp\x02TRANSLATE ME\x02TRANSLATE ME"
 
-	// Total table size 36949 bytes (36KiB); checksum: 18F2898B
+	// Total table size 36821 bytes (35KiB); checksum: 138E3FEF

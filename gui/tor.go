@@ -64,7 +64,7 @@ func torErrorTranslator(err error) string {
 			"https://tb-manual.torproject.org/troubleshooting/ to know what you can do.")
 
 	case tor.ErrPartialTorNoControlPort:
-		return i18n().Sprintf("No valid Tor Control Port found on the system in order to run Wahay.")
+		return i18n().Sprintf("No valid Tor Control Port found on the system.")
 
 	case tor.ErrPartialTorNoValidAuth:
 		return i18n().Sprintf("No valid Tor Control Port authentication method found on the system.")
@@ -83,7 +83,7 @@ func torErrorTranslator(err error) string {
 
 	case tor.ErrInvalidTorPath:
 	default:
-		return i18n().Sprintf("No valid Tor binary found on the system in order to run Wahay.")
+		return i18n().Sprintf("No valid Tor binary found on the system.")
 	}
 
 	return err.Error()

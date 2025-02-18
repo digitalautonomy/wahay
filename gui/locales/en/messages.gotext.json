@@ -918,9 +918,9 @@
             "translation": "The Tor instance can't connect to the Tor network.\n\nPlease check the information available at https://tb-manual.torproject.org/troubleshooting/ to know what you can do.\n"
         },
         {
-            "id": "No valid Tor Control Port found on the system in order to run Wahay.",
-            "message": "No valid Tor Control Port found on the system in order to run Wahay.",
-            "translation": "No valid Tor Control Port found on the system in order to run Wahay.\n"
+            "id": "No valid Tor Control Port found on the system.",
+            "message": "No valid Tor Control Port found on the system.",
+            "translation": "No valid Tor Control Port found on the system.\n"
         },
         {
             "id": "No valid Tor Control Port authentication method found on the system.",
@@ -943,14 +943,14 @@
             "translation": "The configured path to the Tor binary is not valid or can't be used.\n\nPlease configure another path.\n"
         },
         {
-            "id": "No valid Tor binary found on the system in order to run Wahay.",
-            "message": "No valid Tor binary found on the system in order to run Wahay.",
-            "translation": "No valid Tor binary found on the system in order to run Wahay.\n"
+            "id": "No valid Tor binary found on the system.",
+            "message": "No valid Tor binary found on the system.",
+            "translation": "No valid Tor binary found on the system.\n"
         },
         {
-            "id": "No valid Mumble binary found on the system in order to run Wahay.",
-            "message": "No valid Mumble binary found on the system in order to run Wahay.",
-            "translation": "No valid Mumble binary found on the system in order to run Wahay.\n"
+            "id": "No valid Mumble binary found on the system.",
+            "message": "No valid Mumble binary found on the system.",
+            "translation": "No valid Mumble binary found on the system.\n"
         },
         {
             "id": "The configured path to the Mumble binary is not valid or can't be used. Please configure another path.",
