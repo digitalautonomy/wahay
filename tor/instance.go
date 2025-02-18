@@ -24,7 +24,7 @@ const (
 	defaultControlHost = "127.0.0.1"
 )
 
-var defaultControlPorts = [2]int{951, 9051}
+var defaultControlPorts = [2]int{9051, 951}
 
 // Instance contains functions to work with Tor instance
 type Instance interface {
