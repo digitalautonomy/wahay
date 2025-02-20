@@ -133,6 +133,84 @@
                     <property name="position">0</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkFrame">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-top">22</property>
+                    <property name="label-xalign">0</property>
+                    <property name="label-yalign">0</property>
+                    <property name="shadow-type">none</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="margin-bottom">15</property>
+                            <property name="label">Color Scheme</property>
+                            <property name="xalign">0</property>
+                            <style>
+                              <class name="description"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkComboBoxText" id="cBoxColorScheme">
+                            <property name="width-request">120</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="halign">start</property>
+                            <items>
+                              <item translatable="yes">Light</item>
+                              <item translatable="yes">Dark</item>
+                              <item translatable="yes">System</item>
+                            </items>
+                            <style>
+                              <class name="color-scheme-box"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel" id="lblAppearanceGroup">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-bottom">10</property>
+                        <property name="label" translatable="yes">Appearance</property>
+                        <property name="selectable">True</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                        <style>
+                          <class name="form-legend-title"/>
+                        </style>
+                      </object>
+                    </child>
+                    <style>
+                      <class name="form-legend"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
                 <style>
                   <class name="window-content"/>
                   <class name="settings-background"/>
@@ -926,6 +1004,11 @@
                       </packing>
                     </child>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <style>
                   <class name="window-content" />
@@ -1175,10 +1258,6 @@
                 <property name="can-focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <!-- <property name="margin-left">20</property>
-                <property name="margin-right">20</property>
-                <property name="margin-top">20</property>
-                <property name="margin-bottom">20</property> -->
                 <child>
                   <object class="GtkButton" id="btnConfigFileCorruptedCancel">
                     <property name="label" translatable="yes">No, cancel</property>
