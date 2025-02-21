@@ -588,4 +588,7 @@ window.meeting-controls {
 .settings-background {
   background-color: #fff; }
 
+.color-scheme-box {
+  min-height: 40px; }
+
 /*# sourceMappingURL=light-mode-gui.css.map */

@@ -27,6 +27,7 @@ type settings struct {
 	mumblePort                 gtki.Entry
 	lblPortMumbleMessage       gtki.Label
 	torBinaryLocation          gtki.Entry
+	cmbBoxColorScheme          gtki.ComboBoxText
 
 	autoJoinOriginalValue          bool
 	persistConfigFileOriginalValue bool
@@ -60,6 +61,7 @@ func createSettings(u *gtkUI) *settings {
 		"mumblePort", &s.mumblePort,
 		"lblPortMumbleMessage", &s.lblPortMumbleMessage,
 		"torBinaryLocation", &s.torBinaryLocation,
+		"cmbBoxColorScheme", &s.cmbBoxColorScheme,
 	)
 
 	s.init()
@@ -254,6 +256,7 @@ func (u *gtkUI) openSettingsWindow() {
 		"on_portMumble_delete_text":             s.onDeletePortMumble,
 		"on_torBinaryLocation_icon_press":       s.setCustomPathForTor,
 		"on_torBinaryLocation_clicked_event":    s.setCustomPathForTor,
+		"on_colorScheme_changed_event":          s.changeColorScheme,
 	})
 
 	u.connectShortcutsSettingsWindow(s.dialog)
@@ -334,6 +337,7 @@ func (s *settings) setCustomPathForMumble() {
 			s.u.config.SetMumbleBinaryPath(f)
 		})
 }
+
 func (s *settings) setCustomPathForTor() {
 
 	s.u.setCustomFilePathFor(
@@ -342,6 +346,10 @@ func (s *settings) setCustomPathForTor() {
 		func(f string) {
 			s.u.config.SetPathTor(f)
 		})
+}
+
+func (s *settings) changeColorScheme() {
+	log.Debug("change")
 }
 
 func (u *gtkUI) initConfig() {

@@ -164,11 +164,12 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkComboBoxText" id="cBoxColorScheme">
+                          <object class="GtkComboBoxText" id="cmbBoxColorScheme">
                             <property name="width-request">120</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="halign">start</property>
+                            <signal name="changed" handler="on_colorScheme_changed_event" swapped="no"/>
                             <items>
                               <item translatable="yes">Light</item>
                               <item translatable="yes">Dark</item>
