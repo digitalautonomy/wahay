@@ -349,7 +349,19 @@ func (s *settings) setCustomPathForTor() {
 }
 
 func (s *settings) changeColorScheme() {
-	log.Debug("change")
+	var css string
+	switch s.cmbBoxColorScheme.GetActive() {
+	case 0:
+		css = "light-mode-gui"
+	case 1:
+		css = "dark-mode-gui"
+	default:
+		css = "light-mode-gui"
+	}
+
+	prov := s.u.g.cssFor(css)
+	screen, _ := s.u.g.gdk.ScreenGetDefault()
+	s.u.g.gtk.AddProviderForScreen(screen, prov, uint(gtki.STYLE_PROVIDER_PRIORITY_APPLICATION))
 }
 
 func (u *gtkUI) initConfig() {
