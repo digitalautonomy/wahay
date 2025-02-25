@@ -8,6 +8,7 @@
     <property name="modal">True</property>
     <property name="window_position">mouse</property>
     <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
     <signal name="destroy" handler="on_close_window_signal" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
