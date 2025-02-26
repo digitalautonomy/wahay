@@ -542,6 +542,7 @@
                                 <style>
                                   <class name="btn"/>
                                   <class name="btn-sm"/>
+                                  <class name="btn-invisible"/>
                                 </style>
                               </object>
                               <packing>
