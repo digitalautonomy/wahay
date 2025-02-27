@@ -1,73 +1,98 @@
 .box-shadow {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
 
 .box-shadow-medium {
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15); }
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+}
 
 .box-shadow-large {
-  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.15); }
+  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.15);
+}
 
 .box-shadow-extra-large {
-  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.07); }
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.07);
+}
 
 .box-shadow-none {
-  box-shadow: none; }
+  box-shadow: none;
+}
 
 .text-danger {
-  color: #e53e3e; }
+  color: #e53e3e;
+}
 
 .description {
-  color: #edf2f7; }
+  color: #edf2f7;
+}
 
 .mb {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+}
 
 .mt {
-  margin-top: 20px; }
+  margin-top: 20px;
+}
 
 window {
   font-family: "Liberation Sans", Arial, sans-serif;
   background: #2d3748;
-  font-size: 18px; }
-  window .window-content {
-    padding: 20px; }
-  window .window-actions {
-    padding: 20px; }
-    window .window-actions.bordered {
-      border-top: 2px solid #cbd5e0;
-      background: #1a202c; }
-    window .window-actions.background-gray {
-      background: #1a202c; }
-  window .actions .btn, window .actions .main-window-top-bar .main-window-btn-settings, .main-window-top-bar window .actions .main-window-btn-settings,
-  window .actions .main-window-top-bar .main-window-btn-help,
-  .main-window-top-bar window .actions .main-window-btn-help, window .actions .main-window-actions .btn-host-meeting, .main-window-actions window .actions .btn-host-meeting,
-  window .actions .main-window-actions .btn-join-meeting,
-  .main-window-actions window .actions .btn-join-meeting, window.meeting-controls .actions .buttons .control-leave-call, window.meeting-controls .buttons .actions .control-leave-call, window.meeting-controls .actions .buttons .control-finish-call, window.meeting-controls .buttons .actions .control-finish-call, window .actions .invite-email-link, window .actions .invite-window-btn, window .actions .control-end-meeting {
-    margin-left: 13.3333333333px; }
-  window .actions-right {
-    padding-left: 20px; }
-  window .actions-left {
-    padding-right: 20px; }
-  window.light {
-    background: #fff; }
-    window.light .window-actions.bordered {
-      background: #fff; }
+  font-size: 18px;
+}
+window .window-content {
+  padding: 20px;
+}
+window .window-actions {
+  padding: 20px;
+}
+window .window-actions.bordered {
+  border-top: 2px solid #cbd5e0;
+  background: #1a202c;
+}
+window .window-actions.background-gray {
+  background: #1a202c;
+}
+window .actions .btn, window .actions .control-end-meeting, window .actions .invite-window-btn, window .actions .invite-email-link, window.meeting-controls .actions .buttons .control-finish-call, window.meeting-controls .actions .buttons .control-leave-call, window.meeting-controls .buttons .actions .control-finish-call, window.meeting-controls .buttons .actions .control-leave-call, window .actions .main-window-actions .btn-host-meeting, .main-window-actions window .actions .btn-host-meeting,
+window .actions .main-window-actions .btn-join-meeting,
+.main-window-actions window .actions .btn-join-meeting, window .actions .main-window-top-bar .main-window-btn-settings, .main-window-top-bar window .actions .main-window-btn-settings,
+window .actions .main-window-top-bar .main-window-btn-help,
+.main-window-top-bar window .actions .main-window-btn-help {
+  margin-left: 13.3333333333px;
+}
+window .actions-right {
+  padding-left: 20px;
+}
+window .actions-left {
+  padding-right: 20px;
+}
+window.light {
+  background: #fff;
+}
+window.light .window-actions.bordered {
+  background: #fff;
+}
 
 dialog {
   font-family: "Liberation Sans", Arial, sans-serif;
   background: #fff;
-  font-size: 18px; }
-  dialog .dialog-content {
-    padding: 20px; }
-  dialog .dialog-actions {
-    padding: 20px; }
-    dialog .dialog-actions.bordered {
-      border-top: 1px solid #e2e8f0;
-      background: #f7fafc; }
-  dialog.light {
-    background: #f7fafc; }
-    dialog.light .window-actions.bordered {
-      background: #fff; }
+  font-size: 18px;
+}
+dialog .dialog-content {
+  padding: 20px;
+}
+dialog .dialog-actions {
+  padding: 20px;
+}
+dialog .dialog-actions.bordered {
+  border-top: 1px solid #e2e8f0;
+  background: #f7fafc;
+}
+dialog.light {
+  background: #f7fafc;
+}
+dialog.light .window-actions.bordered {
+  background: #fff;
+}
 
 .form-control {
   font-family: "Liberation Sans", Arial, sans-serif;
@@ -78,30 +103,37 @@ dialog {
   font-size: 18px;
   border-radius: 4.2px;
   padding: 13.3333333333px 10px;
-  text-shadow: none; }
-  .form-control.append {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0; }
-  .form-control:disabled {
-    border-color: rgba(0, 0, 0, 0.2);
-    box-shadow: none; }
-  .form-control:not(:disabled):focus {
-    border-color: #718096;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-    color: #fff; }
+  text-shadow: none;
+}
+.form-control.append {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.form-control:disabled {
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: none;
+}
+.form-control:not(:disabled):focus {
+  border-color: #718096;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
 
 .form-legend {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+}
 
 .form-legend-title {
   color: #fff;
   font-size: 20px;
-  font-weight: 600; }
+  font-weight: 600;
+}
 
 .form-legend-content {
-  border-top: 1px solid #f8fafc;
+  border-top: 1px solid rgb(247.5923076923, 249.65, 251.7076923077);
   margin-top: 10px;
-  padding-top: 10px; }
+  padding-top: 10px;
+}
 
 .form-control-font {
   font-family: "Liberation Sans", Arial, sans-serif;
@@ -112,11 +144,13 @@ dialog {
   font-size: 18px;
   border-radius: 4.2px;
   padding: 13.3333333333px 10px;
-  text-shadow: none; }
-  .form-control-font:active, .form-control-font:focus {
-    color: #fff;
-    border: 2px solid #718096;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
+  text-shadow: none;
+}
+.form-control-font:active, .form-control-font:focus {
+  color: #fff;
+  border: 2px solid #718096;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
 
 .meeting-id-control {
   font-family: "Liberation Sans", Arial, sans-serif;
@@ -127,193 +161,235 @@ dialog {
   font-size: 18px;
   border-radius: 4.2px;
   padding: 13.3333333333px 10px;
-  text-shadow: none; }
-  .meeting-id-control:active, .meeting-id-control:focus {
-    color: #fff;
-    border: 2px solid #718096;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
+  text-shadow: none;
+}
+.meeting-id-control:active, .meeting-id-control:focus {
+  color: #fff;
+  border: 2px solid #718096;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
 
-.btn, .main-window-top-bar .main-window-btn-settings,
-.main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
-.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call, .invite-email-link, .invite-window-btn, .control-end-meeting {
+.btn, .control-end-meeting, .invite-window-btn, .invite-email-link, window.meeting-controls .buttons .control-finish-call, window.meeting-controls .buttons .control-leave-call, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting, .main-window-top-bar .main-window-btn-settings,
+.main-window-top-bar .main-window-btn-help {
   padding: 12px 20px;
   font-size: 14px;
   font-weight: 500;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
   text-shadow: none;
-  border-radius: 4.384px; }
-  .btn.append, .main-window-top-bar .append.main-window-btn-settings,
-  .main-window-top-bar .append.main-window-btn-help, .main-window-actions .append.btn-host-meeting,
-  .main-window-actions .append.btn-join-meeting, window.meeting-controls .buttons .append.control-leave-call, window.meeting-controls .buttons .append.control-finish-call, .append.invite-email-link, .append.invite-window-btn, .append.control-end-meeting {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left-width: 0; }
+  border-radius: 4.384px;
+}
+.btn.append, .append.control-end-meeting, .append.invite-window-btn, .append.invite-email-link, window.meeting-controls .buttons .append.control-finish-call, window.meeting-controls .buttons .append.control-leave-call, .main-window-actions .append.btn-host-meeting,
+.main-window-actions .append.btn-join-meeting, .main-window-top-bar .append.main-window-btn-settings,
+.main-window-top-bar .append.main-window-btn-help {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+}
 
-.btn, .main-window-top-bar .main-window-btn-settings,
-.main-window-top-bar .main-window-btn-help, .main-window-actions .btn-host-meeting,
-.main-window-actions .btn-join-meeting, window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call, .invite-email-link, .invite-window-btn, .control-end-meeting {
+.btn, .control-end-meeting, .invite-window-btn, .invite-email-link, window.meeting-controls .buttons .control-finish-call, window.meeting-controls .buttons .control-leave-call, .main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting, .main-window-top-bar .main-window-btn-settings,
+.main-window-top-bar .main-window-btn-help {
   color: #fff;
   background: #4a5568;
-  border-color: #4a5568; }
-  .btn:focus, .main-window-top-bar .main-window-btn-settings:focus,
-  .main-window-top-bar .main-window-btn-help:focus, .main-window-actions .btn-host-meeting:focus,
-  .main-window-actions .btn-join-meeting:focus, window.meeting-controls .buttons .control-leave-call:focus, window.meeting-controls .buttons .control-finish-call:focus, .invite-email-link:focus, .invite-window-btn:focus, .control-end-meeting:focus {
-    box-shadow: 0 0 0 0.2em rgba(74, 85, 104, 0.4); }
-  .btn:hover, .main-window-top-bar .main-window-btn-settings:hover,
-  .main-window-top-bar .main-window-btn-help:hover, .main-window-actions .btn-host-meeting:hover,
-  .main-window-actions .btn-join-meeting:hover, window.meeting-controls .buttons .control-leave-call:hover, window.meeting-controls .buttons .control-finish-call:hover, .invite-email-link:hover, .invite-window-btn:hover, .control-end-meeting:hover {
-    background: #465062;
-    border-color: #465062; }
-  .btn:active, .main-window-top-bar .main-window-btn-settings:active,
-  .main-window-top-bar .main-window-btn-help:active, .main-window-actions .btn-host-meeting:active,
-  .main-window-actions .btn-join-meeting:active, window.meeting-controls .buttons .control-leave-call:active, window.meeting-controls .buttons .control-finish-call:active, .invite-email-link:active, .invite-window-btn:active, .control-end-meeting:active {
-    background: #3b4453;
-    border-color: #465062;
-    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-  .btn:disabled, .main-window-top-bar .main-window-btn-settings:disabled,
-  .main-window-top-bar .main-window-btn-help:disabled, .main-window-actions .btn-host-meeting:disabled,
-  .main-window-actions .btn-join-meeting:disabled, window.meeting-controls .buttons .control-leave-call:disabled, window.meeting-controls .buttons .control-finish-call:disabled, .invite-email-link:disabled, .invite-window-btn:disabled, .control-end-meeting:disabled {
-    color: rgba(255, 255, 255, 0.65);
-    background: #a5aab4;
-    border-color: transparent;
-    box-shadow: none; }
+  border-color: #4a5568;
+}
+.btn:focus, .control-end-meeting:focus, .invite-window-btn:focus, .invite-email-link:focus, window.meeting-controls .buttons .control-finish-call:focus, window.meeting-controls .buttons .control-leave-call:focus, .main-window-actions .btn-host-meeting:focus,
+.main-window-actions .btn-join-meeting:focus, .main-window-top-bar .main-window-btn-settings:focus,
+.main-window-top-bar .main-window-btn-help:focus {
+  box-shadow: 0 0 0 0.2em rgba(74, 85, 104, 0.4);
+}
+.btn:hover, .control-end-meeting:hover, .invite-window-btn:hover, .invite-email-link:hover, window.meeting-controls .buttons .control-finish-call:hover, window.meeting-controls .buttons .control-leave-call:hover, .main-window-actions .btn-host-meeting:hover,
+.main-window-actions .btn-join-meeting:hover, .main-window-top-bar .main-window-btn-settings:hover,
+.main-window-top-bar .main-window-btn-help:hover {
+  background: rgb(69.7595505618, 80.1292134831, 98.0404494382);
+  border-color: rgb(69.7595505618, 80.1292134831, 98.0404494382);
+}
+.btn:active, .control-end-meeting:active, .invite-window-btn:active, .invite-email-link:active, window.meeting-controls .buttons .control-finish-call:active, window.meeting-controls .buttons .control-leave-call:active, .main-window-actions .btn-host-meeting:active,
+.main-window-actions .btn-join-meeting:active, .main-window-top-bar .main-window-btn-settings:active,
+.main-window-top-bar .main-window-btn-help:active {
+  background: rgb(59.1584269663, 67.952247191, 83.1415730337);
+  border-color: rgb(69.7595505618, 80.1292134831, 98.0404494382);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+.btn:disabled, .control-end-meeting:disabled, .invite-window-btn:disabled, .invite-email-link:disabled, window.meeting-controls .buttons .control-finish-call:disabled, window.meeting-controls .buttons .control-leave-call:disabled, .main-window-actions .btn-host-meeting:disabled,
+.main-window-actions .btn-join-meeting:disabled, .main-window-top-bar .main-window-btn-settings:disabled,
+.main-window-top-bar .main-window-btn-help:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(164.5, 170, 179.5);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .btn-primary, .main-window-actions .btn-host-meeting {
   color: #fff;
   background: #4299e1;
-  border-color: #4299e1; }
-  .btn-primary:focus, .main-window-actions .btn-host-meeting:focus {
-    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
-  .btn-primary:hover, .main-window-actions .btn-host-meeting:hover {
-    background: #3994e0;
-    border-color: #3994e0; }
-  .btn-primary:active, .main-window-actions .btn-host-meeting:active {
-    background: #2388dc;
-    border-color: #3994e0;
-    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-  .btn-primary:disabled, .main-window-actions .btn-host-meeting:disabled {
-    color: rgba(255, 255, 255, 0.65);
-    background: #a1ccf0;
-    border-color: transparent;
-    box-shadow: none; }
+  border-color: #4299e1;
+}
+.btn-primary:focus, .main-window-actions .btn-host-meeting:focus {
+  box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4);
+}
+.btn-primary:hover, .main-window-actions .btn-host-meeting:hover {
+  background: rgb(57.197260274, 148.2493150685, 223.602739726);
+  border-color: rgb(57.197260274, 148.2493150685, 223.602739726);
+}
+.btn-primary:active, .main-window-actions .btn-host-meeting:active {
+  background: rgb(35.1904109589, 136.3726027397, 220.1095890411);
+  border-color: rgb(57.197260274, 148.2493150685, 223.602739726);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+.btn-primary:disabled, .main-window-actions .btn-host-meeting:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(160.5, 204, 240);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .btn-secondary, .main-window-actions .btn-join-meeting {
   color: #fff;
   background: #38a169;
-  border-color: #38a169; }
-  .btn-secondary:focus, .main-window-actions .btn-join-meeting:focus {
-    box-shadow: 0 0 0 0.2em rgba(72, 187, 120, 0.4); }
-  .btn-secondary:hover, .main-window-actions .btn-join-meeting:hover {
-    background: #359964;
-    border-color: #359964; }
-  .btn-secondary:active, .main-window-actions .btn-join-meeting:active {
-    background: #369460;
-    border-color: #359964;
-    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-  .btn-secondary:disabled, .main-window-actions .btn-join-meeting:disabled {
-    color: rgba(255, 255, 255, 0.65);
-    background: #9cd0b4;
-    border-color: transparent;
-    box-shadow: none; }
+  border-color: #38a169;
+}
+.btn-secondary:focus, .main-window-actions .btn-join-meeting:focus {
+  box-shadow: 0 0 0 0.2em rgba(72, 187, 120, 0.4);
+}
+.btn-secondary:hover, .main-window-actions .btn-join-meeting:hover {
+  background: rgb(53.3677419355, 153.4322580645, 100.064516129);
+  border-color: rgb(53.3677419355, 153.4322580645, 100.064516129);
+}
+.btn-secondary:active, .main-window-actions .btn-join-meeting:active {
+  background: rgb(54.4, 147.9, 95.625);
+  border-color: rgb(53.3677419355, 153.4322580645, 100.064516129);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+.btn-secondary:disabled, .main-window-actions .btn-join-meeting:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(155.5, 208, 180);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .btn-blue {
   color: #fff;
-  background: #3994e0;
-  border-color: #3994e0; }
-  .btn-blue:focus {
-    box-shadow: 0 0 0 0.2em rgba(101, 172, 231, 0.4); }
-  .btn-blue:hover {
-    background: #308fde;
-    border-color: #308fde; }
-  .btn-blue:active {
-    background: #308fdf;
-    border-color: #308fde;
-    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-  .btn-blue:disabled {
-    color: rgba(255, 255, 255, 0.65);
-    background: #9ccaf0;
-    border-color: transparent;
-    box-shadow: none; }
+  background: rgb(57.197260274, 148.2493150685, 223.602739726);
+  border-color: rgb(57.197260274, 148.2493150685, 223.602739726);
+}
+.btn-blue:focus {
+  box-shadow: 0 0 0 0.2em rgba(101.2109589041, 172.002739726, 230.5890410959, 0.4);
+}
+.btn-blue:hover {
+  background: rgb(48.3945205479, 143.498630137, 222.2054794521);
+  border-color: rgb(48.3945205479, 143.498630137, 222.2054794521);
+}
+.btn-blue:active {
+  background: rgb(48.3945205479, 143.498630137, 222.2054794521);
+  border-color: rgb(48.3945205479, 143.498630137, 222.2054794521);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+.btn-blue:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(156.098630137, 201.6246575342, 239.301369863);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .btn-danger {
   color: #e53e3e;
   background: #fafbfc;
   border: 2px solid;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.12); }
-  .btn-danger:focus {
-    box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
-  .btn-danger:hover {
-    color: #fff;
-    background: #e53e3e;
-    border-color: rgba(0, 0, 0, 0.5); }
-  .btn-danger:active {
-    color: #fff;
-    background: #e22828;
-    border-color: rgba(0, 0, 0, 0.5);
-    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-  .btn-danger:disabled {
-    color: rgba(229, 62, 62, 0.4);
-    background: #f0f5f9;
-    border-color: rgba(0, 0, 0, 0.2);
-    box-shadow: none; }
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.12);
+}
+.btn-danger:focus {
+  box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4);
+}
+.btn-danger:hover {
+  color: #fff;
+  background: #e53e3e;
+  border-color: rgba(0, 0, 0, 0.5);
+}
+.btn-danger:active {
+  color: #fff;
+  background: rgb(225.9726027397, 39.5273972603, 39.5273972603);
+  border-color: rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+.btn-danger:disabled {
+  color: rgba(229, 62, 62, 0.4);
+  background: rgb(239.5818181818, 245.3636363636, 249.2181818182);
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: none;
+}
 
 .btn-orange {
   color: #fff;
-  background: #d4671f;
-  border-color: #d4671f; }
-  .btn-orange:focus {
-    box-shadow: 0 0 0 0.2em rgba(221, 107, 32, 0.4); }
-  .btn-orange:hover {
-    background: #cb621d;
-    border-color: #cb621d; }
-  .btn-orange:active {
-    background: #ba5a1b;
-    border-color: #cb621d;
-    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-  .btn-orange:disabled {
-    color: rgba(255, 255, 255, 0.65);
-    background: #eab38f;
-    border-color: transparent;
-    box-shadow: none; }
+  background: rgb(212.0901185771, 102.6861660079, 30.7098814229);
+  border-color: rgb(212.0901185771, 102.6861660079, 30.7098814229);
+}
+.btn-orange:focus {
+  box-shadow: 0 0 0 0.2em rgba(221, 107, 32, 0.4);
+}
+.btn-orange:hover {
+  background: rgb(203.1802371542, 98.3723320158, 29.4197628458);
+  border-color: rgb(203.1802371542, 98.3723320158, 29.4197628458);
+}
+.btn-orange:active {
+  background: rgb(185.3604743083, 89.7446640316, 26.8395256917);
+  border-color: rgb(203.1802371542, 98.3723320158, 29.4197628458);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+.btn-orange:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(233.5450592885, 178.843083004, 142.8549407115);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .btn-outline {
   color: #4299e1;
-  background: #fff; }
-  .btn-outline:hover, .btn-outline:active {
-    color: #fff;
-    background: #4299e1;
-    border-color: #4299e1; }
-  .btn-outline:focus {
-    border-color: #4299e1;
-    box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4); }
-  .btn-outline:disabled {
-    color: rgba(0, 0, 0, 0.3);
-    background: #fff;
-    border-color: rgba(0, 0, 0, 0.15);
-    box-shadow: none; }
+  background: #fff;
+}
+.btn-outline:hover, .btn-outline:active {
+  color: #fff;
+  background: #4299e1;
+  border-color: #4299e1;
+}
+.btn-outline:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 0.2em rgba(66, 153, 225, 0.4);
+}
+.btn-outline:disabled {
+  color: rgba(0, 0, 0, 0.3);
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: none;
+}
 
 .btn-lg, .main-window-actions .btn-host-meeting,
 .main-window-actions .btn-join-meeting {
   border-radius: 0.2em;
   padding: 15px 20px;
-  font-size: 20px; }
+  font-size: 20px;
+}
 
 .btn-md {
   border-radius: 0.2em;
   padding: 12px 25px;
-  font-size: 18px; }
+  font-size: 18px;
+}
 
 .btn-sm, .main-window-top-bar .main-window-btn-settings,
 .main-window-top-bar .main-window-btn-help {
   border-radius: 4.8px;
   padding: 8px 18px;
-  font-size: 14px; }
+  font-size: 14px;
+}
 
 .btn-large {
   padding: 0.75em 1.25em;
   font-size: inherit;
-  border-radius: 6px; }
+  border-radius: 6px;
+}
 
 .btn-invisible {
   color: #fff;
@@ -321,12 +397,14 @@ dialog {
   border: 2px solid #cbd5e0;
   outline-width: 0;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-  font-weight: 500; }
-  .btn-invisible:hover, .btn-invisible:active, .btn-invisible:focus {
-    color: #fff;
-    background: #2d3748;
-    border: 2px solid #a0aec0;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+  font-weight: 500;
+}
+.btn-invisible:hover, .btn-invisible:active, .btn-invisible:focus {
+  color: #fff;
+  background: #2d3748;
+  border: 2px solid #a0aec0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
 
 .btn-link {
   padding: 1px 2px;
@@ -334,256 +412,318 @@ dialog {
   border-width: 0;
   box-shadow: none;
   font-size: 20px;
-  color: #90cdf4; }
-  .btn-link:hover, .btn-link:active {
-    box-shadow: none;
-    background: none; }
+  color: #90cdf4;
+}
+.btn-link:hover, .btn-link:active {
+  box-shadow: none;
+  background: none;
+}
 
-label, .label, .label-success, .label-warning, .label-settings-warning {
-  font-size: 20.4px; }
+.label, .label-warning, .label-settings-warning, .label-success, label {
+  font-size: 20.4px;
+}
 
 label.control-label {
   color: #fff;
   font-weight: 500;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+}
 label.control-help {
   color: #718096;
-  font-size: 16px; }
+  font-size: 16px;
+}
 label.label-text {
-  font-size: 16px; }
+  font-size: 16px;
+}
 
 .label-checkbox {
-  color: #cbd5e0; }
+  color: #cbd5e0;
+}
 
-.label, .label-success, .label-warning, .label-settings-warning {
-  padding: 13.3333333333px 20px; }
+.label, .label-warning, .label-settings-warning, .label-success {
+  padding: 13.3333333333px 20px;
+}
 
 .label-title {
   font-size: 24px;
   font-weight: 600;
-  color: #000; }
+  color: #000;
+}
 
 .label-text {
   font-size: 16px;
   font-weight: 400;
-  color: #4a5568; }
+  color: #4a5568;
+}
 
 .label-success {
   color: #22543d;
   background: #f0fff4;
-  font-weight: 500; }
+  font-weight: 500;
+}
 
 .label-warning, .label-settings-warning {
   color: #742a2a;
   background: #fed7d7;
-  font-weight: 500; }
+  font-weight: 500;
+}
 
 .label-bold {
   color: #fff;
   font-weight: 600;
   padding-top: 1px;
   padding-bottom: 1px;
-  padding-right: 20px; }
+  padding-right: 20px;
+}
 
 .label-value {
   color: #edf2f7;
   font-weight: 400;
   padding-top: 1px;
-  padding-bottom: 1px; }
+  padding-bottom: 1px;
+}
 
 .main-window-top-bar {
   background: #1a202c;
   border-bottom: 2px solid #2d3748;
-  padding: 20px; }
-  .main-window-top-bar .main-window-title {
-    color: #edf2f7;
-    font-size: 20px;
-    font-weight: 600; }
-  .main-window-top-bar .main-window-btn-settings,
-  .main-window-top-bar .main-window-btn-help {
-    font-size: 14px;
-    border-radius: 10em;
-    background: #2d3748;
-    color: #fff;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    margin-left: 10px; }
-    .main-window-top-bar .main-window-btn-settings:hover,
-    .main-window-top-bar .main-window-btn-help:hover {
-      color: #edf2f7;
-      background: #4a5568; }
+  padding: 20px;
+}
+.main-window-top-bar .main-window-title {
+  color: #edf2f7;
+  font-size: 20px;
+  font-weight: 600;
+}
+.main-window-top-bar .main-window-btn-settings,
+.main-window-top-bar .main-window-btn-help {
+  font-size: 14px;
+  border-radius: 10em;
+  background: #2d3748;
+  color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-left: 10px;
+}
+.main-window-top-bar .main-window-btn-settings:hover,
+.main-window-top-bar .main-window-btn-help:hover {
+  color: #edf2f7;
+  background: #4a5568;
+}
 
 .main-window-actions {
-  padding: 20px; }
-  .main-window-actions .btn-host-meeting,
-  .main-window-actions .btn-join-meeting {
-    text-shadow: none;
-    font-size: 20.4px; }
-    .main-window-actions .btn-host-meeting label,
-    .main-window-actions .btn-join-meeting label {
-      font-size: 20px;
-      font-weight: 500; }
-
+  padding: 20px;
+}
+.main-window-actions .btn-host-meeting,
+.main-window-actions .btn-join-meeting {
+  text-shadow: none;
+  font-size: 20.4px;
+}
+.main-window-actions .btn-host-meeting label,
+.main-window-actions .btn-join-meeting label {
+  font-size: 20px;
+  font-weight: 500;
+}
 .main-window-status-bar {
   color: #edf2f7;
   border-width: 0;
   padding: 10px 20px;
   background: #1a202c;
-  background-image: linear-gradient(-180deg, #141922 0%, black 90%); }
-  .main-window-status-bar.error {
-    background: #9b2c2c; }
-  .main-window-status-bar .status-label {
-    font-size: 18px; }
-  .main-window-status-bar .status-show-errors {
-    background: #2d3748;
-    color: #fff;
-    font-weight: 400;
-    font-size: 18px;
-    padding: 5px 20px;
-    border-radius: 10em;
-    border: 2px solid #4a5568;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
-    .main-window-status-bar .status-show-errors:hover, .main-window-status-bar .status-show-errors:active, .main-window-status-bar .status-show-errors:focus {
-      border: 2px solid #718096;
-      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
-      background: #4a5568;
-      color: #edf2f7; }
+  background-image: linear-gradient(-180deg, rgb(20.3171428571, 25.0057142857, 34.3828571429) 0%, black 90%);
+}
+.main-window-status-bar.error {
+  background: #9b2c2c;
+}
+.main-window-status-bar .status-label {
+  font-size: 18px;
+}
+.main-window-status-bar .status-show-errors {
+  background: #2d3748;
+  color: #fff;
+  font-weight: 400;
+  font-size: 18px;
+  padding: 5px 20px;
+  border-radius: 10em;
+  border: 2px solid #4a5568;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+.main-window-status-bar .status-show-errors:hover, .main-window-status-bar .status-show-errors:active, .main-window-status-bar .status-show-errors:focus {
+  border: 2px solid #718096;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  background: #4a5568;
+  color: #edf2f7;
+}
 
 .loading-window {
   color: #edf2f7;
-  background: #2d3748; }
-  .loading-window .spinner {
-    min-width: 50px;
-    min-height: 50px;
-    color: #48bb78; }
+  background: #2d3748;
+}
+.loading-window .spinner {
+  min-width: 50px;
+  min-height: 50px;
+  color: #48bb78;
+}
 
 .help-content {
-  padding: 20px; }
+  padding: 20px;
+}
 
 .help-title, .help-primary {
   font-size: 20px;
-  color: #f7fafc; }
+  color: #f7fafc;
+}
 
 .help-primary {
   font-weight: 600;
-  font-size: 20px; }
+  font-size: 20px;
+}
 
 .help-text {
   font-size: 18px;
-  color: #edf2f7; }
+  color: #edf2f7;
+}
 
 window.meeting-controls {
-  border-radius: 2px; }
-  window.meeting-controls .top {
-    background: #22543d;
-    color: #c6f6d5;
-    font-weight: 500;
-    font-size: 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-    padding: 20px; }
-    window.meeting-controls .top .text {
-      font-weight: 500;
-      font-size: 21px; }
-  window.meeting-controls .content {
-    padding: 20px; }
-  window.meeting-controls .buttons {
-    background: #1a202c;
-    padding: 20px; }
-    window.meeting-controls .buttons .control-leave-call, window.meeting-controls .buttons .control-finish-call {
-      padding: 13.3333333333px 20px;
-      font-size: 20px;
-      border: 2px solid transparent; }
-    window.meeting-controls .buttons .control-leave-call {
-      color: #fff;
-      background: #dd6b20;
-      border-color: #dd6b20; }
-      window.meeting-controls .buttons .control-leave-call:focus {
-        box-shadow: 0 0 0 0.2em rgba(237, 137, 54, 0.4); }
-      window.meeting-controls .buttons .control-leave-call:hover {
-        background: #d4671f;
-        border-color: #d4671f; }
-      window.meeting-controls .buttons .control-leave-call:active {
-        background: #d2681a;
-        border-color: #d4671f;
-        box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-      window.meeting-controls .buttons .control-leave-call:disabled {
-        color: rgba(255, 255, 255, 0.65);
-        background: #eeb590;
-        border-color: transparent;
-        box-shadow: none; }
-    window.meeting-controls .buttons .control-finish-call {
-      color: #fff;
-      background: #c53030;
-      border-color: #c53030; }
-      window.meeting-controls .buttons .control-finish-call:focus {
-        box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
-      window.meeting-controls .buttons .control-finish-call:hover {
-        background: #bd2e2e;
-        border-color: #bd2e2e; }
-      window.meeting-controls .buttons .control-finish-call:active {
-        background: #c02828;
-        border-color: #bd2e2e;
-        box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-      window.meeting-controls .buttons .control-finish-call:disabled {
-        color: rgba(255, 255, 255, 0.65);
-        background: #e29898;
-        border-color: transparent;
-        box-shadow: none; }
+  border-radius: 2px;
+}
+window.meeting-controls .top {
+  background: #22543d;
+  color: #c6f6d5;
+  font-weight: 500;
+  font-size: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  padding: 20px;
+}
+window.meeting-controls .top .text {
+  font-weight: 500;
+  font-size: 21px;
+}
+window.meeting-controls .content {
+  padding: 20px;
+}
+window.meeting-controls .buttons {
+  background: #1a202c;
+  padding: 20px;
+}
+window.meeting-controls .buttons .control-finish-call, window.meeting-controls .buttons .control-leave-call {
+  padding: 13.3333333333px 20px;
+  font-size: 20px;
+  border: 2px solid transparent;
+}
+window.meeting-controls .buttons .control-leave-call {
+  color: #fff;
+  background: #dd6b20;
+  border-color: #dd6b20;
+}
+window.meeting-controls .buttons .control-leave-call:focus {
+  box-shadow: 0 0 0 0.2em rgba(237, 137, 54, 0.4);
+}
+window.meeting-controls .buttons .control-leave-call:hover {
+  background: rgb(212.0901185771, 102.6861660079, 30.7098814229);
+  border-color: rgb(212.0901185771, 102.6861660079, 30.7098814229);
+}
+window.meeting-controls .buttons .control-leave-call:active {
+  background: rgb(210.4857142857, 104.25, 25.8142857143);
+  border-color: rgb(212.0901185771, 102.6861660079, 30.7098814229);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+window.meeting-controls .buttons .control-leave-call:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(238, 181, 143.5);
+  border-color: transparent;
+  box-shadow: none;
+}
+window.meeting-controls .buttons .control-finish-call {
+  color: #fff;
+  background: #c53030;
+  border-color: #c53030;
+}
+window.meeting-controls .buttons .control-finish-call:focus {
+  box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4);
+}
+window.meeting-controls .buttons .control-finish-call:hover {
+  background: rgb(188.7983673469, 46.0016326531, 46.0016326531);
+  border-color: rgb(188.7983673469, 46.0016326531, 46.0016326531);
+}
+window.meeting-controls .buttons .control-finish-call:active {
+  background: rgb(191.9834710744, 40.3165289256, 40.3165289256);
+  border-color: rgb(188.7983673469, 46.0016326531, 46.0016326531);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+window.meeting-controls .buttons .control-finish-call:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(226, 151.5, 151.5);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .invite-email-link {
   border-radius: 100%;
-  padding: 0; }
+  padding: 0;
+}
 
 .invite-window-bottom {
   padding: 20px;
-  border-top: 1px solid #edf2f7; }
+  border-top: 1px solid #edf2f7;
+}
 
 .invite-window-btn {
   padding-left: 20px;
-  padding-right: 20px; }
+  padding-right: 20px;
+}
 
 .invite-option {
   color: #f7fafc;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
 .host-meeting-toolbar {
   background: #22543d;
   color: #c6f6d5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
   padding: 20px;
-  font-size: 20px; }
-  .host-meeting-toolbar .message {
-    font-weight: 500; }
+  font-size: 20px;
+}
+.host-meeting-toolbar .message {
+  font-weight: 500;
+}
 
 .control-end-meeting {
   color: #fff;
   background: #c53030;
-  border-color: #c53030; }
-  .control-end-meeting:focus {
-    box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4); }
-  .control-end-meeting:hover {
-    background: #bd2e2e;
-    border-color: #bd2e2e; }
-  .control-end-meeting:active {
-    background: #c02828;
-    border-color: #bd2e2e;
-    box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15); }
-  .control-end-meeting:disabled {
-    color: rgba(255, 255, 255, 0.65);
-    background: #e29898;
-    border-color: transparent;
-    box-shadow: none; }
+  border-color: #c53030;
+}
+.control-end-meeting:focus {
+  box-shadow: 0 0 0 0.2em rgba(229, 62, 62, 0.4);
+}
+.control-end-meeting:hover {
+  background: rgb(188.7983673469, 46.0016326531, 46.0016326531);
+  border-color: rgb(188.7983673469, 46.0016326531, 46.0016326531);
+}
+.control-end-meeting:active {
+  background: rgb(191.9834710744, 40.3165289256, 40.3165289256);
+  border-color: rgb(188.7983673469, 46.0016326531, 46.0016326531);
+  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
+}
+.control-end-meeting:disabled {
+  color: rgba(255, 255, 255, 0.65);
+  background: rgb(226, 151.5, 151.5);
+  border-color: transparent;
+  box-shadow: none;
+}
 
 .vertical-space {
-  padding: 20px 0; }
+  padding: 20px 0;
+}
 
 .meeting-info-line {
   padding-top: 4px;
-  padding-bottom: 4px; }
+  padding-bottom: 4px;
+}
 
 .settings-tab {
-  color: #edf2f7; }
+  color: #edf2f7;
+}
 
 .settings-background {
-  background-color: #2d3748; }
+  background-color: #2d3748;
+}
 
 /*# sourceMappingURL=dark-mode-gui.css.map */

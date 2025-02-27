@@ -158,13 +158,11 @@ func (u *gtkUI) getMainWindowBuilder() *uiBuilder {
 
 	icon1, _ := u.g.getImagePixbufForSize("host-meeting.svg", 32)
 	icon2, _ := u.g.getImagePixbufForSize("join-meeting.svg", 32)
-	icon3, _ := u.g.getImagePixbufForSize("settings.svg", 24)
-	icon4, _ := u.g.getImagePixbufForSize("help.svg", 24)
 
 	imgHostMeeting.SetFromPixbuf(icon1)
 	imgJoinMeeting.SetFromPixbuf(icon2)
-	imgSettings.SetFromPixbuf(icon3)
-	imgHelp.SetFromPixbuf(icon4)
+	imgHelp.SetFromIconName("help-contents-symbolic", gtki.ICON_SIZE_LARGE_TOOLBAR)
+	imgSettings.SetFromIconName("applications-system-symbolic", gtki.ICON_SIZE_LARGE_TOOLBAR)
 
 	return builder
 }
