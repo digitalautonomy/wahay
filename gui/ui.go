@@ -237,10 +237,15 @@ func (u *gtkUI) setGlobalStyles() {
 		return
 	}
 
-	u.addCssProvider("light-mode-gui")
+	css := "light-mode-gui"
+	if isDarkMode() {
+		css = "dark-mode-gui"
+	}
+
+	u.addCSSProvider(css)
 }
 
-func (u *gtkUI) addCssProvider(css string) {
+func (u *gtkUI) addCSSProvider(css string) {
 	prov := u.g.cssFor(css)
 	screen, _ := u.g.gdk.ScreenGetDefault()
 	u.g.gtk.AddProviderForScreen(screen, prov, uint(gtki.STYLE_PROVIDER_PRIORITY_APPLICATION))

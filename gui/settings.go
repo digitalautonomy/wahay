@@ -353,10 +353,10 @@ func (s *settings) changeColorScheme() {
 	switch s.cmbBoxColorScheme.GetActive() {
 	case 0:
 		css = "light-mode-gui"
-		s.u.addCssProvider(css)
+		s.u.addCSSProvider(css)
 	case 1:
 		css = "dark-mode-gui"
-		s.u.addCssProvider(css)
+		s.u.addCSSProvider(css)
 	default:
 		go s.monitorSystemStyleChanges()
 	}

@@ -22,11 +22,7 @@ func isDarkMode() bool {
 	}
 
 	output := out.String()
-	if output == "'prefer-dark'\n" {
-		return true
-	}
-
-	return false
+	return strings.Contains(output, "dark")
 }
 
 func (s *settings) monitorSystemStyleChanges() {
@@ -47,12 +43,12 @@ func (s *settings) monitorSystemStyleChanges() {
 	for scanner.Scan() {
 		line := scanner.Text()
 		log.Debug(line)
-		if strings.Contains(line, "prefer-dark") {
+		if strings.Contains(line, "dark") {
 			css = "dark-mode-gui"
 		} else {
 			css = "light-mode-gui"
 		}
-		s.u.addCssProvider(css)
+		s.u.addCSSProvider(css)
 	}
 
 	if err := scanner.Err(); err != nil {
