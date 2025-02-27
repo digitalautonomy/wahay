@@ -353,15 +353,13 @@ func (s *settings) changeColorScheme() {
 	switch s.cmbBoxColorScheme.GetActive() {
 	case 0:
 		css = "light-mode-gui"
+		s.u.addCssProvider(css)
 	case 1:
 		css = "dark-mode-gui"
+		s.u.addCssProvider(css)
 	default:
-		css = "light-mode-gui"
+		go s.monitorSystemStyleChanges()
 	}
-
-	prov := s.u.g.cssFor(css)
-	screen, _ := s.u.g.gdk.ScreenGetDefault()
-	s.u.g.gtk.AddProviderForScreen(screen, prov, uint(gtki.STYLE_PROVIDER_PRIORITY_APPLICATION))
 }
 
 func (u *gtkUI) initConfig() {
