@@ -1,15 +1,33 @@
 .label-settings-warning {
-    @extend .label-warning;
+  @extend .label-warning;
 }
 
 .settings-tab {
-    color: $gray-900;
+  color: $gray-900;
 }
 
 .settings-background {
-    background-color: $bg-white;
+  background-color: $bg-white;
 }
 
 .color-scheme-box {
-    min-height: 40px;
+  min-height: 40px;
+
+  button, menu {
+    color: $text-gray-dark;
+    background: $gray-100;
+    border: 2px solid $gray-400;
+    font-weight: $font-weight-semibold;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: $text-gray-dark;
+      background: $white;
+    }
+  }
+
+  menuitem {
+    color: $text-gray-dark;
+  }
 }
