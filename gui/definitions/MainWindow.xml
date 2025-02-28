@@ -456,7 +456,7 @@
             <property name="layout_style">expand</property>
             <child>
               <object class="GtkButton" id="btnErrorsAccept">
-                <property name="label" translatable="yes">Accept</property>
+                <property name="label" translatable="yes">Ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>

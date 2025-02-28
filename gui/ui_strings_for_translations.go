@@ -16,7 +16,7 @@ func noPointInEverCallingThisButYouCanIfYouReallyFeelLikeIt1() {
 	// TODO: fix a better solution! Maybe patch gotext to have a flag to change
 	// this behavior or something else.
 
-	_ = i18n().Sprintf("Accept")
+	_ = i18n().Sprintf("Ok")
 	_ = i18n().Sprintf("Allow the host to automatically join a newly created meeting")
 	_ = i18n().Sprintf("Are you sure you want to do this action?")
 	_ = i18n().Sprintf("Are you sure you want to end this meeting?")

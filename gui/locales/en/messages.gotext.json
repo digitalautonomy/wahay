@@ -314,9 +314,9 @@
             "fuzzy": true
         },
         {
-            "id": "Accept",
-            "message": "Accept",
-            "translation": "Accept"
+            "id": "Ok",
+            "message": "Ok",
+            "translation": "Ok"
         },
         {
             "id": "Allow the host to automatically join a newly created meeting",
