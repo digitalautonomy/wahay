@@ -74,7 +74,7 @@ window.light .window-actions.bordered {
 
 dialog {
   font-family: "Liberation Sans", Arial, sans-serif;
-  background: #fff;
+  background: #2d3748;
   font-size: 18px;
 }
 dialog .dialog-content {
@@ -84,8 +84,8 @@ dialog .dialog-actions {
   padding: 20px;
 }
 dialog .dialog-actions.bordered {
-  border-top: 1px solid #e2e8f0;
-  background: #f7fafc;
+  border-top: 1px solid #4a5568;
+  background: #1a202c;
 }
 dialog.light {
   background: #f7fafc;
@@ -549,6 +549,11 @@ label.label-text {
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
   background: #4a5568;
   color: #edf2f7;
+}
+
+textview text {
+  background-color: #2d3748;
+  color: white;
 }
 
 .loading-window {

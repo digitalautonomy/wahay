@@ -554,6 +554,11 @@ label.label-text {
   background: #cbd5e0;
 }
 
+textview text {
+  background-color: white;
+  color: #2d3748;
+}
+
 .help-content {
   padding: 20px;
 }

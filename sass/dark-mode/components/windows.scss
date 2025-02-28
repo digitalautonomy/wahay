@@ -45,7 +45,7 @@ window {
 
 dialog {
   font-family: $desktop-font;
-  background: $white;
+  background: $gray-800;
   font-size: $desktop-font-size;
 
   .dialog-content {
@@ -56,8 +56,8 @@ dialog {
     padding: $spacing;
 
     &.bordered {
-      border-top: 1px solid $gray-300;
-      background: $gray-100;
+      border-top: 1px solid $gray-700;
+      background: $gray-900;
     }
   }
 

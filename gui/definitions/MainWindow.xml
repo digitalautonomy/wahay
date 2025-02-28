@@ -463,6 +463,7 @@
                 <signal name="clicked" handler="on_close_window_errors" swapped="no"/>
                 <style>
                   <class name="btn"/>
+                  <class name="btn-invisible"/>
                 </style>
               </object>
               <packing>
