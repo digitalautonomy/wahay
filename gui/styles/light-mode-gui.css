@@ -679,29 +679,6 @@ window.meeting-controls .buttons .control-finish-call, window.meeting-controls .
   font-size: 20px;
   border: 2px solid transparent;
 }
-window.meeting-controls .buttons .control-leave-call {
-  color: #fff;
-  background: #dd6b20;
-  border-color: #dd6b20;
-}
-window.meeting-controls .buttons .control-leave-call:focus {
-  box-shadow: 0 0 0 0.2em rgba(237, 137, 54, 0.4);
-}
-window.meeting-controls .buttons .control-leave-call:hover {
-  background: rgb(212.0901185771, 102.6861660079, 30.7098814229);
-  border-color: rgb(212.0901185771, 102.6861660079, 30.7098814229);
-}
-window.meeting-controls .buttons .control-leave-call:active {
-  background: rgb(210.4857142857, 104.25, 25.8142857143);
-  border-color: rgb(212.0901185771, 102.6861660079, 30.7098814229);
-  box-shadow: inset 0 0.15em 0.3em rgba(0, 0, 0, 0.15);
-}
-window.meeting-controls .buttons .control-leave-call:disabled {
-  color: rgba(255, 255, 255, 0.65);
-  background: rgb(238, 181, 143.5);
-  border-color: transparent;
-  box-shadow: none;
-}
 window.meeting-controls .buttons .control-finish-call {
   color: #fff;
   background: #c53030;

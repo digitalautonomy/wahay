@@ -33,7 +33,6 @@ window {
 
       .control-leave-call {
         @extend %meeting-control;
-        @include btn-solid($text-white, $orange-500, $orange-600);
       }
 
       .control-finish-call {

@@ -60,6 +60,9 @@
                 <signal name="clicked" handler="on_leave_meeting" swapped="no"/>
                 <style>
                   <class name="control-leave-call"/>
+                  <class name="btn-md"/>
+                  <class name="btn"/>
+                  <class name="btn-invisible"/>
                 </style>
               </object>
               <packing>
