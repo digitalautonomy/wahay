@@ -449,7 +449,7 @@ func (i *instance) writeToFile() error {
 
 func (r *runningTor) closeTorService() {
 	r.cancelFunc()
-	r.waitForFinish()
+	<-r.finishChannel
 }
 
 func (r *runningTor) waitForFinish() {
