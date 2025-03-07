@@ -205,7 +205,19 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 		1,
 	)
 
-	err := config.SafeWrite(configFile, []byte(langSection), 0600)
+	theme := "Dark"
+	if isIniConfigFile(configFile) {
+		theme = fmt.Sprintf("themestyle=%s", theme)
+	}
+
+	themeSection := strings.Replace(
+		langSection,
+		"#THEME",
+		theme,
+		1,
+	)
+
+	err := config.SafeWrite(configFile, []byte(themeSection), 0600)
 	if err != nil {
 		return err
 	}
