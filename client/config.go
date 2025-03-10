@@ -128,14 +128,19 @@ func (c *client) ensureConfigurationFile() error {
 	return nil
 }
 
+type configurationFileTemplate struct {
+	name    string
+	creator func() string
+}
+
 func (c *client) createAndWriteConfigFiles() error {
-	var configFileNames = map[string]func() string{
-		configFileName: c.configContentProvider,
-		configFileJSON: c.configJSONProvider,
+	var configFileNames = []configurationFileTemplate{
+		configurationFileTemplate{configFileName, c.configContentProvider},
+		configurationFileTemplate{configFileJSON, c.configJSONProvider},
 	}
 
-	for fileName, template := range configFileNames {
-		filePath := filepath.Join(c.configDir, fileName)
+	for _, tmpl := range configFileNames {
+		filePath := filepath.Join(c.configDir, tmpl.name)
 
 		if pathExists(filePath) {
 			err := os.Remove(filePath)
@@ -149,7 +154,7 @@ func (c *client) createAndWriteConfigFiles() error {
 			return err
 		}
 
-		err = c.writeConfigToFile(fileName, filePath, template)
+		err = c.writeConfigToFile(tmpl.name, filePath, tmpl.creator)
 		if err != nil {
 			return err
 		}
