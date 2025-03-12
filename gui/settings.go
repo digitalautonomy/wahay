@@ -1,7 +1,9 @@
 package gui
 
 import (
+	"context"
 	"fmt"
+	"os/exec"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -37,6 +39,9 @@ type settings struct {
 	mumbleBinaryOriginalValue      string
 	mumblePortOriginalValue        string
 	torBinaryOriginalValue         string
+
+	monitorCmd        *exec.Cmd
+	monitorCancelFunc context.CancelFunc
 }
 
 func createSettings(u *gtkUI) *settings {
@@ -349,14 +354,13 @@ func (s *settings) setCustomPathForTor() {
 }
 
 func (s *settings) changeColorScheme() {
-	var css string
+	s.stopMonitoring()
+
 	switch s.cmbBoxColorScheme.GetActive() {
 	case 0:
-		css = "light-mode-gui"
-		s.u.addCSSProvider(css)
+		s.u.addCSSProvider("light-mode-gui")
 	case 1:
-		css = "dark-mode-gui"
-		s.u.addCSSProvider(css)
+		s.u.addCSSProvider("dark-mode-gui")
 	default:
 		go s.monitorSystemStyleChanges()
 	}

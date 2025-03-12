@@ -5,3 +5,5 @@ func isDarkMode() bool {
 }
 
 func (s *settings) monitorSystemStyleChanges() {}
+
+func (s *settings) stopMonitoring() {}

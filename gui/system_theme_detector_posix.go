@@ -5,6 +5,7 @@ package gui
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"os/exec"
 	"strings"
 
@@ -27,7 +28,13 @@ func isDarkMode() bool {
 
 func (s *settings) monitorSystemStyleChanges() {
 	var css string
-	cmd := exec.Command("gsettings", "monitor", "org.gnome.desktop.interface", "color-scheme")
+
+	ctx, cancel := context.WithCancel(context.Background())
+	s.monitorCancelFunc = cancel
+
+	cmd := exec.CommandContext(ctx, "gsettings", "monitor", "org.gnome.desktop.interface", "color-scheme")
+	s.monitorCmd = cmd
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Errorf("Failed to create stdout pipe: %v", err)
@@ -41,6 +48,10 @@ func (s *settings) monitorSystemStyleChanges() {
 
 	scanner := bufio.NewScanner(stdout)
 	for scanner.Scan() {
+		if ctx.Err() != nil {
+			return
+		}
+
 		line := scanner.Text()
 		log.Debug(line)
 		if strings.Contains(line, "dark") {
@@ -53,5 +64,17 @@ func (s *settings) monitorSystemStyleChanges() {
 
 	if err := scanner.Err(); err != nil {
 		log.Errorf("Failed to read scanner: %v", err)
+	}
+}
+
+func (s *settings) stopMonitoring() {
+	if s.monitorCancelFunc != nil {
+		s.monitorCancelFunc()
+		s.monitorCancelFunc = nil
+	}
+
+	if s.monitorCmd != nil && s.monitorCmd.Process != nil {
+		_ = s.monitorCmd.Process.Kill()
+		s.monitorCmd = nil
 	}
 }
