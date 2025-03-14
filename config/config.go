@@ -33,6 +33,7 @@ type ApplicationConfig struct {
 	RawLogFile            string
 	PathMumble            string
 	PortMumble            string
+	ColorScheme           string
 }
 
 var (
@@ -411,4 +412,14 @@ func GetDefaultLogFile() string {
 // GetDefaultLogFileName returns the default filename for the log file
 func GetDefaultLogFileName() string {
 	return appLogFile
+}
+
+// GetColorScheme returns the current color scheme setting
+func (a *ApplicationConfig) GetColorScheme() string {
+	return a.ColorScheme
+}
+
+// SetColorScheme sets the color scheme setting
+func (a *ApplicationConfig) SetColorScheme(scheme string) {
+	a.ColorScheme = scheme
 }

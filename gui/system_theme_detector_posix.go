@@ -3,78 +3,135 @@
 package gui
 
 import (
-	"bufio"
-	"bytes"
-	"context"
-	"os/exec"
+	"os"
 	"strings"
+	"sync"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/coyim/gotk3adapter/glibi"
+	"github.com/coyim/gotk3adapter/gtki"
 )
 
-func isDarkMode() bool {
-	cmd := exec.Command("gsettings", "get", "org.gnome.desktop.interface", "color-scheme")
-	var out bytes.Buffer
-	cmd.Stdout = &out
+type colorManager struct {
+	themeVariant          string
+	calculateThemeVariant sync.Once
+	onThemeChange         *callbacksSet
+}
 
-	err := cmd.Run()
-	if err != nil {
+type callbacksSet struct {
+	callbacks []func()
+	sync.Mutex
+}
+
+func newCallbacksSet(callbacks ...func()) *callbacksSet {
+	return &callbacksSet{
+		callbacks: callbacks,
+	}
+}
+
+func (s *callbacksSet) add(callbacks ...func()) {
+	s.Lock()
+	defer s.Unlock()
+	s.callbacks = append(s.callbacks, callbacks...)
+}
+
+func (s *callbacksSet) invokeAll() {
+	s.Lock()
+	defer s.Unlock()
+
+	for _, cb := range s.callbacks {
+		cb()
+	}
+}
+
+const (
+	darkThemeVariantName  = "dark"
+	lightThemeVariantName = "light"
+)
+
+func (cm *colorManager) init() {
+	cm.onThemeChange = newCallbacksSet()
+
+	set := cm.getGSettings()
+	_ = set.Connect("changed::gtk-theme", cm.onThemeChange.invokeAll)
+
+	cm.onThemeChange.add(func() {
+		cm.calculateThemeVariant = sync.Once{}
+	})
+}
+
+func (cm *colorManager) isDarkMode() bool {
+	return cm.detectDarkThemeFromEnvironmentVariable() ||
+		cm.detectDarkThemeFromGTKSettings() ||
+		cm.detectDarkThemeFromGTKSettingsThemeName() ||
+		cm.detectDarkThemeFromGSettingsThemeName()
+}
+
+func (cm *colorManager) detectDarkThemeFromEnvironmentVariable() bool {
+	gtkTheme := os.Getenv("GTK_THEME")
+	return doesThemeNameIndicateDarkness(gtkTheme)
+}
+
+func doesThemeNameIndicateDarkness(themeName string) bool {
+	return isDarkVariantNameBasedOnSeparator(themeName, ":") ||
+		isDarkVariantNameBasedOnSeparator(themeName, "-") ||
+		isDarkVariantNameBasedOnSeparator(themeName, "_")
+}
+
+func isDarkVariantNameBasedOnSeparator(name, separator string) bool {
+	parts := strings.Split(name, separator)
+	if len(parts) < 2 {
 		return false
 	}
-
-	output := out.String()
-	return strings.Contains(output, "dark")
+	variant := parts[len(parts)-1]
+	return variant == darkThemeVariantName
 }
 
-func (s *settings) monitorSystemStyleChanges() {
-	var css string
+func (cm *colorManager) detectDarkThemeFromGTKSettings() bool {
+	// TODO: this might not be safe to do outside the UI thread
+	prefDark, _ := cm.getGTKSettings().GetProperty("gtk-application-prefer-dark-theme")
+	val, ok := prefDark.(bool)
+	return val && ok
+}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	s.monitorCancelFunc = cancel
-
-	cmd := exec.CommandContext(ctx, "gsettings", "monitor", "org.gnome.desktop.interface", "color-scheme")
-	s.monitorCmd = cmd
-
-	stdout, err := cmd.StdoutPipe()
+func (cm *colorManager) getGTKSettings() gtki.Settings {
+	settings, err := g.gtk.SettingsGetDefault()
 	if err != nil {
-		log.Errorf("Failed to create stdout pipe: %v", err)
-		return
+		panic(err)
 	}
+	return settings
+}
 
-	if err := cmd.Start(); err != nil {
-		log.Errorf("Failed to start gsettingsmonitor: %v", err)
-		return
-	}
+func (cm *colorManager) detectDarkThemeFromGTKSettingsThemeName() bool {
+	return os.Getenv("GTK_THEME") == "Adwaita-dark"
+}
 
-	scanner := bufio.NewScanner(stdout)
-	for scanner.Scan() {
-		if ctx.Err() != nil {
-			return
-		}
+func (cm *colorManager) detectDarkThemeFromGSettingsThemeName() bool {
+	return doesThemeNameIndicateDarkness(cm.getThemeNameFromGSettings())
 
-		line := scanner.Text()
-		log.Debug(line)
-		if strings.Contains(line, "dark") {
-			css = "dark-mode-gui"
-		} else {
-			css = "light-mode-gui"
-		}
-		s.u.addCSSProvider(css)
-	}
+}
 
-	if err := scanner.Err(); err != nil {
-		log.Errorf("Failed to read scanner: %v", err)
+func (cm *colorManager) getThemeNameFromGSettings() string {
+	// TODO: this might not be safe to do outside the UI thread
+	return cm.getGSettings().GetString("gtk-theme")
+}
+
+func (cm *colorManager) getGSettings() glibi.Settings {
+	return g.glib.SettingsNew("org.gnome.desktop.interface")
+}
+
+func (cm *colorManager) actuallyCalculateThemeVariant() {
+	if cm.isDarkMode() {
+		cm.themeVariant = darkThemeVariantName
+	} else {
+		cm.themeVariant = lightThemeVariantName
 	}
 }
 
-func (s *settings) stopMonitoring() {
-	if s.monitorCancelFunc != nil {
-		s.monitorCancelFunc()
-		s.monitorCancelFunc = nil
-	}
+func (cm *colorManager) getThemeVariant() string {
+	cm.calculateThemeVariant.Do(cm.actuallyCalculateThemeVariant)
+	return cm.themeVariant
+}
 
-	if s.monitorCmd != nil && s.monitorCmd.Process != nil {
-		_ = s.monitorCmd.Process.Kill()
-		s.monitorCmd = nil
-	}
+func (cm *colorManager) isDarkThemeVariant() bool {
+	return cm.getThemeVariant() == darkThemeVariantName
 }

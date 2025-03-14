@@ -28,6 +28,8 @@ type Graphics struct {
 	glib glibi.Glib
 }
 
+var g Graphics
+
 // CreateGraphics creates a Graphic representation from the given arguments
 func CreateGraphics(gtkVal gtki.Gtk, glibVal glibi.Glib, gdkVal gdki.Gdk) Graphics {
 	return Graphics{
@@ -63,14 +65,16 @@ type gtkUI struct {
 	servers        hosting.Servers
 	errorHandler   *errorHandler
 	cleanupHandler *cleanupHandler
+	colorManager
 }
 
 // NewGTK returns a new client for a GTK ui
 func NewGTK(gx Graphics) UI {
+	g = gx
 	runtime.LockOSThread()
-	gx.gtk.Init(argsWithApplicationName())
+	g.gtk.Init(argsWithApplicationName())
 
-	app, err := gx.gtk.ApplicationNew(applicationID, glibi.APPLICATION_FLAGS_NONE)
+	app, err := g.gtk.ApplicationNew(applicationID, glibi.APPLICATION_FLAGS_NONE)
 	if err != nil {
 		fatalf("Couldn't create application: %v", err)
 	}
@@ -110,7 +114,6 @@ func (u *gtkUI) initTasks() {
 
 func (u *gtkUI) onActivate() {
 	u.displayLoadingWindowWithCallback(u.quit)
-
 	go u.setGlobalStyles()
 	go u.loadConfig()
 }
@@ -238,7 +241,7 @@ func (u *gtkUI) setGlobalStyles() {
 	}
 
 	css := "light-mode-gui"
-	if isDarkMode() {
+	if u.colorManager.isDarkThemeVariant() {
 		css = "dark-mode-gui"
 	}
 

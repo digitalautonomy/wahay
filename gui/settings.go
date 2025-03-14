@@ -1,9 +1,7 @@
 package gui
 
 import (
-	"context"
 	"fmt"
-	"os/exec"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
@@ -39,9 +37,6 @@ type settings struct {
 	mumbleBinaryOriginalValue      string
 	mumblePortOriginalValue        string
 	torBinaryOriginalValue         string
-
-	monitorCmd        *exec.Cmd
-	monitorCancelFunc context.CancelFunc
 }
 
 func createSettings(u *gtkUI) *settings {
@@ -104,6 +99,16 @@ func (s *settings) init() {
 	s.torBinaryLocation.SetText(s.torBinaryOriginalValue)
 	s.torBinaryLocation.SetPlaceholderText(placeholders.GetPlaceholderConfigTor())
 
+	// Set color scheme combo box based on config
+	colorScheme := conf.GetColorScheme()
+	switch colorScheme {
+	case "light-mode-gui":
+		s.cmbBoxColorScheme.SetActive(0)
+	case "dark-mode-gui":
+		s.cmbBoxColorScheme.SetActive(1)
+	default:
+		s.cmbBoxColorScheme.SetActive(2) // System
+	}
 }
 
 func (u *gtkUI) getSettingsBuilder() *uiBuilder {
@@ -354,15 +359,19 @@ func (s *settings) setCustomPathForTor() {
 }
 
 func (s *settings) changeColorScheme() {
-	s.stopMonitoring()
-
+	var css string
 	switch s.cmbBoxColorScheme.GetActive() {
 	case 0:
-		s.u.addCSSProvider("light-mode-gui")
+		css = "light-mode-gui"
+		s.u.addCSSProvider(css)
+		s.u.config.SetColorScheme(css)
 	case 1:
-		s.u.addCSSProvider("dark-mode-gui")
+		css = "dark-mode-gui"
+		s.u.addCSSProvider(css)
+		s.u.config.SetColorScheme(css)
 	default:
-		go s.monitorSystemStyleChanges()
+		s.u.colorManager.init()
+		s.u.config.SetColorScheme("")
 	}
 }
 
