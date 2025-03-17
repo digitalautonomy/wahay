@@ -1,27 +1,42 @@
 package gui
 
 import (
+	"errors"
+
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/sys/windows/registry"
 )
 
-func isDarkMode() bool {
-	key, err := registry.OpenKey(registry.CURRENT_USER, `SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize`, registry.QUERY_VALUE)
+type colorManager struct{}
+
+const (
+	registryPath      = `SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize`
+	registryValueName = "AppsUseLightTheme"
+)
+
+func (cm *colorManager) isDarkThemeVariant() bool {
+	isDark, err := isDarkMode()
 	if err != nil {
-		log.Printf("Failed to open registry key: %v", err)
+		log.Printf("Error checking dark mode: %v", err)
 		return false
+	}
+
+	return isDark
+}
+
+func isDarkMode() (bool, error) {
+	key, err := registry.OpenKey(registry.CURRENT_USER, registryPath, registry.QUERY_VALUE)
+	if err != nil {
+		return false, errors.New("failed to open registry key")
 	}
 	defer key.Close()
 
-	value, _, err := key.GetIntegerValue("AppsUseLightTheme")
+	value, _, err := key.GetIntegerValue(registryValueName)
 	if err != nil {
-		log.Printf("Failed to read registry value: %v", err)
-		return false
+		return false, errors.New("failed to read registry value")
 	}
 
-	return value == 0
+	return value == 0, nil
 }
 
-func (s *settings) monitorSystemStyleChanges() {}
-
-func (s *settings) stopMonitoring() {}
+func (cm *colorManager) init() {}
