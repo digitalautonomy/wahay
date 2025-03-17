@@ -93,6 +93,13 @@ func (cm *colorManager) detectDarkThemeFromGTKSettings() bool {
 	return val && ok
 }
 
+func (cm *colorManager) getThemeNameFromGTKSettings() string {
+	// TODO: this might not be safe to do outside the UI thread
+	themeName, _ := cm.getGTKSettings().GetProperty("gtk-theme-name")
+	val, _ := themeName.(string)
+	return val
+}
+
 func (cm *colorManager) getGTKSettings() gtki.Settings {
 	settings, err := g.gtk.SettingsGetDefault()
 	if err != nil {
@@ -102,7 +109,7 @@ func (cm *colorManager) getGTKSettings() gtki.Settings {
 }
 
 func (cm *colorManager) detectDarkThemeFromGTKSettingsThemeName() bool {
-	return os.Getenv("GTK_THEME") == "Adwaita-dark"
+	return doesThemeNameIndicateDarkness(cm.getThemeNameFromGTKSettings())
 }
 
 func (cm *colorManager) detectDarkThemeFromGSettingsThemeName() bool {
