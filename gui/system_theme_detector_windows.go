@@ -2,7 +2,6 @@ package gui
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 
 	log "github.com/sirupsen/logrus"
@@ -58,13 +57,7 @@ var (
 )
 
 func (cm *colorManager) init() {
-	cm.monitorCancel = make(chan struct{})
-
-	var wg sync.WaitGroup
-	cm.monitorWaitGroup = &wg
-	cm.monitorWaitGroup.Add(1)
-
-	go cm.monitorThemeChanges()
+	cm.enableAutomaticThemeChange()
 }
 
 func (cm *colorManager) monitorThemeChanges() {
@@ -124,7 +117,7 @@ func (cm *colorManager) notifyOnRegistryChange() error {
 	)
 
 	if ret != 0 && err != nil {
-		return fmt.Errorf("RegNotifyChangeKeyValue failed: %w", err)
+		return errors.New("RegNotifyChangeKeyValue failed: " + err.Error())
 	}
 	return nil
 }
@@ -155,4 +148,32 @@ func (cm *colorManager) updateTheme() {
 	}
 
 	cm.ui.addCSSProvider(css)
+}
+
+func (cm *colorManager) disableAutomaticThemeChange() {
+	if cm.monitorCancel == nil {
+		return
+	}
+
+	close(cm.monitorCancel)
+
+	if cm.monitorWaitGroup != nil {
+		cm.monitorWaitGroup.Wait()
+	}
+
+	cm.monitorCancel = nil
+	cm.monitorWaitGroup = nil
+}
+
+func (cm *colorManager) enableAutomaticThemeChange() {
+	if cm.monitorCancel != nil {
+		cm.disableAutomaticThemeChange()
+	}
+
+	var wg sync.WaitGroup
+	cm.monitorCancel = make(chan struct{})
+	wg.Add(1)
+
+	cm.monitorWaitGroup = &wg
+	go cm.monitorThemeChanges()
 }
