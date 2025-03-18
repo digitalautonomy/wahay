@@ -32,6 +32,24 @@ type testGtkStruct struct {
 	applicationNewArg2      glibi.ApplicationFlags
 }
 
+func (t *testGtkStruct) SettingsGetDefault() (gtki.Settings, error) {
+	return &testGtkSettingsStruct{}, nil
+}
+
+type testGtkSettingsStruct struct {
+	gtk_mock.MockSettings
+
+	connectArg1   string
+	connectArg2   interface{}
+	connectReturn glibi.SignalHandle
+}
+
+func (t *testGtkSettingsStruct) Connect(v1 string, v2 interface{}) glibi.SignalHandle {
+	t.connectArg1 = v1
+	t.connectArg2 = v2
+	return t.connectReturn
+}
+
 func (t *testGtkStruct) Init(a *[]string) {
 	t.initCalled = true
 	t.initArgs = a
@@ -78,7 +96,8 @@ func (s *WahayGUISuite) Test_NewGTK_initializesGTK(c *C) {
 	}()
 
 	ourGtk := &testGtkStruct{}
-	g1 := CreateGraphics(ourGtk, nil, nil)
+	ourGlib := &testGlibStruct{}
+	g1 := CreateGraphics(ourGtk, ourGlib, nil)
 	_ = NewGTK(g1)
 
 	c.Assert(ourGtk.initCalled, Equals, true)
@@ -87,7 +106,8 @@ func (s *WahayGUISuite) Test_NewGTK_initializesGTK(c *C) {
 
 func (s *WahayGUISuite) Test_NewGTK_callsApplicationNewWithAppropriateArguments(c *C) {
 	ourGtk := &testGtkStruct{}
-	g1 := CreateGraphics(ourGtk, nil, nil)
+	ourGlib := &testGlibStruct{}
+	g1 := CreateGraphics(ourGtk, ourGlib, nil)
 	_ = NewGTK(g1)
 
 	c.Assert(ourGtk.applicationNewCalled, Equals, true)
@@ -106,8 +126,9 @@ func (s *WahayGUISuite) Test_NewGTK_panicsIfApplicationNewFails(c *C) {
 func (s *WahayGUISuite) Test_NewGTK_returnsAGTKUIWithProperData(c *C) {
 	app := &gtk_mock.MockApplication{}
 	ourGtk := &testGtkStruct{}
+	ourGlib := &testGlibStruct{}
 	ourGtk.applicationNewToReturn1 = app
-	g1 := CreateGraphics(ourGtk, nil, nil)
+	g1 := CreateGraphics(ourGtk, ourGlib, nil)
 	ret := NewGTK(g1).(*gtkUI)
 
 	c.Assert(ret.app, Equals, app)
@@ -157,6 +178,24 @@ func (ta *testApplication) Run(v1 []string) int {
 
 type testGlibStruct struct {
 	glib_mock.Mock
+}
+
+func (g *testGlibStruct) SettingsNew(schema string) glibi.Settings {
+	return &testGlibSettingsStruct{}
+}
+
+type testGlibSettingsStruct struct {
+	glib_mock.MockSettings
+
+	connectArg1   string
+	connectArg2   interface{}
+	connectReturn glibi.SignalHandle
+}
+
+func (s *testGlibSettingsStruct) Connect(v1 string, v2 interface{}) glibi.SignalHandle {
+	s.connectArg1 = v1
+	s.connectArg2 = v2
+	return s.connectReturn
 }
 
 func (s *WahayGUISuite) Test_gtkUI_Loop_connectsActivate(c *C) {
