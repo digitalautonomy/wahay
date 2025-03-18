@@ -2,16 +2,28 @@ package gui
 
 import (
 	"errors"
+	"fmt"
+	"sync"
 
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
 )
 
-type colorManager struct{}
+type colorManager struct {
+	monitorCancel    chan struct{}
+	monitorWaitGroup *sync.WaitGroup
+
+	registryKey registry.Key
+	keyEvent    windows.Handle
+
+	ui *gtkUI
+}
 
 const (
-	registryPath      = `SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize`
-	registryValueName = "AppsUseLightTheme"
+	registryPath        = `SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize`
+	registryValueName   = "AppsUseLightTheme"
+	registryWaitTimeout = 1000
 )
 
 func (cm *colorManager) isDarkThemeVariant() bool {
@@ -39,4 +51,108 @@ func isDarkMode() (bool, error) {
 	return value == 0, nil
 }
 
-func (cm *colorManager) init() {}
+var (
+	user32                      = windows.NewLazySystemDLL("user32.dll")
+	advapi32                    = windows.NewLazySystemDLL("advapi32.dll")
+	procRegNotifyChangeKeyValue = advapi32.NewProc("RegNotifyChangeKeyValue")
+)
+
+func (cm *colorManager) init() {
+	cm.monitorCancel = make(chan struct{})
+
+	var wg sync.WaitGroup
+	cm.monitorWaitGroup = &wg
+	cm.monitorWaitGroup.Add(1)
+
+	go cm.monitorThemeChanges()
+}
+
+func (cm *colorManager) monitorThemeChanges() {
+	defer cm.monitorWaitGroup.Done()
+
+	err := cm.initSystemResources()
+	if err != nil {
+		log.Errorf("Failed to initialize system resources: %v", err)
+		return
+	}
+	defer cm.cleanupResources()
+
+	cm.watchThemeLoop()
+}
+
+func (cm *colorManager) initSystemResources() error {
+	var err error
+	cm.registryKey, err = registry.OpenKey(registry.CURRENT_USER, registryPath, registry.NOTIFY)
+	if err != nil {
+		return errors.New("failed to open registry key: " + err.Error())
+	}
+
+	cm.keyEvent, err = windows.CreateEvent(nil, 0, 0, nil)
+	if err != nil {
+		cm.registryKey.Close()
+		return errors.New("failed to create event: " + err.Error())
+	}
+
+	return nil
+}
+
+func (cm *colorManager) cleanupResources() {
+	cm.registryKey.Close()
+	windows.CloseHandle(cm.keyEvent)
+}
+
+func (cm *colorManager) watchThemeLoop() {
+	for {
+		if err := cm.notifyOnRegistryChange(); err != nil {
+			log.Errorf("Registry notification failed: %v", err)
+			return
+		}
+
+		if shouldExit := cm.handleThemeChange(); shouldExit {
+			return
+		}
+	}
+}
+
+func (cm *colorManager) notifyOnRegistryChange() error {
+	ret, _, err := procRegNotifyChangeKeyValue.Call(
+		uintptr(cm.registryKey),
+		0,
+		uintptr(windows.REG_NOTIFY_CHANGE_LAST_SET),
+		uintptr(cm.keyEvent),
+		1,
+	)
+
+	if ret != 0 && err != nil {
+		return fmt.Errorf("RegNotifyChangeKeyValue failed: %w", err)
+	}
+	return nil
+}
+
+func (cm *colorManager) handleThemeChange() bool {
+	select {
+	case <-cm.monitorCancel:
+		return true
+	default:
+		waitResult, err := windows.WaitForSingleObject(cm.keyEvent, registryWaitTimeout)
+		if err != nil {
+			log.Errorf("WaitForSingleObject failed: %v", err)
+			return false
+		}
+
+		if waitResult == windows.WAIT_OBJECT_0 {
+			cm.updateTheme()
+		}
+		return false
+	}
+}
+
+func (cm *colorManager) updateTheme() {
+	css := "light-mode-gui"
+	isDark, _ := isDarkMode()
+	if isDark {
+		css = "dark-mode-gui"
+	}
+
+	cm.ui.addCSSProvider(css)
+}
