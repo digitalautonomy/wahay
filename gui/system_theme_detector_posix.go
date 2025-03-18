@@ -20,6 +20,7 @@ type colorManager struct {
 
 type callbacksSet struct {
 	callbacks []func()
+	disabled  bool
 	sync.Mutex
 }
 
@@ -39,9 +40,25 @@ func (s *callbacksSet) invokeAll() {
 	s.Lock()
 	defer s.Unlock()
 
+	if s.disabled {
+		return
+	}
+
 	for _, cb := range s.callbacks {
 		cb()
 	}
+}
+
+func (s *callbacksSet) disable() {
+	s.Lock()
+	defer s.Unlock()
+	s.disabled = true
+}
+
+func (s *callbacksSet) enable() {
+	s.Lock()
+	defer s.Unlock()
+	s.disabled = false
 }
 
 const (
@@ -55,8 +72,15 @@ func (cm *colorManager) init() {
 	set := cm.getGSettings()
 	_ = set.Connect("changed::gtk-theme", cm.onThemeChange.invokeAll)
 
+	gtkSettings := cm.getGTKSettings()
+	_ = gtkSettings.Connect("notify::gtk-theme-name", cm.onThemeChange.invokeAll)
+	_ = gtkSettings.Connect("notify::gtk-application-prefer-dark-theme", cm.onThemeChange.invokeAll)
+	_ = gtkSettings.Connect("notify::gtk-decoration-layout", cm.onThemeChange.invokeAll)
+
 	cm.onThemeChange.add(func() {
 		cm.calculateThemeVariant = sync.Once{}
+	}, func() {
+		cm.ui.doInUIThread(cm.ui.setGlobalStyles)
 	})
 }
 
@@ -142,4 +166,12 @@ func (cm *colorManager) getThemeVariant() string {
 
 func (cm *colorManager) isDarkThemeVariant() bool {
 	return cm.getThemeVariant() == darkThemeVariantName
+}
+
+func (cm *colorManager) disableAutomaticThemeChange() {
+	cm.onThemeChange.disable()
+}
+
+func (cm *colorManager) enableAutomaticThemeChange() {
+	cm.onThemeChange.enable()
 }

@@ -359,6 +359,7 @@ func (s *settings) setCustomPathForTor() {
 }
 
 func (s *settings) changeColorScheme() {
+	s.u.colorManager.disableAutomaticThemeChange()
 	var css string
 	switch s.cmbBoxColorScheme.GetActive() {
 	case 0:
@@ -370,7 +371,7 @@ func (s *settings) changeColorScheme() {
 		s.u.addCSSProvider(css)
 		s.u.config.SetColorScheme(css)
 	default:
-		s.u.colorManager.init()
+		s.u.colorManager.enableAutomaticThemeChange()
 		s.u.config.SetColorScheme("")
 	}
 }
