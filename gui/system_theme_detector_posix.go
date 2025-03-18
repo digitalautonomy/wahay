@@ -15,6 +15,7 @@ type colorManager struct {
 	themeVariant          string
 	calculateThemeVariant sync.Once
 	onThemeChange         *callbacksSet
+	ui                    *gtkUI
 }
 
 type callbacksSet struct {
