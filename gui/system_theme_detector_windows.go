@@ -142,7 +142,7 @@ func (cm *colorManager) handleThemeChange() bool {
 
 func (cm *colorManager) updateTheme() {
 	css := "light-mode-gui"
-	isDark, _ := isDarkMode()
+	isDark := cm.isDarkThemeVariant()
 	if isDark {
 		css = "dark-mode-gui"
 	}
@@ -166,13 +166,11 @@ func (cm *colorManager) disableAutomaticThemeChange() {
 }
 
 func (cm *colorManager) enableAutomaticThemeChange() {
-	if cm.monitorCancel != nil {
-		cm.disableAutomaticThemeChange()
-	}
-
 	var wg sync.WaitGroup
 	cm.monitorCancel = make(chan struct{})
 	wg.Add(1)
+
+	cm.updateTheme()
 
 	cm.monitorWaitGroup = &wg
 	go cm.monitorThemeChanges()
