@@ -174,4 +174,15 @@ func (cm *colorManager) disableAutomaticThemeChange() {
 
 func (cm *colorManager) enableAutomaticThemeChange() {
 	cm.onThemeChange.enable()
+	cm.updateTheme()
+}
+
+func (cm *colorManager) updateTheme() {
+	css := "light-mode-gui"
+	isDark := cm.isDarkThemeVariant()
+	if isDark {
+		css = "dark-mode-gui"
+	}
+
+	cm.ui.addCSSProvider(css)
 }
