@@ -198,9 +198,11 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 		1,
 	)
 
-	language := config.DetectLanguage().String()
+	var theme, language = config.DetectLanguage().String(), "Dark"
+
 	if isIniConfigFile(configFile) {
 		language = fmt.Sprintf("language=%s", language)
+		theme = fmt.Sprintf("themestyle=%s", theme)
 	}
 
 	langSection := strings.Replace(
@@ -209,11 +211,6 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 		language,
 		1,
 	)
-
-	theme := "Dark"
-	if isIniConfigFile(configFile) {
-		theme = fmt.Sprintf("themestyle=%s", theme)
-	}
 
 	themeSection := strings.Replace(
 		langSection,
