@@ -198,7 +198,7 @@ func (c *client) writeConfigToFile(fileName string, path string, template func()
 		1,
 	)
 
-	var theme, language = config.DetectLanguage().String(), "Dark"
+	var language, theme = config.DetectLanguage().String(), "Dark"
 
 	if isIniConfigFile(configFile) {
 		language = fmt.Sprintf("language=%s", language)
