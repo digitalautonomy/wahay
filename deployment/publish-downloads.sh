@@ -8,7 +8,7 @@ if [ $# -lt 3 ]; then
 fi
 
 work_dir=$(realpath $1)         # absolute path
-web_dir=$(realpath $2)          # absoute path
+web_dir=$(realpath $2)          # absolute path
 binary_path=$(realpath $3)      # relative path to the binary in question, either bin/wahay-TAG or bin/wahay-DATE-COMMIT
 
 binary_name=$(basename $binary_path)
