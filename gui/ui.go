@@ -245,6 +245,7 @@ func (u *gtkUI) setGlobalStyles() {
 
 	configuredTheme := u.config.GetColorScheme()
 	if configuredTheme != "" {
+		u.colorManager.disableAutomaticThemeChange()
 		u.addCSSProvider(configuredTheme)
 		return
 	}
