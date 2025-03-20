@@ -115,8 +115,10 @@ func (u *gtkUI) initTasks() {
 
 func (u *gtkUI) onActivate() {
 	u.displayLoadingWindowWithCallback(u.quit)
-	go u.setGlobalStyles()
-	go u.loadConfig()
+	go func() {
+		u.loadConfig()
+		u.setGlobalStyles()
+	}()
 }
 
 func (u *gtkUI) quit() {
@@ -238,6 +240,12 @@ func (u *gtkUI) disableMainWindowControls(builder *uiBuilder) {
 
 func (u *gtkUI) setGlobalStyles() {
 	if u.g.gdk == nil {
+		return
+	}
+
+	configuredTheme := u.config.GetColorScheme()
+	if configuredTheme != "" {
+		u.addCSSProvider(configuredTheme)
 		return
 	}
 
