@@ -37,9 +37,8 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 	log.Debugf("findTorBinaryInSystem(%s)", path)
 
 	b, errTorBinary := isThereConfiguredTorBinary(path)
-
 	if errTorBinary != nil {
-		return nil, err
+		return nil, errTorBinary
 	}
 
 	return b, nil
