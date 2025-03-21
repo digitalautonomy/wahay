@@ -38,7 +38,7 @@ func findTorBinaryInSystem() (b *binary, fatalErr error) {
 
 	b, errTorBinary := isThereConfiguredTorBinary(path)
 	if errTorBinary != nil {
-		return nil, errTorBinary
+		return nil, nil
 	}
 
 	return b, nil
