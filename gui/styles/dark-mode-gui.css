@@ -711,17 +711,29 @@ window.meeting-controls .buttons .control-finish-call:disabled {
 .color-scheme-box {
   min-height: 40px;
 }
-.color-scheme-box button, .color-scheme-box menu {
+.color-scheme-box button,
+.color-scheme-box menu {
   color: #fff;
   background: #4a5568;
   border: 2px solid #cbd5e0;
   font-weight: 500;
 }
-.color-scheme-box button:hover, .color-scheme-box button:active, .color-scheme-box button:focus, .color-scheme-box menu:hover, .color-scheme-box menu:active, .color-scheme-box menu:focus {
+.color-scheme-box button:hover, .color-scheme-box button:active, .color-scheme-box button:focus,
+.color-scheme-box menu:hover,
+.color-scheme-box menu:active,
+.color-scheme-box menu:focus {
   color: #fff;
   background: #2d3748;
 }
 .color-scheme-box menuitem {
+  color: #fff;
+}
+
+box notebook .top {
+  background-color: #1a202c;
+}
+box notebook .top tabs tab:hover {
+  background-color: #2d3748;
   color: #fff;
 }
 

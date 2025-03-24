@@ -13,7 +13,8 @@
 .color-scheme-box {
   min-height: 40px;
 
-  button, menu {
+  button,
+  menu {
     color: $text-white;
     background: $gray-700;
     border: 2px solid $gray-400;
@@ -29,5 +30,14 @@
 
   menuitem {
     color: $text-white;
+  }
+}
+
+box notebook .top {
+  background-color: $gray-900;
+  
+  tabs tab:hover {
+    background-color: $gray-800;
+    color: $white;
   }
 }
