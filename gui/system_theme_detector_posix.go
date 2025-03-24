@@ -174,6 +174,7 @@ func (cm *colorManager) disableAutomaticThemeChange() {
 
 func (cm *colorManager) enableAutomaticThemeChange() {
 	cm.onThemeChange.enable()
+	cm.calculateThemeVariant = sync.Once{}
 	cm.updateTheme()
 }
 
