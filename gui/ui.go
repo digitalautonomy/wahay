@@ -101,7 +101,6 @@ func (u *gtkUI) initTasks() {
 	u.initCleanupHandler()
 	u.initConfig()
 	u.initErrorsHandler()
-	u.initColorManager()
 
 	u.torInitialized = &sync.WaitGroup{}
 	u.torInitialized.Add(1)
@@ -117,6 +116,7 @@ func (u *gtkUI) onActivate() {
 	u.displayLoadingWindowWithCallback(u.quit)
 	go func() {
 		u.loadConfig()
+		u.initColorManager()
 		u.setGlobalStyles()
 	}()
 }
