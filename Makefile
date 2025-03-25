@@ -109,16 +109,16 @@ gui/styles:
 
 $(LIGHT_CSS_GEN): gui/styles $(SASS_SRC)
 	# this is necessary because we have a directory named sass as well, so Make gets confused
-	$(shell which sass) ./sass/light-mode-gui.scss:$@
+	$(shell which sass) ./sass/light-mode-gui.scss $@
 
 $(DARK_CSS_GEN): gui/styles $(SASS_SRC)
 	# this is necessary because we have a directory named sass as well, so Make gets confused
-	$(shell which sass) ./sass/dark-mode-gui.scss:$@
+	$(shell which sass) ./sass/dark-mode-gui.scss $@
 
 sass-watch: gui/styles $(SASS_SRC)
 	# this is necessary because we have a directory named sass as well, so Make gets confused
-	$(shell which sass) --watch ./sass/light-mode-gui.scss:$(LIGHT_CSS_GEN)
-	$(shell which sass) --watch ./sass/dark-mode-gui.scss:$(DARK_CSS_GEN)
+	$(shell which sass) --watch ./sass/light-mode-gui.scss $(LIGHT_CSS_GEN)
+	$(shell which sass) --watch ./sass/dark-mode-gui.scss $(DARK_CSS_GEN)
 
 $(BUILD_DIR)/wahay: $(AUTOGEN) $(SRC)
 	go build $(LDFLAGS_REGULAR) $(BINARY_TAGS) -o $(BUILD_DIR)/wahay
