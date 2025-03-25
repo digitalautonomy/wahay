@@ -37,6 +37,9 @@ jobs:
           mingw-w64-x86_64-pkg-config
           mingw-w64-x86_64-glib2
           mingw-w64-x86_64-gtk3
+          mingw-w64-x86_64-sassc
+      - name: Rename sassc executable
+        run: mv /mingw64/bin/sassc.exe /mingw64/bin/sass.exe
       - name: Copy release dependencies
         run: |
           mkdir -p release/share
