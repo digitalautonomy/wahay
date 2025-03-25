@@ -141,7 +141,6 @@ jobs:
       
       - name: Build wahay.exe
         run: |  
-          touch gui/styles/gui.css
           make build-gui-win
           cp bin/wahay.exe release/
       
