@@ -7,7 +7,7 @@
 
 set -xe
 
-export WAHAY_VERSION=0.1
+export WAHAY_VERSION=0.2
 export TOR_VERSION=0.4.7.13
 
 DISTRO_FILE="../deployment/supported-bundle-distros.txt"
