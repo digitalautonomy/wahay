@@ -1,4 +1,3 @@
-ubuntu-18-lts
 ubuntu-20-lts
 ubuntu-22-lts
 ubuntu-24-lts
