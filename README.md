@@ -28,8 +28,33 @@ For full documentation, visit [wahay.org](https://wahay.org/documentation/index.
 
 For end-users, please refer to installation instructions on the
 [website](https://wahay.org/documentation/getting-started/installation/). We provide several different options for
-installation there. If you are a developer, installing the application should be as easy as cloning the repository and
-running `make build`.
+installation there.
+
+## Building from Source
+
+To build Wahay from source, you'll need to install the following dependencies:
+
+1. Install build dependencies:
+```bash
+sudo apt install make pkg-config golang libgtk-3-dev ruby-sass
+```
+
+2. Install runtime dependencies:
+```bash
+sudo apt install tor mumble
+```
+
+3. Clone the repository
+
+4. Build the project:
+```bash
+make build
+```
+
+The build process will create the binary in the `bin` directory. You can run it with:
+```bash
+./bin/wahay
+```
 
 ## Security warning
 
