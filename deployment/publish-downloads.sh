@@ -41,7 +41,7 @@ ln -sf $binary_name.sha256sum.asc wahay-latest.sha256sum.asc
 
 rm -rf $web_dir/bundles/$binary_name
 mkdir -p $web_dir/bundles/$binary_name
-rm -f $web_dir/bundles/latest
+rm -f $web_dir/bundles/$latest_name
 cd $web_dir/bundles
 ln -sf $binary_name wahay-latest
 
