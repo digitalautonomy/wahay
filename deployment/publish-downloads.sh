@@ -14,6 +14,7 @@ binary_path=$(realpath $3)      # relative path to the binary in question, eithe
 binary_name=$(basename $binary_path)
 
 TMP_DIR=$work_dir
+latest_name="wahay-latest"
 
 sum_file_path=$binary_path.sha256sum
 signature_path=$binary_path.sha256sum.asc
