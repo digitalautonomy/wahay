@@ -5,7 +5,10 @@
     - 'amnesia'
   commands:
     ADD_ONION:
-      - '.*'
+      # TODO: Make Wahay restrict the local port range it listens on.
+      # Whonix will use 0.0.0.0; most other OS's will use 127.0.0.1.
+      - pattern:     'NEW:(\S+) Port=8181,(?:127.0.0.1|0.0.0.0):(\S+) Port=64738,(?:127.0.0.1|0.0.0.0):(\S+)'
+        replacement: 'NEW:{} Port=8181,{client-address}:{} Port=64738,{client-address}:{} Flags=DiscardPK'
     DEL_ONION:
       - '.+'
     GETINFO:
