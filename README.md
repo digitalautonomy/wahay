@@ -56,6 +56,14 @@ The build process will create the binary in the `bin` directory. You can run it 
 ./bin/wahay
 ```
 
+## Nix & NixOS
+
+If using Nix, or NixOS, then you can install Wahay from Nixpkgs:
+
+```bash
+nix-env -i wahay
+```
+
 ## Security warning
 
 Wahay is currently under active development. There have been no security audits
